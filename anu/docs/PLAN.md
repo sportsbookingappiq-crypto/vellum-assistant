@@ -11,13 +11,13 @@ The concept comes from the ANU architecture notes. Its shape: a phone app, an AP
 | Code location | `anu/` inside this repository, because creating a separate repository was refused (403) | [0001](decisions/0001-location-in-vellum-assistant.md) |
 | Cloud | The current cloud environment. No new cloud provider | [0002](decisions/0002-current-cloud-environment.md) |
 | Login | Phone number with a one-time code | [0003](decisions/0003-phone-number-login.md) |
-| Test model provider | Kilo Gateway | Pending. Record 0004 follows the research |
+| Test model provider | Kilo Gateway, as an `openai-compatible` connection | [0004](decisions/0004-kilo-gateway-test-provider.md) (proposed) |
 
 ## Phases
 
 ### Phase 0: decisions
 
-Done for 0001 to 0003. Record 0004 follows the research on the Kilo Gateway and on how the assistant harness is configured.
+Done for 0001 to 0003. 0004 is proposed. Its base URL and network access are still open.
 
 ### Phase 1: current cloud environment (in progress)
 
@@ -27,7 +27,7 @@ Done for 0001 to 0003. Record 0004 follows the research on the Kilo Gateway and 
 
 ### Phase 2: Kilo test provider (pending)
 
-Route the assistant's model calls to the Kilo Gateway in tests. The configuration path depends on the harness research: a settings change if the harness can already point at an OpenAI-compatible base URL, a small provider addition if it cannot.
+Route the assistant's model calls to the Kilo Gateway in tests. No code change is needed. Kilo is configured as an `openai-compatible` connection with a credential-store key and a test profile (ADR 0004). Still open: the base URL (two conflicting sources), allowing the host through network access (currently refused with 403), and how `KILO_API_KEY` reaches the credential store.
 
 ### Phase 3: API and phone login (not started)
 
@@ -38,7 +38,7 @@ Route the assistant's model calls to the Kilo Gateway in tests. The configuratio
 
 ### Phase 4: harness runner (not started)
 
-Run the assistant runtime from `assistant/` for one task at a time, with no desktop app. Its exact entry point depends on the headless research. The runner streams steps back to the API and writes results to the task's storage.
+Run the assistant runtime from `assistant/` for one task at a time, with no desktop app. Research found no single blocking call. A send returns acceptance, and the reply arrives on the event stream (`vellum events --json`, or `subscribe_assistant_events` after `messages_post`) until `message_complete`. The runtime boots with `VELLUM_WORKSPACE_DIR`, `RUNTIME_HTTP_PORT`, and `ACTOR_TOKEN_SIGNING_KEY`, and needs neither the gateway nor CES. The runner streams steps back to the API and writes results to the task's storage.
 
 ### Phase 5: approvals and safety (not started)
 
