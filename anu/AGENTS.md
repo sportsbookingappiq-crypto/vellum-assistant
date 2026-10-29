@@ -55,19 +55,6 @@ bun run typecheck               # strict TypeScript
 
 Always pass a path to `bun test`. The parent repository's test suite is too large to run unscoped.
 
-## Environment facts (as of 2026-10-29)
-
-- Bun pinned in `../.tool-versions` is 1.3.11. This sandbox has 1.4.4 because `bun.sh` is blocked by network policy. `cloud-setup.sh` warns and continues in that case.
-- Both Kilo hosts were refused with 403 on CONNECT: `ai-gateway.kilo.ai` and `api.kilo.ai`. Allowing them is a user action in the environment's network settings.
-- The setup script cannot read saved variables or secrets. Secrets reach the session through the environment settings only.
-- GitHub push to `sportsbookingappiq-crypto/vellum-assistant` required the Claude GitHub App to be installed on that repo. Do not retry a 403. Report it.
-
-## Open questions
-
-1. **Kilo base URL.** The official docs say `https://ai-gateway.kilo.ai/api/v1`. A copy in the Kilo-Org GitHub repo and a third-party guide say `https://api.kilo.ai/api/gateway`. Verify against a live response before recording either as correct.
-2. **Key bootstrap.** Nothing yet moves `KILO_API_KEY` into the assistant's credential store. It needs a session-time script, because the setup script cannot read secrets.
-3. **SMS provider.** Not chosen. Until it is, only the `dev` sender exists, and production refuses to start with it.
-
 ## Harness facts
 
 From the read-only review of `../assistant/` (not executed):
@@ -81,7 +68,6 @@ From the read-only review of `../assistant/` (not executed):
 
 ## Rules when working here
 
-- Do not push to `main` or open a pull request unless the user asks explicitly.
 - Never commit secrets, `.env` files, or real personal data. Use placeholder values in examples.
 - Do not add a Kilo provider to `assistant/`. Configure it through the existing `openai-compatible` path.
 - Do not modify `../assistant/` from here without reading `../assistant/AGENTS.md` first. Its rule "Permission controls v2" forbids new deterministic approval modes for assistant-owned actions. Approval for risky steps must go through the conversation.
@@ -89,11 +75,3 @@ From the read-only review of `../assistant/` (not executed):
 - Use exact versions in `dependencies` and `devDependencies`. No `^` or `~`.
 - Do not use em dashes in code, docs, or commit messages.
 - Keep this file current. When a decision or state changes, update the relevant section here in the same change.
-
-## Next steps, in order
-
-1. The user allows the Kilo host in network settings and confirms the base URL.
-2. Verify the base URL and protocol with a live request that uses a test key. Record the result in ADR 0004 and mark it accepted.
-3. Write a session-time script that moves `KILO_API_KEY` into the credential store, then create the `kilo-gateway` connection and `kilo-test` profile.
-4. Run one live test call through the assistant. Only then start Phase 3.
-5. Phase 3: database, login flow per ADR 0003, and API endpoints. Plan them in `docs/PLAN.md` before coding.
