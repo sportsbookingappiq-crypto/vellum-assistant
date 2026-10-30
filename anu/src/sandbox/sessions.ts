@@ -3,6 +3,7 @@ import path from "node:path";
 
 import type { DriverName } from "../config.js";
 import type { Logger } from "../lib/log.js";
+import type { BotProfile } from "./drivers/types.js";
 import { sanitizeEnv } from "./env.js";
 import { LINE_PREFIX, type ChatTurn, type DriverSettings, type ParentMessage, type WorkerMessage } from "./protocol.js";
 import { lines, TaskGoneError, type SessionReporter } from "./runs.js";
@@ -29,6 +30,8 @@ interface SessionWorker {
   turnTimer: ReturnType<typeof setTimeout> | null;
   idleTimer: ReturnType<typeof setTimeout> | null;
   approvals: Map<string, string>;
+  /** The bot profile version the worker started with, or null for none. */
+  botVersion: string | null;
   queue: Promise<void>;
   done: Promise<void>;
 }
@@ -59,12 +62,26 @@ export class SessionManager {
     return this.workers.get(sessionId)?.state === "running";
   }
 
-  /** Sends a turn, starting a worker first if none is running. */
-  async turn(sessionId: string, turnId: string, text: string, history: ChatTurn[]): Promise<{ driver: DriverName; resumed: boolean }> {
+  /**
+   * Sends a turn, starting a worker first if none is running. An idle worker
+   * started with another bot version (the bot was edited) is replaced, so the
+   * edit applies from this turn; the new worker gets the history.
+   */
+  async turn(
+    sessionId: string,
+    turnId: string,
+    text: string,
+    history: ChatTurn[],
+    bot?: BotProfile,
+  ): Promise<{ driver: DriverName; resumed: boolean }> {
     let worker = this.workers.get(sessionId);
     let resumed = false;
+    if (worker && worker.state === "running" && worker.turnId === null && worker.botVersion !== (bot?.version ?? null)) {
+      this.options.log.info("session.bot_changed", { sessionId, from: worker.botVersion, to: bot?.version ?? null });
+      await this.kill(worker);
+    }
     if (!worker || worker.state !== "running") {
-      worker = await this.spawn(sessionId, history);
+      worker = await this.spawn(sessionId, history, bot);
       resumed = history.length > 0;
     }
     if (worker.idleTimer) clearTimeout(worker.idleTimer);
@@ -80,7 +97,7 @@ export class SessionManager {
     worker.proc.stdin.flush();
   }
 
-  private async spawn(sessionId: string, history: ChatTurn[]): Promise<SessionWorker> {
+  private async spawn(sessionId: string, history: ChatTurn[], bot?: BotProfile): Promise<SessionWorker> {
     const workspaceDir = this.workspaceFor(sessionId);
     await mkdir(path.join(workspaceDir, "tmp"), { recursive: true, mode: 0o700 });
     const env = sanitizeEnv(this.options.parentEnv ?? process.env, workspaceDir, { ANU_TASK_ID: sessionId });
@@ -99,6 +116,7 @@ export class SessionManager {
       turnTimer: null,
       idleTimer: null,
       approvals: new Map(),
+      botVersion: bot?.version ?? null,
       queue: Promise.resolve(),
       done: Promise.resolve(),
     };
@@ -110,6 +128,7 @@ export class SessionManager {
       workspaceDir,
       settings: this.options.settings,
       history,
+      ...(bot ? { bot } : {}),
     });
     void (async () => {
       for await (const line of lines(proc.stderr)) {
@@ -117,7 +136,7 @@ export class SessionManager {
       }
     })();
     worker.done = this.read(worker);
-    this.options.log.info("session.worker_started", { sessionId, driver: this.options.driver, pid: proc.pid, history: history.length });
+    this.options.log.info("session.worker_started", { sessionId, driver: this.options.driver, pid: proc.pid, history: history.length, botId: bot?.id ?? null });
     return worker;
   }
 

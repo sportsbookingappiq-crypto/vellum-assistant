@@ -1,4 +1,6 @@
 import { insertAgent } from "../api/agents.js";
+import { ensureDefaultBots, type BotRow } from "../api/bots.js";
+import type { DefaultBotKey } from "../api/default-bots.js";
 import type { Db } from "./client.js";
 
 /** Fake people. Numbers are from the reserved 555-0100 to 555-0199 range. */
@@ -12,6 +14,8 @@ type Step = { kind: string; title: string; detail?: unknown; status?: string };
 interface SeedTask {
   id: string;
   userId: string;
+  /** The default bot the task runs as (ANU when omitted). */
+  bot?: DefaultBotKey;
   goal: string;
   status: string;
   result?: string;
@@ -35,6 +39,7 @@ export const SEED_TASKS: SeedTask[] = [
     id: tid(2),
     userId: primary.id,
     goal: "Compare three budget laptops for students",
+    bot: "shopper",
     status: "running",
     steps: [
       { kind: "plan", title: "Plan", detail: { steps: ["Find candidates", "Compare specs", "Summarize"] } },
@@ -81,6 +86,7 @@ export const SEED_TASKS: SeedTask[] = [
     id: tid(6),
     userId: primary.id,
     goal: "Find flights to the conference",
+    bot: "researcher",
     status: "stopped",
     steps: [
       { kind: "plan", title: "Plan", detail: { steps: ["Search flights"] } },
@@ -102,6 +108,7 @@ type Item = { kind: string; title: string; text?: string; detail?: unknown; stat
 interface SeedSession {
   id: string;
   userId: string;
+  bot?: DefaultBotKey;
   title: string;
   status: string;
   items: Item[];
@@ -132,6 +139,7 @@ export const SEED_SESSIONS: SeedSession[] = [
     id: sid(2),
     userId: primary.id,
     title: "Laptop research",
+    bot: "shopper",
     status: "working",
     items: [
       say("Find a light laptop under 800 dollars"),
@@ -153,6 +161,7 @@ export const SEED_SESSIONS: SeedSession[] = [
     id: sid(4),
     userId: primary.id,
     title: "Translate a letter",
+    bot: "researcher",
     status: "failed",
     items: [
       say("Translate the attached letter to French"),
@@ -183,12 +192,25 @@ export async function seed(db: Db, options: { reset?: boolean } = {}): Promise<{
     for (const user of SEED_USERS) {
       await tx`insert into users (id, phone) values (${user.id}, ${user.phone}) on conflict do nothing`;
     }
+    // Default bots for the users with seeded chats and tasks; the third user
+    // gets them lazily on first request, in the app's language.
+    const bots = new Map<string, BotRow>();
+    for (const user of [primary, second]) {
+      await ensureDefaultBots(tx, user.id, "en", new Date());
+      for (const row of await tx<BotRow[]>`select * from bots where user_id = ${user.id} and default_key is not null`) {
+        bots.set(`${user.id}:${row.default_key}`, row);
+      }
+    }
+    const botFor = (userId: string, key: DefaultBotKey = "anu") => {
+      const row = bots.get(`${userId}:${key}`) ?? bots.get(`${userId}:anu`);
+      return row ? { id: row.id, name: row.name, avatar: { bodyShape: row.body_shape, eyeStyle: row.eye_style, color: row.color } } : null;
+    };
     let created = 0;
     for (const task of SEED_TASKS) {
       const terminal = ["succeeded", "failed", "stopped"].includes(task.status);
       const inserted = await tx`
-        insert into tasks (id, user_id, goal, status, driver, result, confidence, started_at, finished_at)
-        values (${task.id}, ${task.userId}, ${task.goal}, ${task.status}, 'seed', ${task.result ?? null},
+        insert into tasks (id, user_id, goal, status, driver, bot_id, result, confidence, started_at, finished_at)
+        values (${task.id}, ${task.userId}, ${task.goal}, ${task.status}, 'seed', ${botFor(task.userId, task.bot)?.id ?? null}, ${task.result ?? null},
           ${task.confidence ?? null}, ${task.status === "queued" ? null : new Date()}, ${terminal ? new Date() : null})
         on conflict (id) do nothing returning id`;
       if (inserted.length === 0) continue;
@@ -210,17 +232,32 @@ export async function seed(db: Db, options: { reset?: boolean } = {}): Promise<{
           on conflict do nothing`;
       }
     }
-    for (const task of SEED_TASKS) await insertAgent(tx, task.userId, { taskId: task.id }, new Date());
+    for (const task of SEED_TASKS) {
+      const bot = botFor(task.userId, task.bot);
+      await insertAgent(tx, task.userId, { taskId: task.id }, new Date(), bot);
+      if (!bot) continue;
+      // Seeded rows without a bot take theirs, so a re-seed leaves no stranger agents.
+      await tx`update tasks set bot_id = ${bot.id} where id = ${task.id} and bot_id is null`;
+      await tx`update agents set bot_id = ${bot.id}, name = ${bot.name}, body_shape = ${bot.avatar.bodyShape},
+        eye_style = ${bot.avatar.eyeStyle}, color = ${bot.avatar.color} where task_id = ${task.id} and bot_id is null`;
+    }
 
     let sessionsCreated = 0;
     for (const session of SEED_SESSIONS) {
       const inserted = await tx`
-        insert into chat_sessions (id, user_id, title, status, driver)
-        values (${session.id}, ${session.userId}, ${session.title}, ${session.status}, 'seed')
+        insert into chat_sessions (id, user_id, title, status, driver, bot_id)
+        values (${session.id}, ${session.userId}, ${session.title}, ${session.status}, 'seed', ${botFor(session.userId, session.bot)?.id ?? null})
         on conflict (id) do nothing returning id`;
-      if (inserted.length === 0) continue;
+      const bot = botFor(session.userId, session.bot);
+      if (inserted.length === 0) {
+        if (!bot) continue;
+        await tx`update chat_sessions set bot_id = ${bot.id} where id = ${session.id} and bot_id is null`;
+        await tx`update agents set bot_id = ${bot.id}, name = ${bot.name}, body_shape = ${bot.avatar.bodyShape},
+          eye_style = ${bot.avatar.eyeStyle}, color = ${bot.avatar.color} where session_id = ${session.id} and bot_id is null`;
+        continue;
+      }
       sessionsCreated++;
-      await insertAgent(tx, session.userId, { sessionId: session.id }, new Date());
+      await insertAgent(tx, session.userId, { sessionId: session.id }, new Date(), bot);
       let seq = 0;
       let turnId: string | null = null;
       for (const item of session.items) {

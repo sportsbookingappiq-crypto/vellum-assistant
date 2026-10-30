@@ -5,7 +5,8 @@ import { buildApi } from "../api/server.js";
 import { mkdtempSync } from "node:fs";
 import path from "node:path";
 
-import type { SandboxClient, WorkspaceResource } from "../api/sandbox-client.js";
+import type { DraftResult, SandboxClient, WorkspaceResource } from "../api/sandbox-client.js";
+import type { BotProfile } from "../sandbox/drivers/types.js";
 import { errorResponse, HttpError } from "../lib/http.js";
 import { serveWorkspaceRead } from "../sandbox/server.js";
 import { loadApiConfig, type ApiConfig } from "../config.js";
@@ -50,9 +51,9 @@ export function testConfig(overrides: Record<string, string> = {}): ApiConfig {
 export class FakeSandbox implements SandboxClient {
   calls: { op: string; taskId: string; extra?: unknown }[] = [];
   failStart = false;
-  async startRun(taskId: string) {
+  async startRun(taskId: string, _goal: string, bot?: BotProfile) {
     if (this.failStart) throw new Error("sandbox down");
-    this.calls.push({ op: "start", taskId });
+    this.calls.push({ op: "start", taskId, extra: { bot } });
     return { driver: "fake" };
   }
   async stopRun(taskId: string) {
@@ -64,11 +65,18 @@ export class FakeSandbox implements SandboxClient {
   async deleteRun(taskId: string) {
     this.calls.push({ op: "delete", taskId });
   }
-  turns: { sessionId: string; turnId: string; text: string; history: unknown[] }[] = [];
-  async sendTurn(sessionId: string, turnId: string, text: string, history: unknown[]) {
+  turns: { sessionId: string; turnId: string; text: string; history: unknown[]; bot?: BotProfile }[] = [];
+  async sendTurn(sessionId: string, turnId: string, text: string, history: unknown[], bot?: BotProfile) {
     if (this.failStart) throw new Error("sandbox down");
-    this.turns.push({ sessionId, turnId, text, history });
+    this.turns.push({ sessionId, turnId, text, history, ...(bot ? { bot } : {}) });
     return { driver: "fake" };
+  }
+  /** What the next draft job returns. Defaults to the scripted driver's answer. */
+  draftResult: DraftResult = { status: "unavailable", error: "the scripted driver has no model to draft a bot with" };
+  drafts: { description: string; locale: string }[] = [];
+  async draft(description: string, locale: "ar" | "en") {
+    this.drafts.push({ description, locale });
+    return this.draftResult;
   }
   async stopSession(sessionId: string) {
     this.calls.push({ op: "stopSession", taskId: sessionId });

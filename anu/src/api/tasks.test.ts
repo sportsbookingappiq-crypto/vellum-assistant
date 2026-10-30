@@ -36,7 +36,9 @@ describe("task CRUD", () => {
     const task = await createTask("  Write a haiku about tests  ");
     expect(task.status).toBe("queued");
     expect(task.goal).toBe("Write a haiku about tests");
-    expect(t.sandbox.calls).toContainEqual({ op: "start", taskId: task.id });
+    const start = t.sandbox.calls.find((c) => c.op === "start" && c.taskId === task.id);
+    // Without botId the task runs as the user's default bot, ANU.
+    expect((start?.extra as { bot?: { name: string } })?.bot?.name).toBe("ANU");
   });
 
   test("invalid goals are rejected", async () => {

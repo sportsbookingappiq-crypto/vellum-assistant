@@ -32,6 +32,36 @@ export interface RuntimeClient {
   events(conversationKey: string, signal: AbortSignal): Promise<ReadableStream<Uint8Array>>;
 }
 
+/** A runtime call that came back with an error status. */
+export class RuntimeCallError extends Error {
+  constructor(
+    readonly status: number,
+    message: string,
+  ) {
+    super(message);
+  }
+}
+
+/**
+ * Creates a named runtime setting, or updates it when the runtime already has
+ * it. A session restarting on its workspace keeps its connections and profiles
+ * in the runtime's data, and their create routes answer 409 for an existing name.
+ */
+export async function upsertSetting(
+  client: RuntimeClient,
+  route: string,
+  name: string,
+  fields: Record<string, unknown>,
+  createOnly: Record<string, unknown> = {},
+): Promise<void> {
+  try {
+    await client.call("POST", route, { name, ...createOnly, ...fields });
+  } catch (error) {
+    if (!(error instanceof RuntimeCallError) || error.status !== 409) throw error;
+    await client.call("PATCH", `${route}/${encodeURIComponent(name)}`, fields);
+  }
+}
+
 export interface TurnOptions {
   inferenceProfile: string;
   /** How long the whole turn may take. */

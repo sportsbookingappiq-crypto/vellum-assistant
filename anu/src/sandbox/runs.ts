@@ -5,6 +5,7 @@ import type { StepKind, StepStatus } from "../api/model.js";
 import type { DriverName } from "../config.js";
 import type { Logger } from "../lib/log.js";
 import { sanitizeEnv } from "./env.js";
+import type { BotProfile } from "./drivers/types.js";
 import { LINE_PREFIX, type DriverSettings, type ParentMessage, type WorkerMessage } from "./protocol.js";
 
 /** Where a run reports its steps. The HTTP implementation calls the API's internal endpoints. */
@@ -120,7 +121,7 @@ export class RunManager {
     return path.join(this.options.root, taskId);
   }
 
-  async start(taskId: string, goal: string): Promise<{ driver: DriverName }> {
+  async start(taskId: string, goal: string, bot?: BotProfile): Promise<{ driver: DriverName }> {
     if (this.runs.get(taskId)?.state === "running") return { driver: this.options.driver };
     const workspaceDir = this.workspaceFor(taskId);
     await mkdir(path.join(workspaceDir, "tmp"), { recursive: true, mode: 0o700 });
@@ -154,13 +155,14 @@ export class RunManager {
       driver: this.options.driver,
       workspaceDir,
       settings: this.options.settings,
+      ...(bot ? { bot } : {}),
     };
     proc.stdin.write(JSON.stringify(start) + "\n");
     proc.stdin.flush();
 
     void this.pipeStderr(run);
     run.done = this.readWorker(run);
-    this.options.log.info("run.started", { taskId, driver: this.options.driver, pid: proc.pid });
+    this.options.log.info("run.started", { taskId, driver: this.options.driver, pid: proc.pid, botId: bot?.id ?? null });
     return { driver: this.options.driver };
   }
 

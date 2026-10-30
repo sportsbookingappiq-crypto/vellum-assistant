@@ -55,6 +55,8 @@ Constraint from `assistant/AGENTS.md`, "Permission controls v2": no new determin
 
 ### Phase 6: phone client (in progress)
 
+Current status and next steps are in [`HANDOFF.md`](HANDOFF.md). The design is [`design/phone-app.md`](design/phone-app.md).
+
 Reuse `clients/web` through its Capacitor iOS and Android shells, and add a task screen: a step timeline, a stop button, approval prompts, and the result with its sources and confidence.
 
 Done:
@@ -80,6 +82,10 @@ Done: tests that one user cannot read, stop, approve, or export another user's t
 - Tests that one user cannot read another user's tasks, that a sandbox cannot reach internal networks, and that the harness cannot read secrets it was not given.
 - A small pilot with a daily spending cap.
 - Success measures from the architecture notes: did the agent finish the task, how often did it need a person, and did the user catch the errors before accepting the result.
+
+### Phase 8: extensions, registry, and /goal (not started)
+
+Requirements are in [`HANDOFF.md`](HANDOFF.md) and research in [`research/`](research/). No final spec yet.
 
 ## Known limits of the current environment
 

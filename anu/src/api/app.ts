@@ -6,6 +6,7 @@ import { bearer, errorResponse, HttpError, json, readJson, safeEqual } from "../
 import type { Logger } from "../lib/log.js";
 import { isTerminal, ITEM_KINDS, STEP_KINDS, STEP_STATUSES, stepView, taskView, approvalView, itemView, sessionView } from "./model.js";
 import { AGENT_STATUSES, type AgentService } from "./agents.js";
+import { localeFrom, type BotService } from "./bots.js";
 import type { SessionService } from "./sessions.js";
 import type { TaskService } from "./tasks.js";
 
@@ -14,6 +15,7 @@ export interface AppDeps {
   tasks: TaskService;
   sessions: SessionService;
   agents: AgentService;
+  bots: BotService;
   internalToken: string;
   corsOrigins: string;
   log: Logger;
@@ -79,7 +81,8 @@ const field = (body: unknown, key: string): unknown =>
   body && typeof body === "object" ? (body as Record<string, unknown>)[key] : undefined;
 
 export function createApp(deps: AppDeps): Handler {
-  const { auth, tasks, sessions, agents, log } = deps;
+  const { auth, tasks, sessions, agents, bots, log } = deps;
+  const localeOf = (req: Request) => localeFrom(req.headers.get("accept-language"));
   const originAllowed = corsOriginMatcher(deps.corsOrigins);
   const pollMs = deps.ssePollMs ?? 1000;
   const heartbeatMs = deps.sseHeartbeatMs ?? 15_000;
@@ -252,7 +255,7 @@ export function createApp(deps: AppDeps): Handler {
     route("POST", "/v1/tasks", async ({ req }) => {
       const user = await requireUser(req);
       const body = await readJson(req);
-      return json(await tasks.create(user.userId, field(body, "goal")), 201);
+      return json(await tasks.create(user.userId, field(body, "goal"), field(body, "botId"), localeOf(req)), 201);
     }),
     route("GET", "/v1/tasks", async ({ req, url }) => {
       const user = await requireUser(req);
@@ -309,15 +312,55 @@ export function createApp(deps: AppDeps): Handler {
       return json({ agents: await agents.list(user.userId, status) });
     }),
 
+    route("GET", "/v1/bots", async ({ req }) => {
+      const user = await requireUser(req);
+      return json(await bots.list(user.userId, localeOf(req)));
+    }),
+    route("GET", "/v1/bots/options", async ({ req }) => {
+      await requireUser(req);
+      return json(bots.options());
+    }),
+    route("POST", "/v1/bots/draft", async ({ req }) => {
+      const user = await requireUser(req);
+      return json(await bots.draft(user.userId, await readJson(req), localeOf(req)));
+    }),
+    route("POST", "/v1/bots", async ({ req }) => {
+      const user = await requireUser(req);
+      return json(await bots.create(user.userId, await readJson(req), localeOf(req)), 201);
+    }),
+    route("GET", "/v1/bots/:botId", async ({ req, params }) => {
+      const user = await requireUser(req);
+      return json(await bots.get(user.userId, params.botId!));
+    }),
+    route("PATCH", "/v1/bots/:botId", async ({ req, params }) => {
+      const user = await requireUser(req);
+      return json(await bots.update(user.userId, params.botId!, await readJson(req)));
+    }),
+    route("DELETE", "/v1/bots/:botId", async ({ req, params }) => {
+      const user = await requireUser(req);
+      await bots.delete(user.userId, params.botId!);
+      return new Response(null, { status: 204 });
+    }),
+    route("POST", "/v1/bots/:botId/duplicate", async ({ req, params }) => {
+      const user = await requireUser(req);
+      return json(await bots.duplicate(user.userId, params.botId!), 201);
+    }),
+    route("PUT", "/v1/me/default-bot", async ({ req }) => {
+      const user = await requireUser(req);
+      await bots.setDefault(user.userId, await readJson(req));
+      return new Response(null, { status: 204 });
+    }),
+
     route("POST", "/v1/sessions", async ({ req }) => {
       const user = await requireUser(req);
       const body = req.headers.get("content-length") === "0" ? {} : await readJson(req).catch(() => ({}));
-      return json(await sessions.create(user.userId, field(body, "title")), 201);
+      return json(await sessions.create(user.userId, field(body, "title"), field(body, "botId"), localeOf(req)), 201);
     }),
     route("GET", "/v1/sessions", async ({ req, url }) => {
       const user = await requireUser(req);
       const limit = Math.min(Math.max(Number(url.searchParams.get("limit") ?? "50") || 50, 1), 200);
-      return json({ sessions: await sessions.list(user.userId, limit) });
+      const botId = url.searchParams.get("botId");
+      return json({ sessions: await sessions.list(user.userId, limit, botId, localeOf(req)) });
     }),
     route("GET", "/v1/sessions/:id", async ({ req, params }) => {
       const user = await requireUser(req);
@@ -413,8 +456,8 @@ export function createApp(deps: AppDeps): Handler {
     if (!origin || path.startsWith("/internal/") || !originAllowed(origin)) return {};
     return {
       "access-control-allow-origin": origin,
-      "access-control-allow-methods": "GET, POST, DELETE, OPTIONS",
-      "access-control-allow-headers": "authorization, content-type, last-event-id",
+      "access-control-allow-methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+      "access-control-allow-headers": "authorization, content-type, last-event-id, accept-language",
       "access-control-max-age": "600",
       vary: "Origin",
     };

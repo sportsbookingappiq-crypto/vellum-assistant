@@ -1,5 +1,7 @@
 import type { Db, Tx } from "../db/client.js";
 import { insertAgent } from "./agents.js";
+import { botProfileOf, botView, resolveBot, touchBot, type BotRow } from "./bots.js";
+import type { BotLocale } from "./default-bots.js";
 import { HttpError, isUuid, notFound } from "../lib/http.js";
 import type { Logger } from "../lib/log.js";
 import {
@@ -71,24 +73,27 @@ export class TaskService {
     return rows[0];
   }
 
-  async create(userId: string, goal: unknown) {
+  async create(userId: string, goal: unknown, rawBotId: unknown = undefined, locale: BotLocale = "en") {
     if (typeof goal !== "string" || goal.trim().length === 0 || goal.length > 4000) {
       throw new HttpError(400, "invalid_goal", "goal must be a non-empty string of at most 4000 characters");
     }
     const now = this.now();
-    const task = await this.db.asUser(userId, async (tx) => {
+    const { task, bot } = await this.db.asUser(userId, async (tx) => {
+      const botRow: BotRow | null = await resolveBot(tx, userId, rawBotId, locale, now);
+      const bot = botRow ? botProfileOf(botRow) : undefined;
       const [row] = await tx<TaskRow[]>`
-        insert into tasks (user_id, goal, created_at, updated_at)
-        values (${userId}, ${goal.trim()}, ${now}, ${now}) returning *`;
-      await insertAgent(tx, userId, { taskId: row!.id }, now);
+        insert into tasks (user_id, goal, bot_id, created_at, updated_at)
+        values (${userId}, ${goal.trim()}, ${botRow?.id ?? null}, ${now}, ${now}) returning *`;
+      await insertAgent(tx, userId, { taskId: row!.id }, now, bot ? { id: bot.id, name: bot.name, avatar: bot.avatar } : null);
+      if (botRow) await touchBot(tx, botRow.id, now);
       await tx`insert into audit_log (user_id, action, target, created_at)
         values (${userId}, 'task.created', ${row!.id}, ${now})`;
-      return row!;
+      return { task: row!, bot };
     });
     this.log.info("task.created", { taskId: task.id, userId });
 
     try {
-      const { driver } = await this.sandbox.startRun(task.id, task.goal);
+      const { driver } = await this.sandbox.startRun(task.id, task.goal, bot);
       await this.db.asUser(userId, (tx) => tx`update tasks set driver = ${driver} where id = ${task.id} and user_id = ${userId}`);
       task.driver = driver;
     } catch (error) {
@@ -226,6 +231,7 @@ export class TaskService {
       const items = await tx<SessionItemRow[]>`select * from session_items where user_id = ${userId} order by session_id, seq`;
       const agents = await tx<(AgentRow & { task_id: string | null; session_id: string | null })[]>`
         select * from agents where user_id = ${userId} order by created_at`;
+      const bots = await tx<BotRow[]>`select * from bots where user_id = ${userId} order by created_at`;
       const audit = await tx<{ action: string; target: string | null; detail: unknown; created_at: Date }[]>`
         select action, target, detail, created_at from audit_log where user_id = ${userId} order by id`;
       await tx`insert into audit_log (user_id, action, created_at) values (${userId}, 'me.exported', ${now})`;
@@ -243,6 +249,7 @@ export class TaskService {
           approvals: approvals.filter((approval) => approval.session_id === chat.id).map(approvalView),
         })),
         agents: agents.map((agent) => ({ ...agentView(agent)!, taskId: agent.task_id, sessionId: agent.session_id })),
+        bots: bots.map((bot) => botView(bot)),
         sessions: sessions.map((session) => ({
           createdAt: session.created_at.toISOString(),
           expiresAt: session.expires_at.toISOString(),

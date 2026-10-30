@@ -23,6 +23,7 @@ tags:
   - name: workspace
   - name: agents
   - name: sessions
+  - name: bots
 
 paths:
   /healthz:
@@ -183,6 +184,7 @@ paths:
                         createdAt: { type: string, format: date-time }
                         expiresAt: { type: string, format: date-time }
                         revokedAt: { type: [string, "null"], format: date-time }
+                  bots: { type: array, items: { $ref: "#/components/schemas/Bot" } }
                   audit:
                     type: array
                     items:
@@ -224,6 +226,7 @@ paths:
               required: [goal]
               properties:
                 goal: { type: string, minLength: 1, maxLength: 4000 }
+                botId: { type: string, format: uuid, description: The bot to run as. Defaults to the user's default bot. }
       responses:
         "201":
           description: Created. Status is `queued`, or `failed` if the sandbox could not start it.
@@ -232,6 +235,7 @@ paths:
               schema: { $ref: "#/components/schemas/Task" }
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { description: botId is not one of the user's bots, $ref: "#/components/responses/NotFound" }
 
   /v1/tasks/{taskId}:
     parameters:
@@ -470,6 +474,186 @@ paths:
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Unauthorized" }
 
+  /v1/bots:
+    get:
+      tags: [bots]
+      summary: The user's bots
+      description: >
+        Creates the default bots (ANU, Researcher, Shopper) on the first call, in the
+        request's language (Accept-Language starting with `ar` gives Arabic, otherwise English).
+        Ordered waiting for you, then working, then most recently used.
+      parameters:
+        - $ref: "#/components/parameters/AcceptLanguage"
+      responses:
+        "200":
+          description: Bots
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [bots, defaultBotId]
+                properties:
+                  bots: { type: array, items: { $ref: "#/components/schemas/Bot" } }
+                  defaultBotId: { type: [string, "null"], format: uuid }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    post:
+      tags: [bots]
+      summary: Create a bot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/BotInput" }
+      responses:
+        "201":
+          description: The bot
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Bot" }
+        "400": { description: "`invalid_request`, the message names the field", $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "409": { description: "`bot_limit` (20 bots)", $ref: "#/components/responses/Error" }
+
+  /v1/bots/options:
+    get:
+      tags: [bots]
+      summary: Choices for the Create bot and edit screens
+      responses:
+        "200":
+          description: Options. Labels and descriptions are i18n keys the app resolves.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [modelProfiles, skills, templates]
+                properties:
+                  modelProfiles: { type: array, items: { type: string }, example: [kilo-free] }
+                  skills:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: { type: string }
+                        label: { type: string }
+                  templates:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        key: { type: string, enum: [researcher, shopper, writer, tutor, planner, inbox] }
+                        label: { type: string, example: anu.bots.templates.researcher.label }
+                        description: { type: string, example: anu.bots.templates.researcher.description }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/bots/draft:
+    post:
+      tags: [bots]
+      summary: Draft a bot from one sentence
+      description: >
+        The sandbox runs one turn of the configured driver (for the harness, a throwaway runtime
+        with its own configured provider) and the API parses the JSON reply. When no model can be
+        asked, it times out (15 s), or the reply is not valid, the API returns a deterministic draft
+        from the template catalog with `source: fallback` and a `fallbackReason`. Nothing is saved.
+        Limited to 10 drafts per user per hour.
+      parameters:
+        - $ref: "#/components/parameters/AcceptLanguage"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [description]
+              properties:
+                description: { type: string, minLength: 1, maxLength: 500 }
+                locale: { type: string, enum: [ar, en] }
+      responses:
+        "200":
+          description: The draft
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BotDraft" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "429": { description: "`rate_limited`", $ref: "#/components/responses/Error" }
+
+  /v1/bots/{botId}:
+    parameters:
+      - $ref: "#/components/parameters/BotId"
+    get:
+      tags: [bots]
+      summary: One bot
+      responses:
+        "200":
+          description: The bot
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Bot" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    patch:
+      tags: [bots]
+      summary: Edit a bot. The change reaches its chats from their next turn.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/BotPatch" }
+      responses:
+        "200":
+          description: The bot
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Bot" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    delete:
+      tags: [bots]
+      summary: Delete a bot. Its chats stay, with `botId` null; their agents keep the name and face.
+      responses:
+        "204": { description: Deleted }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { description: "`bot_not_deletable` (ANU)", $ref: "#/components/responses/Error" }
+
+  /v1/bots/{botId}/duplicate:
+    parameters:
+      - $ref: "#/components/parameters/BotId"
+    post:
+      tags: [bots]
+      summary: Copy a bot. The name gets a " 2" suffix (Arabic-Indic for Arabic bots).
+      responses:
+        "201":
+          description: The copy
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Bot" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { description: "`bot_limit`", $ref: "#/components/responses/Error" }
+
+  /v1/me/default-bot:
+    put:
+      tags: [bots]
+      summary: Set the bot new chats and tasks use when no botId is given
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [botId]
+              properties:
+                botId: { type: string, format: uuid }
+      responses:
+        "204": { description: Saved }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
   /v1/sessions:
     post:
       tags: [sessions]
@@ -481,6 +665,7 @@ paths:
               type: object
               properties:
                 title: { type: string, maxLength: 200 }
+                botId: { type: string, format: uuid, description: The bot to chat with. Defaults to the user's default bot. }
       responses:
         "201":
           description: The session
@@ -489,6 +674,7 @@ paths:
               schema: { $ref: "#/components/schemas/ChatSession" }
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
     get:
       tags: [sessions]
       summary: The user's chat sessions, most recently active first
@@ -496,6 +682,10 @@ paths:
         - name: limit
           in: query
           schema: { type: integer, minimum: 1, maximum: 200, default: 50 }
+        - name: botId
+          in: query
+          description: Only sessions with this bot. 404 if it is not one of the user's bots.
+          schema: { type: string, format: uuid }
       responses:
         "200":
           description: Sessions
@@ -730,6 +920,16 @@ components:
       in: path
       required: true
       schema: { type: string, format: uuid }
+    BotId:
+      name: botId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      description: "`ar...` for Arabic, anything else for English. Used for default bots and drafts."
+      schema: { type: string, example: ar }
   responses:
     Error:
       description: Invalid request
@@ -777,6 +977,7 @@ components:
         status: { $ref: "#/components/schemas/TaskStatus" }
         result: { type: [string, "null"] }
         confidence: { type: [number, "null"], minimum: 0, maximum: 1 }
+        botId: { type: [string, "null"], format: uuid, description: The bot the task runs as; null if deleted }
         createdAt: { type: string, format: date-time }
         updatedAt: { type: string, format: date-time }
         startedAt: { type: [string, "null"], format: date-time }
@@ -854,6 +1055,7 @@ components:
         kind: { type: string, enum: [task, session] }
         taskId: { type: [string, "null"], format: uuid }
         sessionId: { type: [string, "null"], format: uuid }
+        botId: { type: [string, "null"], format: uuid, description: The bot whose name and face the agent has }
         status: { $ref: "#/components/schemas/AgentStatus" }
         sourceStatus: { type: string, description: The task or session status it was derived from }
         title: { type: string, description: Task goal or session title }
@@ -867,6 +1069,10 @@ components:
         id: { type: string, format: uuid }
         title: { type: string }
         status: { type: string, enum: [idle, working, waiting_for_you, failed] }
+        botId: { type: [string, "null"], format: uuid }
+        bot:
+          description: The session's bot, null for chats from before bots or whose bot was deleted
+          oneOf: [{ $ref: "#/components/schemas/AgentSummary" }, { type: "null" }]
         agent: { $ref: "#/components/schemas/AgentSummary" }
         lastItem: { oneOf: [{ $ref: "#/components/schemas/SessionItem" }, { type: "null" }] }
         approvals: { type: array, items: { $ref: "#/components/schemas/Approval" } }
@@ -901,3 +1107,72 @@ components:
         status: { type: string, enum: [pending, approved, rejected, expired] }
         createdAt: { type: string, format: date-time }
         decidedAt: { type: [string, "null"], format: date-time }
+    Starter:
+      type: object
+      additionalProperties: false
+      required: [label, prompt]
+      properties:
+        label: { type: string, minLength: 1, maxLength: 60 }
+        prompt: { type: string, minLength: 1, maxLength: 500 }
+    BotInput:
+      type: object
+      additionalProperties: false
+      description: >
+        Strings are trimmed; em and en dashes become commas. Avatar ids come from
+        packages/avatar-catalog; when omitted the avatar is derived from the name.
+      required: [name]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 40, description: One line, no control characters }
+        role: { type: string, maxLength: 120 }
+        personality: { type: string, maxLength: 200 }
+        greeting: { type: string, maxLength: 280 }
+        instructions: { type: string, maxLength: 4000 }
+        starters: { type: array, maxItems: 3, items: { $ref: "#/components/schemas/Starter" } }
+        avatar: { $ref: "#/components/schemas/Avatar" }
+        modelProfile: { type: [string, "null"], description: "One of /v1/bots/options modelProfiles; null is the account default" }
+        skills: { type: array, maxItems: 20, items: { type: string }, description: Ids from /v1/bots/options skills }
+        locale: { type: string, enum: [ar, en] }
+    BotPatch:
+      description: Any subset of BotInput fields.
+      allOf:
+        - $ref: "#/components/schemas/BotInput"
+      required: []
+    Bot:
+      type: object
+      required: [id, name, role, personality, greeting, instructions, starters, avatar, modelProfile, skills, locale, isDefault, defaultKey, deletable, status, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        role: { type: string }
+        personality: { type: string }
+        greeting: { type: string }
+        instructions: { type: string }
+        starters: { type: array, items: { $ref: "#/components/schemas/Starter" } }
+        avatar: { $ref: "#/components/schemas/Avatar" }
+        modelProfile: { type: [string, "null"] }
+        skills: { type: array, items: { type: string } }
+        locale: { type: string, enum: [ar, en] }
+        isDefault: { type: boolean }
+        defaultKey: { type: [string, "null"], enum: [anu, researcher, shopper, null] }
+        deletable: { type: boolean, description: False only for ANU }
+        status:
+          type: string
+          enum: [waiting_for_you, working, failed, idle]
+          description: The most urgent state among the bot's live chats and tasks
+        lastUsedAt: { type: [string, "null"], format: date-time }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    BotDraft:
+      type: object
+      required: [draft, source]
+      properties:
+        draft:
+          allOf:
+            - $ref: "#/components/schemas/BotInput"
+            - type: object
+              required: [name, role, personality, greeting, instructions, starters, avatar, locale]
+        source: { type: string, enum: [model, fallback] }
+        fallbackReason:
+          type: string
+          enum: [driver_unavailable, timeout, invalid_output, error]
+          description: Only with source fallback. driver_unavailable is the normal answer of the scripted dev driver.

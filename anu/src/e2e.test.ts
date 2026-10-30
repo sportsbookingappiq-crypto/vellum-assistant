@@ -110,7 +110,7 @@ async function* sse(res: Response): AsyncGenerator<SseEvent> {
 beforeAll(async () => {
   sql = await adminSql();
   const db = new Db(sql, TEST_ROLE);
-  await seed(db);
+  await seed(db, { reset: true });
   await sql`delete from login_codes where phone in ${sql(SEED_USERS.map((u) => u.phone))}`;
 
   const apiPort = freePort();
@@ -315,8 +315,8 @@ describe("end to end over HTTP", () => {
       "user_message", "tool", "assistant_message", "turn_complete",
       "user_message", "tool", "browser", "assistant_message", "turn_complete",
     ]);
-    expect(items[2]!.text).toBe('Reply 1 to "Hello there" (I remember 0 earlier messages)');
-    expect(items[7]!.text).toBe('Reply 2 to "Show me a page #browser" (I remember 2 earlier messages)');
+    expect(items[2]!.text).toBe('ANU: Reply 1 to "Hello there" (I remember 0 earlier messages)');
+    expect(items[7]!.text).toBe('ANU: Reply 2 to "Show me a page #browser" (I remember 2 earlier messages)');
 
     const browser = (await (await fetch(`${api}/v1/sessions/${session.id}/browser`, authed(token))).json()) as { latest: { frameId: string } };
     expect(browser.latest.frameId).toBe(items[6]!.detail.frameId);
@@ -333,5 +333,51 @@ describe("end to end over HTTP", () => {
 
     expect((await fetch(`${api}/v1/sessions/${session.id}`, authed(token, "DELETE"))).status).toBe(204);
     await events.return(undefined);
+  });
+
+  test("custom bots: draft, create, chat as the bot, edit, and stay private", async () => {
+    const token = await login(ALICE.phone);
+    const bots = (await (await fetch(`${api}/v1/bots`, authed(token))).json()) as { bots: { defaultKey: string | null }[] };
+    expect(bots.bots.map((b) => b.defaultKey)).toEqual(expect.arrayContaining(["anu", "researcher", "shopper"]));
+
+    // The scripted sandbox has no model, so the draft is the deterministic template.
+    const drafted = await fetch(`${api}/v1/bots/draft`, authed(token, "POST", { description: "teach me algebra step by step" }));
+    expect(drafted.status).toBe(200);
+    const draft = (await drafted.json()) as { draft: Record<string, unknown>; source: string; fallbackReason: string };
+    expect(draft).toMatchObject({ source: "fallback", fallbackReason: "driver_unavailable", draft: { name: "Tutor" } });
+
+    const created = await fetch(`${api}/v1/bots`, authed(token, "POST", { ...draft.draft, name: "Algebra coach" }));
+    expect(created.status).toBe(201);
+    const bot = (await created.json()) as { id: string; avatar: unknown };
+
+    const session = (await (await fetch(`${api}/v1/sessions`, authed(token, "POST", { botId: bot.id }))).json()) as {
+      id: string;
+      agent: { name: string; avatar: unknown };
+    };
+    expect(session.agent).toMatchObject({ name: "Algebra coach", avatar: bot.avatar });
+
+    const reply = async (text: string) => {
+      const sent = (await (await fetch(`${api}/v1/sessions/${session.id}/messages`, authed(token, "POST", { text }))).json()) as { turnId: string };
+      for (let i = 0; i < 200; i++) {
+        const { items } = (await (await fetch(`${api}/v1/sessions/${session.id}/messages`, authed(token))).json()) as {
+          items: { kind: string; text: string | null; turnId: string }[];
+        };
+        const done = items.find((item) => item.kind === "assistant_message" && item.turnId === sent.turnId);
+        if (done) return done.text;
+        await Bun.sleep(50);
+      }
+      throw new Error("no reply");
+    };
+    expect(await reply("What is x if 2x = 6?")).toStartWith("Algebra coach: Reply 1");
+    expect((await fetch(`${api}/v1/bots/${bot.id}`, authed(token, "PATCH", { name: "Math coach" }))).status).toBe(200);
+    // The edit applies from the next turn: the sandbox restarts the idle worker with the new profile.
+    expect(await reply("And 3x = 9?")).toStartWith("Math coach: Reply 2");
+
+    const bob = await login(BOB.phone);
+    expect((await fetch(`${api}/v1/bots/${bot.id}`, authed(bob))).status).toBe(404);
+    expect((await fetch(`${api}/v1/sessions`, authed(bob, "POST", { botId: bot.id }))).status).toBe(404);
+
+    expect((await fetch(`${api}/v1/sessions/${session.id}`, authed(token, "DELETE"))).status).toBe(204);
+    expect((await fetch(`${api}/v1/bots/${bot.id}`, authed(token, "DELETE"))).status).toBe(204);
   });
 });

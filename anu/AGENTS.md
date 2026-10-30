@@ -1,6 +1,6 @@
 # ANU agent guide
 
-Read this before changing anything in `anu/`. It says what ANU is, what exists, what does not, and how to continue. Last updated 2026-10-30 (Phases 3 to 5, harness runs tools).
+Read `docs/HANDOFF.md` first: it holds the owner decisions, where work stopped, and the next steps. Then read this before changing anything in `anu/`. It says what ANU is, what exists, what does not, and how to continue. Last updated 2026-10-30 (Phases 3 to 5, harness runs tools).
 
 ## What ANU is
 
@@ -34,9 +34,12 @@ Done:
 - Sandbox server (port 8788): per-task workspace and worker process, sanitized environment, timeout, stop. Drivers `scripted`, `kilo`, and `harness`.
 - The `harness` driver boots `../assistant` in local-hatch topology (credential executor, daemon, gateway), authenticates as the guardian, runs assistant tools, routes the runtime's consent prompts to ANU approvals, and reports each tool call as steps (live tests pass).
 - Mobile thin-client audit and simulated phone run (`bun run mobile:e2e`, `scripts/mobile-e2e.ts`). Every data request goes only to the ANU API. It covers login, wrong and expired codes, isolation, logout, approve, and stop. See `docs/mobile-thin-client.md`.
+- Agents (`GET /v1/agents`), chat sessions with a long-lived worker per session (`/v1/sessions/*`), and custom bots (`/v1/bots`, draft, duplicate), migrations 0003 to 0005.
 - Tests: `bun test src` runs config, login, sessions, tasks, isolation, sandbox, and a two-process end-to-end test against a real test database.
 
 Not done. Do not assume any of these exist:
+- The phone UI in `clients/web/src/domains/anu` is unfinished and unreviewed. See `docs/HANDOFF.md`.
+- No extension system, registry server, `/goal`, secret box, or onboarding. Research is in `docs/research/`.
 - No SMS provider. Only the `dev` sender, which returns the code in the response.
 - Phone apps are thin clients only in simulation. `ANU_SERVER_URL` at `cap sync` opens the Capacitor shells at `/anu`, and `bun run mobile:e2e` passes 44 of 44 checks under iOS and Android user agents with a stubbed native bridge. A debug APK builds on Linux. Nothing has run on a real device or the iOS simulator. Native platform sign-in (WorkOS and vellum.ai) is still compiled in. See `docs/mobile-thin-client.md`.
 - No network isolation for sandbox runs, and no container or VM per task. Isolation is a directory, a process group, and an allowlisted environment.

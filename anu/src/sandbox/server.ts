@@ -9,12 +9,27 @@ import { listFrames, readFrame } from "./browser-frames.js";
 import { listDirectory, readWorkspaceFile } from "./workspace-files.js";
 import { HttpReporter, HttpSessionReporter, RunManager, type Reporter, type SessionReporter } from "./runs.js";
 import { SessionManager } from "./sessions.js";
+import { DraftRunner } from "./drafts.js";
 
-const RunBody = z.object({ taskId: z.uuid(), goal: z.string().min(1).max(4000) });
+/** A bot profile as the API sends it (see drivers/types.ts BotProfile). */
+export const BotProfileBody = z.object({
+  id: z.uuid(),
+  name: z.string().min(1).max(40),
+  role: z.string().max(120),
+  personality: z.string().max(200),
+  instructions: z.string().max(4000),
+  avatar: z.object({ bodyShape: z.string().min(1).max(40), eyeStyle: z.string().min(1).max(40), color: z.string().min(1).max(40) }),
+  modelProfile: z.string().max(80).nullable(),
+  skills: z.array(z.string().max(120)).max(20),
+  version: z.string().regex(/^[0-9a-f]{64}$/),
+});
+const RunBody = z.object({ taskId: z.uuid(), goal: z.string().min(1).max(4000), bot: BotProfileBody.optional() });
+const DraftBody = z.object({ description: z.string().min(1).max(500), locale: z.enum(["ar", "en"]).default("en") });
 const TurnBody = z.object({
   turnId: z.uuid(),
   text: z.string().min(1).max(20_000),
   history: z.array(z.object({ role: z.enum(["user", "assistant"]), text: z.string().max(100_000) })).max(500).default([]),
+  bot: BotProfileBody.optional(),
 });
 const DecisionBody = z.object({ decision: z.enum(["approved", "rejected"]) });
 
@@ -45,6 +60,13 @@ export function driverSettings(config: SandboxConfig): DriverSettings {
   };
 }
 
+/**
+ * How long a draft may take. A harness draft boots a whole runtime before the
+ * model turn; a kilo draft is one completion. The sandbox enforces this and
+ * answers `timeout`, which the API turns into a template draft.
+ */
+export const draftTimeoutMs = (driver: SandboxConfig["ANU_SANDBOX_DRIVER"]) => (driver === "harness" ? 60_000 : 14_000);
+
 export function buildSandbox(
   config: SandboxConfig,
   options: { reporter?: Reporter; sessionReporter?: SessionReporter; log?: Logger } = {},
@@ -68,6 +90,14 @@ export function buildSandbox(
     log,
   });
 
+  const drafts = new DraftRunner({
+    root: config.ANU_SANDBOX_ROOT,
+    driver: config.ANU_SANDBOX_DRIVER,
+    settings: driverSettings(config),
+    timeoutMs: draftTimeoutMs(config.ANU_SANDBOX_DRIVER),
+    log,
+  });
+
   async function handle(req: Request): Promise<Response> {
     const url = new URL(req.url);
     if (url.pathname === "/healthz" && req.method === "GET") {
@@ -80,7 +110,12 @@ export function buildSandbox(
     if (url.pathname === "/v1/runs" && req.method === "POST") {
       const parsed = RunBody.safeParse(await readJson(req));
       if (!parsed.success) throw new HttpError(400, "invalid_body", "taskId (uuid) and goal are required");
-      return json(await runs.start(parsed.data.taskId, parsed.data.goal), 202);
+      return json(await runs.start(parsed.data.taskId, parsed.data.goal, parsed.data.bot), 202);
+    }
+    if (url.pathname === "/internal/drafts" && req.method === "POST") {
+      const parsed = DraftBody.safeParse(await readJson(req));
+      if (!parsed.success) throw new HttpError(400, "invalid_body", "description (1 to 500 characters) is required");
+      return json(await drafts.run(parsed.data.description, parsed.data.locale));
     }
     const session = /^\/v1\/sessions\/([0-9a-f-]{36})(\/turns|\/stop)?$/i.exec(url.pathname);
     if (session) {
@@ -88,7 +123,8 @@ export function buildSandbox(
       if (session[2] === "/turns" && req.method === "POST") {
         const parsed = TurnBody.safeParse(await readJson(req));
         if (!parsed.success) throw new HttpError(400, "invalid_body", "turnId (uuid) and text are required");
-        return json(await sessions.turn(sessionId, parsed.data.turnId, parsed.data.text, parsed.data.history), 202);
+        const { turnId, text, history, bot } = parsed.data;
+        return json(await sessions.turn(sessionId, turnId, text, history, bot), 202);
       }
       if (session[2] === "/stop" && req.method === "POST") return json({ stopped: await sessions.stop(sessionId) });
       if (!session[2] && req.method === "DELETE") {
@@ -130,7 +166,7 @@ export function buildSandbox(
       return errorResponse(new HttpError(500, "internal", "Internal error"));
     }
   };
-  return { runs, sessions, handler, log };
+  return { runs, sessions, drafts, handler, log };
 }
 
 if (import.meta.main) {

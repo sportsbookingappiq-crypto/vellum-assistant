@@ -60,7 +60,9 @@ describe("chat sessions", () => {
     const created = await createSession();
     expect(created).toMatchObject({ title: "New chat", status: "idle" });
     expect(created.agent.name).toBeTruthy();
-    expect(created.agent.avatar).toEqual(agentIdentityFor(created.id).avatar);
+    // Without botId the session uses the default bot (ANU), and the agent takes its face.
+    expect(created.agent).toMatchObject({ name: "ANU", avatar: { bodyShape: "stellar", eyeStyle: "gentle", color: "teal" } });
+    expect((created as any).bot).toMatchObject({ name: "ANU", avatar: created.agent.avatar });
     const list = await getJson("/v1/sessions");
     expect(list.sessions.map((s: any) => s.id)).toContain(created.id);
     expect((await getJson(`/v1/sessions/${created.id}`)).agent).toEqual(created.agent);
@@ -200,7 +202,8 @@ describe("chat sessions", () => {
     const { agents } = await getJson("/v1/agents");
     const forTask = agents.find((a: any) => a.taskId === task.id);
     expect(forTask).toMatchObject({ kind: "task", status: "working", doing: "Searching the web", title: "Agent task", sessionId: null });
-    expect(forTask.avatar).toEqual(agentIdentityFor(task.id).avatar);
+    expect(forTask).toMatchObject({ name: "ANU", avatar: { bodyShape: "stellar", eyeStyle: "gentle", color: "teal" } });
+    expect(forTask.botId).toBeTruthy();
     const forSession = agents.find((a: any) => a.sessionId === s.id);
     expect(forSession).toMatchObject({ kind: "session", status: "working", doing: "Do a thing" });
     await internal("POST", `/internal/v1/tasks/${task.id}/finish`, { status: "succeeded", result: "ok" });
@@ -216,5 +219,68 @@ describe("chat sessions", () => {
     expect((await t.call("GET", `/v1/sessions/${s.id}`, { token })).status).toBe(404);
     expect(t.sandbox.calls).toContainEqual({ op: "deleteSession", taskId: s.id });
     expect((await getJson("/v1/agents")).agents.map((a: any) => a.sessionId)).not.toContain(s.id);
+  });
+});
+
+describe("sessions with bots", () => {
+  const botBody = {
+    name: "Flight watcher",
+    role: "Watches flight prices",
+    instructions: "Check flight prices to Dubai each day.",
+    avatar: { bodyShape: "dendrite", eyeStyle: "curious", color: "purple" },
+  };
+
+  test("botId picks the bot; the agent and the sandbox get its identity", async () => {
+    const bot = (await (await t.call("POST", "/v1/bots", { token, body: botBody })).json()) as any;
+    const res = await t.call("POST", "/v1/sessions", { token, body: { botId: bot.id } });
+    expect(res.status).toBe(201);
+    const s = (await res.json()) as any;
+    expect(s.botId).toBe(bot.id);
+    expect(s.bot).toEqual({ id: bot.id, name: "Flight watcher", avatar: botBody.avatar });
+    expect(s.agent).toMatchObject({ name: "Flight watcher", avatar: botBody.avatar });
+
+    await send(s.id, "Any deals today?");
+    const turn = t.sandbox.turns.at(-1)!;
+    expect(turn.bot).toMatchObject({ id: bot.id, name: "Flight watcher", role: "Watches flight prices", modelProfile: null, skills: [] });
+    expect(turn.bot!.version).toMatch(/^[0-9a-f]{64}$/);
+    const [row] = await sql<{ bot_version: string }[]>`select bot_version from chat_sessions where id = ${s.id}`;
+    expect(row!.bot_version).toBe(turn.bot!.version);
+
+    const filtered = await getJson(`/v1/sessions?botId=${bot.id}`);
+    expect(filtered.sessions.map((x: any) => x.id)).toEqual([s.id]);
+    expect((await getJson("/v1/agents")).agents.find((a: any) => a.sessionId === s.id).botId).toBe(bot.id);
+
+    // An edit changes the profile version sent with the next turn.
+    await internal("POST", `/internal/v1/sessions/${s.id}/turns/${turn.turnId}/done`, { status: "succeeded", reply: "None yet." });
+    expect((await t.call("PATCH", `/v1/bots/${bot.id}`, { token, body: { instructions: "Check twice a day." } })).status).toBe(200);
+    await send(s.id, "And now?");
+    const next = t.sandbox.turns.at(-1)!;
+    expect(next.bot!.instructions).toBe("Check twice a day.");
+    expect(next.bot!.version).not.toBe(turn.bot!.version);
+  });
+
+  test("another user's bot is 404 for sessions and tasks, and an unknown botId filter is 404", async () => {
+    const bot = (await (await t.call("POST", "/v1/bots", { token, body: { name: "Private" } })).json()) as any;
+    expect((await t.call("POST", "/v1/sessions", { token: otherToken, body: { botId: bot.id } })).status).toBe(404);
+    expect((await t.call("POST", "/v1/tasks", { token: otherToken, body: { goal: "x", botId: bot.id } })).status).toBe(404);
+    expect((await t.call("GET", `/v1/sessions?botId=${bot.id}`, { token: otherToken })).status).toBe(404);
+    expect((await t.call("POST", "/v1/sessions", { token, body: { botId: 7 } })).status).toBe(400);
+  });
+
+  test("a task with a bot passes the profile to the sandbox", async () => {
+    const bot = (await (await t.call("POST", "/v1/bots", { token, body: { name: "Task bot", personality: "Brisk" } })).json()) as any;
+    const task = (await (await t.call("POST", "/v1/tasks", { token, body: { goal: "Do it", botId: bot.id } })).json()) as any;
+    expect(task.botId).toBe(bot.id);
+    const start = t.sandbox.calls.find((c) => c.op === "start" && c.taskId === task.id)!;
+    expect((start.extra as any).bot).toMatchObject({ id: bot.id, name: "Task bot", personality: "Brisk" });
+  });
+
+  test("deleting a bot keeps its chats, with bot null and the agent's stored face", async () => {
+    const bot = (await (await t.call("POST", "/v1/bots", { token, body: { name: "Short lived" } })).json()) as any;
+    const s = (await (await t.call("POST", "/v1/sessions", { token, body: { botId: bot.id } })).json()) as any;
+    expect((await t.call("DELETE", `/v1/bots/${bot.id}`, { token })).status).toBe(204);
+    const after = await getJson(`/v1/sessions/${s.id}`);
+    expect(after).toMatchObject({ botId: null, bot: null });
+    expect(after.agent).toEqual(s.agent);
   });
 });

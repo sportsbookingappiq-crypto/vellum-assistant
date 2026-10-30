@@ -10,6 +10,11 @@ const catalog = getCharacterComponents();
 export const BODY_SHAPES = catalog.bodyShapes.map((b) => b.id);
 export const EYE_STYLES = catalog.eyeStyles.map((e) => e.id);
 export const AVATAR_COLORS = catalog.colors.map((c) => c.id);
+/**
+ * Eye styles handed out automatically. `surprised` looks shocked and has by far
+ * the narrowest pupil, so only a user's own choice can pick it.
+ */
+export const ASSIGNED_EYE_STYLES = EYE_STYLES.filter((id) => id !== "surprised");
 
 export interface AgentIdentity {
   name: string;
@@ -22,16 +27,27 @@ export function agentIdentityFor(seed: string): AgentIdentity {
   const pick = <T>(list: readonly T[], byte: number) => list[digest.readUInt16BE(byte) % list.length]!;
   return {
     name: pick(AGENT_NAMES, 0),
-    avatar: { bodyShape: pick(BODY_SHAPES, 2), eyeStyle: pick(EYE_STYLES, 4), color: pick(AVATAR_COLORS, 6) },
+    avatar: { bodyShape: pick(BODY_SHAPES, 2), eyeStyle: pick(ASSIGNED_EYE_STYLES, 4), color: pick(AVATAR_COLORS, 6) },
   };
 }
 
-export async function insertAgent(tx: Tx, userId: string, link: { taskId: string } | { sessionId: string }, now: Date) {
+/** The bot an agent runs as. Its name and face become the agent's. */
+export interface AgentBot extends AgentIdentity {
+  id: string;
+}
+
+export async function insertAgent(
+  tx: Tx,
+  userId: string,
+  link: { taskId: string } | { sessionId: string },
+  now: Date,
+  bot?: AgentBot | null,
+) {
   const id = "taskId" in link ? link.taskId : link.sessionId;
-  const { name, avatar } = agentIdentityFor(id);
-  await tx`insert into agents (user_id, name, body_shape, eye_style, color, task_id, session_id, created_at)
+  const { name, avatar } = bot ?? agentIdentityFor(id);
+  await tx`insert into agents (user_id, name, body_shape, eye_style, color, task_id, session_id, bot_id, created_at)
     values (${userId}, ${name}, ${avatar.bodyShape}, ${avatar.eyeStyle}, ${avatar.color},
-      ${"taskId" in link ? link.taskId : null}, ${"sessionId" in link ? link.sessionId : null}, ${now})
+      ${"taskId" in link ? link.taskId : null}, ${"sessionId" in link ? link.sessionId : null}, ${bot?.id ?? null}, ${now})
     on conflict do nothing`;
 }
 
@@ -57,6 +73,7 @@ interface AgentListRow {
   color: string;
   task_id: string | null;
   session_id: string | null;
+  bot_id: string | null;
   created_at: Date;
   status: string;
   label: string;
@@ -71,7 +88,7 @@ export class AgentService {
     const rows = await this.db.asUser(
       userId,
       (tx) => tx<AgentListRow[]>`
-        select a.id, a.name, a.body_shape, a.eye_style, a.color, a.task_id, a.session_id, a.created_at,
+        select a.id, a.name, a.body_shape, a.eye_style, a.color, a.task_id, a.session_id, a.bot_id, a.created_at,
           coalesce(t.status, s.status) as status,
           coalesce(t.goal, s.title) as label,
           coalesce(t.updated_at, s.updated_at) as updated_at,
@@ -95,6 +112,7 @@ export class AgentService {
         kind,
         taskId: row.task_id,
         sessionId: row.session_id,
+        botId: row.bot_id,
         status: agentStatusOf(kind, row.status),
         sourceStatus: row.status,
         title: row.label,

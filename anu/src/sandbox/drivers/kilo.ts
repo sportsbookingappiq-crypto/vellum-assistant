@@ -1,4 +1,5 @@
-import { type Driver, type DriverContext, type DriverOutcome, type SessionContext } from "./types.js";
+import { modelFor, personaSystemPrompt } from "./bot-profile.js";
+import { type Driver, type DraftContext, type DriverContext, type DriverOutcome, type SessionContext } from "./types.js";
 
 /**
  * Stand-in agent loop until the harness runner is complete: two calls to the
@@ -13,15 +14,16 @@ interface ChatMessage {
 }
 
 export async function chat(
-  ctx: Pick<DriverContext, "settings" | "signal">,
+  ctx: Pick<DriverContext, "settings" | "signal" | "bot">,
   messages: ChatMessage[],
   maxTokens = 4000,
 ): Promise<{ content: string; model: string }> {
-  const { kiloBaseUrl, kiloApiKey, kiloModel } = ctx.settings;
+  const { kiloBaseUrl, kiloApiKey } = ctx.settings;
+  const model = modelFor(ctx.bot, ctx.settings);
   const res = await fetch(`${kiloBaseUrl.replace(/\/$/, "")}/chat/completions`, {
     method: "POST",
     headers: { authorization: `Bearer ${kiloApiKey}`, "content-type": "application/json" },
-    body: JSON.stringify({ model: kiloModel, messages, max_tokens: maxTokens, temperature: 0.2 }),
+    body: JSON.stringify({ model, messages, max_tokens: maxTokens, temperature: 0.2 }),
     signal: AbortSignal.any([ctx.signal, AbortSignal.timeout(180_000)]),
   });
   const text = await res.text();
@@ -34,7 +36,7 @@ export async function chat(
   if (!content.trim()) {
     throw new Error(`Kilo Gateway returned no content (finish_reason ${body.choices?.[0]?.finish_reason ?? "unknown"})`);
   }
-  return { content, model: body.model ?? kiloModel };
+  return { content, model: body.model ?? model };
 }
 
 /** Pulls the first JSON object out of a model reply, tolerating code fences and prose. */
@@ -51,13 +53,16 @@ export function extractJson(text: string): unknown {
   }
 }
 
-const SYSTEM =
-  "You are ANU, an assistant that plans and completes a user's goal. You have no tools and no internet access in this mode. " +
+const TASK_SYSTEM =
+  "You plan and complete a user's goal. You have no tools and no internet access in this mode. " +
   "Be honest about what you cannot verify. Reply with JSON only, no prose.";
+
+const CHAT_SYSTEM = "You have no tools or internet access in this chat. Answer plainly.";
 
 export const kiloDriver: Driver = {
   name: "kilo",
   async run(ctx: DriverContext): Promise<DriverOutcome> {
+    const SYSTEM = personaSystemPrompt(ctx.bot, TASK_SYSTEM);
     const planReply = await chat(ctx, [
       { role: "system", content: SYSTEM },
       {
@@ -101,7 +106,7 @@ export const kiloDriver: Driver = {
   /** Chat mode: the whole history goes to the gateway on every turn. No tools. */
   async session(ctx: SessionContext): Promise<void> {
     const messages: ChatMessage[] = [
-      { role: "system", content: "You are ANU, a helpful assistant. You have no tools or internet access in this chat. Answer plainly." },
+      { role: "system", content: personaSystemPrompt(ctx.bot, CHAT_SYSTEM) },
       ...ctx.history.map((m) => ({ role: m.role, content: m.text })),
     ];
     for await (const turn of ctx.turns) {
@@ -115,5 +120,18 @@ export const kiloDriver: Driver = {
         ctx.endTurn(turn.turnId, "failed", error instanceof Error ? error.message : String(error));
       }
     }
+  },
+
+  /** One completion with the draft prompt; the API parses the JSON. */
+  async draft(ctx: DraftContext): Promise<string> {
+    const reply = await chat(
+      ctx,
+      [
+        { role: "system", content: "You design assistant bots. Reply with one JSON object only, no prose." },
+        { role: "user", content: ctx.goal },
+      ],
+      1500,
+    );
+    return reply.content;
   },
 };

@@ -2,10 +2,13 @@ import type { Db, Tx } from "../db/client.js";
 import { HttpError, isUuid, notFound } from "../lib/http.js";
 import type { Logger } from "../lib/log.js";
 import { insertAgent } from "./agents.js";
+import { botProfileOf, ownedBot, resolveBot, touchBot, ensureDefaultBots, type BotRow } from "./bots.js";
+import type { BotLocale } from "./default-bots.js";
 import {
   agentView,
   approvalView,
   itemView,
+  sessionBotView,
   sessionView,
   type AgentRow,
   type ApprovalRow,
@@ -64,35 +67,45 @@ export class SessionService {
       select * from approvals where session_id = ${session.id} and user_id = ${session.user_id} order by created_at`;
     const [last] = await tx<SessionItemRow[]>`
       select * from session_items where session_id = ${session.id} order by seq desc limit 1`;
+    const [bot] = session.bot_id ? await tx<BotRow[]>`select * from bots where id = ${session.bot_id}` : [];
     return {
       ...sessionView(session),
+      bot: sessionBotView(bot),
       agent: agentView(agent),
       lastItem: last ? itemView(last) : null,
       approvals: approvals.map(approvalView),
     };
   }
 
-  async create(userId: string, rawTitle: unknown) {
+  async create(userId: string, rawTitle: unknown, rawBotId: unknown = undefined, locale: BotLocale = "en") {
     if (rawTitle !== undefined && rawTitle !== null && (typeof rawTitle !== "string" || rawTitle.length > 200)) {
       throw new HttpError(400, "invalid_title", "title must be a string of at most 200 characters");
     }
     const title = (typeof rawTitle === "string" && rawTitle.trim()) || "New chat";
     const now = this.now();
     return this.db.asUser(userId, async (tx) => {
+      const bot = await resolveBot(tx, userId, rawBotId, locale, now);
+      const profile = bot ? botProfileOf(bot) : null;
       const [row] = await tx<ChatSessionRow[]>`
-        insert into chat_sessions (user_id, title, created_at, updated_at)
-        values (${userId}, ${title.trim()}, ${now}, ${now}) returning *`;
-      await insertAgent(tx, userId, { sessionId: row!.id }, now);
+        insert into chat_sessions (user_id, title, bot_id, bot_version, created_at, updated_at)
+        values (${userId}, ${title.trim()}, ${bot?.id ?? null}, ${profile?.version ?? null}, ${now}, ${now}) returning *`;
+      await insertAgent(tx, userId, { sessionId: row!.id }, now, bot && profile ? { id: bot.id, name: bot.name, avatar: profile.avatar } : null);
+      if (bot) await touchBot(tx, bot.id, now);
       await tx`insert into audit_log (user_id, action, target, created_at)
         values (${userId}, 'session.created', ${row!.id}, ${now})`;
       return this.detail(tx, row!);
     });
   }
 
-  async list(userId: string, limit: number) {
+  async list(userId: string, limit: number, botId: string | null = null, locale: BotLocale = "en") {
     return this.db.asUser(userId, async (tx) => {
-      const rows = await tx<ChatSessionRow[]>`
-        select * from chat_sessions where user_id = ${userId} order by updated_at desc limit ${limit}`;
+      await ensureDefaultBots(tx, userId, locale, this.now());
+      if (botId !== null) await ownedBot(tx, userId, botId);
+      const rows = botId
+        ? await tx<ChatSessionRow[]>`
+            select * from chat_sessions where user_id = ${userId} and bot_id = ${botId} order by updated_at desc limit ${limit}`
+        : await tx<ChatSessionRow[]>`
+            select * from chat_sessions where user_id = ${userId} order by updated_at desc limit ${limit}`;
       const out = [];
       for (const row of rows) out.push(await this.detail(tx, row));
       return out;
@@ -136,7 +149,7 @@ export class SessionService {
       throw new HttpError(400, "invalid_text", "text must be a non-empty string of at most 20000 characters");
     }
     const now = this.now();
-    const { item, history } = await this.db.asUser(userId, async (tx) => {
+    const { item, history, bot } = await this.db.asUser(userId, async (tx) => {
       const session = await this.owned(tx, userId, sessionId, true);
       if (session.status === "working" || session.status === "waiting_for_you") {
         throw conflict("The agent is still answering. Stop the turn or wait for it to finish.");
@@ -149,8 +162,15 @@ export class SessionService {
       await tx`update session_items set turn_id = ${item.id} where id = ${item.id}`;
       item.turn_id = item.id;
       const title = session.title === "New chat" && earlier.length === 0 ? firstLine(text, 80) : session.title;
-      await tx`update chat_sessions set status = 'working', title = ${title}, updated_at = ${now} where id = ${session.id}`;
+      // The bot as it is now: an edit since the last turn reaches the runtime
+      // from this turn (the sandbox replaces an idle worker of an older version).
+      const [botRow] = session.bot_id ? await tx<BotRow[]>`select * from bots where id = ${session.bot_id}` : [];
+      const bot = botRow ? botProfileOf(botRow) : undefined;
+      await tx`update chat_sessions set status = 'working', title = ${title}, bot_version = ${bot?.version ?? null},
+        updated_at = ${now} where id = ${session.id}`;
+      if (botRow) await touchBot(tx, botRow.id, now);
       return {
+        bot,
         item,
         history: earlier.reverse().map((row) => ({
           role: row.kind === "user_message" ? ("user" as const) : ("assistant" as const),
@@ -160,7 +180,7 @@ export class SessionService {
     });
     this.events.notify(sessionId);
     try {
-      const { driver } = await this.sandbox.sendTurn(sessionId, item.id, text, history);
+      const { driver } = await this.sandbox.sendTurn(sessionId, item.id, text, history, bot);
       await this.db.asUser(userId, (tx) => tx`update chat_sessions set driver = ${driver} where id = ${sessionId}`);
     } catch (error) {
       this.log.error("session.dispatch_failed", { sessionId, error });

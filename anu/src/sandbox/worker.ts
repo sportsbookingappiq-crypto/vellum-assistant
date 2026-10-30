@@ -9,7 +9,8 @@
 import { createInterface } from "node:readline";
 
 import { DRIVERS } from "./drivers/index.js";
-import { DriverUnavailableError, type DriverContext, type SessionTurn } from "./drivers/types.js";
+import { draftPrompt } from "./drivers/bot-profile.js";
+import { DriverUnavailableError, type BotProfile, type DriverContext, type SessionTurn } from "./drivers/types.js";
 import { LINE_PREFIX, type ParentMessage, type WorkerMessage } from "./protocol.js";
 
 function emit(message: WorkerMessage): void {
@@ -53,13 +54,13 @@ lines.on("line", (line) => {
   } else if (message.t === "turn") {
     turnQueue.push({ turnId: message.turnId, text: message.text });
     turnWaiter?.();
-  } else if ((message.t === "start" || message.t === "session") && !started) {
+  } else if ((message.t === "start" || message.t === "session" || message.t === "draft") && !started) {
     started = true;
     void run(message);
   }
 });
 
-function baseContext(id: string, goal: string, workspaceDir: string, settings: DriverContext["settings"]): DriverContext {
+function baseContext(id: string, goal: string, workspaceDir: string, settings: DriverContext["settings"], bot?: BotProfile): DriverContext {
   const env: Record<string, string> = {};
   for (const [key, value] of Object.entries(process.env)) if (value !== undefined) env[key] = value;
   return {
@@ -68,6 +69,7 @@ function baseContext(id: string, goal: string, workspaceDir: string, settings: D
     workspaceDir,
     env,
     settings,
+    ...(bot ? { bot } : {}),
     signal: abort.signal,
     step: (step) => emit({ t: "step", ...step }),
     requestApproval: (prompt, detail) =>
@@ -83,10 +85,26 @@ function baseContext(id: string, goal: string, workspaceDir: string, settings: D
 const errorText = (error: unknown) =>
   (error instanceof DriverUnavailableError ? "Driver unavailable: " : "") + (error instanceof Error ? error.message : String(error));
 
-async function run(start: Extract<ParentMessage, { t: "start" | "session" }>) {
+async function run(start: Extract<ParentMessage, { t: "start" | "session" | "draft" }>) {
   const driver = DRIVERS[start.driver];
-  if (start.t === "start") {
-    const ctx = baseContext(start.taskId, start.goal, start.workspaceDir, start.settings);
+  if (start.t === "draft") {
+    const ctx = {
+      ...baseContext(start.jobId, draftPrompt(start.description, start.locale), start.workspaceDir, start.settings),
+      // Nobody can answer an approval for a draft.
+      requestApproval: async () => "rejected" as const,
+      step: () => {},
+      description: start.description,
+      locale: start.locale,
+    };
+    try {
+      if (!driver) throw new DriverUnavailableError(`unknown driver ${start.driver}`);
+      emit({ t: "draft_done", jobId: start.jobId, status: "succeeded", json: await driver.draft(ctx) });
+    } catch (error) {
+      const unavailable = error instanceof DriverUnavailableError;
+      emit({ t: "draft_done", jobId: start.jobId, status: unavailable ? "unavailable" : "failed", error: errorText(error) });
+    }
+  } else if (start.t === "start") {
+    const ctx = baseContext(start.taskId, start.goal, start.workspaceDir, start.settings, start.bot);
     try {
       if (!driver) throw new DriverUnavailableError(`unknown driver ${start.driver}`);
       const outcome = await driver.run(ctx);
@@ -96,7 +114,7 @@ async function run(start: Extract<ParentMessage, { t: "start" | "session" }>) {
     }
   } else {
     const ctx = {
-      ...baseContext(start.sessionId, "", start.workspaceDir, start.settings),
+      ...baseContext(start.sessionId, "", start.workspaceDir, start.settings, start.bot),
       history: start.history,
       turns: turns(),
       endTurn(turnId: string, status: "succeeded" | "failed", reply: string) {

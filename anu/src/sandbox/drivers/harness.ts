@@ -2,8 +2,25 @@ import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, openSync } from "node:fs";
 import path from "node:path";
 
-import { runTurn, type RuntimeClient } from "./harness-turn.js";
-import { DriverUnavailableError, sleep, type Driver, type DriverContext, type DriverOutcome, type SessionContext } from "./types.js";
+import {
+  applyBotRuntime,
+  DEFAULT_MODEL_PROFILE,
+  draftBotProfile,
+  inferenceProfileFor,
+  KILO_CONNECTION,
+  kiloProfileFields,
+  writeBotFiles,
+} from "./bot-profile.js";
+import { runTurn, RuntimeCallError, upsertSetting, type RuntimeClient } from "./harness-turn.js";
+import {
+  DriverUnavailableError,
+  sleep,
+  type Driver,
+  type DriverContext,
+  type DraftContext,
+  type DriverOutcome,
+  type SessionContext,
+} from "./types.js";
 
 /**
  * Boots the real assistant runtime (../assistant) for one task in the same
@@ -24,7 +41,10 @@ import { DriverUnavailableError, sleep, type Driver, type DriverContext, type Dr
 
 const READY_TIMEOUT_MS = 180_000;
 const TURN_TIMEOUT_MS = 8 * 60_000;
-const PROFILE = "kilo-free";
+const DRAFT_TURN_TIMEOUT_MS = 45_000;
+const PROFILE = DEFAULT_MODEL_PROFILE;
+/** Files the gateway leaves in its security directory after a guardian init. */
+const GUARDIAN_INIT_MARKERS = ["guardian-init.lock", "guardian-init-consumed.json"];
 
 async function freePort(): Promise<number> {
   const probe = Bun.serve({ port: 0, hostname: "127.0.0.1", fetch: () => new Response() });
@@ -39,11 +59,54 @@ interface Service {
 }
 
 /**
+ * After readiness: the Kilo connection and default profile, then the bot's
+ * runtime settings (avatar, extra profile, skills). Exported for tests.
+ */
+export async function configureRuntime(ctx: DriverContext, client: RuntimeClient): Promise<void> {
+  const { kiloBaseUrl, kiloApiKey, kiloModel } = ctx.settings;
+  await client.call("POST", "/v1/secrets", { type: "credential", name: "kilo:api_key", value: kiloApiKey });
+  await upsertSetting(
+    client,
+    "/v1/inference/provider-connections",
+    KILO_CONNECTION,
+    {
+      label: "Kilo Gateway",
+      base_url: kiloBaseUrl,
+      models: [{ id: kiloModel }],
+      auth: { type: "api_key", credential: "credential/kilo/api_key" },
+    },
+    { provider: "openai-compatible" },
+  );
+  await upsertSetting(client, "/v1/inference/profiles", PROFILE, kiloProfileFields(kiloModel));
+  await client.call("POST", "/v1/config/set", { path: "llm.activeProfile", value: PROFILE });
+  ctx.step({ kind: "tool", title: "Configure the Kilo Gateway connection", detail: { model: kiloModel } });
+  if (ctx.bot) await applyBotRuntime(client, ctx.bot, ctx.settings, ctx.log);
+}
+
+/** The chat loop of a session worker, on a booted runtime. Exported for tests. */
+export async function harnessSession(ctx: SessionContext, client: RuntimeClient, workspace: string): Promise<void> {
+  for await (const turn of ctx.turns) {
+    try {
+      const outcome = await runTurn({ ...ctx, goal: turn.text }, client, {
+        inferenceProfile: inferenceProfileFor(ctx.bot),
+        timeoutMs: TURN_TIMEOUT_MS,
+        workspace,
+        chat: true,
+      });
+      ctx.endTurn(turn.turnId, outcome.status, outcome.result);
+    } catch (error) {
+      if (ctx.signal.aborted) throw error;
+      ctx.endTurn(turn.turnId, "failed", error instanceof Error ? error.message : String(error));
+    }
+  }
+}
+
+/**
  * Boots the runtime, configures the model, hands the client to `use`, and
  * kills every runtime process when `use` returns or the context is aborted.
  */
 async function withRuntime<T>(ctx: DriverContext, use: (client: RuntimeClient, workspace: string) => Promise<T>): Promise<T> {
-  const { assistantDir, allowInsecureHarness, kiloBaseUrl, kiloApiKey, kiloModel } = ctx.settings;
+  const { assistantDir, allowInsecureHarness } = ctx.settings;
   if (!allowInsecureHarness) {
     throw new DriverUnavailableError(
       "The harness driver runs an unisolated local assistant and is allowed only when ANU_ENV is dev or test.",
@@ -68,6 +131,12 @@ async function withRuntime<T>(ctx: DriverContext, use: (client: RuntimeClient, w
   const protectedDir = path.join(root, ".vellum", "protected");
   const cesSocketDir = path.join(protectedDir, "credential-executor");
   for (const dir of [workspace, cesSocketDir]) mkdirSync(dir, { recursive: true });
+  // The bot's persona files go in before the daemon starts, so its first
+  // prompt build already has them and no onboarding interview is seeded.
+  if (ctx.bot) {
+    const result = await writeBotFiles(workspace, assistantDir, ctx.bot);
+    ctx.log(`bot ${ctx.bot.id} profile files ${result}`);
+  }
 
   const [daemonPort, gatewayPort, qdrantPort] = [await freePort(), await freePort(), await freePort()];
   const bootstrapSecret = randomBytes(32).toString("hex");
@@ -148,9 +217,21 @@ async function withRuntime<T>(ctx: DriverContext, use: (client: RuntimeClient, w
     const gatewayMs = await waitReady("gateway", `http://127.0.0.1:${gatewayPort}/readyz`, gateway);
 
     const base = `http://127.0.0.1:${gatewayPort}`;
+    const bootstrapHeaders = { "content-type": "application/json", "x-bootstrap-secret": bootstrapSecret };
+    // Guardian init is single-use per instance. A session restarting on its
+    // workspace clears that through the gateway's own loopback recovery route.
+    if (GUARDIAN_INIT_MARKERS.some((name) => existsSync(path.join(protectedDir, name)))) {
+      const reset = await fetch(`${base}/v1/guardian/reset-bootstrap`, {
+        method: "POST",
+        headers: bootstrapHeaders,
+        body: "{}",
+        signal: AbortSignal.any([ctx.signal, AbortSignal.timeout(30_000)]),
+      });
+      if (!reset.ok) throw new Error(`assistant gateway refused the guardian reset (HTTP ${reset.status})`);
+    }
     const init = await fetch(`${base}/v1/guardian/init`, {
       method: "POST",
-      headers: { "content-type": "application/json", "x-bootstrap-secret": bootstrapSecret },
+      headers: bootstrapHeaders,
       body: JSON.stringify({ platform: "cli", deviceId: `anu-${ctx.taskId}`, clientReportedName: "anu-harness" }),
       signal: AbortSignal.any([ctx.signal, AbortSignal.timeout(30_000)]),
     });
@@ -174,7 +255,7 @@ async function withRuntime<T>(ctx: DriverContext, use: (client: RuntimeClient, w
           signal: AbortSignal.any([ctx.signal, AbortSignal.timeout(60_000)]),
         });
         const text = await res.text();
-        if (!res.ok) throw new Error(`assistant ${method} ${route} returned HTTP ${res.status}: ${text.slice(0, 300)}`);
+        if (!res.ok) throw new RuntimeCallError(res.status, `assistant ${method} ${route} returned HTTP ${res.status}: ${text.slice(0, 300)}`);
         return text ? (JSON.parse(text) as Record<string, unknown>) : {};
       },
       async events(conversationKey, signal) {
@@ -187,25 +268,7 @@ async function withRuntime<T>(ctx: DriverContext, use: (client: RuntimeClient, w
       },
     };
 
-    await client.call("POST", "/v1/secrets", { type: "credential", name: "kilo:api_key", value: kiloApiKey });
-    await client.call("POST", "/v1/inference/provider-connections", {
-      name: "kilo",
-      provider: "openai-compatible",
-      label: "Kilo Gateway",
-      base_url: kiloBaseUrl,
-      models: [{ id: kiloModel }],
-      auth: { type: "api_key", credential: "credential/kilo/api_key" },
-    });
-    await client.call("POST", "/v1/inference/profiles", {
-      name: PROFILE,
-      provider: "openai-compatible",
-      model: kiloModel,
-      connection: "kilo",
-      maxTokens: 8192,
-      thinking: false,
-    });
-    await client.call("POST", "/v1/config/set", { path: "llm.activeProfile", value: PROFILE });
-    ctx.step({ kind: "tool", title: "Configure the Kilo Gateway connection", detail: { model: kiloModel } });
+    await configureRuntime(ctx, client);
 
     return await use(client, workspace);
   } finally {
@@ -218,7 +281,7 @@ export const harnessDriver: Driver = {
   name: "harness",
   run(ctx: DriverContext): Promise<DriverOutcome> {
     return withRuntime(ctx, (client, workspace) =>
-      runTurn(ctx, client, { inferenceProfile: PROFILE, timeoutMs: TURN_TIMEOUT_MS, workspace }),
+      runTurn(ctx, client, { inferenceProfile: inferenceProfileFor(ctx.bot), timeoutMs: TURN_TIMEOUT_MS, workspace }),
     );
   },
   /**
@@ -228,21 +291,18 @@ export const harnessDriver: Driver = {
    * data and the assistant still has the conversation.
    */
   session(ctx: SessionContext): Promise<void> {
-    return withRuntime(ctx, async (client, workspace) => {
-      for await (const turn of ctx.turns) {
-        try {
-          const outcome = await runTurn({ ...ctx, goal: turn.text }, client, {
-            inferenceProfile: PROFILE,
-            timeoutMs: TURN_TIMEOUT_MS,
-            workspace,
-            chat: true,
-          });
-          ctx.endTurn(turn.turnId, outcome.status, outcome.result);
-        } catch (error) {
-          if (ctx.signal.aborted) throw error;
-          ctx.endTurn(turn.turnId, "failed", error instanceof Error ? error.message : String(error));
-        }
-      }
+    return withRuntime(ctx, (client, workspace) => harnessSession(ctx, client, workspace));
+  },
+  /**
+   * One turn in a throwaway runtime with a neutral profile (no user bot). The
+   * sandbox deletes the draft directory afterwards. The reply is returned raw;
+   * the API parses it.
+   */
+  draft(ctx: DraftContext): Promise<string> {
+    return withRuntime({ ...ctx, bot: draftBotProfile() }, async (client, workspace) => {
+      const outcome = await runTurn(ctx, client, { inferenceProfile: PROFILE, timeoutMs: DRAFT_TURN_TIMEOUT_MS, workspace, chat: true });
+      if (outcome.status !== "succeeded") throw new Error(outcome.result || "the draft turn failed");
+      return outcome.result;
     });
   },
 };

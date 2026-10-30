@@ -31,7 +31,7 @@ Test numbers: use only `555-0100` to `555-0199`, for example `+12025550100`.
 
 | Call | What it does |
 | --- | --- |
-| `POST /v1/tasks` `{"goal": "..."}` | Creates a task (`201`) and starts it in a sandbox. Goal is 1 to 4000 characters |
+| `POST /v1/tasks` `{"goal": "...", "botId": "..."}` | Creates a task (`201`) and starts it in a sandbox. Goal is 1 to 4000 characters. `botId` is optional (see Bots); the task carries `botId` |
 | `GET /v1/tasks?limit=50` | The user's tasks, newest first |
 | `GET /v1/tasks/:id` | One task plus its `approvals` |
 | `GET /v1/tasks/:id/steps?after=0` | Steps in order |
@@ -43,7 +43,7 @@ Test numbers: use only `555-0100` to `555-0199`, for example `+12025550100`.
 | `GET /v1/tasks/:id/browser` | Latest browser frame metadata |
 | `GET /v1/tasks/:id/browser/frame?frameId=` | One browser frame image |
 | `GET /v1/me` | The user |
-| `GET /v1/me/export` | All of the user's data as JSON |
+| `GET /v1/me/export` | All of the user's data as JSON, bots included |
 | `DELETE /v1/me` | Deletes the user and all of their data (`204`) |
 
 Another user's task returns `404`, the same as a task that does not exist.
@@ -84,18 +84,55 @@ When a task is `awaiting_approval`, its `approvals` list has an entry with `stat
 
 ## Agents
 
-Every task and every chat session is run by an agent with a name and an avatar. Traits are ids from `packages/avatar-catalog` (`bodyShape` such as `stellar` or `dendrite`, `eyeStyle`, `color`), assigned once from the task or session id, so they never change.
+Every task and every chat session is run by an agent with a name and an avatar. Traits are ids from `packages/avatar-catalog` (`bodyShape` such as `stellar` or `dendrite`, `eyeStyle`, `color`). An agent takes its bot's name and face (and `botId`); editing the bot updates them. Agents made before bots existed keep a name and traits assigned once from the task or session id.
 
 `GET /v1/agents?status=` lists the user's agents, most recently active first (at most 200):
 
 ```json
 {"agents": [{"id": "...", "name": "Nova", "avatar": {"bodyShape": "stellar", "eyeStyle": "curious", "color": "teal"},
-  "kind": "session", "taskId": null, "sessionId": "...", "status": "working", "sourceStatus": "working",
+  "kind": "session", "taskId": null, "sessionId": "...", "botId": "...", "status": "working", "sourceStatus": "working",
   "title": "Laptop research", "doing": "Browser navigate: https://example.com/laptops",
   "createdAt": "...", "updatedAt": "..."}]}
 ```
 
 `status` is `working`, `waiting_for_you`, `idle` (chat sessions between turns), `finished` (task succeeded or was stopped), or `failed` (task failed, or the session's last turn failed). `doing` is the title of the latest step or message. The optional `status` query filters the list. Session and task responses (`GET /v1/sessions/:id`) also carry `agent: {id, name, avatar}`.
+
+## Bots
+
+A bot is a user's named assistant: a name, a face, a role, a greeting, up to three starters, and instructions. Each chat session and task runs as one bot. Every user gets three default bots (ANU, Researcher, Shopper) on their first `GET /v1/bots`, `GET /v1/sessions` or `POST /v1/sessions`, in the request's language (`Accept-Language` starting with `ar` gives Arabic, anything else English). Defaults are ordinary rows the user can edit; ANU cannot be deleted, and a deleted default does not come back.
+
+| Call | What it does |
+| --- | --- |
+| `GET /v1/bots` | `{bots, defaultBotId}`. Ordered: waiting for you, working, then most recently used |
+| `GET /v1/bots/options` | `{modelProfiles, skills, templates}` for the create and edit screens. Template `label` and `description` are i18n keys (`anu.bots.templates.<key>.label`) |
+| `POST /v1/bots/draft` `{"description": "...", "locale": "ar"}` | A draft from one sentence (`200`, nothing is saved). See below |
+| `POST /v1/bots` | Creates a bot (`201`). `409 bot_limit` at 20 bots |
+| `GET /v1/bots/:botId` | One bot |
+| `PATCH /v1/bots/:botId` | Edits any fields. Chats with this bot use the edit from their next turn |
+| `DELETE /v1/bots/:botId` | `204`. Its chats and tasks stay with `botId: null`, and their agents keep the name and face. `409 bot_not_deletable` for ANU |
+| `POST /v1/bots/:botId/duplicate` | A copy named "<name> 2" (`201`) |
+| `PUT /v1/me/default-bot` `{"botId": "..."}` | The bot new chats and tasks use when no `botId` is given (`204`). Falls back to ANU |
+
+A bot:
+
+```json
+{"id": "...", "name": "Researcher", "role": "Finds and compares sources", "personality": "Calm and careful",
+  "greeting": "Hi, I'm Researcher. What should I look into?", "instructions": "...",
+  "starters": [{"label": "Compare phone prices", "prompt": "Compare the prices of the three newest phones."}],
+  "avatar": {"bodyShape": "dendrite", "eyeStyle": "curious", "color": "teal"},
+  "modelProfile": null, "skills": [], "locale": "en", "isDefault": true, "defaultKey": "researcher",
+  "deletable": true, "status": "idle", "lastUsedAt": null, "createdAt": "...", "updatedAt": "..."}
+```
+
+Input (`POST` and `PATCH`): `name` (1 to 40, one line), `role` (up to 120), `personality` (200), `greeting` (280), `instructions` (4000), `starters` (up to 3 of `{label` 1 to 60, `prompt` 1 to 500`}`), `avatar` (catalog ids; derived from the name when omitted), `modelProfile` (from options, or null for the account default), `skills` (from options), `locale` (`ar` or `en`). Unknown fields are refused (`400 invalid_request`, the message names the field). Strings are trimmed and em or en dashes become commas. `status` is the most urgent state of the bot's chats and tasks: `waiting_for_you`, `working`, `failed`, or `idle`. Another user's bot is `404` everywhere.
+
+### Drafts
+
+`POST /v1/bots/draft` returns `{"draft": BotInput, "source": "model" | "fallback", "fallbackReason"?}`. The sandbox asks the configured driver for one JSON reply (the harness driver runs one turn in a throwaway runtime with its own configured provider; the API makes no model call). When that is not possible, takes over 15 seconds, or returns something that is not a usable JSON object, the draft comes from the template catalog that best matches the description, with `fallbackReason` `driver_unavailable` (the scripted dev driver, expected), `timeout`, `invalid_output`, or `error`. Show the "Couldn't draft it" note only for the last three. A one to three word description is taken as the name. Limit: 10 drafts per user per hour (`429 rate_limited`). The draft can be posted to `POST /v1/bots` as it is.
+
+### How a bot reaches the assistant
+
+The API sends the bot to the sandbox with each run and chat turn, with a `version` (a hash of its fields). The harness driver writes the name, role and personality into the runtime's `IDENTITY.md` and the instructions into `SOUL.md` (the shipped template plus a `## This bot` section) before the runtime starts, and skips the rewrite while the version is unchanged, so the assistant's own notes in `SOUL.md` survive restarts. After start it sets the avatar from the traits, adds the bot's inference profile if it is not the default, enables its skills, and passes the profile with every turn. When a bot was edited, the sandbox replaces an idle session worker so the next turn uses the new version. The kilo and scripted drivers put the same persona in their system message or replies. See `docs/design/phone-app.md` section C.
 
 ## Chat sessions
 
@@ -103,9 +140,9 @@ A session is a conversation with an agent, separate from tasks. It keeps its con
 
 | Call | What it does |
 | --- | --- |
-| `POST /v1/sessions` `{"title": "..."}` | Creates a session (`201`). Title is optional; without one it becomes the first message's first line |
-| `GET /v1/sessions?limit=50` | The user's sessions, most recently active first |
-| `GET /v1/sessions/:id` | One session with `agent`, `lastItem`, `approvals` |
+| `POST /v1/sessions` `{"title": "...", "botId": "..."}` | Creates a session (`201`). Title is optional; without one it becomes the first message's first line. Without `botId` the user's default bot is used; another user's bot is `404` |
+| `GET /v1/sessions?limit=50&botId=` | The user's sessions, most recently active first, optionally for one bot |
+| `GET /v1/sessions/:id` | One session with `botId`, `bot` (`{id, name, avatar}`, null if deleted), `agent`, `lastItem`, `approvals` |
 | `GET /v1/sessions/:id/messages?after=0` | Items in order (`{"items": [...]}`) |
 | `POST /v1/sessions/:id/messages` `{"text": "..."}` | Sends a message and starts a turn (`202`, `{turnId, item}`). `409` while a turn is running or waiting for approval |
 | `GET /v1/sessions/:id/events` | Live stream (below) |
@@ -128,7 +165,7 @@ Items share one sequence (`seq`) and each has `kind`, `title`, `text` (full mess
 
 `GET /v1/sessions/:id/events` works like the task stream, with `event: item` (one item, `id` is its `seq`) and `event: session` (the session with `approvals`, first and on every change). It does not end on its own; it sends `end` with `{"reason": "deleted"}` if the session is deleted. Resume with `?after=<seq>`.
 
-In the sandbox each session has its own long-lived worker in its own workspace. After 10 idle minutes (`ANU_SESSION_IDLE_SECONDS`) the worker stops; the next message starts a new one with the last 100 messages as history. The harness driver keeps one assistant runtime per worker and the same conversation key, with the runtime's data in the session workspace, so the conversation survives a restart. The kilo driver sends the history with every turn. The scripted driver replies `Reply N to "<text>" (I remember M earlier messages)` and understands `#browser`, `#approval`, `#slow`, and `#fail` in a message.
+In the sandbox each session has its own long-lived worker in its own workspace. After 10 idle minutes (`ANU_SESSION_IDLE_SECONDS`) the worker stops; the next message starts a new one with the last 100 messages as history. The harness driver keeps one assistant runtime per worker and the same conversation key, with the runtime's data in the session workspace, so the conversation survives a restart. The kilo driver sends the history with every turn. The scripted driver replies `<bot name>: Reply N to "<text>" (I remember M earlier messages)` (without the prefix for sessions with no bot) and understands `#browser`, `#approval`, `#slow`, and `#fail` in a message.
 
 ## Live updates (SSE)
 

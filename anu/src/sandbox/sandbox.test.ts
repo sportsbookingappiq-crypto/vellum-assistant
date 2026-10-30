@@ -1,5 +1,5 @@
 import { afterAll, describe, expect, test } from "bun:test";
-import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
@@ -8,12 +8,29 @@ import { loadSandboxConfig } from "../config.js";
 import { silentLogger } from "../lib/log.js";
 import { secret } from "../test/helpers.js";
 import { harnessDriver } from "./drivers/harness.js";
-import { extractJson } from "./drivers/kilo.js";
+import { botProfileVersion } from "./drivers/bot-profile.js";
+import { extractJson, kiloDriver } from "./drivers/kilo.js";
+import type { BotProfile, SessionContext, SessionTurn } from "./drivers/types.js";
 import { isForbiddenEnvName, sanitizeEnv } from "./env.js";
 import type { DriverSettings } from "./protocol.js";
 import { RunManager, TaskGoneError, type Reporter, type SessionReporter } from "./runs.js";
 import { SessionManager } from "./sessions.js";
 import { buildSandbox } from "./server.js";
+
+function testBot(overrides: Partial<Omit<BotProfile, "version">> = {}): BotProfile {
+  const fields = {
+    id: "6f1c2a8e-3b4d-4c5e-9f60-7a8b9c0d1e2f",
+    name: "Fare Finder",
+    role: "Watches flight prices",
+    personality: "Cheerful",
+    instructions: "Check fares to Dubai.",
+    avatar: { bodyShape: "cloud", eyeStyle: "goofy", color: "orange" },
+    modelProfile: null as string | null,
+    skills: [] as string[],
+    ...overrides,
+  };
+  return { ...fields, version: botProfileVersion(fields) };
+}
 
 const root = mkdtempSync(path.join(os.tmpdir(), "anu-sandbox-test-"));
 afterAll(() => rmSync(root, { recursive: true, force: true }));
@@ -225,6 +242,25 @@ describe("sandbox HTTP server", () => {
     expect((await call("GET", "/healthz")).status).toBe(200);
   });
 
+  test("drafts answer unavailable with the scripted driver, and bot profiles are validated", async () => {
+    const token = config.ANU_INTERNAL_TOKEN;
+    const draft = await call("POST", "/internal/drafts", token, { description: "watches flight prices", locale: "ar" });
+    expect(draft.status).toBe(200);
+    expect(await draft.json()).toMatchObject({ status: "unavailable" });
+    expect((await call("POST", "/internal/drafts", undefined, { description: "x" })).status).toBe(401);
+    expect((await call("POST", "/internal/drafts", token, { description: "" })).status).toBe(400);
+    // The draft's temporary directory is gone.
+    const drafts = path.join(root, "drafts");
+    expect(existsSync(drafts) ? readdirSync(drafts).length : 0).toBe(0);
+
+    const bad = { ...testBot(), version: "nope" };
+    expect((await call("POST", "/v1/runs", token, { taskId: randomUUID(), goal: "x", bot: bad })).status).toBe(400);
+    const taskId = randomUUID();
+    expect((await call("POST", "/v1/runs", token, { taskId, goal: "hello #nobrowser", bot: testBot() })).status).toBe(202);
+    await sandbox.runs.waitFor(taskId);
+    await call("DELETE", `/v1/runs/${taskId}`, token);
+  });
+
   test("validates run requests and starts runs", async () => {
     const token = config.ANU_INTERNAL_TOKEN;
     expect((await call("POST", "/v1/runs", token, { taskId: "../../etc", goal: "x" })).status).toBe(400);
@@ -235,6 +271,53 @@ describe("sandbox HTTP server", () => {
     await sandbox.runs.waitFor(taskId);
     expect((await call("DELETE", `/v1/runs/${taskId}`, token)).status).toBe(204);
     expect(existsSync(path.join(root, taskId))).toBe(false);
+  });
+});
+
+describe("kilo driver persona", () => {
+  test("every chat request carries the bot's persona as the system message", async () => {
+    const bodies: any[] = [];
+    const realFetch = globalThis.fetch;
+    globalThis.fetch = (async (_url: unknown, init?: RequestInit) => {
+      bodies.push(JSON.parse(String(init?.body)));
+      return new Response(JSON.stringify({ model: "test", choices: [{ message: { content: "Fares look steady." } }] }));
+    }) as typeof fetch;
+    try {
+      const replies: string[] = [];
+      async function* turns(): AsyncGenerator<SessionTurn> {
+        yield { turnId: randomUUID(), text: "Any deals?" };
+      }
+      const ctx: SessionContext = {
+        taskId: randomUUID(),
+        goal: "",
+        workspaceDir: root,
+        env: {},
+        settings,
+        bot: testBot(),
+        signal: new AbortController().signal,
+        step() {},
+        requestApproval: async () => "rejected",
+        log() {},
+        history: [{ role: "user", text: "hi" }],
+        turns: turns(),
+        endTurn: (_id, _status, reply) => void replies.push(reply),
+      };
+      await kiloDriver.session(ctx);
+      expect(replies).toEqual(["Fares look steady."]);
+      const system = bodies[0].messages[0];
+      expect(system.role).toBe("system");
+      expect(system.content).toContain("You are Fare Finder, a personal AI agent that helps with any task.");
+      expect(system.content).toContain("Your role: Watches flight prices.");
+      expect(system.content).toContain("Instructions for this bot:\nCheck fares to Dubai.");
+      expect(bodies[0].messages.slice(1)).toEqual([{ role: "user", content: "hi" }, { role: "user", content: "Any deals?" }]);
+
+      bodies.length = 0;
+      const result = await kiloDriver.run({ ...ctx, goal: "Find a fare" });
+      expect(result.status).toBe("succeeded");
+      expect(bodies.every((b) => b.messages[0].content.startsWith("You are Fare Finder"))).toBe(true);
+    } finally {
+      globalThis.fetch = realFetch;
+    }
   });
 });
 
@@ -300,6 +383,34 @@ describe("chat session workers", () => {
     await until(() => reporter.done.has(t3));
     expect(reporter.done.get(t3)!.reply).toBe('Reply 2 to "still there?" (I remember 2 earlier messages)');
     await sessions.shutdown();
+  });
+
+  test("the bot reaches the scripted worker; an edited bot replaces an idle worker", async () => {
+    const reporter = new SessionRecorder();
+    const sessions = sessionManager(reporter);
+    const id = randomUUID();
+    const [t1, t2, t3] = [randomUUID(), randomUUID(), randomUUID()];
+    const bot = testBot();
+    await sessions.turn(id, t1, "hello", [], bot);
+    await until(() => reporter.done.has(t1));
+    expect(reporter.done.get(t1)!.reply).toBe('Fare Finder: Reply 1 to "hello" (I remember 0 earlier messages)');
+    expect(reporter.items.find((i) => i.turnId === t1)!.detail).toMatchObject({ bot: "Fare Finder" });
+
+    // Same version: the same worker answers (it remembers the first turn).
+    expect((await sessions.turn(id, t2, "again", [], bot)).resumed).toBe(false);
+    await until(() => reporter.done.has(t2));
+    expect(reporter.done.get(t2)!.reply).toBe('Fare Finder: Reply 2 to "again" (I remember 2 earlier messages)');
+
+    // Edited: the idle worker is replaced and the new one starts from the history the API sends.
+    const edited = testBot({ name: "Fare Scout" });
+    const history = [
+      { role: "user" as const, text: "hello" },
+      { role: "assistant" as const, text: "Reply 1" },
+    ];
+    expect((await sessions.turn(id, t3, "renamed?", history, edited)).resumed).toBe(true);
+    await until(() => reporter.done.has(t3));
+    expect(reporter.done.get(t3)!.reply).toBe('Fare Scout: Reply 2 to "renamed?" (I remember 2 earlier messages)');
+    await sessions.remove(id);
   });
 
   test("approvals and stop", async () => {

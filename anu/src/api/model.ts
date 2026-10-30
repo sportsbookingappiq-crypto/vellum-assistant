@@ -23,6 +23,7 @@ export interface TaskRow {
   driver: string | null;
   result: string | null;
   confidence: number | null;
+  bot_id: string | null;
   created_at: Date;
   updated_at: Date;
   started_at: Date | null;
@@ -61,6 +62,7 @@ export function taskView(row: TaskRow) {
     status: row.status,
     result: row.result,
     confidence: row.confidence,
+    botId: row.bot_id ?? null,
     createdAt: iso(row.created_at),
     updatedAt: iso(row.updated_at),
     startedAt: iso(row.started_at),
@@ -119,6 +121,8 @@ export interface ChatSessionRow {
   title: string;
   status: SessionStatus;
   driver: string | null;
+  bot_id: string | null;
+  bot_version: string | null;
   created_at: Date;
   updated_at: Date;
 }
@@ -145,6 +149,12 @@ export interface AgentRow {
   color: string;
 }
 
+/** The bot shown on a session: null when it was deleted (the agent keeps its face). */
+export function sessionBotView(row: { id: string; name: string; body_shape: string; eye_style: string; color: string } | undefined) {
+  if (!row) return null;
+  return { id: row.id, name: row.name, avatar: { bodyShape: row.body_shape, eyeStyle: row.eye_style, color: row.color } };
+}
+
 export function agentView(row: AgentRow | undefined) {
   if (!row) return null;
   return { id: row.id, name: row.name, avatar: { bodyShape: row.body_shape, eyeStyle: row.eye_style, color: row.color } };
@@ -155,6 +165,7 @@ export function sessionView(row: ChatSessionRow) {
     id: row.id,
     title: row.title,
     status: row.status,
+    botId: row.bot_id ?? null,
     createdAt: iso(row.created_at),
     updatedAt: iso(row.updated_at),
   };

@@ -6,6 +6,7 @@ import { createLogger, type Logger } from "../lib/log.js";
 import { createApp } from "./app.js";
 import { HttpSandboxClient, type SandboxClient } from "./sandbox-client.js";
 import { AgentService } from "./agents.js";
+import { BotService } from "./bots.js";
 import { SessionService } from "./sessions.js";
 import { TaskEvents, TaskService } from "./tasks.js";
 
@@ -40,16 +41,18 @@ export function buildApi(options: ApiServerOptions) {
   const tasks = new TaskService(db, sandbox, events, now, log);
   const sessions = new SessionService(db, sandbox, events, now, log);
   const agents = new AgentService(db);
+  const bots = new BotService(db, sandbox, now, log);
   const handler = createApp({
     auth,
     tasks,
     sessions,
     agents,
+    bots,
     internalToken: config.ANU_INTERNAL_TOKEN,
     corsOrigins: config.ANU_CORS_ORIGINS,
     log,
   });
-  return { db, auth, tasks, sessions, agents, handler, log };
+  return { db, auth, tasks, sessions, agents, bots, handler, log };
 }
 
 export function clientAddressOf(req: Request, socketAddress: string | undefined, trustProxy: boolean): string {

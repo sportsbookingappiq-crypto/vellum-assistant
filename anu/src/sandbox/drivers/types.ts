@@ -8,6 +8,24 @@ export interface StepInput {
   status?: StepStatus;
 }
 
+/**
+ * A user's custom bot, as the sandbox applies it to a runtime. The API builds
+ * it from the bots table; `version` is a sha256 of the canonical JSON of the
+ * other fields (see bot-profile.ts), so a worker can tell when it is stale.
+ */
+export interface BotProfile {
+  id: string;
+  name: string;
+  role: string;
+  personality: string;
+  instructions: string;
+  avatar: { bodyShape: string; eyeStyle: string; color: string };
+  /** An entry of BOT_MODEL_PROFILES, or null for the account default. */
+  modelProfile: string | null;
+  skills: string[];
+  version: string;
+}
+
 export interface DriverContext {
   taskId: string;
   goal: string;
@@ -16,6 +34,8 @@ export interface DriverContext {
   /** Sanitized environment for any child process the driver starts. */
   env: Record<string, string>;
   settings: DriverSettings;
+  /** The bot this task or session runs as. Absent for rows made before bots existed. */
+  bot?: BotProfile;
   /** Aborted when the run is stopped or times out. */
   signal: AbortSignal;
   step(step: StepInput): void;
@@ -43,6 +63,18 @@ export interface Driver {
    * the session id and `goal` is empty.
    */
   session(ctx: SessionContext): Promise<void>;
+  /**
+   * Drafts a bot from a one-sentence description. Returns the model's raw
+   * reply (the API parses it). Throws DriverUnavailableError when the driver
+   * has no model to ask, so the API falls back to a template.
+   */
+  draft(ctx: DraftContext): Promise<string>;
+}
+
+/** Draft mode: `taskId` is the draft job id, `goal` is the full draft prompt. */
+export interface DraftContext extends DriverContext {
+  description: string;
+  locale: "ar" | "en";
 }
 
 export interface SessionTurn {

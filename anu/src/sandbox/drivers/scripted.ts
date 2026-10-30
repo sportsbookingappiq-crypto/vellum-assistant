@@ -2,7 +2,7 @@ import { writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { encodePng, saveFrame } from "../browser-frames.js";
-import { sleep, type Driver, type DriverContext, type DriverOutcome, type SessionContext } from "./types.js";
+import { DriverUnavailableError, sleep, type Driver, type DriverContext, type DriverOutcome, type SessionContext } from "./types.js";
 
 /**
  * Deterministic fake harness for tests and demos. Goal markers change its path:
@@ -10,6 +10,7 @@ import { sleep, type Driver, type DriverContext, type DriverOutcome, type Sessio
  * - `#fail` ends the run as failed.
  * - `#nobrowser` skips the two fake browser steps (with generated PNG frames).
  * - `#slow` waits a long time before finishing (for stop and timeout tests).
+ * With a bot, the plan step names it and the result and replies start with its name.
  */
 export const scriptedDriver: Driver = {
   name: "scripted",
@@ -18,7 +19,7 @@ export const scriptedDriver: Driver = {
     const wantsApproval = ctx.goal.includes("#approval");
 
     const plan = ["Inspect the workspace", wantsApproval ? "Ask before writing a file" : "Write a summary file", "Report the result"];
-    ctx.step({ kind: "plan", title: "Plan", detail: { steps: plan } });
+    ctx.step({ kind: "plan", title: "Plan", detail: { steps: plan, ...(ctx.bot ? { bot: ctx.bot.name } : {}) } });
     await sleep(delay, ctx.signal);
 
     ctx.step({ kind: "tool", title: "Run env in the workspace", detail: { command: "env" }, status: "done" });
@@ -79,11 +80,12 @@ export const scriptedDriver: Driver = {
     }
     await sleep(delay, ctx.signal);
 
+    const as = ctx.bot ? `${ctx.bot.name}: ` : "";
     return {
       status: "succeeded",
-      result: wrote
+      result: as + (wrote
         ? `Scripted run finished for: ${ctx.goal}`
-        : `Scripted run finished without writing a file for: ${ctx.goal}`,
+        : `Scripted run finished without writing a file for: ${ctx.goal}`),
       confidence: wrote ? 0.9 : 0.6,
     };
   },
@@ -99,7 +101,12 @@ export const scriptedDriver: Driver = {
     const history = [...ctx.history];
     for await (const turn of ctx.turns) {
       const userTurns = history.filter((m) => m.role === "user").length;
-      ctx.step({ kind: "tool", title: "Read the conversation", detail: { earlierMessages: history.length }, status: "done" });
+      ctx.step({
+        kind: "tool",
+        title: "Read the conversation",
+        detail: { earlierMessages: history.length, ...(ctx.bot ? { bot: ctx.bot.name } : {}) },
+        status: "done",
+      });
       await sleep(delay, ctx.signal);
       if (turn.text.includes("#browser")) {
         const png = encodePng(320, 200, (x, y) => (y < 24 ? [230, 230, 230] : x < 160 ? [120, 80, 200] : [250, 250, 250]));
@@ -111,7 +118,7 @@ export const scriptedDriver: Driver = {
         ctx.step({ kind: "message", title: "Working on a long step" });
         await sleep(10 * 60 * 1000, ctx.signal);
       }
-      let reply = `Reply ${userTurns + 1} to "${turn.text}" (I remember ${history.length} earlier messages)`;
+      let reply = `${ctx.bot ? `${ctx.bot.name}: ` : ""}Reply ${userTurns + 1} to "${turn.text}" (I remember ${history.length} earlier messages)`;
       if (turn.text.includes("#approval")) {
         const decision = await ctx.requestApproval("Write notes.md to the session workspace?", { file: "notes.md" });
         if (decision === "approved") {
@@ -129,5 +136,10 @@ export const scriptedDriver: Driver = {
       history.push({ role: "assistant", text: reply });
       ctx.endTurn(turn.turnId, "succeeded", reply);
     }
+  },
+
+  /** No model to ask: the API answers with its deterministic template draft. */
+  async draft(): Promise<string> {
+    throw new DriverUnavailableError("the scripted driver has no model to draft a bot with");
   },
 };

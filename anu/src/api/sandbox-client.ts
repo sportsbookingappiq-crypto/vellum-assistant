@@ -1,3 +1,23 @@
+import { z } from "zod";
+
+import type { BotProfile } from "../sandbox/drivers/types.js";
+
+/** The sandbox's answer to a bot draft job. `json` is the model's raw reply. */
+export interface DraftResult {
+  status: "succeeded" | "unavailable" | "failed" | "timeout";
+  json?: string;
+  error?: string;
+}
+
+/** A backstop just past the sandbox's own per-driver draft limit. */
+export const DRAFT_WAIT_MS = 65_000;
+
+const DraftResultBody = z.object({
+  status: z.enum(["succeeded", "unavailable", "failed", "timeout"]),
+  json: z.string().optional(),
+  error: z.string().optional(),
+});
+
 /** Read-only workspace resources the sandbox serves for a task. */
 export type WorkspaceResource = "files" | "files/content" | "browser" | "browser/frame";
 
@@ -14,12 +34,20 @@ const PASS_HEADERS = [
 
 /** How the API talks to the sandbox server. Tests substitute a fake. */
 export interface SandboxClient {
-  startRun(taskId: string, goal: string): Promise<{ driver: string }>;
+  startRun(taskId: string, goal: string, bot?: BotProfile): Promise<{ driver: string }>;
   stopRun(taskId: string): Promise<void>;
   sendDecision(taskId: string, approvalId: string, decision: "approved" | "rejected"): Promise<void>;
   deleteRun(taskId: string): Promise<void>;
   /** Sends one chat turn; the sandbox starts the session's worker if needed. */
-  sendTurn(sessionId: string, turnId: string, text: string, history: { role: "user" | "assistant"; text: string }[]): Promise<{ driver: string }>;
+  sendTurn(
+    sessionId: string,
+    turnId: string,
+    text: string,
+    history: { role: "user" | "assistant"; text: string }[],
+    bot?: BotProfile,
+  ): Promise<{ driver: string }>;
+  /** Runs a bot draft job and waits for it (up to DRAFT_WAIT_MS). */
+  draft(description: string, locale: "ar" | "en"): Promise<DraftResult>;
   stopSession(sessionId: string): Promise<void>;
   deleteSession(sessionId: string): Promise<void>;
   /** Proxies a read of the task workspace. The response is safe to return to the task owner. */
@@ -33,7 +61,7 @@ export class HttpSandboxClient implements SandboxClient {
     private readonly timeoutMs = 10_000,
   ) {}
 
-  private async call(method: string, path: string, body?: unknown): Promise<unknown> {
+  private async call(method: string, path: string, body?: unknown, timeoutMs = this.timeoutMs): Promise<unknown> {
     const res = await fetch(new URL(path, this.baseUrl), {
       method,
       headers: {
@@ -41,7 +69,7 @@ export class HttpSandboxClient implements SandboxClient {
         "content-type": "application/json",
       },
       body: body === undefined ? undefined : JSON.stringify(body),
-      signal: AbortSignal.timeout(this.timeoutMs),
+      signal: AbortSignal.timeout(timeoutMs),
     });
     const text = await res.text();
     if (!res.ok && res.status !== 404) {
@@ -50,8 +78,8 @@ export class HttpSandboxClient implements SandboxClient {
     return text ? JSON.parse(text) : null;
   }
 
-  async startRun(taskId: string, goal: string) {
-    const body = (await this.call("POST", "/v1/runs", { taskId, goal })) as { driver?: string } | null;
+  async startRun(taskId: string, goal: string, bot?: BotProfile) {
+    const body = (await this.call("POST", "/v1/runs", { taskId, goal, ...(bot ? { bot } : {}) })) as { driver?: string } | null;
     return { driver: body?.driver ?? "unknown" };
   }
 
@@ -67,9 +95,27 @@ export class HttpSandboxClient implements SandboxClient {
     await this.call("DELETE", `/v1/runs/${taskId}`);
   }
 
-  async sendTurn(sessionId: string, turnId: string, text: string, history: { role: "user" | "assistant"; text: string }[]) {
-    const body = (await this.call("POST", `/v1/sessions/${sessionId}/turns`, { turnId, text, history })) as { driver?: string } | null;
+  async sendTurn(
+    sessionId: string,
+    turnId: string,
+    text: string,
+    history: { role: "user" | "assistant"; text: string }[],
+    bot?: BotProfile,
+  ) {
+    const body = (await this.call("POST", `/v1/sessions/${sessionId}/turns`, { turnId, text, history, ...(bot ? { bot } : {}) })) as {
+      driver?: string;
+    } | null;
     return { driver: body?.driver ?? "unknown" };
+  }
+
+  async draft(description: string, locale: "ar" | "en"): Promise<DraftResult> {
+    try {
+      const body = DraftResultBody.safeParse(await this.call("POST", "/internal/drafts", { description, locale }, DRAFT_WAIT_MS));
+      return body.success ? body.data : { status: "failed", error: "unreadable draft response" };
+    } catch (error) {
+      const timedOut = error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError");
+      return { status: timedOut ? "timeout" : "failed", error: error instanceof Error ? error.message : String(error) };
+    }
   }
 
   async stopSession(sessionId: string) {
