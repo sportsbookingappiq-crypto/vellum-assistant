@@ -4,17 +4,30 @@
     android:height="288dp"
     android:viewportWidth="288"
     android:viewportHeight="288">
-    <!-- The ANU lockup from assets/brand/anu-logo-white.svg, 168dp wide. -->
+    <!--
+        The launch lockup: the snowflake (90dp) over the word ANU (64dp wide),
+        both solid black (launch_screen_foreground) on the white launch
+        ground. Geometry from assets/brand/anu-logo-white.svg. Kept inside
+        the 192dp circle the Android 12 splash icon shows.
+    -->
     <group
-        android:translateX="53.149"
-        android:translateY="106.766"
-        android:scaleX="0.74468"
-        android:scaleY="0.74468">
+        android:translateX="99"
+        android:translateY="78.7"
+        android:scaleX="0.9"
+        android:scaleY="0.9">
         <path
             android:fillColor="@color/launch_screen_foreground"
+            android:fillType="evenOdd"
             android:pathData="M9.3 73.5L25.34 60.76L17.26 53.72L29.94 57.1L34.16 53.75L32 50L34.16 46.25L29.94 42.9L17.26 46.28L25.34 39.24L9.3 26.5L28.35 34.02L30.41 23.51L33.82 36.18L38.84 38.16L41 34.41L45.33 34.41L46.12 29.08L36.86 19.79L46.99 23.26L50 3L53.01 23.26L63.14 19.79L53.88 29.08L54.67 34.41L59 34.41L61.16 38.16L66.18 36.18L69.59 23.51L71.65 34.02L90.7 26.5L74.66 39.24L82.74 46.28L70.06 42.9L65.84 46.25L68 50L65.84 53.75L70.06 57.1L82.74 53.72L74.66 60.76L90.7 73.5L71.65 65.98L69.59 76.49L66.18 63.82L61.16 61.84L59 65.59L54.67 65.59L53.88 70.92L63.14 80.21L53.01 76.74L50 97L46.99 76.74L36.86 80.21L46.12 70.92L45.33 65.59L41 65.59L38.84 61.84L33.82 63.82L30.41 76.49L28.35 65.98ZM43 50L46.5 56.06L53.5 56.06L57 50L53.5 43.94L46.5 43.94Z" />
+    </group>
+    <group
+        android:translateX="58.4"
+        android:translateY="174.3"
+        android:scaleX="0.5"
+        android:scaleY="0.5">
         <path
             android:fillColor="@color/launch_screen_foreground"
-            android:pathData="M107.7 70L128.7 28.8L149.7 70L141.39 70L136.38 60.16L121.02 60.16L116.01 70ZM124.04 54.24L133.36 54.24L128.7 45.1ZM158.2 30L165.6 30L165.6 70L158.2 70ZM184.3 30L191.7 30L191.7 70L184.3 70ZM158.2 30L166.91 30L191.7 70L182.99 70ZM202.2 30H209.6V53.75A8.85 8.85 0 0 0 227.3 53.75V30H234.7V53.75A16.25 16.25 0 0 1 202.2 53.75Z" />
+            android:fillType="evenOdd"
+            android:pathData="M107.7 70L128.7 28.8L149.7 70L141.39 70L136.38 60.16L121.02 60.16L116.01 70ZM124.04 54.24L133.36 54.24L128.7 45.1ZM158.2 70L158.2 30L166.91 30L184.3 58.06L184.3 30L191.7 30L191.7 70L182.99 70L165.6 41.94L165.6 70ZM202.2 30H209.6V53.75A8.85 8.85 0 0 0 227.3 53.75V30H234.7V53.75A16.25 16.25 0 0 1 202.2 53.75Z" />
     </group>
 </vector>

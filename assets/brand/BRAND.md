@@ -19,15 +19,17 @@ shared geometry, so the mark is identical everywhere it appears.
 | `anu-mark-white.svg` | Solid white symbol for photos, brand blue, or any dark surface       |
 | `anu-logo.svg`       | Horizontal lockup: color mark plus the night-ink "ANU" wordmark      |
 | `anu-logo-white.svg` | Horizontal lockup, all white                                         |
-| `anu-app-icon.svg`   | App icon: ice mark on a rounded-square night gradient (1024 canvas)  |
-| `favicon.svg`        | Simplified mark for 16 to 32 px: heavier rays, larger branches       |
+| `anu-app-icon.svg`   | App icon: solid black mark on a white rounded square (1024 canvas)   |
+| `anu-app-icon-night.svg` | Alternate app icon: ice mark on a night gradient, for marketing  |
+| `anu-mark-small.svg` | Simplified color mark for 16 to 32 px: heavier rays, larger branches |
+| `favicon.svg`        | Small black mark on a white rounded tile; reads on light and dark tabs |
 | `preview.png`        | Reference sheet: lockups, variants, small-size renders, and palette  |
 
 The repo's platform icons (iOS Icon Composer layers, Android launcher vectors,
 macOS and Linux icon sources, Windows ICOs, Chrome extension icons, the
 menu-bar glyph, and the widget mark) are all cut from these same paths. The
 drift guards in `clients/ios/scripts/__tests__/` pin the iOS and Android copies
-to `anu-mark.svg` and `favicon.svg`.
+to `anu-mark.svg` and `anu-mark-small.svg`.
 
 ## Palette
 
@@ -35,7 +37,7 @@ to `anu-mark.svg` and `favicon.svg`.
 | --------- | --------- | --------------------------------------------------------------- |
 | Night 950 | `#050B1F` | Deepest background, banner and hero edges                       |
 | Night 900 | `#0A1633` | Primary dark background and the wordmark ink on light surfaces  |
-| Night 800 | `#0F2557` | Elevated dark surfaces; the solid app-icon ground on every OS   |
+| Night 800 | `#0F2557` | Elevated dark surfaces                                          |
 | Deep Blue | `#1E40AF` | Gradient start of the mark; pressed and strong accents          |
 | ANU Blue  | `#2563EB` | Primary brand color; buttons, links, focus                      |
 | Azure     | `#38BDF8` | Bright accent; gradient end of the mark; highlights on dark     |
@@ -50,9 +52,9 @@ Gradients:
   opacity.
 - Mark on dark (ice): Azure `#38BDF8` to Sky `#7DD3FC` to Ice `#E0F2FE`, with
   white facets at 55% opacity.
-- App icon ground: `#1D3A8F` at the top, Night 800 `#0F2557`, then Night 900
+- Night app icon (alternate) ground: `#1D3A8F` at the top, Night 800 `#0F2557`, then Night 900
   `#0A1633` at the bottom, with an ANU Blue radial glow behind the mark.
-- Flat two-tone (platforms without gradients): Sky `#7DD3FC` base with Ice
+- Flat two-tone (when a gradient is unavailable): Sky `#7DD3FC` base with Ice
   `#E0F2FE` facets on night grounds; Night 900 `#0A1633` base with Deep Blue
   `#1E40AF` facets on light grounds.
 
@@ -60,6 +62,21 @@ Environment colors for non-production builds: staging keeps yellow `#E9C91A`
 and dev keeps pink `#FF88C9` as icon grounds; local uses `#3981F2`. Chrome
 extension badges use Amber `#F59E0B` (staging), Pink `#EC4899` (dev), and
 Emerald `#10B981` (local).
+
+## App icon: black on white
+
+This section is out of date. The owner rejected this icon. The final logo is the ANU wordmark above Stellar on white, for iOS, Android, and web. See `anu/docs/HANDOFF.md`.
+
+Every shipped app icon (iOS, Android, macOS, Linux, Windows, the Chrome
+extension, the apple-touch icon, and the favicon) is the mark's silhouette in
+solid black `#000000` on white `#FFFFFF`, with no gradient and no facets. The
+mark spans 62.5% of the tile (Icon Composer scale 6.4 on a 1024-point canvas).
+Rounded raster tiles carry a hairline black edge at 12% opacity so the white
+tile holds its shape on white surfaces. Non-production builds keep their
+distinguishing ground (staging yellow `#E9C91A`, dev pink `#FF88C9`, local
+`#3981F2`) or, on the Chrome extension, a colored corner badge, always with the
+same black mark. The color and ice marks stay the brand's marketing and UI
+treatments.
 
 ## Usage
 
@@ -69,7 +86,8 @@ Emerald `#10B981` (local).
   `anu-mark.svg` loses its deep-blue rays on night backgrounds.
 - Use `anu-mark-mono.svg` inside UI chrome where the mark should follow the
   text color (it uses `currentColor`).
-- Below 32 px, use `favicon.svg`; the full mark's branches fill in at that size.
+- Below 32 px, use `anu-mark-small.svg` (or `favicon.svg` for browser tabs); the
+  full mark's branches fill in at that size.
 - Do not recolor the mark outside the palette, add strokes or shadows, rotate
   it, stretch it, or rearrange the lockup. The wordmark is custom geometry, not
   a font; do not retype it.

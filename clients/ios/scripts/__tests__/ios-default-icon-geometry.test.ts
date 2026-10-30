@@ -19,8 +19,8 @@ const BRAND_DIR = join(REPO_ROOT, "assets/brand");
 /** The icon bundles and the layer each one draws. */
 const BUNDLES = [
   { icon: "AppIcon.icon", layer: "anu-mark.svg" },
-  { icon: "AppIcon-Dev.icon", layer: "anu-mark-night.svg" },
-  { icon: "AppIcon-Staging.icon", layer: "anu-mark-night.svg" },
+  { icon: "AppIcon-Dev.icon", layer: "anu-mark.svg" },
+  { icon: "AppIcon-Staging.icon", layer: "anu-mark.svg" },
 ] as const;
 
 const WIDGET_MARK =
@@ -47,15 +47,11 @@ function readBundleLayer(icon: string, layer: string): string {
 }
 
 describe("ios default icon geometry", () => {
-  // anu-mark.svg holds the silhouette then the lit facets; favicon.svg holds
-  // the same pair for the small-size cut.
-  const markPaths = pathData(readBrand("anu-mark.svg"));
-  const smallPaths = pathData(readBrand("favicon.svg"));
-
-  test("the brand sources carry a silhouette and a facet path", () => {
-    expect(markPaths.length).toBe(2);
-    expect(smallPaths.length).toBe(2);
-  });
+  // anu-mark.svg holds the silhouette then the lit facets; the app icon wears
+  // the silhouette alone, in solid black. anu-mark-small.svg holds the same
+  // pair for the small-size cut the widget draws.
+  const [silhouette] = pathData(readBrand("anu-mark.svg"));
+  const [smallSilhouette] = pathData(readBrand("anu-mark-small.svg"));
 
   for (const { icon, layer } of BUNDLES) {
     test(`${icon} names a layer that exists`, () => {
@@ -72,27 +68,26 @@ describe("ios default icon geometry", () => {
       );
     });
 
-    test(`${icon} embeds the brand mark paths verbatim`, () => {
-      expect(pathData(readBundleLayer(icon, layer))).toEqual(markPaths);
+    test(`${icon} draws the brand silhouette in solid black`, () => {
+      const svg = readBundleLayer(icon, layer);
+      expect(pathData(svg)).toEqual([silhouette]);
+      expect(fills(svg)).toEqual(["#000000"]);
     });
   }
 
-  test("Dev and Staging share one layer byte for byte", () => {
-    expect(readBundleLayer("AppIcon-Dev.icon", "anu-mark-night.svg")).toBe(
-      readBundleLayer("AppIcon-Staging.icon", "anu-mark-night.svg"),
+  test("every bundle shares one layer byte for byte", () => {
+    const [first, ...rest] = BUNDLES.map(({ icon, layer }) =>
+      readBundleLayer(icon, layer),
     );
+    for (const copy of rest) {
+      expect(copy).toBe(first);
+    }
   });
 
-  test("the widget mark embeds the small-size brand paths verbatim", () => {
+  test("the widget mark draws the small-size silhouette in solid black", () => {
     const widget = readFileSync(join(IOS_APP_DIR, WIDGET_MARK), "utf8");
-    expect(pathData(widget)).toEqual(smallPaths);
-  });
-
-  test("the widget mark wears the production layer's two tones", () => {
-    const widget = readFileSync(join(IOS_APP_DIR, WIDGET_MARK), "utf8");
-    expect(fills(widget)).toEqual(
-      fills(readBundleLayer("AppIcon.icon", "anu-mark.svg")),
-    );
+    expect(pathData(widget)).toEqual([smallSilhouette]);
+    expect(fills(widget)).toEqual(["#000000"]);
   });
 
   test("every layer keeps the 100x100 brand canvas", () => {

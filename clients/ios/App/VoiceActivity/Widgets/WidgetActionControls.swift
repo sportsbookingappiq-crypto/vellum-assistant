@@ -48,7 +48,7 @@ enum WidgetFlattenedFill {
 /// `clients/ios/scripts/__tests__/ios-default-icon-geometry.test.ts`.
 ///
 /// The ground comes from the running bundle (``AppIconGround``), because
-/// Staging and Dev do not ship the production night blue.
+/// Staging and Dev do not ship the production white.
 ///
 /// Both go away once the system flattens the widget. A solid ground survives
 /// flattening as a solid block, which would swallow the mark on it, and the

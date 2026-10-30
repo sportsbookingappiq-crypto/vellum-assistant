@@ -1,12 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "vellum-logo-white.svg",
+      "filename" : "anu-launch-lockup.svg",
       "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
   }
 }

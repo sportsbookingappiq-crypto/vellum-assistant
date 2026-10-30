@@ -16,14 +16,14 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VellumLogo" translatesAutoresizingMaskIntoConstraints="NO" id="5lJ-3O-jR7">
-                                <rect key="frame" x="141.5" y="319.5" width="92" height="28"/>
+                                <rect key="frame" x="139.5" y="266.5" width="96" height="134"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.039215686274509803" green="0.086274509803921567" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="5lJ-3O-jR7" firstAttribute="width" constant="92" id="1L7-QU-Rqb"/>
+                            <constraint firstItem="5lJ-3O-jR7" firstAttribute="width" constant="96" id="1L7-QU-Rqb"/>
                             <constraint firstItem="5lJ-3O-jR7" firstAttribute="centerY" secondItem="snD-IY-ifK" secondAttribute="centerY" id="7aP-VC-CaT"/>
-                            <constraint firstItem="5lJ-3O-jR7" firstAttribute="height" constant="28" id="N3L-dK-6XR"/>
+                            <constraint firstItem="5lJ-3O-jR7" firstAttribute="height" constant="134" id="N3L-dK-6XR"/>
                             <constraint firstItem="5lJ-3O-jR7" firstAttribute="centerX" secondItem="snD-IY-ifK" secondAttribute="centerX" id="bMB-Vq-z9V"/>
                         </constraints>
                     </view>
@@ -34,6 +34,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="VellumLogo" width="92" height="28"/>
+        <image name="VellumLogo" width="100" height="140"/>
     </resources>
 </document>

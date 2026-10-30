@@ -13,7 +13,7 @@ BUNDLE_URL_SCHEME = vellum-assistant
 // The ground the app's mark is drawn on, which must equal the
 // `fill-specializations` solid in `App/AppIcon.icon/icon.json`: the widget
 // draws the containing app's icon, and each build ships its own.
-APP_ICON_GROUND = display-p3:0.08015,0.14303,0.32859,1.00000
+APP_ICON_GROUND = display-p3:1.00000,1.00000,1.00000,1.00000
 PRODUCT_BUNDLE_IDENTIFIER = ai.anu.assistant-ios.VoiceActivity
 
 // Exact portal profile name; must equal release-ios.yaml's `ext_profile_name`.

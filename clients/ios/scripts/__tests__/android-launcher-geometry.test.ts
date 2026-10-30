@@ -55,28 +55,16 @@ function extractMarkPaths(xml: string): Array<{ fill: string; d: string }> {
 }
 
 describe("android launcher icon geometry", () => {
-  const [silhouette, facets] = brandPaths();
+  const [silhouette] = brandPaths();
 
   for (const relativePath of LAUNCHER_XMLS) {
-    test(`${relativePath} embeds the brand mark paths verbatim`, () => {
+    test(`${relativePath} draws the brand silhouette in solid black`, () => {
       const xml = readFileSync(join(ANDROID_RES, relativePath), "utf8");
-      expect(extractMarkPaths(xml).map(({ d }) => d)).toEqual([
-        silhouette,
-        facets,
+      expect(extractMarkPaths(xml)).toEqual([
+        { fill: "#000000", d: silhouette },
       ]);
     });
   }
-
-  test("every launcher draws the same two tones", () => {
-    const tones = LAUNCHER_XMLS.map((relativePath) =>
-      extractMarkPaths(
-        readFileSync(join(ANDROID_RES, relativePath), "utf8"),
-      ).map(({ fill }) => fill),
-    );
-    for (const tone of tones) {
-      expect(tone).toEqual(tones[0]);
-    }
-  });
 });
 
 describe("android themed icon mask", () => {

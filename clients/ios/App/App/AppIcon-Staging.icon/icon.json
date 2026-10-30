@@ -24,8 +24,8 @@
             }
           ],
           "glass": false,
-          "image-name": "anu-mark-night.svg",
-          "name": "anu-mark-night",
+          "image-name": "anu-mark.svg",
+          "name": "anu-mark",
           "position": {
             "scale": 6.4,
             "translation-in-points": [

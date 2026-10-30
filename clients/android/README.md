@@ -82,16 +82,16 @@ updated hosted web UI. See the [camera QA guide](../web/docs/CAMERA_MODE_QA.md).
 ## Launcher Icons
 
 The default launcher icon is the ANU snowflake from `assets/brand/`, the same
-mark the iOS app icon uses. The two paths (Sky silhouette, Ice facets) in
+mark the iOS app icon uses. The solid black silhouette in
 `app/src/main/res/drawable/ic_launcher_foreground.xml` and in the pre-adaptive
-`app/src/main/res/mipmap-anydpi/ic_launcher*.xml` fallbacks are copied verbatim
+`app/src/main/res/mipmap-anydpi/ic_launcher*.xml` fallbacks is copied verbatim
 from `assets/brand/anu-mark.svg` and only repositioned by a VectorDrawable
 `<group>`; `clients/ios/scripts/__tests__/android-launcher-geometry.test.ts`
-pins them.
+pins it.
 
 Each flavor's `launcher_background` in
 `app/src/<flavor>/res/values/colors.xml` distinguishes the installs: production
-`#0F2557` (the ANU brand Night 800), staging `#E9C91A`, and dev `#FF88C9`.
+`#FFFFFF` (white, under the black mark), staging `#E9C91A`, and dev `#FF88C9`.
 Those three are the shared cross-platform standard: a flavor and the iOS
 `AppIcon-*.icon` bundle for the same environment sit on the same color, which
 the web app names once as `APP_ICON_GROUNDS`. Change one and change the rest

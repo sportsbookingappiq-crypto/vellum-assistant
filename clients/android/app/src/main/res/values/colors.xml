@@ -5,14 +5,15 @@
     <color name="colorPrimaryDark">#1E40AF</color>
     <color name="colorAccent">#38BDF8</color>
     <!--
-        The light theme's ground (Frost, the `surface-base` token) and ink
-        (Night 900). values-night carries the dark pair. The launch screen
-        follows the in-app theme because NativeLaunchScreenPlugin applies the
-        stored theme as the app's night mode before the splash draws.
+        The launch screen is plain white in both themes and every language,
+        with the snowflake and the word ANU in solid black
+        (launch_screen_foreground, the fill in drawable/vellum_logo.xml).
+        No gradient, glow or edge. It matches the web splash. The window
+        behind the web view takes the theme's ground.
     -->
-    <color name="launch_screen_background">#F0F9FF</color>
-    <color name="launch_screen_foreground">#0A1633</color>
-    <color name="window_background">#F0F9FF</color>
+    <color name="launch_screen_background">#FFFFFF</color>
+    <color name="launch_screen_foreground">#000000</color>
+    <color name="window_background">#FFFFFF</color>
     <color name="notification_icon_color">#2563EB</color>
     <color name="system_bar_scrim">#00000000</color>
 </resources>

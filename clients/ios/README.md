@@ -308,14 +308,12 @@ inline in `App/project.yml` under the `AppEnvironment` template.
 
 ### App icon + launch screen
 
-- `App/App/AppIcon.icon/` is an Icon Composer bundle: a solid `#0F2557`
-  background (Night 800 from `assets/brand/BRAND.md`) with the ANU
-  snowflake centred on top at 62.5% of the icon. `Assets/anu-mark.svg` is
-  the two-tone (Sky base, Ice facets) cut of `assets/brand/anu-mark.svg`,
-  path for path.
+- `App/App/AppIcon.icon/` is an Icon Composer bundle: a solid white
+  background with the ANU snowflake in solid black centred on top at 62.5%
+  of the icon. `Assets/anu-mark.svg` is the silhouette from
+  `assets/brand/anu-mark.svg`, path for path.
 - `AppIcon-Staging.icon` (`#E9C91A`) and `AppIcon-Dev.icon` (`#FF88C9`)
-  carry the same mark in the night two-tone (`Assets/anu-mark-night.svg`)
-  so it reads on their light grounds.
+  carry the same black mark; only the `fill-specializations` colour differs.
 - A bundle's `fill-specializations` solid is a **Display P3** value, so an
   sRGB hex has to be converted before it goes in. All three bundles carry a
   true conversion of their hex. Pasting the raw sRGB components straight

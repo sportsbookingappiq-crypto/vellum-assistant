@@ -11,21 +11,15 @@
     <group
         android:pivotX="300"
         android:pivotY="300"
-        android:scaleX="0.0918"
-        android:scaleY="0.0918"
+        android:scaleX="0.1146"
+        android:scaleY="0.1146"
         android:translateX="-246"
         android:translateY="-246">
         <path
             android:fillColor="#FFFFFF"
-            android:pathData="M284 310C284 358.6 244.6 398 196 398C147.4 398 108 358.6 108 310C108 261.4 147.4 222 196 222C244.6 222 284 261.4 284 310Z" />
+            android:pathData="M287.2 308C287.2 346.88 255.68 378.4 216.8 378.4C177.92 378.4 146.4 346.88 146.4 308C146.4 269.12 177.92 237.6 216.8 237.6C255.68 237.6 287.2 269.12 287.2 308Z" />
         <path
             android:fillColor="#FFFFFF"
-            android:pathData="M260 310C260 316.63 254.63 322 248 322C241.37 322 236 316.63 236 310C236 303.37 241.37 298 248 298C254.63 298 260 303.37 260 310Z" />
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M500 290C500 345.23 458.81 390 408 390C357.19 390 316 345.23 316 290C316 234.77 357.19 190 408 190C458.81 190 500 234.77 500 290Z" />
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M390 292C390 298.63 384.63 304 378 304C371.37 304 366 298.63 366 292C366 285.37 371.37 280 378 280C384.63 280 390 285.37 390 292Z" />
+            android:pathData="M460 292C460 336.18 427.05 372 386.4 372C345.75 372 312.8 336.18 312.8 292C312.8 247.82 345.75 212 386.4 212C427.05 212 460 247.82 460 292Z" />
     </group>
 </vector>
