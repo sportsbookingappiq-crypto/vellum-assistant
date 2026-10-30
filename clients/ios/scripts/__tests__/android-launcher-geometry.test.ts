@@ -1,20 +1,19 @@
 /**
  * Drift guard for the Android launcher icon geometry.
  *
- * The quirky eye pair is duplicated by design across the avatar component
- * library and three Android launcher XMLs (the adaptive foreground plus the
- * two pre-adaptive fallbacks). Android resources cannot import TypeScript, so
- * the geometry is embedded verbatim and this test pins the copies to the
- * library: a change to the quirky eye style, or a hand edit to any one
- * launcher XML, fails here until every copy agrees again.
+ * The ANU snowflake is duplicated by design across the brand sources in
+ * `assets/brand/` and the Android launcher XMLs (the adaptive foreground, the
+ * themed-icon mask, and the two pre-adaptive fallbacks). Android resources
+ * cannot read the brand folder, so the path data is embedded verbatim and this
+ * test pins the copies to the brand source: a change to the mark, or a hand
+ * edit to any one launcher XML, fails here until every copy agrees again.
  */
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { getCharacterComponents } from "../../../../packages/avatar-catalog/src/index.js";
-
-const ANDROID_RES = join(import.meta.dir, "../../../android/app/src/main/res");
+const REPO_ROOT = join(import.meta.dir, "../../../..");
+const ANDROID_RES = join(REPO_ROOT, "clients/android/app/src/main/res");
 
 const LAUNCHER_XMLS = [
   "drawable/ic_launcher_foreground.xml",
@@ -22,7 +21,20 @@ const LAUNCHER_XMLS = [
   "mipmap-anydpi/ic_launcher_round.xml",
 ];
 
-function extractEyePaths(xml: string): Array<{ fill: string; d: string }> {
+/** The mark's center in its 100x100 brand canvas. */
+const MARK_CENTER = 50;
+
+function brandPaths(): string[] {
+  const svg = readFileSync(
+    join(REPO_ROOT, "assets/brand/anu-mark.svg"),
+    "utf8",
+  );
+  return [...svg.matchAll(/<path\b[^>]*\bd="([^"]+)"/g)].map(
+    (match) => match[1] as string,
+  );
+}
+
+function extractMarkPaths(xml: string): Array<{ fill: string; d: string }> {
   const paths: Array<{ fill: string; d: string }> = [];
   const pathTag = /<path\b[^>]*\/>/gs;
   for (const match of xml.match(pathTag) ?? []) {
@@ -34,7 +46,7 @@ function extractEyePaths(xml: string): Array<{ fill: string; d: string }> {
     if (fill.startsWith("@color/")) {
       // The pre-adaptive launchers paint their own background path from the
       // flavor's launcher_background resource; only literal-color paths are
-      // eye geometry.
+      // mark geometry.
       continue;
     }
     paths.push({ fill, d });
@@ -43,56 +55,41 @@ function extractEyePaths(xml: string): Array<{ fill: string; d: string }> {
 }
 
 describe("android launcher icon geometry", () => {
-  const quirky = getCharacterComponents().eyeStyles.find(
-    (style) => style.id === "quirky",
-  );
-  if (!quirky) {
-    throw new Error("quirky eye style missing from the component library");
-  }
+  const [silhouette, facets] = brandPaths();
 
   for (const relativePath of LAUNCHER_XMLS) {
-    test(`${relativePath} embeds the library quirky paths verbatim`, () => {
+    test(`${relativePath} embeds the brand mark paths verbatim`, () => {
       const xml = readFileSync(join(ANDROID_RES, relativePath), "utf8");
-      const embedded = extractEyePaths(xml);
-      expect(embedded.length).toBe(quirky.paths.length);
-      for (const [index, libraryPath] of quirky.paths.entries()) {
-        expect(embedded[index]?.d).toBe(libraryPath.svgPath);
-        expect(embedded[index]?.fill).toBe(libraryPath.color);
-      }
+      expect(extractMarkPaths(xml).map(({ d }) => d)).toEqual([
+        silhouette,
+        facets,
+      ]);
     });
   }
-});
 
-describe("android themed icon mask", () => {
-  const quirky = getCharacterComponents().eyeStyles.find(
-    (style) => style.id === "quirky",
-  );
-  if (!quirky) {
-    throw new Error("quirky eye style missing from the component library");
-  }
-
-  test("ic_launcher_monochrome.xml embeds the two outer sclera paths verbatim", () => {
-    const xml = readFileSync(
-      join(ANDROID_RES, "drawable/ic_launcher_monochrome.xml"),
-      "utf8",
+  test("every launcher draws the same two tones", () => {
+    const tones = LAUNCHER_XMLS.map((relativePath) =>
+      extractMarkPaths(
+        readFileSync(join(ANDROID_RES, relativePath), "utf8"),
+      ).map(({ fill }) => fill),
     );
-    const embedded = extractEyePaths(xml);
-    const expected = [quirky.paths[0].svgPath, quirky.paths[3].svgPath];
-    expect(embedded.length).toBe(expected.length);
-    for (const [index, d] of expected.entries()) {
-      expect(embedded[index]?.d).toBe(d);
+    for (const tone of tones) {
+      expect(tone).toEqual(tones[0]);
     }
   });
 });
 
-describe("android launcher icon transforms", () => {
-  const quirky = getCharacterComponents().eyeStyles.find(
-    (style) => style.id === "quirky",
-  );
-  if (!quirky) {
-    throw new Error("quirky eye style missing from the component library");
-  }
+describe("android themed icon mask", () => {
+  test("ic_launcher_monochrome.xml embeds the brand silhouette verbatim", () => {
+    const xml = readFileSync(
+      join(ANDROID_RES, "drawable/ic_launcher_monochrome.xml"),
+      "utf8",
+    );
+    expect(extractMarkPaths(xml).map(({ d }) => d)).toEqual([brandPaths()[0]]);
+  });
+});
 
+describe("android launcher icon transforms", () => {
   const GROUP_ATTRS = [
     "pivotX",
     "pivotY",
@@ -120,10 +117,10 @@ describe("android launcher icon transforms", () => {
   const legacy = extractTransform("mipmap-anydpi/ic_launcher.xml");
   const legacyRound = extractTransform("mipmap-anydpi/ic_launcher_round.xml");
 
-  test("every launcher group pivots on the library eye center", () => {
+  test("every launcher group pivots on the mark center", () => {
     for (const transform of [adaptive, monochrome, legacy, legacyRound]) {
-      expect(transform.pivotX).toBe(String(quirky.eyeCenter.x));
-      expect(transform.pivotY).toBe(String(quirky.eyeCenter.y));
+      expect(transform.pivotX).toBe(String(MARK_CENTER));
+      expect(transform.pivotY).toBe(String(MARK_CENTER));
     }
   });
 
@@ -137,8 +134,8 @@ describe("android launcher icon transforms", () => {
 
   test("every launcher group centers the pivot on the 108dp canvas", () => {
     // A VectorDrawable group maps the pivot to pivot + translate, so this sum
-    // is the on-canvas position of the eye center and must be the canvas
-    // center regardless of where the library puts eyeCenter.
+    // is the on-canvas position of the mark center and must be the canvas
+    // center.
     for (const transform of [adaptive, monochrome, legacy, legacyRound]) {
       expect(Number(transform.pivotX) + Number(transform.translateX)).toBe(54);
       expect(Number(transform.pivotY) + Number(transform.translateY)).toBe(54);
@@ -150,10 +147,11 @@ describe("android launcher icon transforms", () => {
     expect(legacy.scaleY).toBe(legacy.scaleX);
     expect(legacy.translateX).toBe(adaptive.translateX);
     expect(legacy.translateY).toBe(adaptive.translateY);
-    const adaptiveScale = Number(adaptive.scaleX);
-    const legacyScale = Number(legacy.scaleX);
     // Legacy icons fill the full 108dp canvas while adaptive art targets the
     // 72dp a launcher mask reveals, so the scales differ by exactly 108/72.
-    expect(legacyScale).toBeCloseTo(adaptiveScale * 1.5, 10);
+    expect(Number(legacy.scaleX)).toBeCloseTo(
+      Number(adaptive.scaleX) * 1.5,
+      10,
+    );
   });
 });

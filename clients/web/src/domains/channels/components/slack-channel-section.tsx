@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { ChevronDown } from "lucide-react";
 
-import { Card } from "@vellumai/design-library/components/card";
-import { Collapsible } from "@vellumai/design-library/components/collapsible";
-import { Notice } from "@vellumai/design-library/components/notice";
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Card } from "@anu/design-library/components/card";
+import { Collapsible } from "@anu/design-library/components/collapsible";
+import { Notice } from "@anu/design-library/components/notice";
+import { Typography } from "@anu/design-library/components/typography";
 
 import { useTranslation } from "@/i18n";
 import { SlackChannelList } from "@/domains/channels/components/slack-channel-list";

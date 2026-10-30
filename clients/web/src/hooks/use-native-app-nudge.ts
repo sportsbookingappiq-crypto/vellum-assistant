@@ -21,11 +21,11 @@ export interface NativeAppPromotion {
 
 export const NATIVE_APP_BANNER_MIN_TURNS = 5;
 
-/** App Store listing for Vellum Assistant (id6759934423). */
+/** App Store listing for ANU (id6759934423). */
 export const IOS_APP_STORE_URL =
   "https://apps.apple.com/us/app/vellum-assistant/id6759934423";
 
-const ANDROID_PACKAGE_ID = "ai.vellum.assistant";
+const ANDROID_PACKAGE_ID = "ai.anu.assistant";
 
 /** Verbatim value Android's `getInstallReferrer()` returns after install. */
 const ANDROID_INSTALL_REFERRER =

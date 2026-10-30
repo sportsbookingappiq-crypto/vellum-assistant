@@ -6,7 +6,7 @@ import {
   Button,
   type ButtonVariant,
   type ButtonSize,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 
 import { navigateToNewConversation } from "@/utils/conversation-navigation";
 

@@ -47,7 +47,7 @@ import { useEffect } from "react";
 import type {
   CompanionIntroEvent,
   CompanionIntroReport,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import {
   emitOnboardingFunnelStepCompleted,

@@ -1,7 +1,7 @@
 ---
 name: vellum-conversation-management
 description: Manage conversation threads (rename, list, search, export)
-compatibility: "Designed for Vellum personal assistants"
+compatibility: "Designed for ANU personal assistants"
 metadata:
   emoji: "💬"
   vellum:

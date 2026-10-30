@@ -1,12 +1,12 @@
 /**
  * `assistant plugins publish` — validate a local plugin, resolve its git
- * context, and submit it to the Vellum marketplace catalog via the platform
+ * context, and submit it to the ANU marketplace catalog via the platform
  * API.
  *
  * The flow mirrors `npm publish`: validate the package locally, resolve the
  * version (commit SHA), and POST to a registry endpoint. The platform then
  * creates a pull request against `vellum-ai/vellum-assistant` using the
- * Vellum Automation GitHub App.
+ * ANU Automation GitHub App.
  *
  * Designed for direct programmatic use with an injected `fetch`, mirroring
  * {@link ./install-from-github} and {@link ./search-plugins}.
@@ -16,6 +16,8 @@ import { execFile } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { promisify } from "node:util";
+
+import { pluginApiPeerRange } from "../../plugins/plugin-api-package.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -106,7 +108,7 @@ export function findPluginRoot(startDir: string): string | null {
  * Validate a plugin directory for publish readiness.
  *
  * Checks the same things the review team will verify:
- * - package.json exists with name, version, and @vellumai/plugin-api peer dep
+ * - package.json exists with name, version, and @anu/plugin-api peer dep
  * - At least one surface directory (hooks/, tools/, skills/) has entries
  * - No stale .js artifacts without matching .ts source
  */
@@ -151,10 +153,8 @@ export function validatePluginForPublish(dir: string): PublishValidation {
   }
 
   const peerDeps = pkg.peerDependencies ?? {};
-  if (!("@vellumai/plugin-api" in peerDeps)) {
-    issues.push(
-      "package.json missing peerDependencies['@vellumai/plugin-api']",
-    );
+  if (pluginApiPeerRange(peerDeps) === undefined) {
+    issues.push("package.json missing peerDependencies['@anu/plugin-api']");
   }
 
   // Check for at least one surface directory with entries
@@ -319,7 +319,7 @@ function extractRepoUrl(pkg: ParsedPackageJson): string | undefined {
 // ---------------------------------------------------------------------------
 
 /**
- * POST the publish payload to the Vellum platform API.
+ * POST the publish payload to the ANU platform API.
  */
 export async function postPublishRequest(
   payload: PublishPayload,
@@ -343,7 +343,7 @@ export async function postPublishRequest(
 /**
  * Resolve platform credentials for the publish request.
  *
- * Returns `null` when not connected to the Vellum platform (no API key
+ * Returns `null` when not connected to the ANU platform (no API key
  * or base URL configured). The CLI command uses this to avoid hoisting
  * `VellumPlatformClient` into its static import graph; resolving it lazily
  * keeps that daemon code out of the CLI process until the command needs it.
@@ -568,7 +568,7 @@ export async function runPublish(
     console.log(formatPayloadForPrint(payload));
     console.log("");
     const result = await deps.confirmPrompt({
-      question: "Submit this entry to the Vellum marketplace? [y/N] ",
+      question: "Submit this entry to the ANU marketplace? [y/N] ",
       isTTY: Boolean(process.stdin.isTTY),
       refuseNonInteractiveMessage:
         "Refusing to publish non-interactively. Pass --force to confirm.",
@@ -587,7 +587,7 @@ export async function runPublish(
   const platformDeps = await resolvePlatformDeps();
   if (!platformDeps) {
     const msg =
-      "Not connected to Vellum platform. Run `assistant platform connect` to connect, or use --print to generate the entry without submitting.";
+      "Not connected to ANU platform. Run `assistant platform connect` to connect, or use --print to generate the entry without submitting.";
     if (opts.json) {
       process.stdout.write(
         JSON.stringify({
@@ -640,9 +640,9 @@ export function formatPublishResult(result: PublishResult): string {
   const lines: string[] = [
     `✓ PR opened: ${result.pr_url}`,
     "",
-    "The Vellum team will review your plugin. The review checks:",
+    "The ANU team will review your plugin. The review checks:",
     "  • Pinned commit is reachable and public",
-    "  • package.json has @vellumai/plugin-api peer dependency",
+    "  • package.json has @anu/plugin-api peer dependency",
     "  • Plugin loads cleanly (hooks register, tools validate)",
     "  • Surfaces contribute on boot (not silently failing)",
     "",

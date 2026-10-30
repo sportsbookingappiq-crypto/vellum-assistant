@@ -1,6 +1,6 @@
 # Electron wrapper
 
-Desktop shell for the Vellum Assistant macOS app. Wraps [`clients/web/`](../web/)
+Desktop shell for the ANU macOS app. Wraps [`clients/web/`](../web/)
 in an Electron `BrowserWindow`. Each assistant's background processes are owned
 entirely by the `vellum` CLI, which the app invokes as a subprocess — the
 Electron app is a GUI client, not a process manager.
@@ -49,7 +49,7 @@ Configuration lives in `src/main/auto-update.ts`:
 - **`autoDownload: true`** — updates download silently in the background.
 - **`autoInstallOnAppQuit: true`** — installs on next quit, not mid-session.
 - **Poll interval** — checks on launch, then every 4 hours.
-- **Manual trigger** — users can check via the `Vellum > Check for Updates…`
+- **Manual trigger** — users can check via the `ANU > Check for Updates…`
   menu item (packaged builds only), or the renderer can invoke
   `vellum:update:check` / `vellum:update:install` over IPC.
 
@@ -72,14 +72,14 @@ which is a fast no-op when the lockfile already matches).
 ## How it runs
 
 `bun run dev` is the one command. On launch it probes
-`http://localhost:3000` (the URL Swift Vellum hits — `vel up`'s edge
+`http://localhost:3000` (the URL Swift ANU hits — `vel up`'s edge
 proxy) with a 1.5s timeout and picks one of two paths:
 
 1. **vel up is running** → dispatches to `dev:electron-only` with
    `VELLUM_DEV_URL=http://localhost:3000/assistant`. No Vite is spawned
    here; the Electron BrowserWindow loads the edge proxy at the
    `/assistant` path (the bare root is the marketing site) and reuses
-   vel's backends (Django, gateway, daemon) the same way Swift Vellum
+   vel's backends (Django, gateway, daemon) the same way Swift ANU
    does today. This is the common case once you have `vel up` going.
 
 2. **No vel up** → dispatches to `dev:standalone`, which uses
@@ -117,8 +117,8 @@ The app shows up as **Vellum Electron** in the menu bar and Dock
 (via `app.setName`, gated to `!app.isPackaged` in `src/main/index.ts`),
 and writes preferences / electron-store data under
 `~/Library/Application Support/Vellum Electron/`. That keeps it cleanly
-separate from the Swift `Vellum.app`, `Vellum Local.app`, and
-`Vellum Dev.app` installs — running this locally won't clobber
+separate from the Swift `ANU.app`, `ANU Local.app`, and
+`ANU Dev.app` installs — running this locally won't clobber
 whichever Swift channel you have around.
 
 - **Dev (vel up)** — Electron loads `http://localhost:3000/assistant` (edge proxy + the path clients/web's Vite is configured for).
@@ -134,7 +134,7 @@ whichever Swift channel you have around.
 ## Native macOS integration
 
 - **Application menu** (`src/main/menu.ts`). Installs a standard macOS menu
-  bar with `Vellum`, `File`, `Edit`, `View`, `Window`, and `Help` submenus.
+  bar with `ANU`, `File`, `Edit`, `View`, `Window`, and `Help` submenus.
   Most items are role-based so they work without renderer IPC; the `File`
   items dispatch through the typed command bus in `src/main/commands.ts`,
   which broadcasts to the focused window's renderer via a single
@@ -166,10 +166,10 @@ whichever Swift channel you have around.
     pasteboard/file-promise reference can still need it. Instead `share.ts`
     reclaims only _stale_ temp dirs (older than an hour — long past any
     transfer), sweeping at startup and before each new share, so it never
-    deletes a file still in use, including one from a second Vellum build
+    deletes a file still in use, including one from a second ANU build
     sharing at the same time.
 
-- **Downloads** (`@vellumai/electron-desktop`'s `downloads.ts`, shared with the
+- **Downloads** (`@anu/electron-desktop`'s `downloads.ts`, shared with the
   Windows shell). The counterpart intent to the Share Sheet. The renderer
   downloads the browser way (`saveFile` → an `<a download>` click), which
   Chromium raises as a `will-download` on the default session. Without a
@@ -200,7 +200,7 @@ exposes no intent API, so this is the only path to that layout.
 
 `src/main/notifier.ts` loads the addon (`process.dlopen`, inside a try/catch)
 and `src/main/native-notifications.ts` adapts it to the `create` /
-`isSupported` seams of `@vellumai/electron-desktop/notifications`. A checkout
+`isSupported` seams of `@anu/electron-desktop/notifications`. A checkout
 with no built addon reports unavailable and the app falls back to Electron's
 own notifications, and so does an addon that loads but answers
 `isSupported()` with false, which is what an unbundled run does because
@@ -397,10 +397,10 @@ The preload script exposes a typed `window.vellum` API to the renderer:
   back to the window.
 - `localMode.*` — provisions and retires local assistants and reads/writes
   the lockfile that records them. `hatch(species)` and `retire(assistantId)`
-  drive the Vellum CLI as a subprocess; `readLockfile()`,
+  drive the ANU CLI as a subprocess; `readLockfile()`,
   `saveLockfileAssistant(assistant, activeAssistant?)`, and
   `replacePlatformAssistants(platformAssistants)` read and write the lockfile
-  on disk. Every method is a thin wrapper over [`@vellumai/local-mode`](../../packages/local-mode/),
+  on disk. Every method is a thin wrapper over [`@anu/local-mode`](../../packages/local-mode/),
   the shared host library that also backs the web app's dev-server middleware,
   so the spawn/parse and lockfile logic lives in one place. The renderer-side
   transport seam is [`clients/web/src/runtime/local-mode-host.ts`](../web/src/runtime/local-mode-host.ts),
@@ -464,11 +464,11 @@ their current lesson. Every permission step is skippable.
 | --- | --- | --- |
 | Try a call | Microphone | Capture your voice during calls |
 | Voice key | Input Monitoring | Detect the global voice-key shortcut |
-| Share | Screen Recording | Share a screen or window through Vellum Helper |
+| Share | Screen Recording | Share a screen or window through ANU Helper |
 
 Microphone uses the native prompt. Input Monitoring and Screen Recording lift
 the coachmark's permission control into a guide beside System Settings. Drag
-Vellum Helper into the privacy list and authenticate if asked.
+ANU Helper into the privacy list and authenticate if asked.
 **Show in Finder** provides a keyboard and manual-drag alternative. The bundle
 label and icon reflect the actual installed helper, including development builds.
 
@@ -486,7 +486,7 @@ The guide follows the main Settings window using the helper's window inventory;
 when unavailable it stays near the bottom of the current display. Before a drag
 or Finder reveal it stops following and drops its floating level to leave native
 authentication visible. A confirmed grant closes the guide without raising the
-companion over Settings. Vellum returns to the same coachmark only after the
+companion over Settings. ANU returns to the same coachmark only after the
 request settles and System Settings leaves the foreground. Settings keeps focus
 through its **Quit & Reopen** confirmation; an unknown foreground application or
 active authentication agent also defers the return. **Back to the tour** returns

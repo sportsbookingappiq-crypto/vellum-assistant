@@ -1,6 +1,6 @@
 {
   "fill" : {
-    "solid" : "display-p3:0.37749,0.60064,0.34581,1.00000"
+    "solid" : "display-p3:0.08015,0.14303,0.32859,1.00000"
   },
   "groups" : [
     {
@@ -17,10 +17,10 @@
           "image-name" : "white-V.svg",
           "name" : "white-V",
           "position" : {
-            "scale" : 6,
+            "scale" : 6.4,
             "translation-in-points" : [
               0,
-              25
+              0
             ]
           }
         }

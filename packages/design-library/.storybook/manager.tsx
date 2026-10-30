@@ -19,7 +19,7 @@ import {
 const lightManagerTheme = create({
   base: "light",
 
-  brandTitle: "Vellum Design Library",
+  brandTitle: "ANU Design Library",
   brandUrl: "https://github.com/vellum-ai/vellum-assistant",
   appBorderRadius: 8,
 

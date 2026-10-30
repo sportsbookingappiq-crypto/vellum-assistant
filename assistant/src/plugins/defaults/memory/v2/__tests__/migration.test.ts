@@ -25,11 +25,7 @@
 
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 
-import type {
-  Message,
-  Provider,
-  SendMessageOptions,
-} from "@vellumai/plugin-api";
+import type { Message, Provider, SendMessageOptions } from "@anu/plugin-api";
 
 // -- Mocks that must be installed before importing the module under test ---
 //
@@ -65,8 +61,8 @@ let providerStub: Provider | null = null;
 // Spread the real module so the memory code under test keeps every other
 // plugin-API export (`safeStringSlice` among them); only the provider lookup
 // is stubbed.
-const realPluginApi = await import("@vellumai/plugin-api");
-mock.module("@vellumai/plugin-api", () => ({
+const realPluginApi = await import("@anu/plugin-api");
+mock.module("@anu/plugin-api", () => ({
   ...realPluginApi,
   getConfiguredProvider: async () => providerStub,
 }));
@@ -95,7 +91,7 @@ import * as schema from "../../../../../persistence/schema/index.js";
 import type { Cluster, V1Edge, V1Item } from "../migration.js";
 
 // Dynamic import — runs *after* the mock.module calls above so the migration
-// module's transitive references to logger / jobs-store / @vellumai/plugin-api
+// module's transitive references to logger / jobs-store / @anu/plugin-api
 // resolve to our stubs (matches the pattern used in `qdrant.test.ts`).
 const {
   clusterByTopic,
@@ -251,7 +247,7 @@ describe("gatherV1State", () => {
 
   test("reads graph nodes from the v1 store", () => {
     const id = insertNode(database, {
-      content: "Alice ships to Vellum at end of day.",
+      content: "Alice ships to ANU at end of day.",
       type: "semantic",
       significance: 0.8,
     });
@@ -259,7 +255,7 @@ describe("gatherV1State", () => {
     expect(items.length).toBe(1);
     expect(items[0]).toMatchObject({
       id,
-      text: "Alice ships to Vellum at end of day.",
+      text: "Alice ships to ANU at end of day.",
       source: "graph_node",
       significance: 0.8,
       type: "semantic",
@@ -655,7 +651,7 @@ describe("runMemoryV2Migration", () => {
   test("end-to-end: gathers, synthesizes, promotes, collapses, embeds, sentinel", async () => {
     const a = insertNode(database, {
       id: "node-a",
-      content: "User is Alice and works at Vellum",
+      content: "User is Alice and works at ANU",
       significance: 0.95,
     });
     const b = insertNode(database, {
@@ -666,14 +662,14 @@ describe("runMemoryV2Migration", () => {
     insertEdge(database, a, b);
     writeFileSync(
       join(workspaceDir, "pkb", "ides.md"),
-      "VS Code is preferred at Vellum.\n",
+      "VS Code is preferred at ANU.\n",
       "utf-8",
     );
 
     const provider = buildStubProvider([
-      "Alice works at Vellum.\n",
+      "Alice works at ANU.\n",
       "Alice prefers VS Code over Vim.\n",
-      "VS Code is preferred at Vellum.\n",
+      "VS Code is preferred at ANU.\n",
     ]);
     const result = await runMemoryV2Migration({
       workspaceDir,
@@ -709,7 +705,7 @@ describe("runMemoryV2Migration", () => {
       join(workspaceDir, "memory", "essentials.md"),
       "utf-8",
     );
-    expect(essentials).toContain("User is Alice and works at Vellum");
+    expect(essentials).toContain("User is Alice and works at ANU");
     expect(result.essentialsLines).toBe(1);
 
     // -- Embed jobs enqueued (one per page). No rebuild-edges follow-up:

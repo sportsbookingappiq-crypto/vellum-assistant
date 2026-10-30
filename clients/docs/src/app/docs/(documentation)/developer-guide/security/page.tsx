@@ -2,9 +2,9 @@ import { DeveloperGuideSecurityContent } from "@/app/docs/_components/developer-
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({
-  title: "Security & Permissions - Developer Guide - Vellum Docs",
+  title: "Security & Permissions - Developer Guide - ANU Docs",
   description:
-    "Sandbox model, credential storage, trust rules, and permission modes for the Vellum Assistant platform.",
+    "Sandbox model, credential storage, trust rules, and permission modes for the ANU platform.",
   path: "/docs/developer-guide/security",
 });
 

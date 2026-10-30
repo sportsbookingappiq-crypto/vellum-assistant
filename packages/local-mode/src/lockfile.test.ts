@@ -87,7 +87,7 @@ describe("getLockfileData", () => {
   });
 
   test("surfaces a tunnel-recorded ingressUrl to the renderer", () => {
-    // The exact read the "Pair a device" card relies on: `vellum tunnel` stamps
+    // The exact read the "Pair a device" card relies on: `anu tunnel` stamps
     // ingressUrl onto the entry, and the host read must carry it through.
     writeOnDisk({
       activeAssistant: "asst_1",

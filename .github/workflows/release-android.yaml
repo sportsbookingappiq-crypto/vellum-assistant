@@ -38,17 +38,17 @@ jobs:
           case "$ENVIRONMENT" in
             production)
               echo "flavor=Production" >> "$GITHUB_OUTPUT"
-              echo "package_id=ai.vellum.assistant" >> "$GITHUB_OUTPUT"
+              echo "package_id=ai.anu.assistant" >> "$GITHUB_OUTPUT"
               echo "track=production" >> "$GITHUB_OUTPUT"
               ;;
             staging)
               echo "flavor=Staging" >> "$GITHUB_OUTPUT"
-              echo "package_id=ai.vellum.assistant.staging" >> "$GITHUB_OUTPUT"
+              echo "package_id=ai.anu.assistant.staging" >> "$GITHUB_OUTPUT"
               echo "track=internal" >> "$GITHUB_OUTPUT"
               ;;
             dev)
               echo "flavor=Dev" >> "$GITHUB_OUTPUT"
-              echo "package_id=ai.vellum.assistant.dev" >> "$GITHUB_OUTPUT"
+              echo "package_id=ai.anu.assistant.dev" >> "$GITHUB_OUTPUT"
               echo "track=internal" >> "$GITHUB_OUTPUT"
               ;;
             *)
@@ -85,7 +85,7 @@ jobs:
 
       - name: Install web dependencies
         working-directory: clients/web
-        run: bun install --frozen-lockfile --filter=@vellumai/web
+        run: bun install --frozen-lockfile --filter=@anu/web
 
       - name: Sync Android project
         working-directory: clients/web
@@ -172,7 +172,7 @@ jobs:
 
       - name: Install publisher dependencies
         working-directory: clients/web
-        run: bun install --frozen-lockfile --filter=@vellumai/web --ignore-scripts
+        run: bun install --frozen-lockfile --filter=@anu/web --ignore-scripts
 
       - name: Download signed app bundle
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0

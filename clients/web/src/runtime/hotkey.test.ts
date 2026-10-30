@@ -1,6 +1,6 @@
 import { afterEach, expect, test } from "bun:test";
 
-import type { HotkeySelectionResult } from "@vellumai/ipc-contract";
+import type { HotkeySelectionResult } from "@anu/ipc-contract";
 
 import { readFrontSelection } from "./hotkey";
 

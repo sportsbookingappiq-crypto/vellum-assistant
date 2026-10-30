@@ -14,7 +14,7 @@
 
 import { randomBytes } from "node:crypto";
 
-import { hashVerificationSecret } from "@vellumai/gateway-client";
+import { hashVerificationSecret } from "@anu/gateway-client";
 
 import { startVerificationCall } from "../calls/call-domain.js";
 import {
@@ -61,7 +61,7 @@ export const DESTINATION_RATE_WINDOW_MS = 3_600_000;
 /** Session TTL in seconds (matches challenge TTL of 10 minutes). */
 const SESSION_TTL_SECONDS = 600;
 
-const EMAIL_VERIFICATION_SUBJECT = "Vellum Assistant Guardian Verification";
+const EMAIL_VERIFICATION_SUBJECT = "ANU Guardian Verification";
 
 // ---------------------------------------------------------------------------
 // Telegram destination classification

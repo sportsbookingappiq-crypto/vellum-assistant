@@ -29,7 +29,7 @@ import { createElement, type ReactNode } from "react";
 import {
   SEARCHABLE_SELECT_MENU_MIN_REACH,
   SEARCHABLE_SELECT_MENU_REACH,
-} from "@vellumai/design-library/components/searchable-select";
+} from "@anu/design-library/components/searchable-select";
 
 import { useAssistantLifecycleStore } from "@/assistant/lifecycle-store";
 import type { ProviderConnection } from "@/generated/daemon/types.gen";
@@ -43,7 +43,7 @@ import { useClientFeatureFlagStore } from "@/stores/client-feature-flag-store";
 
 let createdConnection: ProviderConnection;
 
-mock.module("@vellumai/design-library/components/toast", () => ({
+mock.module("@anu/design-library/components/toast", () => ({
   toast: { success: () => {}, error: () => {}, warning: () => {} },
   Toaster: () => null,
   ToastContent: () => null,
@@ -984,7 +984,7 @@ describe("the managed route's annotation", () => {
 
     const managed = Array.from(
       document.querySelectorAll<HTMLElement>('[role="option"]'),
-    ).find((option) => optionLabel(option) === "Vellum");
+    ).find((option) => optionLabel(option) === "ANU");
     expect(managed?.textContent).toContain("Managed");
   });
 });

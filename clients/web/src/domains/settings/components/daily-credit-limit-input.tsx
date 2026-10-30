@@ -1,7 +1,4 @@
-import {
-  Input,
-  type InputProps,
-} from "@vellumai/design-library/components/input";
+import { Input, type InputProps } from "@anu/design-library/components/input";
 
 import { t, useTranslation } from "@/i18n";
 import { dailyResetTimePhrase } from "@/utils/daily-reset-time";

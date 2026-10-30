@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import type {
   HotkeySelectionResult,
   KeyboardModifier,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import {
   readFrontSelection,

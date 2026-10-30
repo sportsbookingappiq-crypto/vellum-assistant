@@ -52,7 +52,7 @@ struct WidgetSnapshot: Codable, Equatable {
     let avatar: WidgetSnapshotAvatar?
 }
 
-/// The `kind` string each Vellum widget registers under, and the identifier
+/// The `kind` string each ANU widget registers under, and the identifier
 /// `WidgetCenter.reloadTimelines(ofKind:)` names to refresh it. Both sides
 /// read them from here so a rename cannot desynchronize a widget from the
 /// reload that is supposed to reach it.

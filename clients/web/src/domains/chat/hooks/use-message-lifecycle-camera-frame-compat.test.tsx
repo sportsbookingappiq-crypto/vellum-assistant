@@ -16,7 +16,7 @@ import { z } from "zod";
 import type {
   AssistantEventEnvelope,
   ConversationMessage,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 
 import { client } from "@/generated/daemon/client.gen";
 import type { MessagesGetResponse } from "@/generated/daemon/types.gen";

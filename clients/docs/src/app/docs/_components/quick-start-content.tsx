@@ -51,9 +51,9 @@ export function QuickStartContent() {
         breadcrumb="Docs / Getting Started / Quick Start"
       >
         <p className="mb-8 text-zinc-600">
-          You&apos;ve installed Vellum. Now what? This page walks
+          You&apos;ve installed ANU. Now what? This page walks
           through how to actually start using your assistant after the
-          install completes, whether you signed up for Vellum Cloud or
+          install completes, whether you signed up for ANU Cloud or
           set up a local install on your Mac.
         </p>
 
@@ -81,7 +81,7 @@ export function QuickStartContent() {
             Where to talk to it
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
-            On Vellum Cloud, your assistant is the same wherever you
+            On ANU Cloud, your assistant is the same wherever you
             sign in, with the same memory and the same conversation
             history carried across:
           </p>
@@ -94,7 +94,7 @@ export function QuickStartContent() {
               in any browser. No install needed.
             </li>
             <li>
-              <strong>iPhone or iPad</strong>: install the Vellum
+              <strong>iPhone or iPad</strong>: install the ANU
               Assistant app from the{" "}
               <a
                 href={routes.iosAppStore}

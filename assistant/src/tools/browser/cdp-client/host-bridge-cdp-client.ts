@@ -17,7 +17,7 @@ import type { CdpClientKind } from "./types.js";
  *    store Chrome tab ids, which never match the CDP target ids the
  *    bridge resolves from `/json/list` and would guarantee
  *    `cdp_session_not_found` failures.
- *  - Tab methods throw locally instead of sending `Vellum.*`
+ *  - Tab methods throw locally instead of sending `ANU.*`
  *    pseudo-methods the bridge cannot serve (matches the
  *    local/cdp-inspect client convention).
  */

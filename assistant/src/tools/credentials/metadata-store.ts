@@ -17,8 +17,8 @@
 import {
   credentialKey,
   StaticCredentialMetadataStore,
-} from "@vellumai/credential-storage";
-import type { CredentialRecord } from "@vellumai/service-contracts/credential-rpc";
+} from "@anu/credential-storage";
+import type { CredentialRecord } from "@anu/service-contracts/credential-rpc";
 
 import { createCesHttpRecordBackendIfConfigured } from "../../security/ces-http-record-backend.js";
 import type { CredentialRecordBackend } from "../../security/ces-rpc-record-backend.js";

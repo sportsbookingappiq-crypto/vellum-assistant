@@ -5,7 +5,7 @@
  */
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Button } from "@vellumai/design-library/components/button";
+import { Button } from "@anu/design-library/components/button";
 
 import { BillingSectionHeader } from "@/domains/settings/components/billing-section-header";
 

@@ -10,8 +10,8 @@
  * need to be renamed when the convention shifts.
  *
  *     <pluginDir>/
- *       package.json              ← legacy Vellum manifest, selected first;
- *                                   peerDependencies["@vellumai/plugin-api"]
+ *       package.json              ← legacy ANU manifest, selected first;
+ *                                   peerDependencies["@anu/plugin-api"]
  *                                   semver range is checked against the
  *                                   running assistant version and rejects
  *                                   the plugin if unsatisfied
@@ -56,6 +56,10 @@ import {
   LEGACY_PLUGIN_MANIFEST,
   readPluginManifest,
 } from "../util/plugin-manifest.js";
+import {
+  PLUGIN_API_PACKAGE,
+  pluginApiPeerRange,
+} from "./plugin-api-package.js";
 import { registerPlugin } from "./registry.js";
 import type {
   HookFunction,
@@ -65,7 +69,7 @@ import type {
   PluginManifest,
 } from "./types.js";
 
-const PLUGIN_API_PEER_DEP = "@vellumai/plugin-api";
+const PLUGIN_API_PEER_DEP = PLUGIN_API_PACKAGE;
 
 const log = getLogger("external-plugin-loader");
 
@@ -263,7 +267,7 @@ async function buildPluginFromDir(pluginDir: string): Promise<Plugin> {
       : "0.0.0";
 
   // Host-compat negotiation: plugins declare their plugin-api version
-  // range via standard `peerDependencies["@vellumai/plugin-api"]`. We
+  // range via standard `peerDependencies["@anu/plugin-api"]`. We
   // inspect the range and report unparseable / unsatisfied cases via
   // `log.error` but still load the plugin — the plugin-installation
   // flow is in flux and a strict gate here would block experimentation
@@ -274,7 +278,9 @@ async function buildPluginFromDir(pluginDir: string): Promise<Plugin> {
   //
   // If the peerDep is absent, the plugin loads without a host-compat
   // claim; we log a warning so the omission is visible at boot.
-  const range = legacyFields.peerDependencies?.[PLUGIN_API_PEER_DEP];
+  const range = pluginApiPeerRange(legacyFields.peerDependencies) as
+    | string
+    | undefined;
   if (range !== undefined) {
     if (!semver.validRange(range)) {
       log.error(

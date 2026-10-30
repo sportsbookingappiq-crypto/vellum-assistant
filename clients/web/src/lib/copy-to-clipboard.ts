@@ -1,4 +1,4 @@
-import { toast } from "@vellumai/design-library/components/toast";
+import { toast } from "@anu/design-library/components/toast";
 
 import { captureError } from "@/lib/sentry/capture-error";
 

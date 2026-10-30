@@ -50,7 +50,7 @@ export function KeyConceptsChannelsContent() {
             Web
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
-            The browser experience. Sign in at your Vellum Cloud URL and
+            The browser experience. Sign in at your ANU Cloud URL and
             you&apos;re talking to your assistant in seconds, no install
             required. Works on any modern browser, any device.
           </p>
@@ -82,7 +82,7 @@ export function KeyConceptsChannelsContent() {
           </ul>
           <p className="mb-0 text-zinc-600">
             Web is cloud-only by design &mdash; the assistant runs in your
-            Vellum Cloud account, with the workspace and sandbox living
+            ANU Cloud account, with the workspace and sandbox living
             there. The browser doesn&apos;t have access to your local
             machine, so host file access, shell commands, computer use, and
             screen watch aren&apos;t available here. For those, use the
@@ -145,8 +145,8 @@ export function KeyConceptsChannelsContent() {
             iOS
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
-            The pocket experience. The Vellum Assistant app on iPhone
-            and iPad signs into your Vellum Cloud account and gives you
+            The pocket experience. The ANU app on iPhone
+            and iPad signs into your ANU Cloud account and gives you
             the same assistant you talk to on the web and desktop, with
             the same memory and the same conversations carried across.
           </p>
@@ -170,7 +170,7 @@ export function KeyConceptsChannelsContent() {
           </ul>
           <p className="mb-4 text-zinc-600">
             Like Web, iOS is cloud-only by design. The assistant runs in
-            your Vellum Cloud account, so host file access, shell
+            your ANU Cloud account, so host file access, shell
             commands, computer use, and screen watch live with the
             desktop app.
           </p>
@@ -189,7 +189,7 @@ export function KeyConceptsChannelsContent() {
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
             The Android app is the same kind of pocket client as iOS: it signs
-            into your Vellum Cloud account and carries the same assistant,
+            into your ANU Cloud account and carries the same assistant,
             memory, and conversations. Host file access, shell commands,
             computer use, and screen watch stay on the desktop app.
           </p>
@@ -709,7 +709,7 @@ export function KeyConceptsChannelsContent() {
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
             Web and desktop don&apos;t need setup beyond signing in to your
-            Vellum Cloud account (or installing the app, for desktop). Other
+            ANU Cloud account (or installing the app, for desktop). Other
             channels are configured through your assistant. You can say
             things like:
           </p>

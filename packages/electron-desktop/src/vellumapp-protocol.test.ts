@@ -2,7 +2,7 @@ import path from "node:path";
 
 import { describe, expect, mock, test } from "bun:test";
 
-import { resolveRelativePath } from "@vellumai/electron-utils/app-protocol";
+import { resolveRelativePath } from "@anu/electron-utils/app-protocol";
 
 mock.module("electron", () => ({
   net: { fetch: mock(async () => new Response()) },

@@ -17,14 +17,14 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 
-import { resolveConfigDir, resolveEnvironmentName } from "@vellumai/local-mode";
+import { resolveConfigDir, resolveEnvironmentName } from "@anu/local-mode";
 
 let cached: string | undefined;
 
 /**
  * Resolve the directory containing device.json. Production uses the legacy
  * ~/.vellum path (shared with the Swift client and daemon); non-production
- * uses resolveConfigDir from @vellumai/local-mode.
+ * uses resolveConfigDir from @anu/local-mode.
  */
 function resolveDeviceDir(): string {
   const env = resolveEnvironmentName(process.env);

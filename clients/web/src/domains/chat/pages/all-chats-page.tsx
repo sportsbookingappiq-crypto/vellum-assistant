@@ -40,8 +40,8 @@ import {
   PanelItem,
   Typography,
   VirtualList,
-} from "@vellumai/design-library";
-import { cn } from "@vellumai/design-library/utils/cn";
+} from "@anu/design-library";
+import { cn } from "@anu/design-library/utils/cn";
 
 import { usePublishPageSurface } from "@/stores/page-surface-store";
 import {

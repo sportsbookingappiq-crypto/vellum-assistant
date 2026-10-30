@@ -5,8 +5,8 @@
   - Use `scripts/` for supporting logic with inline dependencies
   - When including code assets, utilities, or tools, load the [scripts best practices specification](https://agentskills.io/skill-creation/using-scripts.md) first
   - **External dependencies in Bun/TypeScript scripts**: pin versions directly in the import path (e.g., `import { Command } from "commander@13.1.0"`). Bun auto-installs missing packages at runtime when no `node_modules` directory is found. Do NOT add a `package.json` or `bun.lock` to skill directories - this disables Bun's auto-install behavior and breaks portability.
-  - Do not install CLIs into Vellum or the host system; provide instructions for users to install external packages if needed
-  - Do not create new assistant tools and reference them from SKILL.md - this couples skills to Vellum internals and breaks compatibility with other agent systems
+  - Do not install CLIs into ANU or the host system; provide instructions for users to install external packages if needed
+  - Do not create new assistant tools and reference them from SKILL.md - this couples skills to ANU internals and breaks compatibility with other agent systems
   - Do not include a TOOLS.json file in skill directories - skills should rely on CLI tools in `scripts/`, not custom tool definitions
 
 - **Follow the [Agent Skills specification](https://agentskills.io/specification)**
@@ -15,7 +15,7 @@
   - Use the spec's directory structure: `SKILL.md` at root, `scripts/` for executable code, `references/` for supplementary docs, `assets/` for static resources
   - Follow progressive disclosure: keep `description` keyword-rich for discovery (~100 tokens), keep `SKILL.md` body under 500 lines (< 5000 tokens recommended), and move detailed reference material to `references/`
 
-- **API interactions use Vellum's outbound proxy**
+- **API interactions use ANU's outbound proxy**
   - Outbound network traffic from the bash tool is automatically intercepted by an outbound proxy in a manner that's transparent to the assistant
   - Update proxy settings so the bash tool can inject correct auth headers for approved domains
   - **Never instruct the assistant to ask for secrets in chat.** API keys, tokens, passwords, and webhook secrets must be collected via a secure UI path — never pasted into the conversation where they enter the LLM context. Two approved paths exist:
@@ -49,8 +49,8 @@
 
 - **Inline command expansions (`!`command``)**
   - First-party skills may use the interoperable `` !`command` `` syntax to embed dynamic content that is resolved at skill-load time (e.g., `` !`git branch --show-current` ``, `` !`cat package.json | jq '.version'` ``)
-  - This syntax is intentionally compatible with the cross-agent inline skill command convention so that externally authored skills load in Vellum without rewriting
-  - **Vellum's execution semantics are intentionally stricter than the tweet's host-shell behavior**: commands run only in the sandbox, with network off, sanitized environment, 10-second timeout, and stdout-only capture. Do not assume host-shell capabilities (network access, credential availability, interactive prompts)
+  - This syntax is intentionally compatible with the cross-agent inline skill command convention so that externally authored skills load in ANU without rewriting
+  - **ANU's execution semantics are intentionally stricter than the tweet's host-shell behavior**: commands run only in the sandbox, with network off, sanitized environment, 10-second timeout, and stdout-only capture. Do not assume host-shell capabilities (network access, credential availability, interactive prompts)
   - Place documentation examples of the syntax inside fenced code blocks (`` ``` `` or `~~~`) — the parser skips tokens inside fences, so examples will not accidentally execute
   - Never use empty commands (`` !`` ``), whitespace-only commands, or unmatched backticks — these are rejected by the parser as malformed
   - The `inline-skill-commands` feature flag must be enabled for inline expansions to work. When the flag is off, skills containing expansion tokens fail closed at load time
@@ -258,8 +258,8 @@
 
   Both commands accept `--timeout <ms>` (default: 300000ms / 5 minutes). Choose a timeout appropriate to the operation — shorter for simple confirmations, longer for complex forms. On timeout, the surface auto-cancels and the CLI exits with `status: "timed_out"`.
 
-- **Vellum-specific extensions**
-  - If you must do something Vellum-system specific, use the `metadata` field to connect the skill in a structured way
+- **ANU-specific extensions**
+  - If you must do something ANU-system specific, use the `metadata` field to connect the skill in a structured way
   - **`metadata.vellum.category`** (required): every skill must declare a category slug matching an entry in `skills/skill-categories-catalog.yaml`. The linter validates this in both directions — skills must reference a valid category, and every category must be used by at least one skill. Pass `--skip-category` to the linter to skip this check for external/third-party skills.
   - **`metadata.vellum.platforms`** (optional): restrict a skill to the host operating systems it supports. Allowed values are `macos`, `windows`, and `linux`. Omit the field for portable skills.
 

@@ -900,7 +900,7 @@ describe("HostBrowserProxy", () => {
   // ---------------------------------------------------------------------------
   // Method-aware routing
   //
-  // `Vellum.*` pseudo-methods are implemented only by the Chrome
+  // `ANU.*` pseudo-methods are implemented only by the Chrome
   // extension dispatcher; the macOS bridge speaks raw CDP against
   // localhost:9222 and fails on all of them. Auto-resolution therefore
   // restricts pseudo-methods to chrome-extension clients and prefers

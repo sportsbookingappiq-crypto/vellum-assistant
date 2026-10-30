@@ -170,7 +170,7 @@ function customizedContent(): string {
 - Preferred name/reference: Chris
 - Pronouns: they/them
 - Work role: Engineer
-- Daily tools: Vellum, vim, tmux
+- Daily tools: ANU, vim, tmux
 `;
 }
 

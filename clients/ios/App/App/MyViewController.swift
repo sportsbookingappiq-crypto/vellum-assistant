@@ -53,7 +53,7 @@ class MyViewController: CAPBridgeViewController {
     private static let surfaceOverlayHandlerName = "vellumSurfaceOverlay"
 
     /// The way out of an origin that cannot be reached, as a route under the
-    /// app entry: the baked Vellum Cloud origin serves the chooser whether or
+    /// app entry: the baked ANU Cloud origin serves the chooser whether or
     /// not the configured one is up, and the chooser lists every remembered
     /// origin, so the unreachable one is still one tap away once it recovers.
     /// `noAutoSkip` keeps it from connecting straight through a lone assistant.
@@ -62,12 +62,12 @@ class MyViewController: CAPBridgeViewController {
 
     // MARK: - Self-hosted server origin
 
-    /// The baked Vellum Cloud URL from `capacitor.config.json`, captured before
+    /// The baked ANU Cloud URL from `capacitor.config.json`, captured before
     /// any self-hosted override is applied so a cleared preference and the
     /// unreachable alert's "Choose Assistant" fallback can always return here.
     private var bakedServerURL: URL?
 
-    /// The baked Vellum Cloud URL as a string, exposed for the
+    /// The baked ANU Cloud URL as a string, exposed for the
     /// `SelfHostedServers` plugin's `list` result.
     var bakedServerURLString: String? {
         return bakedServerURL?.absoluteString
@@ -97,7 +97,7 @@ class MyViewController: CAPBridgeViewController {
     private var appliedServerURL: URL?
 
     /// Point the shell at the user's self-hosted assistant when
-    /// `self_hosted_server_url` is set, otherwise keep the baked Vellum Cloud
+    /// `self_hosted_server_url` is set, otherwise keep the baked ANU Cloud
     /// URL untouched. The configured host is added to the navigation allowlist —
     /// scoped to exactly the baked cloud host plus the configured origin, never a
     /// wildcard — so its pages load as the main document instead of being handed
@@ -154,8 +154,8 @@ class MyViewController: CAPBridgeViewController {
     /// edge; with the keyboard closed, the home-indicator band is painted by
     /// the web view's own background plus `underPageBackgroundColor` (see
     /// below), which otherwise fall back to `systemBackground` (pure white /
-    /// near-black) and read as a seam against `--surface-overlay` (`#FDFDFC`
-    /// light / `#1C2024` dark). While the keyboard is shown, the Keyboard
+    /// near-black) and read as a seam against `--surface-overlay` (`#FAFDFF`
+    /// light / `#0A1229` dark). While the keyboard is shown, the Keyboard
     /// plugin (`resize: native`) shrinks the web view frame, and the region
     /// below it is backed only by the `UIWindow`, whose backdrop is painted
     /// via the Keyboard plugin's `autoBackdropColor` config in
@@ -478,7 +478,7 @@ extension MyViewController: WKScriptMessageHandler {
 extension MyViewController: WebViewNavigationFailureObserver {
     /// Present a single native alert when the configured self-hosted server's
     /// main document fails to load, or comes back an HTTP error. A no-op when no
-    /// override is active (the baked Vellum Cloud URL keeps its existing
+    /// override is active (the baked ANU Cloud URL keeps its existing
     /// behavior), when the failure is a programmatic cancellation (e.g. a
     /// superseding navigation), or when the failed navigation targeted anything
     /// outside the configured base.
@@ -580,7 +580,7 @@ extension MyViewController: WebViewNavigationFailureObserver {
         unreachableAlert = nil
     }
 
-    /// Leave the unreachable origin for the chooser on the baked Vellum Cloud
+    /// Leave the unreachable origin for the chooser on the baked ANU Cloud
     /// origin. Clearing unsets only the active slot, so the remembered list
     /// keeps the origin and the chooser offers it back once it recovers.
     private func openAssistantChooser() {
@@ -758,7 +758,7 @@ final class NavigationDelegateProxy: NSObject, WKNavigationDelegate {
 final class QuoteReplyWebView: WKWebView {
     /// Identifier for the injected "Reply" edit-menu group.
     private static let quoteReplyMenuIdentifier = UIMenu.Identifier(
-        "ai.vellum.assistant.quoteReply"
+        "ai.anu.assistant.quoteReply"
     )
 
     /// Whether the current (or imminent) web selection is inside an assistant

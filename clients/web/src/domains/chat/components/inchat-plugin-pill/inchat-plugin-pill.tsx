@@ -9,7 +9,7 @@ import {
   Button,
   Popover,
   Typography,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useTouchMobile } from "@/hooks/use-touch-mobile";

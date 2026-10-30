@@ -12,7 +12,7 @@ import { dirname, join, win32 } from "node:path";
 import {
   pathListDelimiter,
   prependUniquePathEntries,
-} from "@vellumai/environments/shell";
+} from "@anu/environments/shell";
 
 import { getGatewayInternalBaseUrl } from "../../config/env.js";
 import { getDataDir, getWorkspaceDir } from "../../util/platform.js";
@@ -67,7 +67,7 @@ export const SAFE_ENV_VARS = [
   // still exists.
   // Per-instance port of the assistant-managed Qdrant sidecar, so skill and
   // bash-tool subprocesses that use the vector helpers (e.g. embed/search over
-  // `@vellumai/plugin-api`) resolve the same local sidecar as the daemon
+  // `@anu/plugin-api`) resolve the same local sidecar as the daemon
   // (127.0.0.1:<port>). `QDRANT_URL` is intentionally excluded: it flips
   // QdrantManager into external mode and bypasses the local managed lifecycle.
   "QDRANT_HTTP_PORT",
@@ -339,7 +339,7 @@ export function buildSanitizedEnv(
   // workspace-scoped files (e.g. avatar traits, user data).
   env.VELLUM_WORKSPACE_DIR = getWorkspaceDir();
   // Identify the assistant species so skill scripts can gate on species-specific
-  // logic. Hardcoded to "vellum" — this is the Vellum assistant codebase.
+  // logic. Hardcoded to "vellum" — this is the ANU assistant codebase.
   env.SPECIES = "vellum";
   // Ensure UTF-8 locale so multi-byte characters (em dashes, curly quotes,
   // arrows, etc.) survive piping through tools like pbcopy without corruption.

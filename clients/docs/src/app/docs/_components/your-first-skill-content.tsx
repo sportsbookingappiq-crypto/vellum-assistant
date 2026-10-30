@@ -81,7 +81,7 @@ export function YourFirstSkillContent() {
           </p>
           <p className="mb-6 text-zinc-600">
             For the full list, see the{" "}
-            <Link href="https://www.vellum.ai/skills" className="font-semibold text-emerald-700 underline hover:text-emerald-800">
+            <Link href="https://www.anu.ai/skills" className="font-semibold text-emerald-700 underline hover:text-emerald-800">
               Skills Reference
             </Link>.
           </p>
@@ -184,7 +184,7 @@ export function YourFirstSkillContent() {
             <li>Ask your agent to tweak it (&quot;Make the verdict column bold&quot;)</li>
             <li>Add reference docs, like a brand voice guide or a glossary</li>
             <li>Add a schedule so it runs automatically</li>
-            <li>Share it with other Vellum users</li>
+            <li>Share it with other ANU users</li>
           </ul>
           <p className="mb-6 text-zinc-600">
             A reliable skill is one you trust enough to run without checking the output first. That
@@ -197,7 +197,7 @@ export function YourFirstSkillContent() {
         <p className="mb-0 text-zinc-600">
           <em>
             For documentation on every built-in skill, see the{" "}
-            <Link href="https://www.vellum.ai/skills" className="font-semibold text-emerald-700 underline hover:text-emerald-800">
+            <Link href="https://www.anu.ai/skills" className="font-semibold text-emerald-700 underline hover:text-emerald-800">
               Skills Reference
             </Link>. Or keep going to{" "}
             <a href="/docs/key-concepts" className="font-semibold text-emerald-700 underline hover:text-emerald-800">

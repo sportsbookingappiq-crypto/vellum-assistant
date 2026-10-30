@@ -1240,7 +1240,7 @@ async function executeManagedBraveSearch(
       query,
       "brave",
       startedAt,
-      "Managed Brave Search is not authenticated correctly. This is a Vellum platform configuration issue.",
+      "Managed Brave Search is not authenticated correctly. This is an ANU platform configuration issue.",
     );
   }
 
@@ -1271,11 +1271,11 @@ function managedSearchProxyErrorMessage(
   result: Exclude<ManagedSearchProxyResult, { ok: true }>,
 ): string {
   if (result.kind === "unavailable") {
-    return `${result.message} Log in to Vellum or choose a different web search provider in Settings.`;
+    return `${result.message} Log in to ANU or choose a different web search provider in Settings.`;
   }
 
   if (result.kind === "platform-error" && result.status === 402) {
-    return "Managed web search is unavailable because your Vellum account balance is too low. Add funds or choose a different web search provider in Settings.";
+    return "Managed web search is unavailable because your ANU account balance is too low. Add funds or choose a different web search provider in Settings.";
   }
 
   if (result.kind === "platform-error") {
@@ -1654,7 +1654,7 @@ async function executeKeenableSearch(
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
         Accept: "application/json",
-        "X-Keenable-Title": "Vellum Assistant",
+        "X-Keenable-Title": "ANU",
       };
       if (trimmedKey) {
         headers["X-API-Key"] = trimmedKey;

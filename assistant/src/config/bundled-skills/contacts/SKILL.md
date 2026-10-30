@@ -1,7 +1,7 @@
 ---
 name: contacts
 description: Manage contacts, communication channels, access control, and invite links
-compatibility: "Designed for Vellum personal assistants"
+compatibility: "Designed for ANU personal assistants"
 metadata:
   emoji: "👥"
   vellum:

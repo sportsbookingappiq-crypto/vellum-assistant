@@ -1,11 +1,11 @@
 import { Hash, Lock, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 
-import { cn } from "@vellumai/design-library";
-import { Input } from "@vellumai/design-library/components/input";
-import { ListRow } from "@vellumai/design-library/components/list-row";
-import { Typography } from "@vellumai/design-library/components/typography";
-import { VirtualList } from "@vellumai/design-library/components/virtual-list";
+import { cn } from "@anu/design-library";
+import { Input } from "@anu/design-library/components/input";
+import { ListRow } from "@anu/design-library/components/list-row";
+import { Typography } from "@anu/design-library/components/typography";
+import { VirtualList } from "@anu/design-library/components/virtual-list";
 
 import { Trans, useTranslation } from "@/i18n";
 import { EmptyState } from "@/components/empty-state";

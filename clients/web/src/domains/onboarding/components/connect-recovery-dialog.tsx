@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { Button } from "@vellumai/design-library/components/button";
-import { ConfirmDialog } from "@vellumai/design-library/components/confirm-dialog";
-import { Modal } from "@vellumai/design-library/components/modal";
+import { Button } from "@anu/design-library/components/button";
+import { ConfirmDialog } from "@anu/design-library/components/confirm-dialog";
+import { Modal } from "@anu/design-library/components/modal";
 
 import { RetireConfirmDialog } from "@/components/retire-confirm-dialog";
 import { useTranslation } from "@/i18n";

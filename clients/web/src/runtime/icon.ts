@@ -1,5 +1,5 @@
 import { isElectron } from "@/runtime/is-electron";
-import type { CompanionCharacter } from "@vellumai/ipc-contract";
+import type { CompanionCharacter } from "@anu/ipc-contract";
 
 /**
  * Per-capability wrapper for the Electron host's app-icon surfaces (the macOS
@@ -10,7 +10,7 @@ import type { CompanionCharacter } from "@vellumai/ipc-contract";
  * Publishes the assistant's avatar as raw PNG bytes. The renderer owns avatar
  * identity and rasterization because Electron's `nativeImage` only decodes
  * PNG/JPEG, not the trait-composited SVG; the main process owns per-surface
- * masking and the bundled-Vellum-mark fallback. Pass `null` when the
+ * masking and the bundled-ANU-mark fallback. Pass `null` when the
  * assistant has no custom avatar. Fire-and-forget — no acknowledgement.
  *
  * Safe to call from any host — no-op off Electron.

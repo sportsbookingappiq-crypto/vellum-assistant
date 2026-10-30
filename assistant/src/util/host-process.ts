@@ -5,7 +5,7 @@ export {
   buildShellSpawnFlags,
   pathListDelimiter,
   prependUniquePathEntries,
-} from "@vellumai/environments/shell";
+} from "@anu/environments/shell";
 
 export interface ShellProcessStartWatch {
   didStart(): boolean;

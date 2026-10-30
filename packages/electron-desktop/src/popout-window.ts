@@ -1,7 +1,7 @@
 import { BrowserWindow, type BrowserWindowConstructorOptions } from "electron";
 import { z } from "zod";
 
-import { POPOUT_OPEN } from "@vellumai/ipc-contract";
+import { POPOUT_OPEN } from "@anu/ipc-contract";
 
 import type { IpcHandle } from "./ipc";
 import { createModuleConfiguration } from "./module-configuration";
@@ -92,7 +92,7 @@ export const openPopout = (conversationId: string): void => {
       ...sizing,
       minWidth: POPOUT_MIN_WIDTH,
       minHeight: POPOUT_MIN_HEIGHT,
-      title: "Vellum",
+      title: "ANU",
       show: false,
     },
     // A pop-out thread can own a live-voice session too, which is why the

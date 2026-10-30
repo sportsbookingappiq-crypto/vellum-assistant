@@ -1,7 +1,7 @@
 import { Link2 } from "lucide-react";
 
 import { useTranslation } from "@/i18n";
-import { Button } from "@vellumai/design-library/components/button";
+import { Button } from "@anu/design-library/components/button";
 
 interface ShareConnectionLinkButtonProps {
   onClick: () => void;

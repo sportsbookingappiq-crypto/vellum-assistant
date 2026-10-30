@@ -19,7 +19,7 @@
 
 import { writeFileSync } from "node:fs";
 
-import { CHILD_OOM_SCORE_ADJ } from "@vellumai/environments/shell";
+import { CHILD_OOM_SCORE_ADJ } from "@anu/environments/shell";
 
 export { CHILD_OOM_SCORE_ADJ };
 

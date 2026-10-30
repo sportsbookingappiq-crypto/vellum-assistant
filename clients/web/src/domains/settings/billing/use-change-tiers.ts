@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "@vellumai/design-library/components/toast";
+import { toast } from "@anu/design-library/components/toast";
 import { useRef, useState } from "react";
 
 import {

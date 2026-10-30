@@ -6,10 +6,7 @@ import { ChatAvatar } from "@/components/avatar/chat-avatar";
 import type { ChatMessageToolCall } from "@/domains/chat/api/event-types";
 import { useTurnStore } from "@/domains/chat/turn-store";
 import type { DisplayMessage } from "@/domains/chat/types/types";
-import type {
-  ModeSessionDescriptor,
-  ModeSession,
-} from "@vellumai/assistant-api";
+import type { ModeSessionDescriptor, ModeSession } from "@anu/assistant-api";
 import { useAssistantFeatureFlagStore } from "@/stores/assistant-feature-flag-store";
 
 import {

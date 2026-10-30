@@ -43,7 +43,7 @@ export function isInferenceProvider(
 }
 
 /**
- * `provider` value stored on the single Vellum-managed connection. It is a
+ * `provider` value stored on the single ANU-managed connection. It is a
  * routing sentinel, not a real LLM provider, so it never appears in the profile
  * provider picker.
  */
@@ -58,7 +58,7 @@ export const VELLUM_CONNECTION_PROVIDER = "vellum";
 export const CHATGPT_CONNECTION_PROVIDER = "chatgpt";
 
 /**
- * Providers the single Vellum-managed (`vellum`) connection can serve. Mirrors
+ * Providers the single ANU-managed (`vellum`) connection can serve. Mirrors
  * the daemon's managed-routable set. A managed profile keeps its real provider
  * (e.g. `fireworks`) while binding to the provider-agnostic `vellum`
  * connection, so the editor must treat that connection as available for these

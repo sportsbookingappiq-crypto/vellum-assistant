@@ -14,9 +14,9 @@ import {
   showNotificationPayloadSchema,
   type NotificationIdentity,
   type NotificationSender,
-} from "@vellumai/ipc-contract";
-import { resolveNotificationAvatarPath } from "@vellumai/electron-desktop/notification-avatar-path";
-import { isPreparedNotificationSenderCurrent } from "@vellumai/electron-desktop/notifications";
+} from "@anu/ipc-contract";
+import { resolveNotificationAvatarPath } from "@anu/electron-desktop/notification-avatar-path";
+import { isPreparedNotificationSenderCurrent } from "@anu/electron-desktop/notifications";
 
 import { runAppleScript } from "./appleScriptExecutor";
 import {
@@ -178,8 +178,8 @@ const resolveAppBundleId = (): string => {
   if (!app.isPackaged) return "com.github.Electron";
   const env = process.env.VELLUM_ENVIRONMENT || "production";
   return env === "production"
-    ? "com.vellum.vellum-assistant-electron"
-    : `com.vellum.vellum-assistant-electron-${env}`;
+    ? "ai.anu.assistant-electron"
+    : `ai.anu.assistant-electron-${env}`;
 };
 
 const settingsPaneUrl = (kind: PermissionKind): string => {
@@ -272,7 +272,7 @@ const postNativeNotificationConfirmation = (
     notifier.show(
       {
         id: randomUUID(),
-        title: resolvedSender?.name ?? "Vellum",
+        title: resolvedSender?.name ?? "ANU",
         body: resolvedSender
           ? ASSISTANT_NOTIFICATION_CONFIRMATION_BODY
           : NOTIFICATION_CONFIRMATION_BODY,
@@ -523,7 +523,7 @@ export class PermissionsService {
       NOTIFICATION_PROMPT_TIMEOUT_MS,
       (settle) => {
         const notification = new Notification({
-          title: "Vellum",
+          title: "ANU",
           body: NOTIFICATION_CONFIRMATION_BODY,
           silent: false,
         });

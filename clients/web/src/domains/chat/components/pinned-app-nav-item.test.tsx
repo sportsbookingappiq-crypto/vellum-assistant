@@ -18,7 +18,7 @@ import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { createElement, type CSSProperties, type ReactNode } from "react";
 
-mock.module("@vellumai/design-library", () => {
+mock.module("@anu/design-library", () => {
   const SideMenu = {
     Item: ({
       label,
@@ -306,7 +306,7 @@ describe("PinnedAppNavItem", () => {
 
     expect(
       screen
-        .getByRole("menuitemradio", { name: "Teal" })
+        .getByRole("menuitemradio", { name: "Azure" })
         .getAttribute("aria-checked"),
     ).toBe("true");
   });
@@ -419,7 +419,7 @@ describe("PinnedAppNavItem", () => {
         {...actions()}
       />,
     );
-    fireEvent.click(screen.getByRole("menuitemradio", { name: "Teal" }));
+    fireEvent.click(screen.getByRole("menuitemradio", { name: "Azure" }));
 
     expect(onSetColor).toHaveBeenCalledWith("app-1", "teal");
   });
@@ -454,12 +454,12 @@ describe("PinnedAppNavItem", () => {
 
     expect(
       screen
-        .getByRole("menuitemradio", { name: "Teal" })
+        .getByRole("menuitemradio", { name: "Azure" })
         .getAttribute("aria-checked"),
     ).toBe("true");
     expect(
       screen
-        .getByRole("menuitemradio", { name: "Green" })
+        .getByRole("menuitemradio", { name: "Aurora" })
         .getAttribute("aria-checked"),
     ).toBe("false");
     expect(
@@ -498,7 +498,7 @@ describe("PinnedAppNavItem", () => {
       />,
     );
 
-    expect(screen.getByRole("menuitemradio", { name: "Teal" })).toBeTruthy();
+    expect(screen.getByRole("menuitemradio", { name: "Azure" })).toBeTruthy();
     expect(screen.queryByRole("menuitemradio", { name: "teal" })).toBeNull();
   });
 

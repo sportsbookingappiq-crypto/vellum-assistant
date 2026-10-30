@@ -59,12 +59,12 @@ import { checkoutReturnTarget } from "@/lib/billing/checkout-return-target";
 import { openUrl } from "@/runtime/browser";
 import { useIsNativeAndroid } from "@/runtime/platform-detection";
 import { routes } from "@/utils/routes";
-import { Button } from "@vellumai/design-library/components/button";
-import { Card } from "@vellumai/design-library/components/card";
-import { Notice } from "@vellumai/design-library/components/notice";
-import { Tag } from "@vellumai/design-library/components/tag";
-import { toast } from "@vellumai/design-library/components/toast";
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Button } from "@anu/design-library/components/button";
+import { Card } from "@anu/design-library/components/card";
+import { Notice } from "@anu/design-library/components/notice";
+import { Tag } from "@anu/design-library/components/tag";
+import { toast } from "@anu/design-library/components/toast";
+import { Typography } from "@anu/design-library/components/typography";
 import {
   formatDollars,
   priceLabelFromCents,

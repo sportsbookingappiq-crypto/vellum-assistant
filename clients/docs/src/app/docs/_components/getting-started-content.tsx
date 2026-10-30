@@ -36,11 +36,11 @@ export function GettingStartedContent() {
               a phone. No install, no setup. The fastest way in. Connects to a cloud assistant.
             </li>
             <li>
-              <strong>For the iOS app:</strong> an iPhone or iPad and your Vellum account.
+              <strong>For the iOS app:</strong> an iPhone or iPad and your ANU account.
               Connects to your cloud assistant.
             </li>
             <li>
-              <strong>For the Android app:</strong> Android 7.0 or later and your Vellum account.
+              <strong>For the Android app:</strong> Android 7.0 or later and your ANU account.
               Connects to your cloud assistant.
             </li>
             <li>
@@ -76,7 +76,7 @@ export function GettingStartedContent() {
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
             The fastest way to meet your assistant. No install, no setup wizard, no config
-            files. Your assistant runs in Vellum Cloud and you reach it from your browser.
+            files. Your assistant runs in ANU Cloud and you reach it from your browser.
           </p>
           <ol className="mb-4 list-decimal space-y-2 pl-6 text-zinc-600">
             <li>
@@ -97,7 +97,7 @@ export function GettingStartedContent() {
             </li>
           </ol>
           <p className="mb-4 text-zinc-600">
-            Your assistant lives in Vellum Cloud, encrypted and isolated to your account,
+            Your assistant lives in ANU Cloud, encrypted and isolated to your account,
             reachable from any browser. You can also connect the desktop app, mobile app, voice,
             and chat channels (Telegram, Slack, phone) to the same assistant.
           </p>
@@ -108,12 +108,12 @@ export function GettingStartedContent() {
             iOS app
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
-            Install Vellum Assistant on your iPhone or iPad to use the same assistant,
+            Install ANU on your iPhone or iPad to use the same assistant,
             conversations, memories, tools, and workspace you have on the web and Mac.
           </p>
           <ol className="mb-4 list-decimal space-y-2 pl-6 text-zinc-600">
             <li>
-              Install Vellum Assistant from the{" "}
+              Install ANU from the{" "}
               <a
                 href={routes.iosAppStore}
                 className="font-semibold text-emerald-700 underline hover:text-emerald-800"
@@ -122,7 +122,7 @@ export function GettingStartedContent() {
               </a>
               .
             </li>
-            <li>Open the app and sign in with your Vellum account.</li>
+            <li>Open the app and sign in with your ANU account.</li>
             <li>Your cloud assistant appears automatically. Say hi.</li>
           </ol>
           <p className="mb-6 text-zinc-600">
@@ -136,13 +136,13 @@ export function GettingStartedContent() {
             Android app
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
-            Install Vellum Assistant on your Android phone or tablet to use the same
+            Install ANU on your Android phone or tablet to use the same
             assistant, conversations, memories, tools, and workspace you have on the web
             and Mac.
           </p>
           <ol className="mb-4 list-decimal space-y-2 pl-6 text-zinc-600">
             <li>
-              Install Vellum Assistant from{" "}
+              Install ANU from{" "}
               <a
                 href={routes.androidPlayStore}
                 className="font-semibold text-emerald-700 underline hover:text-emerald-800"
@@ -151,7 +151,7 @@ export function GettingStartedContent() {
               </a>
               .
             </li>
-            <li>Open the app and sign in with your Vellum account.</li>
+            <li>Open the app and sign in with your ANU account.</li>
             <li>Your cloud assistant appears automatically. Say hi.</li>
           </ol>
           <p className="mb-6 text-zinc-600">
@@ -181,7 +181,7 @@ export function GettingStartedContent() {
           </p>
           <p className="mb-4 text-zinc-600">
             The Windows download is currently a <strong>dev build</strong>. It connects
-            to Vellum&apos;s development environment, so your production cloud assistant
+            to ANU&apos;s development environment, so your production cloud assistant
             and its history will not appear there. The main download is x64; select
             Other downloads for ARM64.
           </p>
@@ -190,21 +190,21 @@ export function GettingStartedContent() {
               <a href={routes.signup} className="font-semibold text-emerald-700 underline hover:text-emerald-800">
                 Sign up
               </a>{" "}
-              for Vellum if you haven&apos;t already.
+              for ANU if you haven&apos;t already.
             </li>
             <li>
               Download the macOS <code>.dmg</code> or Windows <code>.exe</code> from{" "}
               <a href={routes.downloads} className="font-semibold text-emerald-700 underline hover:text-emerald-800">
-                vellum.ai/downloads
+                anu.ai/downloads
               </a>
               .
             </li>
             <li>
-              On macOS, open the <code>.dmg</code>, drag Vellum to Applications, and launch it.
-              On Windows, run the <code>.exe</code> installer and open Vellum from Start.
+              On macOS, open the <code>.dmg</code>, drag ANU to Applications, and launch it.
+              On Windows, run the <code>.exe</code> installer and open ANU from Start.
             </li>
             <li>
-              Sign in with your Vellum account. Production builds connect to your existing
+              Sign in with your ANU account. Production builds connect to your existing
               cloud assistant; the Windows dev build connects to the development environment.
             </li>
           </ol>
@@ -268,7 +268,7 @@ export function GettingStartedContent() {
             Self-hosting
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
-            Want to run Vellum entirely on your own machine or your own infrastructure? You can.
+            Want to run ANU entirely on your own machine or your own infrastructure? You can.
             The runtime is open source and supports local-only mode (workspace at{" "}
             <code>~/.vellum/workspace/</code>) as well as remote deployment to your own
             GCP project or any Linux host.
@@ -288,14 +288,14 @@ export function GettingStartedContent() {
           </SectionHeading>
           <ul className="mb-0 list-disc space-y-2 pl-6 text-zinc-600">
             <li>
-              <strong>Sign in with Vellum (default)</strong> — Authenticate with your Vellum
-              account for the managed experience. Your assistant runs in Vellum Cloud, billing
+              <strong>Sign in with ANU (default)</strong> — Authenticate with your ANU
+              account for the managed experience. Your assistant runs in ANU Cloud, billing
               is handled through your account, no API keys to manage.
             </li>
             <li>
               <strong>Bring your own API key</strong> — Self-host the runtime and connect it to
               your own Anthropic API key. Useful if you want to run everything on your own
-              machine. Vellum manages your credentials separately from the assistant.
+              machine. ANU manages your credentials separately from the assistant.
             </li>
           </ul>
         </section>
@@ -305,8 +305,8 @@ export function GettingStartedContent() {
             What gets installed
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
-            If you run the desktop app or self-host, Vellum creates one directory on your
-            machine. (Vellum Cloud users don&apos;t need to think about this. Your workspace
+            If you run the desktop app or self-host, ANU creates one directory on your
+            machine. (ANU Cloud users don&apos;t need to think about this. Your workspace
             lives in your encrypted cloud account and is available through the web app.)
           </p>
           <div className="mb-6 overflow-x-auto rounded-xl border border-zinc-200 bg-zinc-950 p-4">
@@ -342,7 +342,7 @@ export function GettingStartedContent() {
             Permissions
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
-            Vellum doesn&apos;t ask for all its permissions upfront. Instead, permissions are
+            ANU doesn&apos;t ask for all its permissions upfront. Instead, permissions are
             requested only when they&apos;re actually needed:
           </p>
           <div className="mb-6 overflow-x-auto">
@@ -420,7 +420,7 @@ export function GettingStartedContent() {
             </table>
           </div>
           <p className="mb-4 text-zinc-600">
-            On Windows, open Settings &gt; Permissions &amp; Privacy in Vellum to check
+            On Windows, open Settings &gt; Permissions &amp; Privacy in ANU to check
             microphone, screen capture, speech, and notification access. Use the settings
             link beside a permission to open the corresponding Windows settings page.
             Accessibility, Input Monitoring, and Automation permissions are macOS-only
@@ -440,7 +440,7 @@ export function GettingStartedContent() {
             Updates
           </SectionHeading>
           <p className="mb-0 text-zinc-600">
-            Vellum checks for updates automatically in the background. When an update is
+            ANU checks for updates automatically in the background. When an update is
             available, you&apos;ll see a green update button in the top right corner of the app. You can install
             immediately or defer until later. Updates are signed and verified before
             installation.
@@ -453,7 +453,7 @@ export function GettingStartedContent() {
             Definitions
           </SectionHeading>
           <p className="mb-6 text-zinc-600">
-            Key terms and concepts used throughout the Vellum Assistant ecosystem.
+            Key terms and concepts used throughout the ANU ecosystem.
           </p>
           <dl className="space-y-4">
             <div className="rounded-xl border border-zinc-200 p-4 transition-colors hover:border-zinc-300">

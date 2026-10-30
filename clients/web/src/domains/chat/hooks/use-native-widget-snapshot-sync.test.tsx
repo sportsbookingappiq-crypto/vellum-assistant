@@ -349,8 +349,10 @@ function defaultCharacterAvatar(): AvatarData {
 }
 
 /** The hexes {@link characterAvatar}'s colors resolve to through the palette. */
-const ORANGE_HEX = "#E9642F";
-const TEAL_HEX = "#0E9B8B";
+const paletteHex = (id: string) =>
+  BUNDLED_COMPONENTS.colors.find((color) => color.id === id)!.hex;
+const ORANGE_HEX = paletteHex("orange");
+const TEAL_HEX = paletteHex("teal");
 /** The first palette color, which is what the default character is drawn in. */
 const GREEN_HEX = BUNDLED_COMPONENTS.colors[0]!.hex;
 

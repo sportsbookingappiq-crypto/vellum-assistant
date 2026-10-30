@@ -68,7 +68,7 @@ export async function createBackup(
     let accessToken = await getGuardianAccessToken(runtimeUrl, assistantId);
     if (!accessToken) {
       console.warn(
-        "Warning: backup skipped — no valid guardian token available",
+        "Warning: backup skipped. No valid guardian token available",
       );
       return null;
     }
@@ -200,7 +200,7 @@ async function finishRestoreResponse(response: Response): Promise<boolean> {
   };
   if (!result.success) {
     console.warn(
-      `Warning: restore failed — ${result.message ?? result.reason ?? "unknown reason"}`,
+      `Warning: restore failed: ${result.message ?? result.reason ?? "unknown reason"}`,
     );
     return false;
   }
@@ -227,7 +227,7 @@ export async function restoreBackup(
     const initialToken = await getGuardianAccessToken(runtimeUrl, assistantId);
     if (!initialToken) {
       console.warn(
-        "Warning: restore skipped — no valid guardian token available",
+        "Warning: restore skipped. No valid guardian token available",
       );
       return false;
     }

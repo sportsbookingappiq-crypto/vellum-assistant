@@ -1,6 +1,6 @@
 /**
- * Vellum-managed TTS: synthesis through the platform's managed speech
- * surfaces (Vellum-held Deepgram key, billed to Vellum credits). No provider
+ * ANU-managed TTS: synthesis through the platform's managed speech
+ * surfaces (ANU-held Deepgram key, billed to ANU credits). No provider
  * API key exists on this machine — the platform connection is the credential.
  *
  * Two paths:
@@ -71,12 +71,12 @@ function resolveManagedVoice(request: TtsSynthesisRequest): string | undefined {
 function synthesisError(failure: ManagedSpeechFailure): Error {
   if (failure.code === "insufficient_balance") {
     return new Error(
-      "Vellum credits are exhausted — add funds to your Vellum account to continue using managed speech.",
+      "ANU credits are exhausted — add funds to your ANU account to continue using managed speech.",
     );
   }
   if (failure.kind === "unavailable") {
     return new Error(
-      `Managed speech is unavailable: ${failure.message} Run 'assistant platform connect' to connect your Vellum account.`,
+      `Managed speech is unavailable: ${failure.message} Run 'assistant platform connect' to connect your ANU account.`,
     );
   }
   return new Error(failure.message);
@@ -119,7 +119,7 @@ async function performStreamingSynthesis(
   const connection = await resolveSpeechRelayConnection();
   if (!connection) {
     throw new Error(
-      "Managed speech is unavailable: the assistant cannot reach its speech relay. Run 'assistant platform connect' to connect your Vellum account.",
+      "Managed speech is unavailable: the assistant cannot reach its speech relay. Run 'assistant platform connect' to connect your ANU account.",
     );
   }
 
@@ -205,25 +205,25 @@ export function createVellumProvider(): TtsProvider {
 }
 
 /**
- * The complete Vellum managed provider definition — catalog metadata plus
+ * The complete ANU managed provider definition — catalog metadata plus
  * the runtime adapter — assembled into the canonical catalog by
  * `provider-catalog.ts`.
  */
 export const vellumTtsProviderDefinition: TtsProviderDefinition = {
   id: "vellum",
-  displayName: "Vellum",
+  displayName: "ANU",
   subtitle:
-    "Text-to-speech through your Vellum account — billed to Vellum credits, no separate API key needed.",
+    "Text-to-speech through your ANU account — billed to ANU credits, no separate API key needed.",
   // Advertises managed voice selection (`services.tts.providers.vellum.model`)
   // to clients; web gates its voice dropdown on this flag, so daemons that
   // predate the field never show a selector whose writes they would ignore.
   supportsVoiceSelection: true,
-  apiKeyPlaceholder: "Connected via your Vellum account",
+  apiKeyPlaceholder: "Connected via your ANU account",
   credentialsGuide: {
     description:
-      "Connect this assistant to your Vellum account; managed speech uses that connection instead of a provider API key.",
+      "Connect this assistant to your ANU account; managed speech uses that connection instead of a provider API key.",
     url: "https://platform.vellum.ai/",
-    linkLabel: "Open Vellum Platform",
+    linkLabel: "Open ANU Platform",
   },
   callMode: "synthesized-play",
   allowNativeFallback: false,
@@ -236,7 +236,7 @@ export const vellumTtsProviderDefinition: TtsProviderDefinition = {
   secretRequirements: [
     {
       credentialStoreKey: "credential/vellum/assistant_api_key",
-      displayName: "Vellum account connection",
+      displayName: "ANU account connection",
       setCommand: "assistant platform connect",
     },
   ],

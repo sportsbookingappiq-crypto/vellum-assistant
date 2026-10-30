@@ -1,5 +1,5 @@
 {
-  "description": "Manifest of first-party Vellum skills. Fetched from GitHub at runtime so the assistant can discover and install new skills maintained by Vellum.",
+  "description": "Manifest of first-party ANU skills. Fetched from GitHub at runtime so the assistant can discover and install new skills maintained by ANU.",
   "version": 1,
   "skills": [
     {
@@ -17,7 +17,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-03T03:10:07.000Z"
     },
     {
@@ -32,13 +32,13 @@
           "display-name": "API Mapping"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-03T18:19:51.000Z"
     },
     {
       "id": "assistant-migration",
       "name": "assistant-migration",
-      "description": "Migrate from ChatGPT, Claude, OpenClaw, Hermes, Manus, and other AI assistants into Vellum by inspecting their data exports, conversation archives, files, prompts, custom instructions, memory, saved memories, tools, GPTs, workflows, integrations, and relationships, then mapping as much as safely possible into Vellum primitives. Handles single-source and multi-source migrations with a unified, deduplicated inventory.",
+      "description": "Migrate from ChatGPT, Claude, OpenClaw, Hermes, Manus, and other AI assistants into ANU by inspecting their data exports, conversation archives, files, prompts, custom instructions, memory, saved memories, tools, GPTs, workflows, integrations, and relationships, then mapping as much as safely possible into ANU primitives. Handles single-source and multi-source migrations with a unified, deduplicated inventory.",
       "metadata": {
         "emoji": "🧳",
         "vellum": {
@@ -48,18 +48,18 @@
             "chatgpt-import"
           ],
           "activation-hints": [
-            "User wants to migrate from ChatGPT, Claude, OpenClaw, Hermes, Manus, or another AI assistant into Vellum",
-            "User wants to migrate from ChatGPT or Claude into Vellum",
+            "User wants to migrate from ChatGPT, Claude, OpenClaw, Hermes, Manus, or another AI assistant into ANU",
+            "User wants to migrate from ChatGPT or Claude into ANU",
             "User has a ChatGPT data export ZIP or Claude conversation/summary export",
             "User has an assistant export, workspace, prompt bundle, memory dump, tool config, or migration request from another assistant system",
             "User asks what can be preserved when switching from another assistant"
           ],
           "avoid-when": [
-            "User is moving an existing Vellum assistant between Vellum homes; use backup/restore or teleport workflows instead"
+            "User is moving an existing ANU assistant between ANU homes; use backup/restore or teleport workflows instead"
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-08-18T17:13:09.000Z"
     },
     {
@@ -83,13 +83,13 @@
           ]
         }
       },
-      "compatibility": "Works on both the Vellum desktop app (local daemon) and the Vellum web app (platform-hosted). Requires an Unstructured account to authorize during the OAuth step.",
+      "compatibility": "Works on both the ANU desktop app (local daemon) and the ANU web app (platform-hosted). Requires an Unstructured account to authorize during the OAuth step.",
       "updatedAt": "2026-07-13T20:48:26.000Z"
     },
     {
       "id": "chatgpt-import",
       "name": "chatgpt-import",
-      "description": "Import conversation history from ChatGPT into Vellum",
+      "description": "Import conversation history from ChatGPT into ANU",
       "metadata": {
         "emoji": "📥",
         "vellum": {
@@ -97,7 +97,7 @@
           "display-name": "ChatGPT Import"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-03T03:10:07.000Z"
     },
     {
@@ -111,7 +111,7 @@
           "display-name": "CLI Discovery"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-03T03:10:07.000Z"
     },
     {
@@ -125,7 +125,7 @@
           "display-name": "Conversation Launcher"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-03T03:10:07.000Z"
     },
     {
@@ -139,7 +139,7 @@
           "display-name": "Daily Briefing"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-08-28T21:17:09.000Z"
     },
     {
@@ -154,13 +154,13 @@
           "display-name": "Deepgram Voice"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-07-23T16:24:31.000Z"
     },
     {
       "id": "deploy-fullstack-vercel",
       "name": "deploy-fullstack-vercel",
-      "description": "Build and deploy a full-stack app (React frontend + Python/FastAPI backend) or a Vellum app to Vercel as a serverless demo with seeded data",
+      "description": "Build and deploy a full-stack app (React frontend + Python/FastAPI backend) or an ANU app to Vercel as a serverless demo with seeded data",
       "metadata": {
         "emoji": "🚀",
         "vellum": {
@@ -168,7 +168,7 @@
           "display-name": "Deploy Fullstack to Vercel"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-03T03:10:07.000Z"
     },
     {
@@ -183,7 +183,7 @@
           "display-name": "Discord App Setup"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-01T17:54:05.000Z"
     },
     {
@@ -198,7 +198,7 @@
           "display-name": "DoorDash"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-08-28T21:17:09.000Z"
     },
     {
@@ -213,7 +213,7 @@
           "display-name": "ElevenLabs Voice"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-07-23T16:33:06.000Z"
     },
     {
@@ -227,7 +227,7 @@
           "display-name": "Email Setup"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-03T03:10:07.000Z"
     },
     {
@@ -241,7 +241,7 @@
           "display-name": "Fish Audio TTS"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-15T21:08:24.000Z"
     },
     {
@@ -264,7 +264,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-03T18:19:51.000Z"
     },
     {
@@ -306,7 +306,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-03T03:10:07.000Z"
     },
     {
@@ -322,7 +322,7 @@
           "user-invocable": "true"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-12T13:56:38.000Z"
     },
     {
@@ -348,7 +348,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-08-28T21:17:09.000Z"
     },
     {
@@ -369,7 +369,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-03T18:19:51.000Z"
     },
     {
@@ -391,7 +391,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-21T21:24:24.000Z"
     },
     {
@@ -404,7 +404,7 @@
           "category": "development",
           "display-name": "Headless Claude Code",
           "avoid-when": [
-            "Setting up or authenticating Claude Code inside a Vellum assistant: the ACP skill owns that path"
+            "Setting up or authenticating Claude Code inside an ANU assistant: the ACP skill owns that path"
           ]
         }
       },
@@ -435,7 +435,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-05T23:44:29.000Z"
     },
     {
@@ -465,7 +465,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-03T18:19:51.000Z"
     },
     {
@@ -482,7 +482,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-03T18:19:51.000Z"
     },
     {
@@ -498,7 +498,7 @@
           "user-invocable": "true"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-15T21:08:24.000Z"
     },
     {
@@ -548,7 +548,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-08-25T23:32:13.000Z"
     },
     {
@@ -564,7 +564,7 @@
           "user-invocable": "true"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-08-28T21:17:09.000Z"
     },
     {
@@ -578,7 +578,7 @@
           "display-name": "MCP Setup"
         }
       },
-      "compatibility": "Works on both the Vellum desktop app (local daemon) and the Vellum web app (platform-hosted). Auth flow differs by environment.",
+      "compatibility": "Works on both the ANU desktop app (local daemon) and the ANU web app (platform-hosted). Auth flow differs by environment.",
       "updatedAt": "2026-09-14T10:34:19.000Z"
     },
     {
@@ -629,7 +629,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-08-18T17:13:09.000Z"
     },
     {
@@ -643,7 +643,7 @@
           "display-name": "Notifications"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-10-12T22:15:34.000Z"
     },
     {
@@ -667,7 +667,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-15T22:50:32.000Z"
     },
     {
@@ -684,7 +684,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-15T21:08:24.000Z"
     },
     {
@@ -698,7 +698,7 @@
           "display-name": "Oura Ring Setup"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-15T21:08:24.000Z"
     },
     {
@@ -714,7 +714,7 @@
           "user-invocable": "true"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-08T18:39:32.000Z"
     },
     {
@@ -735,27 +735,27 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-03T18:19:51.000Z"
     },
     {
       "id": "plugin-builder",
       "name": "plugin-builder",
-      "description": "Use when the user wants to build, scaffold, ship, or edit a Vellum plugin that bundles multiple surfaces (hooks, tools, skills, and more) into one installable package.",
+      "description": "Use when the user wants to build, scaffold, ship, or edit an ANU plugin that bundles multiple surfaces (hooks, tools, skills, and more) into one installable package.",
       "metadata": {
         "emoji": "🧩",
         "vellum": {
           "category": "development",
           "display-name": "Plugin Builder",
           "activation-hints": [
-            "User wants to build, scaffold, or author a Vellum plugin",
+            "User wants to build, scaffold, or author an ANU plugin",
             "User wants to edit, update, or push changes to an existing plugin's GitHub repo",
             "User wants to package skills, hooks, or tools into an installable plugin",
             "User wants to ship MCP servers as part of a plugin (mcp.json)",
             "User wants a plugin to receive public webhooks or become a channel (channels/ingress.json)",
             "User wants to extend their assistant with a new capability shipped as a plugin",
-            "User wants to publish a plugin to the Vellum marketplace catalog",
-            "User asks how to ship or distribute extensions for Vellum"
+            "User wants to publish a plugin to the ANU marketplace catalog",
+            "User asks how to ship or distribute extensions for ANU"
           ],
           "avoid-when": [
             "User only wants to install or upgrade an existing plugin (use the `assistant plugins` CLI directly)",
@@ -764,7 +764,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-17T13:40:51.000Z"
     },
     {
@@ -785,7 +785,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-08-25T23:32:13.000Z"
     },
     {
@@ -800,7 +800,7 @@
           "user-invocable": "true"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-08-28T21:17:09.000Z"
     },
     {
@@ -817,7 +817,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-03T03:10:07.000Z"
     },
     {
@@ -834,7 +834,7 @@
           "display-name": "Screen Recording"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-03T18:19:51.000Z"
     },
     {
@@ -848,7 +848,7 @@
           "display-name": "Self Upgrade"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-03T03:10:07.000Z"
     },
     {
@@ -864,7 +864,7 @@
           "user-invocable": "true"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-08-28T21:17:09.000Z"
     },
     {
@@ -879,13 +879,13 @@
           "display-name": "Slack"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-16T20:26:12.000Z"
     },
     {
       "id": "slack-app-setup",
       "name": "slack-app-setup",
-      "description": "Connect a Slack app to the Vellum Assistant via Socket Mode. Use whenever the user wants to set up Slack for their assistant, connect a workspace, or get the assistant talking in Slack — opens a guided setup wizard in the side panel so the user can create the app, generate tokens, and connect in one flow.",
+      "description": "Connect a Slack app to the ANU via Socket Mode. Use whenever the user wants to set up Slack for their assistant, connect a workspace, or get the assistant talking in Slack — opens a guided setup wizard in the side panel so the user can create the app, generate tokens, and connect in one flow.",
       "metadata": {
         "emoji": "💬",
         "vellum": {
@@ -905,7 +905,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-03T18:19:51.000Z"
     },
     {
@@ -952,7 +952,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-22T21:42:47.000Z"
     },
     {
@@ -971,7 +971,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-09T15:00:26.000Z"
     },
     {
@@ -991,13 +991,13 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-10T12:03:09.000Z"
     },
     {
       "id": "telegram-setup",
       "name": "telegram-setup",
-      "description": "Connect a Telegram bot to the Vellum Assistant gateway with automated webhook registration and credential storage",
+      "description": "Connect a Telegram bot to the ANU gateway with automated webhook registration and credential storage",
       "metadata": {
         "icon": "assets/icon.svg",
         "emoji": "🤖",
@@ -1014,7 +1014,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-16T19:51:15.000Z"
     },
     {
@@ -1032,7 +1032,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-08-24T17:37:48.000Z"
     },
     {
@@ -1046,7 +1046,7 @@
           "display-name": "TypeScript Evaluation"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-03T18:19:51.000Z"
     },
     {
@@ -1060,7 +1060,7 @@
           "display-name": "Avatar"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-03T03:10:07.000Z"
     },
     {
@@ -1077,18 +1077,18 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-21T19:48:23.000Z"
     },
     {
       "id": "vellum-client-capabilities",
       "name": "vellum-client-capabilities",
-      "description": "Truthful answers about what the Vellum client apps can and cannot do on the user's device. Device location and GPS are unavailable in every client and there is no location permission prompt to approve, so location requests are answered by asking for a typed city or address instead.",
+      "description": "Truthful answers about what the ANU client apps can and cannot do on the user's device. Device location and GPS are unavailable in every client and there is no location permission prompt to approve, so location requests are answered by asking for a typed city or address instead.",
       "metadata": {
         "emoji": "📍",
         "vellum": {
           "category": "system",
-          "display-name": "Vellum Client Capabilities",
+          "display-name": "ANU Client Capabilities",
           "activation-hints": [
             "asked to use the user's current location, GPS, or device position",
             "whether the app can access a device sensor, permission, or hardware feature",
@@ -1100,7 +1100,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-10T21:49:56.000Z"
     },
     {
@@ -1114,7 +1114,7 @@
           "display-name": "Conversations"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-08-20T21:25:08.000Z"
     },
     {
@@ -1131,7 +1131,7 @@
           "display-name": "GitHub App Setup"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants. Requires Python 3, bun, and the assistant credentials CLI.",
+      "compatibility": "Designed for ANU personal assistants. Requires Python 3, bun, and the assistant credentials CLI.",
       "updatedAt": "2026-08-28T21:17:09.000Z"
     },
     {
@@ -1151,7 +1151,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-08T20:16:38.000Z"
     },
     {
@@ -1174,7 +1174,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-03T18:19:51.000Z"
     },
     {
@@ -1197,7 +1197,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-06T10:00:02.000Z"
     },
     {
@@ -1208,24 +1208,24 @@
         "emoji": "🔌",
         "vellum": {
           "category": "integrations",
-          "display-name": "Vellum OAuth Integrations"
+          "display-name": "ANU OAuth Integrations"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-22T23:46:21.000Z"
     },
     {
       "id": "vellum-self-knowledge",
       "name": "vellum-self-knowledge",
-      "description": "Answer questions about Vellum, its config, billing, and hosting from live sources of truth",
+      "description": "Answer questions about ANU, its config, billing, and hosting from live sources of truth",
       "metadata": {
         "emoji": "🪞",
         "vellum": {
           "category": "system",
-          "display-name": "Vellum Self-Knowledge",
+          "display-name": "ANU Self-Knowledge",
           "activation-hints": [
             "what model it runs on",
-            "how Vellum works or its architecture",
+            "how ANU works or its architecture",
             "its current config or settings",
             "what it can do or which skills/tools exist",
             "whether a service is connected, and in which sense",
@@ -1237,7 +1237,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-12T11:45:18.000Z"
     },
     {
@@ -1262,7 +1262,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-03T03:10:07.000Z"
     },
     {
@@ -1280,7 +1280,7 @@
           "display-name": "Sounds"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-08-26T00:15:53.000Z"
     },
     {
@@ -1321,7 +1321,7 @@
           "display-name": "Workspace Theme"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-07-11T00:56:00.000Z"
     },
     {
@@ -1339,7 +1339,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-06-15T21:08:24.000Z"
     },
     {
@@ -1370,7 +1370,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-08-26T00:50:29.000Z"
     },
     {
@@ -1403,7 +1403,7 @@
           "display-name": "Watcher"
         }
       },
-      "compatibility": "Designed for Vellum personal assistants",
+      "compatibility": "Designed for ANU personal assistants",
       "updatedAt": "2026-09-09T14:11:35.000Z"
     },
     {
@@ -1441,7 +1441,7 @@
           ]
         }
       },
-      "compatibility": "Designed for Vellum personal assistants on Windows",
+      "compatibility": "Designed for ANU personal assistants on Windows",
       "updatedAt": "2026-08-27T23:10:01.000Z"
     }
   ]

@@ -17,7 +17,7 @@
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 import { act, cleanup, renderHook } from "@testing-library/react";
 import type { ReactNode } from "react";
-import type { NotificationIntentEvent } from "@vellumai/assistant-api";
+import type { NotificationIntentEvent } from "@anu/assistant-api";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router";
 
@@ -125,7 +125,7 @@ let stopAttention: (() => void) | null = null;
 
 /**
  * Run as the Electron renderer does, with main pushing this window's state.
- * The DOM stays `"visible"` throughout, the way a Vellum window with
+ * The DOM stays `"visible"` throughout, the way an ANU window with
  * background throttling disabled reports it whatever the window is doing.
  */
 function runInElectron(attended: boolean): void {

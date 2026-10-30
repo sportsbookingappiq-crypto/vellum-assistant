@@ -15,13 +15,13 @@ import {
   AVATAR_MANIFEST_FILENAME,
   AVATAR_TRAITS_FILENAME,
   resolveAvatarDir,
-} from "@vellumai/avatar-manifest";
-import * as actualLocalMode from "@vellumai/local-mode";
+} from "@anu/avatar-manifest";
+import * as actualLocalMode from "@anu/local-mode";
 import {
   guardianTokenPath,
   type DevicesListResult,
   type DevicesRevokeResult,
-} from "@vellumai/local-mode";
+} from "@anu/local-mode";
 
 // Per-test stubs for the CLI-spawning device helpers. The rest of the module
 // stays real so the other middlewares under test keep their behavior.
@@ -35,8 +35,8 @@ const runDevicesRevokeMock = mock(
     Promise.resolve(devicesRevokeResult),
 );
 
-mock.module("@vellumai/local-mode", () => {
-  const mocked: Partial<typeof import("@vellumai/local-mode")> = {
+mock.module("@anu/local-mode", () => {
+  const mocked: Partial<typeof import("@anu/local-mode")> = {
     ...actualLocalMode,
     resolveDevCliInvocation: () => ({ command: "vellum", baseArgs: [] }),
     runDevicesList: runDevicesListMock,
@@ -189,8 +189,8 @@ describe("guardian-token middleware", () => {
 
     expect(result.status).toBe(401);
     const { error } = JSON.parse(result.body) as { error: string };
-    expect(error).toContain("vellum hatch");
-    expect(error).not.toContain("vellum pair");
+    expect(error).toContain("anu hatch");
+    expect(error).not.toContain("anu pair");
   });
 
   test("never returns a paired credential to the renderer", async () => {

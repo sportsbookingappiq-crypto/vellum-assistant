@@ -7,8 +7,8 @@ import {
   useState,
 } from "react";
 
-import { Button } from "@vellumai/design-library";
-import { FileUploadSurfaceDataSchema } from "@vellumai/assistant-api";
+import { Button } from "@anu/design-library";
+import { FileUploadSurfaceDataSchema } from "@anu/assistant-api";
 import type { Surface } from "@/domains/chat/types/types";
 
 import { ChatMarkdownMessage } from "@/domains/chat/components/chat-markdown-message";

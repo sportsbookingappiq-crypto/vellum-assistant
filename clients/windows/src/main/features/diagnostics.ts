@@ -5,24 +5,24 @@ import os from "node:os";
 import type {
   CapabilityModule,
   DesktopCapabilityRegistry,
-} from "@vellumai/electron-desktop/capability-registry";
-import { installDiagnosticsIpc } from "@vellumai/electron-desktop/diagnostics";
-import { installFeatureFlagsIpc } from "@vellumai/electron-desktop/feature-flags";
+} from "@anu/electron-desktop/capability-registry";
+import { installDiagnosticsIpc } from "@anu/electron-desktop/diagnostics";
+import { installFeatureFlagsIpc } from "@anu/electron-desktop/feature-flags";
 import {
   configureFeedback,
   installFeedbackIpc,
   type FeedbackDependencies,
-} from "@vellumai/electron-desktop/feedback";
+} from "@anu/electron-desktop/feedback";
 import {
   configureSentryMain,
   initSentryMain,
   setShareDiagnostics,
-} from "@vellumai/electron-desktop/sentry";
-import { getSessionToken } from "@vellumai/electron-desktop/session-token-store";
+} from "@anu/electron-desktop/sentry";
+import { getSessionToken } from "@anu/electron-desktop/session-token-store";
 import {
   readSetting,
   writeSetting,
-} from "@vellumai/electron-desktop/settings";
+} from "@anu/electron-desktop/settings";
 
 import { WINDOWS_RELEASE_INFO } from "../app-config";
 import { handle, on } from "../ipc.client";

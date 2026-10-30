@@ -14,7 +14,7 @@
 import type {
   RemoteWebPairingRequestDenyResponse,
   RemoteWebPairingRequestListResponse,
-} from "@vellumai/service-contracts/remote-web-pairing";
+} from "@anu/service-contracts/remote-web-pairing";
 
 import {
   approveRemoteWebPairingChallengeById,

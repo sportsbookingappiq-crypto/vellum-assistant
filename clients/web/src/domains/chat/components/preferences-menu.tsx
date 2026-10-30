@@ -17,7 +17,7 @@ import {
   Popover,
   SideMenu,
   useSideMenuCollapsed,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 
 import { LazyBoundary } from "@/components/lazy-boundary";
 import {

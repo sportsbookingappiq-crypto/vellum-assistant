@@ -38,7 +38,7 @@ not walked by the loader.
 
 ```
 echo/
-├── package.json               # Manifest (name + @vellumai/plugin-api range)
+├── package.json               # Manifest (name + @anu/plugin-api range)
 ├── README.md
 ├── hooks/
 │   ├── user-prompt-submit.ts  # default export = hook function
@@ -70,7 +70,7 @@ pick up changes.
 ### Option 2 — standalone copy
 
 A plain `cp -R` of this directory into `$VELLUM_WORKSPACE_DIR/plugins/echo/`
-works as-is. The hooks import their types from the public `@vellumai/plugin-api`
+works as-is. The hooks import their types from the public `@anu/plugin-api`
 specifier, which the daemon materializes as a workspace-level shim before it
 loads any plugin — so the copied directory resolves it without any path
 rewriting, in or out of a vellum-assistant checkout.
@@ -81,7 +81,7 @@ Plugins register at assistant startup. After installing, restart the
 assistant:
 
 ```bash
-vellum restart
+anu restart
 ```
 
 ## Verify it works
@@ -110,7 +110,7 @@ Remove the symlink (or the copied directory) and restart the assistant:
 
 ```bash
 rm "$VELLUM_WORKSPACE_DIR"/plugins/echo
-vellum restart
+anu restart
 ```
 
 ## Next steps

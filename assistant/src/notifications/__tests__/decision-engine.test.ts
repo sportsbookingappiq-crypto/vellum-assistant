@@ -276,7 +276,7 @@ describe("assistant_tool pass-through in notification decision engine", () => {
       "telegram",
     ] as NotificationChannel[]);
 
-    // Vellum (canonical inbox) stays in selectedChannels; telegram is
+    // ANU (canonical inbox) stays in selectedChannels; telegram is
     // added on top. `--preferred-channels` is additive push, never a
     // replacement for the inbox.
     expect(decision.selectedChannels).toContain("vellum");

@@ -1,4 +1,4 @@
-import { createDictationEscapeMonitor } from "@vellumai/electron-desktop/dictation-escape-monitor";
+import { createDictationEscapeMonitor } from "@anu/electron-desktop/dictation-escape-monitor";
 
 import log from "./logger";
 import { dispatchToMain } from "./main-window";

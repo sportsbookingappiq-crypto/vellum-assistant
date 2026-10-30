@@ -46,7 +46,7 @@ jobs:
             bun-${{ runner.os }}-
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile --filter=@vellumai/assistant --filter=@vellumai/vellum-gateway
+        run: bun install --frozen-lockfile --filter=@anu/assistant --filter=@anu/gateway
 
       - name: Sync feature flag registry
         run: cd .. && bun run meta/sync-bundled-copies.ts
@@ -79,7 +79,7 @@ jobs:
             bun-${{ runner.os }}-
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile --filter=@vellumai/assistant --filter=@vellumai/vellum-gateway
+        run: bun install --frozen-lockfile --filter=@anu/assistant --filter=@anu/gateway
 
       - name: Sync feature flag registry
         run: cd .. && bun run meta/sync-bundled-copies.ts
@@ -112,7 +112,7 @@ jobs:
             bun-${{ runner.os }}-
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile --filter=@vellumai/assistant --filter=@vellumai/vellum-gateway
+        run: bun install --frozen-lockfile --filter=@anu/assistant --filter=@anu/gateway
 
       - name: Sync feature flag registry
         run: cd .. && bun run meta/sync-bundled-copies.ts
@@ -164,7 +164,7 @@ jobs:
             bun-${{ runner.os }}-
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile --filter=@vellumai/assistant --filter=@vellumai/vellum-gateway
+        run: bun install --frozen-lockfile --filter=@anu/assistant --filter=@anu/gateway
 
       - name: Check OpenAPI spec is up to date
         run: bun run generate:openapi -- --check

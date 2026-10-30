@@ -2,7 +2,7 @@
  * Cross-process snapshot mutex.
  *
  * The backup worker's in-process `snapshotInProgress` flag only protects one
- * process from racing itself. A CLI `vellum backup create` run against a live
+ * process from racing itself. A CLI `anu backup create` run against a live
  * daemon has its own independent copy of the flag, so both processes could
  * drive the pipeline concurrently: two WAL checkpoints against the live DB,
  * two renames into the same `backup-YYYYMMDD-HHMMSS.vbundle` path (the second

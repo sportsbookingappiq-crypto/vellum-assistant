@@ -1,162 +1,126 @@
 <p align="center">
-  <img src="assets/banner.png" alt="Vellum Assistant" width="100%">
+  <img src="assets/banner.png" alt="ANU: your goals, carried out in the open" width="100%">
 </p>
 
-<p align="center">
-  <a href="https://vellum.ai/docs"><img src="https://img.shields.io/badge/Docs-vellum.ai%2Fdocs-FFD700?style=for-the-badge" alt="Documentation"></a>
-  <a href="https://vellum.ai/community"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a>
-  <a href="https://github.com/vellum-ai/vellum-assistant/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
-  <a href="https://vellum.ai"><img src="https://img.shields.io/badge/Built%20by-Vellum-blueviolet?style=for-the-badge" alt="Built by Vellum"></a>
-</p>
+# ANU
 
-<p align="center"><b>A personal AI assistant that evolves with you.</b><br>
-8 different types of memory (episodic, semantic, procedural, emotional, prospective, behavioral, narrative, shared) make it truly yours. It learns how you work, remembers what matters, and takes action across your apps.</p>
+Tell ANU a goal from your phone. An agent plans the steps, runs them with approved tools in a sandbox, and shows you every step, so you can check the work before you rely on it.
 
----
+ANU is early. The API, the sandbox, and the agent harness run end to end in a development container. There is no phone app, no SMS login, and no network isolation yet. [Status](#status) lists what works and what does not.
 
-## What It Does
+## How a task runs
 
-If you've set up a Personal AI on OpenClaw, Hermes Agent, or Claude Code, you know how long it takes, and how many times you have to hatch a new one to get it right. Vellum gets you the result you're looking for out of the box, one download away.
-| Area                          | Summary |
-| ----------------------------- | --- |
-| **Memory**                    | Eight types (episodic, semantic, procedural, emotional, prospective, behavioral, narrative, shared), each with its own staleness window, hybrid dense + sparse retrieval, and per-user and per-channel isolation. Structured items (identity, preferences, projects, events) extracted from conversations with source attribution and dedup. Embeddings run locally by default. Not a SQLite + Markdown file you maintain yourself. |
-| **Identity**                  | Behavior lives in SOUL.md. During onboarding the assistant observes how you communicate and writes its own personality files. It keeps a per-user journal of reflections and uses NOW.md as a scratchpad for current focus and active threads. |
-| **Proactivity**               | Every hour the assistant re-reads its notes, looks for anything unfinished or due soon, and messages you if something needs attention. Notifications go to the right channel and won't interrupt an active conversation. |
-| **Security**                  | Actor identity (guardian, trusted, unknown) is resolved once and enforced everywhere; unknown actors can't read memory, trigger tools, or escalate. Credentials live in a separate process and never reach the model. Every tool call runs in a sandbox. The default is to deny. |
-| **Channels**           | macOS, Windows, iOS, Web, Voice, Email, Telegram, Slack, Twilio. One assistant, one memory, every channel. |
-| **OAuth**             | Slack, Notion, Google, HubSpot, Linear, Discord, Twitter, Telegram, Twilio. No hand-rolled token refresh. |
-| **Hosting**      | Managed runtime on Vellum Platform, or self-hosted. Same codebase, same data model. |
+1. You send a goal: `POST /v1/tasks {"goal": "..."}`.
+2. The API checks your session and starts a sandbox run: a workspace directory and a worker process of its own.
+3. The agent writes a plan, then works through it. Every step (`plan`, `tool`, `observation`, `message`, `result`) streams over `GET /v1/tasks/:id/events` as it happens.
+4. Before a risky step, the agent asks. The task waits in `awaiting_approval` until you approve or reject it.
+5. The task ends `succeeded`, `failed`, or `stopped`, with a result and a confidence score. You can stop it at any point, export everything with `GET /v1/me/export`, and delete it all with `DELETE /v1/me`.
 
----
+The full contract is in [`anu/docs/api.md`](anu/docs/api.md) and [`anu/openapi.yaml`](anu/openapi.yaml).
 
-## Get Started
+## The four parts
 
-**1. [Sign up](https://vellum.ai/signup) or [download the app](https://vellum.ai/downloads)**
+| Part | What it does | Where | State |
+| --- | --- | --- | --- |
+| Phone app | Goal input, step timeline, approve and reject, stop, result | `clients/web`, through its Capacitor iOS and Android shells | Not started |
+| API | Phone login, tasks, steps, live stream, approvals, export, delete. Row-level security on every table | [`anu/src/api`](anu/src/api), port 8787 | Works in development |
+| Sandbox | One workspace and process group per task, an allowlisted environment with no platform secrets, a timeout, stop | [`anu/src/sandbox`](anu/src/sandbox), port 8788 | Works. Process isolation only |
+| Harness | The agent itself: plans, calls tools, asks for consent | [`assistant/`](assistant), booted per task by the `harness` driver | Completes a turn against a live model. Dev only |
 
-The desktop app is available for macOS and Windows. The Windows download is currently a dev build connected to the development environment, with x64 (Intel/AMD) and ARM64 installers. See the [installation guide](https://www.vellum.ai/docs/getting-started/installation) for setup and permissions.
+The sandbox runs one of three drivers, set with `ANU_SANDBOX_DRIVER`: `scripted` (deterministic, for tests and demos), `kilo` (a two-call plan and answer through Kilo Gateway, no tools), and `harness` (the full assistant runtime, about 30 seconds to boot).
 
-**2. Pick your mode**
+## Quick start: the platform
 
-- **Managed**: sign in via Vellum Cloud, no local runtime required
-- **Local**: everything runs on your machine
-
-**3. Hatch your assistant**
-
-- It's yours! Have fun with it.
-
-<sub>Prefer the terminal? See <a href="#cli">CLI install</a> below.</sub>
-
----
-
-## Quick Demo
-
-<p align="center">
-  <img src="assets/quick-demo.gif" alt="Vellum Assistant demo" width="100%">
-</p>
-
----
-
-## CLI
-
-<details open>
-<summary>Install and common commands</summary>
-
-<br>
-
-The CLI works but the desktop app is our primary focus. Available for advanced users, contributors, and terminal-based workflows. The Windows desktop app installs the bundled CLI for your user account on first launch; open a new terminal afterward to use `vellum`.
-
-**Install**
+Needs Bun and PostgreSQL 15. Run from `anu/`:
 
 ```bash
-bun install -g vellum
-vellum hatch
+bash scripts/cloud-setup.sh     # install dependencies from bun.lock
+bun run db:setup                # databases, anu/.env with generated secrets, migrations
+bun run seed                    # fake users and tasks
+bun run dev                     # API on :8787, sandbox on :8788
 ```
 
-**Install from source**
+Sign in as the seeded user. In development the code comes back in the response instead of by SMS:
 
 ```bash
-git clone https://github.com/vellum-ai/vellum-assistant.git
-cd vellum-assistant
-./setup.sh
-source ~/.bashrc
-vellum hatch
+curl -s -X POST localhost:8787/v1/auth/code/request -H 'content-type: application/json' \
+  -d '{"phone":"+12025550100"}'                       # {"expiresAt":"...","devCode":"123456"}
+curl -s -X POST localhost:8787/v1/auth/code/verify -H 'content-type: application/json' \
+  -d '{"phone":"+12025550100","code":"123456"}'       # {"token":"anu_s_...",...}
 ```
 
-**Common commands**
+Run a task that stops for approval. With the default `scripted` driver, `#approval` in the goal makes the agent ask "Write summary.md to the task workspace?" before it writes anything:
 
 ```bash
-vellum wake        # start services
-vellum sleep       # stop services, keep data
-vellum client      # interact through the terminal
-vellum ps          # view running assistants
-vellum terminal    # open a shell into a managed assistant container
-vellum upgrade     # upgrade to latest version
+TOKEN=anu_s_...
+curl -s -X POST localhost:8787/v1/tasks -H "authorization: Bearer $TOKEN" \
+  -H 'content-type: application/json' -d '{"goal":"Summarize this workspace #approval"}'
+curl -N localhost:8787/v1/tasks/<task-id>/events -H "authorization: Bearer $TOKEN"
+curl -s -X POST localhost:8787/v1/tasks/<task-id>/approvals/<approval-id> \
+  -H "authorization: Bearer $TOKEN" -H 'content-type: application/json' -d '{"decision":"approve"}'
 ```
 
-All commands target the default assistant. If you have multiple, pass the assistant ID as the second argument.
+The approval id is in `approvals` on `GET /v1/tasks/<task-id>`. More commands, the seeded users, and the live tests are in [`anu/README.md`](anu/README.md).
 
-**Guides**
+## Quick start: the assistant on its own
 
-- [Pair a device](https://vellum.ai/docs/hosting-options/pair-a-device): reach a self-hosted assistant from your phone or another computer by opening a tunnel and pairing the device.
+The harness is also a complete personal assistant you can run and talk to directly, with the `anu` CLI:
 
-</details>
+```bash
+./setup.sh      # installs Bun if needed, installs dependencies, links the anu CLI
+anu hatch       # create a local assistant and make it active
+anu client      # chat with it in this terminal
+anu sleep       # stop it; data is kept
+```
 
----
+`anu --help` lists every command, grouped by task. The published npm package and the desktop installers still carry Vellum's names ([ADR 0005](anu/docs/decisions/0005-rebrand-compatibility-identifiers.md)), so install from source for now.
 
-## Infra and security
+## What the runtime already does
 
-| Area                       | Summary                                                                                                                                                                                                                                                                                                                  |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Computer use**           | The assistant works in its own sandbox, and with your approval reaches your actual machine: reads and edits files, runs commands, drives the browser. Every action is permission-gated, and you can grant once, for ten minutes, or always. |
-| **Skills**                 | Plugins defined by a SKILL.md and a TOOLS.json that add tools and prompt sections at runtime, sandboxed like everything else. Install them from the catalog, bundle them, or drop them in the workspace.                                                                                      |
-| **Channels**               | One assistant with one memory, reachable from the macOS or Windows app, Telegram, or Slack. Start a thought in one channel and pick it up in another.                                                                                                                                                              |
-| **Multi-provider support** | Works with Anthropic, OpenAI, Google Gemini, Fireworks, OpenRouter, MiniMax, [Atlas Cloud](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=vellum-assistant), and any OpenAI-compatible endpoint. Local models run through Ollama. Embeddings run on local ONNX by default and fall back to cloud providers automatically.                                                                                    |
+ANU's harness is the open-source Vellum assistant, renamed. It brings these, each documented next to its code:
 
----
+| Area | What it does | Read more |
+| --- | --- | --- |
+| Consent | Under permission controls v2, risky actions are agreed in the conversation. The one fixed approval gate is access to the host computer | [`ARCHITECTURE.md`](ARCHITECTURE.md) |
+| Credentials | Secrets live in a separate process and never reach the model | [`assistant/docs/credential-execution-service.md`](assistant/docs/credential-execution-service.md) |
+| Memory | Facts it learns are filed in the workspace and pulled into later turns | [`assistant/docs/architecture/memory.md`](assistant/docs/architecture/memory.md) |
+| Skills | 76 bundled skills, each a `SKILL.md` loaded on demand | [`skills/`](skills) |
+| Channels | Desktop, web, iOS, Telegram, Slack, email, and phone, behind one gateway that decides who may talk to it | [`gateway/ARCHITECTURE.md`](gateway/ARCHITECTURE.md) |
+| Models | Anthropic, OpenAI, Gemini, Ollama, OpenRouter, Fireworks, and any OpenAI-compatible endpoint. ANU's tests use Kilo Gateway's free models | [`meta/llm-provider-catalog.json`](meta/llm-provider-catalog.json) |
 
-## Foundational documents
+## Status
 
-The canonical sources for who we are and how we talk about what we're building. The docs site at [vellum.ai/docs](https://vellum.ai/docs) is a rendered view of these files.
+Works, in one development container:
 
-| Doc                             | What it is                                                       |
-| ------------------------------- | ---------------------------------------------------------------- |
-| [Constitution](CONSTITUTION.md) | Who we are, what we believe, and what we refuse to compromise on |
-| [Glossary](GLOSSARY.md)         | The shared vocabulary we use to talk about personal intelligence |
+- Phone login with one-time codes: keyed hashes, 5-minute expiry, 5 attempts, rate limits.
+- Tasks, steps, the live stream, stop, approvals, export, and delete, with row-level security.
+- A sandbox run per task with a timeout and a scrubbed environment; a test checks that no platform secret reaches the worker.
+- The `harness` driver boots the assistant and completes a turn against Kilo Gateway.
 
----
+Not built yet:
 
-## Documentation
+- The phone app's task screen.
+- An SMS provider. Only the development sender exists, and it refuses to run outside `dev` and `test`.
+- Network isolation, and a container or VM per task. Today's sandbox is a directory, a process group, and an allowlisted environment: not a boundary against hostile code.
+- Tool calls inside the harness (they need the gateway), and mapping the assistant's consent prompts onto ANU approvals.
+- Any deployment.
 
-| Section                                                                             | What's covered                                                     |
-| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| [Architecture](https://vellum.ai/docs/developer-guide/architecture)                 | Platform domains, repo structure, runtime · clients · gateway      |
-| [Security & Permissions](https://vellum.ai/docs/developer-guide/security)           | Sandbox, credentials, trust rules, permission modes                |
-| [Features & Capabilities](https://vellum.ai/docs/developer-guide/features)          | Integrations, dynamic skills, browser, attachments, media embeds   |
-| [API & Communication](https://vellum.ai/docs/developer-guide/api)                   | SSE event stream, event payloads, remote access                    |
-| [Development Workflow](https://vellum.ai/docs/developer-guide/development-workflow) | Claude Code commands, parallel PRs, review loops, release pipeline |
+The phases are in [`anu/docs/PLAN.md`](anu/docs/PLAN.md) and the decisions behind them in [`anu/docs/decisions/`](anu/docs/decisions).
 
-📖 **[Full documentation →](https://vellum.ai/docs)**
+## Docs
 
----
+| Doc | What it covers |
+| --- | --- |
+| [`anu/AGENTS.md`](anu/AGENTS.md) | The platform: what exists, how the parts talk, rules for changing it |
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | The assistant runtime, gateway, and clients |
+| [`docs/ANU-VOICE.md`](docs/ANU-VOICE.md) | How ANU writes: assistant replies, UI, CLI, and docs |
+| [`assets/brand/BRAND.md`](assets/brand/BRAND.md) | The mark, palette, and usage |
+| [`GLOSSARY.md`](GLOSSARY.md) | The words the code and docs use |
 
 ## Contributing
 
-We welcome contributions from everyone.
-
-- **Development**: The [contributing guide](CONTRIBUTING.md) will help you get started.
-- Make sure to check out our [Code of Conduct](CODE_OF_CONDUCT.md).
-
-## Community
-
-- 💬 [Discord](https://vellum.ai/community)
-- 🐛 [Issues](https://github.com/vellum-ai/vellum-assistant/issues)
+Read [`CONTRIBUTING.md`](CONTRIBUTING.md), and `AGENTS.md` in the folder you are changing. Report security issues privately as described in [`SECURITY.md`](SECURITY.md). Everyone here follows the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## License
 
-MIT. See [License](https://github.com/vellum-ai/vellum-assistant?tab=MIT-1-ov-file). Integration logos from [Simple Icons](https://github.com/simple-icons/simple-icons), licensed [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/).
-
-Vellum Assistant is open-source software built by [Vellum AI](https://vellum.ai), a for-profit company. We also offer a managed product, the [Vellum Platform](https://vellum.ai/platform), which sustains the business. Free to use and modify under MIT, and we're committed to keeping it that way.
-
----
-
-<p align="center">Built with 💚 by <a href="https://vellum.ai">Vellum</a></p>
+MIT. ANU is built on the open-source [Vellum assistant](https://github.com/vellum-ai/vellum-assistant), and its copyright notice stays in [`LICENSE`](LICENSE) as the license requires. Integration logos come from [Simple Icons](https://github.com/simple-icons/simple-icons) under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/).

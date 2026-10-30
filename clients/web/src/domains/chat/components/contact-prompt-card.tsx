@@ -1,13 +1,7 @@
 import { CheckCircle } from "lucide-react";
 import { type FormEvent, useState } from "react";
 
-import {
-  Button,
-  Card,
-  Checkbox,
-  Input,
-  Typography,
-} from "@vellumai/design-library";
+import { Button, Card, Checkbox, Input, Typography } from "@anu/design-library";
 import { useTranslation } from "@/i18n";
 
 import type { PendingContactRequestState } from "@/types/interaction-ui-types";

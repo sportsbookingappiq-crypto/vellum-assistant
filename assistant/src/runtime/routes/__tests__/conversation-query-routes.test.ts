@@ -987,7 +987,7 @@ describe("PUT /v1/config/llm/profiles/:name", () => {
     // across tests in this file, so a leaked openai-personal would otherwise
     // win the derivation.
     getDb().delete(providerConnections).run();
-    // The single Vellum-managed connection serves managed-routable providers.
+    // The single ANU-managed connection serves managed-routable providers.
     createConnection(getDb(), {
       name: "vellum",
       provider: "vellum",
@@ -1021,7 +1021,7 @@ describe("PUT /v1/config/llm/profiles/:name", () => {
     ).profiles.custom;
 
     // No personal openai connection exists, so the route auto-derives the
-    // single Vellum-managed connection for this managed-routable provider.
+    // single ANU-managed connection for this managed-routable provider.
     expect(savedProfile.provider_connection).toBe("vellum");
   });
 

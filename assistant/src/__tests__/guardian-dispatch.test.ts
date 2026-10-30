@@ -8,7 +8,7 @@ import type { NotificationDeliveryResult } from "../notifications/types.js";
 // listActiveBindingsByAssistant) existed in the barrel.
 
 // The pending_question request principal is resolved via the gateway guardian
-// delivery for the vellum channel — the SAME source the Vellum actor uses — so
+// delivery for the vellum channel — the SAME source the ANU actor uses — so
 // the stamped principal always equals the submitting actor principal. The real
 // contacts DB is seeded in resetTables(); the reader mock below derives the
 // gateway delivery from that DB binding so tests model drift / missing guardian

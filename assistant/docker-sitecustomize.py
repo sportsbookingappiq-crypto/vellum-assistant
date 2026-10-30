@@ -1,4 +1,4 @@
-"""Vellum: expose the persistent apt/pip chroot as site directories.
+"""ANU: expose the persistent apt/pip chroot as site directories.
 
 Installed at /usr/lib/python3/dist-packages/sitecustomize.py in the assistant
 image. PYTHONPATH (set by docker-kata-apt-env.sh and buildSanitizedEnv) makes

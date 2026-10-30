@@ -1,7 +1,7 @@
 import { useRef } from "react";
 
-import { Button } from "@vellumai/design-library/components/button";
-import { Modal } from "@vellumai/design-library/components/modal";
+import { Button } from "@anu/design-library/components/button";
+import { Modal } from "@anu/design-library/components/modal";
 
 import { useTranslation } from "@/i18n";
 

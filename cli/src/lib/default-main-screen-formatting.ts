@@ -39,8 +39,8 @@ export const HELP_COMMANDS = [
 ] as const;
 
 export const TIPS = [
-  "Send a message to start chatting",
-  "Use /help to see available commands",
+  "Type a goal or a question, then Enter",
+  "Type /help to list commands",
 ] as const;
 
 export const RIGHT_PANEL_LINE_COUNT =
@@ -182,7 +182,7 @@ export function truncateValue(value: unknown, maxLength: number): string {
 }
 
 export function formatHeaderTitle(assistantName?: string): string {
-  const rawTitle = assistantName?.trim() || "Meet your Assistant!";
+  const rawTitle = assistantName?.trim() || "Not named yet";
   const title = rawTitle.replace(/\s+/g, " ");
   const maxTitleLength = LEFT_PANEL_WIDTH - 2;
   const displayTitle =

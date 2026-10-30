@@ -1,14 +1,14 @@
 import { BrowserWindow, app } from "electron";
 import type { WebContents } from "electron";
 
-import { WINDOW_ATTENTION } from "@vellumai/ipc-contract";
-import type { WindowAttentionPayload } from "@vellumai/ipc-contract";
+import { WINDOW_ATTENTION } from "@anu/ipc-contract";
+import type { WindowAttentionPayload } from "@anu/ipc-contract";
 
 /**
  * Authoritative window state, published from main to the renderer that each
  * window owns.
  *
- * Every Vellum window sets `backgroundThrottling: false`, which also disables
+ * Every ANU window sets `backgroundThrottling: false`, which also disables
  * the Page Visibility API. A renderer therefore reads `document.visibilityState`
  * as "visible" forever and never receives `visibilitychange`, so it cannot tell
  * that it is off screen. Main can, through `BrowserWindow` state plus the app's

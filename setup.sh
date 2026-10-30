@@ -68,7 +68,7 @@ info "Installing dependencies in scripts/"
 # Link local packages into meta so it resolves to local source
 # ---------------------------------------------------------------------------
 info "Linking local packages into meta/"
-(cd "${REPO_ROOT}/meta" && bun link @vellumai/cli @vellumai/assistant @vellumai/vellum-gateway @vellumai/credential-executor)
+(cd "${REPO_ROOT}/meta" && bun link @anu/cli @anu/assistant @anu/gateway @anu/credential-executor)
 
 # ---------------------------------------------------------------------------
 # Link the global `vellum` command to this repo's meta package
@@ -245,4 +245,4 @@ if [ -e "${HOME}/.zshrc" ]; then
   fi
 fi
 
-info "Setup complete! Run 'vellum --version' to verify."
+info "Setup complete! Run 'anu --version' to verify."

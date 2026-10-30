@@ -3,8 +3,8 @@ import { resolve } from "node:path";
 import { BrowserWindow, app, type WebContents } from "electron";
 import { z } from "zod";
 
-import type { DeepLink } from "@vellumai/ipc-contract";
-import { resolveEnvironmentName } from "@vellumai/local-mode";
+import type { DeepLink } from "@anu/ipc-contract";
+import { resolveEnvironmentName } from "@anu/local-mode";
 
 import { capabilityToken } from "./capability-registry";
 import type { IpcHandle, IpcOn } from "./ipc";
@@ -137,8 +137,8 @@ const ACCEPTED_SCHEMES = resolveAcceptedSchemes(currentEnv);
  *     Trailing slashes / extra path segments are tolerated;
  *     `threadId` is the first non-empty path segment.
  *   - `vellum://connect?url=…&code=…` → `{ kind: "connect", … }`.
- *     The pair page's "Open in the Vellum app" button and
- *     `vellum pair --app` QR codes. `url` must parse as https
+ *     The pair page's "Open in the ANU app" button and
+ *     `anu pair --app` QR codes. `url` must parse as https
  *     (dropped otherwise); `code` (the device code) is opaque, so it
  *     is only bounded in length and refused when it carries
  *     whitespace or control characters, and rides only alongside a

@@ -101,7 +101,7 @@ mock.module("@/components/onboarding-layout", () => ({
   OnboardingLayout: ({ children }: { children: ReactNode }) => children,
 }));
 
-mock.module("@vellumai/design-library/components/button", () => ({
+mock.module("@anu/design-library/components/button", () => ({
   Button: ({
     children,
     onClick,
@@ -116,10 +116,10 @@ mock.module("@vellumai/design-library/components/button", () => ({
     </button>
   ),
 }));
-mock.module("@vellumai/design-library/components/select", () => ({
+mock.module("@anu/design-library/components/select", () => ({
   Select: () => null,
 }));
-mock.module("@vellumai/design-library/components/input", () => ({
+mock.module("@anu/design-library/components/input", () => ({
   Input: () => null,
 }));
 

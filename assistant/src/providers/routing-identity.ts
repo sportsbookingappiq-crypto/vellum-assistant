@@ -71,7 +71,7 @@ export function resolveRoutingIdentity(
       throw new ConnectionResolutionError(
         VELLUM_MANAGED_CONNECTION_NAME,
         "unroutable_managed_model",
-        `provider "vellum" cannot route model "${model ?? "<unset>"}" — no managed upstream serves it. Pick a model from the Vellum catalog or set a concrete provider.`,
+        `provider "vellum" cannot route model "${model ?? "<unset>"}" — no managed upstream serves it. Pick a model from the ANU catalog or set a concrete provider.`,
         { model },
       );
     }

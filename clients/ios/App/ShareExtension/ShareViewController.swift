@@ -43,7 +43,7 @@ final class ShareViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     private func configureNavigation() {
-        title = "Vellum"
+        title = "ANU"
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .cancel,
             target: self,

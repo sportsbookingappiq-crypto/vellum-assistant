@@ -15,7 +15,7 @@ import {
 } from "@/generated/api/@tanstack/react-query.gen";
 import { t } from "@/i18n";
 import { routes } from "@/utils/routes";
-import { toast } from "@vellumai/design-library/components/toast";
+import { toast } from "@anu/design-library/components/toast";
 
 const POLL_INTERVAL_MS = 1000;
 const POLL_TIMEOUT_MS = 15000;

@@ -1,8 +1,8 @@
 import { DetailCard } from "@/components/detail-card";
 import { useTranslation } from "@/i18n";
 import { useEnvironmentStore } from "@/stores/environment-store";
-import { Tag } from "@vellumai/design-library/components/tag";
-import { Toggle } from "@vellumai/design-library/components/toggle";
+import { Tag } from "@anu/design-library/components/tag";
+import { Toggle } from "@anu/design-library/components/toggle";
 
 export function EnvironmentConfigPanel() {
   const { t } = useTranslation("settings");

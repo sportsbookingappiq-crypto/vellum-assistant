@@ -55,7 +55,7 @@ mock.module("../../../security/credential-key.js", () => ({
   credentialKey: (...args: string[]) => args.join("/"),
 }));
 
-// -- Vellum managed availability mock --------------------------------------
+// -- ANU managed availability mock --------------------------------------
 
 let mockVellumAvailable = false;
 

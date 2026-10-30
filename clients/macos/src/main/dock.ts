@@ -1,16 +1,16 @@
 import path from "node:path";
 
-import { getLockfileData, resolveLockfilePaths } from "@vellumai/local-mode";
+import { getLockfileData, resolveLockfilePaths } from "@anu/local-mode";
 import { app, nativeImage, type NativeImage } from "electron";
 import { z } from "zod";
 
-import { onAvatarChange } from "@vellumai/electron-desktop/avatar";
-import { avatarBitmap } from "@vellumai/electron-desktop/avatar-image";
+import { onAvatarChange } from "@anu/electron-desktop/avatar";
+import { avatarBitmap } from "@anu/electron-desktop/avatar-image";
 import {
   applyAlphaMask,
   compositeCentered,
   roundedRectCoverage,
-} from "@vellumai/electron-desktop/image-mask";
+} from "@anu/electron-desktop/image-mask";
 import { on } from "./ipc";
 import {
   current as currentMainWindow,
@@ -76,7 +76,7 @@ export const formatBadge = (count: number): string => {
 const POLICY_DEBOUNCE_MS = 100;
 
 // When the user is signed out and no windows are visible, drop the
-// Dock icon and run menu-bar-only — same accessory-mode UX Swift Vellum
+// Dock icon and run menu-bar-only — same accessory-mode UX Swift ANU
 // exposes. Safe to flip on now that `installTray` provides an
 // always-available entry point back to the app (the Dock icon used to
 // be the only one). Kept as a module-level constant rather than a

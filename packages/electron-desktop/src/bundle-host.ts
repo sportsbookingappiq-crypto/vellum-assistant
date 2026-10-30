@@ -4,7 +4,7 @@ import {
   resolveConfigDir,
   resolveLockfilePaths,
   type CliInvocation,
-} from "@vellumai/local-mode";
+} from "@anu/local-mode";
 
 import type {
   ActiveBundleGateway,

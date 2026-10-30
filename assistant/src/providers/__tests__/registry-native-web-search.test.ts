@@ -87,7 +87,7 @@ const vellumConnection: ProviderConnection = {
   name: "vellum",
   provider: "vellum",
   auth: { type: "platform" },
-  label: "Vellum",
+  label: "ANU",
   baseUrl: null,
   models: null,
   createdAt: 1,

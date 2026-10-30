@@ -1,5 +1,5 @@
 /**
- * Cloud authentication for the Vellum Chrome extension.
+ * Cloud authentication for the ANU Chrome extension.
  *
  * Handles WorkOS sign-in via app-held PKCE, mirroring the macOS app. The
  * extension drives WorkOS User Management directly:

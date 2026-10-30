@@ -6,7 +6,7 @@ import ScreenCaptureKit
 import UniformTypeIdentifiers
 import os
 
-private let log = Logger(subsystem: "ai.vellum.mac-helper", category: "AppWindowCapture")
+private let log = Logger(subsystem: "ai.anu.mac-helper", category: "AppWindowCapture")
 
 /// Captures the frontmost normal window of a target process by PID.
 ///

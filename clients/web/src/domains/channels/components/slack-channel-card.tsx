@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
-import { Card } from "@vellumai/design-library/components/card";
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Card } from "@anu/design-library/components/card";
+import { Typography } from "@anu/design-library/components/typography";
 
 import { useTranslation } from "@/i18n";
 import { publicAsset } from "@/utils/public-asset";

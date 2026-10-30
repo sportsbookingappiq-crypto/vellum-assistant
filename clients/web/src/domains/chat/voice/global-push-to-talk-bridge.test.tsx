@@ -5,7 +5,7 @@ import { MemoryRouter } from "react-router";
 import type {
   CompanionIntroBeat,
   UnplacedDictationOffer,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 import type { CommandHandlers } from "@/runtime/vellum-commands";
 
 import type * as VoiceShortcutConfirmation from "@/domains/chat/voice/voice-shortcut-confirmation";
@@ -227,7 +227,7 @@ mock.module("@/runtime/text-insertion", () => ({
 
 // The design-library barrel re-exports every name from this module, so the
 // mock must cover the full export surface or barrel linking fails.
-mock.module("@vellumai/design-library/components/toast", () => ({
+mock.module("@anu/design-library/components/toast", () => ({
   toast: { error: toastErrorMock },
   Toaster: () => null,
   ToastContent: () => null,

@@ -61,7 +61,7 @@ const InferenceServiceSchema = z.object({});
 /**
  * Image generation carries no `mode`: `provider` is the only axis. `"vellum"`
  * generates through the platform runtime proxy for the model-appropriate
- * backend, billed to Vellum credits; `"gemini"`/`"openai"`/`"openrouter"`
+ * backend, billed to ANU credits; `"gemini"`/`"openai"`/`"openrouter"`
  * use the user's key. A `mode` key sent by an older client is stripped at
  * parse.
  */
@@ -72,7 +72,7 @@ const ImageGenerationServiceSchema = z.object({
 
 /**
  * Web-search carries no `mode`: `provider` is the only axis. `"vellum"`
- * searches through the Vellum platform search proxy, billed to Vellum
+ * searches through the ANU platform search proxy, billed to ANU
  * credits; `"inference-provider-native"` prefers the inference model's own
  * hosted search, falling back to the user's keys and then the platform
  * proxy; any other provider uses the user's own API key. A `mode` key sent

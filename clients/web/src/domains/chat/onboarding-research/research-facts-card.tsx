@@ -15,9 +15,9 @@
 import { useState } from "react";
 import { Ban } from "lucide-react";
 
-import { Button } from "@vellumai/design-library/components/button";
-import { Popover } from "@vellumai/design-library/components/popover";
-import { Tag } from "@vellumai/design-library/components/tag";
+import { Button } from "@anu/design-library/components/button";
+import { Popover } from "@anu/design-library/components/popover";
+import { Tag } from "@anu/design-library/components/tag";
 
 import { ExternalAnchor } from "@/components/external-anchor";
 import {

@@ -100,7 +100,7 @@ else
 fi
 
 ARTIFACT_NAME="vellum-assistant-pr-${PR_NUMBER}.dmg"
-APP_DISPLAY_NAME="Vellum ${PR_NUMBER}"
+APP_DISPLAY_NAME="ANU ${PR_NUMBER}"
 
 # If a password is configured, make sure sshpass is available.
 if [ -n "$MAC_MINI_PASSWORD" ] && ! command -v sshpass &>/dev/null; then

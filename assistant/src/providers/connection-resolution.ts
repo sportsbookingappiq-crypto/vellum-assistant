@@ -276,7 +276,7 @@ export async function tryResolveProviderForConnectionName(
     );
     return attachProviderRoute(provider, canonicalVellumConnection());
   }
-  // The provider-agnostic Vellum-managed connection carries only the `vellum`
+  // The provider-agnostic ANU-managed connection carries only the `vellum`
   // sentinel, so the usual `connection.provider === expectedProvider` equality
   // never holds. It routes by the resolving profile's declared provider
   // instead (threaded as `providerOverride` below), which must be present AND
@@ -298,7 +298,7 @@ export async function tryResolveProviderForConnectionName(
       throw new ConnectionResolutionError(
         connectionName,
         "provider_mismatch",
-        `provider_connection "${connectionName}" is the provider-agnostic Vellum-managed connection but the resolving profile declared no provider — set the profile's provider so the upstream can be selected`,
+        `provider_connection "${connectionName}" is the provider-agnostic ANU-managed connection but the resolving profile declared no provider — set the profile's provider so the upstream can be selected`,
       );
     }
   }
@@ -423,7 +423,7 @@ function attachProviderRoute(
 }
 
 /**
- * Whether a route through this connection name is Vellum-managed
+ * Whether a route through this connection name is ANU-managed
  * (platform-billed), for callers that hold only the name. Returns undefined
  * when the row can't be read, so the caller can fall back rather than assert
  * a BYOK route it never confirmed.
@@ -462,7 +462,7 @@ async function resolveThroughPlatform(
   }
   log.info(
     { upstream, model },
-    "Vellum-managed route resolved through platform auth: a user-owned connection claims the canonical connection name",
+    "ANU-managed route resolved through platform auth: a user-owned connection claims the canonical connection name",
   );
   try {
     return await resolveProviderFromConnection(
@@ -600,7 +600,7 @@ export async function resolveDefaultProvider(
  *
  *   - connection row missing (`not_found`)
  *   - connection bound to a different provider (`provider_mismatch`), with
- *     the provider-agnostic Vellum-managed exception for managed-routable
+ *     the provider-agnostic ANU-managed exception for managed-routable
  *     providers
  *   - API-key/subscription credential absent from the vault
  *     (`missing_credential`)
@@ -678,7 +678,7 @@ export async function preflightResolvedConfig(
       throw new ConnectionResolutionError(
         connectionName,
         "provider_mismatch",
-        `provider_connection "${connectionName}" is the Vellum-managed connection, which cannot serve provider "${provider}"`,
+        `provider_connection "${connectionName}" is the ANU-managed connection, which cannot serve provider "${provider}"`,
         errorOptions,
       );
     }
@@ -711,7 +711,7 @@ export async function preflightResolvedConfig(
       throw new ConnectionResolutionError(
         connectionName,
         "platform_unauthenticated",
-        "This assistant's platform credential is missing and must be re-provisioned on the Vellum platform.",
+        "This assistant's platform credential is missing and must be re-provisioned on the ANU platform.",
         errorOptions,
       );
     }
@@ -719,7 +719,7 @@ export async function preflightResolvedConfig(
       throw new ConnectionResolutionError(
         connectionName,
         "platform_unauthenticated",
-        `provider_connection "${connectionName}" routes through the Vellum platform, but no platform login is available — log in or pick a different provider`,
+        `provider_connection "${connectionName}" routes through the ANU platform, but no platform login is available — log in or pick a different provider`,
         errorOptions,
       );
     }

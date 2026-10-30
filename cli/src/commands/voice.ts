@@ -1,5 +1,5 @@
 /**
- * `vellum voice [assistant]`
+ * `anu voice [assistant]`
  *
  * Type a turn in the terminal, hear the assistant speak the reply.
  *
@@ -26,10 +26,10 @@ import { PcmPlayer } from "../lib/live-voice/pcm-player.js";
 import { MAX_TEXT_TURN_CHARS } from "../lib/live-voice/protocol.js";
 
 function printUsage(): void {
-  console.log(`vellum voice - Talk to an assistant by typing; hear it answer
+  console.log(`anu voice - Talk to an assistant by typing; hear it answer
 
 USAGE:
-    vellum voice [assistant] [options]
+    anu voice [assistant] [options]
 
 ARGUMENTS:
     [assistant]    Instance name or ID (default: active assistant)
@@ -53,16 +53,16 @@ DESCRIPTION:
     Ctrl+C interrupts the assistant mid-reply. Ctrl+D, or Ctrl+C when nothing
     is being spoken, ends the session.
 
-    Works with local, self-hosted, and Vellum cloud assistants. A cloud
-    assistant needs a platform login ('vellum login'); the session is
+    Works with local, self-hosted, and ANU cloud assistants. A cloud
+    assistant needs a platform login ('anu login'); the session is
     authorized per-connection from it.
 
 EXAMPLES:
-    vellum voice
-    vellum voice my-assistant --say "i just got back to my desk"
-    vellum voice my-assistant
-    vellum voice my-assistant --no-audio
-    vellum voice --conversation conv_01H8XK3
+    anu voice
+    anu voice my-assistant --say "i just got back to my desk"
+    anu voice my-assistant
+    anu voice my-assistant --no-audio
+    anu voice --conversation conv_01H8XK3
 `);
 }
 
@@ -229,7 +229,7 @@ export function runSession({
         if (!client.supportsTextInput) {
           finish(
             `${reference} does not accept typed turns. Upgrade it with ` +
-              `'vellum upgrade' and try again.`,
+              `'anu upgrade' and try again.`,
           );
           client.end();
           return;
@@ -255,7 +255,7 @@ export function runSession({
         // silently swallows everything they type.
         finish(
           `${reference} does not accept typed turns. Upgrade it with ` +
-            `'vellum upgrade' and try again.`,
+            `'anu upgrade' and try again.`,
         );
         client.end();
         return;

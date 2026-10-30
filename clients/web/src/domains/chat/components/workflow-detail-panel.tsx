@@ -29,7 +29,7 @@ import type { WorkflowEntry } from "@/domains/chat/workflow-store";
 import { subagentTraits } from "@/utils/avatar-subagent";
 import { isActiveStatus } from "@/utils/workflow-status";
 import { useBundledAvatarComponents } from "@/utils/use-bundled-avatar-components";
-import { Button, Typography } from "@vellumai/design-library";
+import { Button, Typography } from "@anu/design-library";
 import { useTranslation } from "@/i18n";
 
 // ---------------------------------------------------------------------------

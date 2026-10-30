@@ -79,7 +79,7 @@ mock.module("../../feature-flag-resolver.js", () => ({
     flag === "channel-trust-floors" ? flagEnabled : false,
 }));
 
-mock.module("@vellumai/gateway-client", () => ({
+mock.module("@anu/gateway-client", () => ({
   isAdmissionPolicyExemptChannel: (channel: string) =>
     channel === "phone" ? phoneExempt : false,
 }));

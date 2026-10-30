@@ -25,7 +25,7 @@
  * (non-React).
  */
 
-import type { AssistantEventEnvelope } from "@vellumai/assistant-api";
+import type { AssistantEventEnvelope } from "@anu/assistant-api";
 import { captureError } from "@/lib/sentry/capture-error";
 import type { CommandUrlProvenance } from "@/runtime/native-deep-link";
 
@@ -44,7 +44,7 @@ import type { CommandUrlProvenance } from "@/runtime/native-deep-link";
  * "we're probably stale, refresh" can subscribe to a single channel.
  * `"window_attention"`: the Electron main process reported the window this
  * renderer runs in leaving or returning to the screen. It is the desktop
- * renderer's only source for this edge, because Vellum windows disable
+ * renderer's only source for this edge, because ANU windows disable
  * background throttling and that disables the Page Visibility API with it,
  * so `"visibility"` never fires there.
  *
@@ -312,7 +312,7 @@ export interface BusEventMap {
   "deeplink.share": { inboxId: string | null };
   /**
    * Electron host only: inbound `<scheme>://connect` URL from the pair
-   * page's "Open in the Vellum app" button or a `vellum pair --app`
+   * page's "Open in the ANU app" button or a `anu pair --app`
    * QR code. `url` is the validated https server base and `code` the
    * device code the link carried; together they are the pairing link the
    * connect dialog hands to the local-mode host. `code` is credential

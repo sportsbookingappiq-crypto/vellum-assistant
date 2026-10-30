@@ -1,8 +1,8 @@
-import { isChannelUserIntegration } from "@vellumai/service-contracts/channels";
+import { isChannelUserIntegration } from "@anu/service-contracts/channels";
 import {
   type IntegrationCategory,
   isIntegrationCategory,
-} from "@vellumai/service-contracts/integration-categories";
+} from "@anu/service-contracts/integration-categories";
 
 import type { OAuthConnection } from "@/generated/api/types.gen";
 import type { OauthProvidersGetResponse } from "@/generated/daemon/types.gen";

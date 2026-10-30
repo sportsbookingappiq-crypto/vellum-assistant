@@ -31,7 +31,7 @@ import { waitFor } from "./helpers/wait-for.js";
 
 await initializeDb();
 
-// The Vellum-managed connection row the managed presets resolve to.
+// The ANU-managed connection row the managed presets resolve to.
 getDb()
   .insert(providerConnections)
   .values({

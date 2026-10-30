@@ -289,11 +289,11 @@ const CATALOG: ReadonlyMap<SttProviderId, SttProviderEntry> = new Map<
     {
       id: "vellum",
       baseModelFamily: "nova-3",
-      displayName: "Vellum",
+      displayName: "ANU",
       subtitle:
-        "Speech-to-text through your Vellum account — billed to Vellum credits, no separate API key needed.",
+        "Speech-to-text through your ANU account — billed to ANU credits, no separate API key needed.",
       setupMode: "connection",
-      setupHint: "Connect your Vellum account to enable managed transcription.",
+      setupHint: "Connect your ANU account to enable managed transcription.",
       credentialProvider: "vellum",
       supportedBoundaries: new Set<SttBoundaryId>([
         "daemon-batch",
@@ -314,11 +314,11 @@ const CATALOG: ReadonlyMap<SttProviderId, SttProviderEntry> = new Map<
       id: "vellum-flux",
       variantOf: "vellum",
       variantModel: "flux",
-      displayName: "Vellum (Flux)",
+      displayName: "ANU (Flux)",
       subtitle:
-        "Conversational speech-to-text with model-native turn detection, through your Vellum account. No separate API key needed.",
+        "Conversational speech-to-text with model-native turn detection, through your ANU account. No separate API key needed.",
       setupMode: "connection",
-      setupHint: "Connect your Vellum account to enable managed transcription.",
+      setupHint: "Connect your ANU account to enable managed transcription.",
       // Shared with `vellum`: the platform connection is the credential, and
       // Flux is a different endpoint on the same relay, not a second account.
       credentialProvider: "vellum",
@@ -499,7 +499,7 @@ export function supportsDiarization(id: SttProviderId): boolean {
  * session change.
  */
 /**
- * Whether a provider authenticates with the Vellum platform connection rather
+ * Whether a provider authenticates with the ANU platform connection rather
  * than a stored API key.
  *
  * Derived from the catalog rather than a hand-kept id list: every check that

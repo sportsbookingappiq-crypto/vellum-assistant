@@ -22,8 +22,8 @@ import {
 } from "@/domains/account/login-flow";
 import { useAuthStore } from "@/stores/auth-store";
 import { routes } from "@/utils/routes";
-import { cn } from "@vellumai/design-library/utils/cn";
-import { textLinkVariants } from "@vellumai/design-library/components/text-link";
+import { cn } from "@anu/design-library/utils/cn";
+import { textLinkVariants } from "@anu/design-library/components/text-link";
 
 /**
  * Provider signup completion page. Shown when allauth's provider flow needs

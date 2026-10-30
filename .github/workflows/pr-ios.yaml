@@ -46,12 +46,12 @@ jobs:
 
       - name: Install dependencies
         working-directory: clients/web
-        # `@vellumai/assistant` is here for the avatar icon drift check below:
+        # `@anu/assistant` is here for the avatar icon drift check below:
         # rasterizing the icons needs its native `@resvg/resvg-js` binding.
         run: |
           bun install --frozen-lockfile \
-            --filter=@vellumai/web \
-            --filter=@vellumai/assistant
+            --filter=@anu/web \
+            --filter=@anu/assistant
 
       - name: Capacitor sync
         working-directory: clients/web

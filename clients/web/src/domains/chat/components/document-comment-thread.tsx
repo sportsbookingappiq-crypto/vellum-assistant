@@ -1,4 +1,4 @@
-import { Button, Chip, Tag, Typography } from "@vellumai/design-library";
+import { Button, Chip, Tag, Typography } from "@anu/design-library";
 import {
   CheckCircle,
   CircleDot,

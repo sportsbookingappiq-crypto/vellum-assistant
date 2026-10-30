@@ -42,7 +42,7 @@ interface ImportMetaEnv {
    */
   readonly VITE_SESSION_REPLAY_APP_ID?: string;
   /**
-   * Root hostname shared across Vellum subdomains, with a leading dot (e.g.
+   * Root hostname shared across ANU subdomains, with a leading dot (e.g.
    * `.vellum.ai`). Used as the session-replay cookie scope (`rootHostname`).
    * Defaults to `.vellum.ai` when unset. The Electron main process reads the
    * same var via `process.env` at build time (see `electron.vite.config.ts`).
@@ -55,11 +55,16 @@ interface ImportMetaEnv {
   /** Release channel this bundle was built as. `"preview"` or stable otherwise. */
   readonly VITE_CHANNEL?: string;
   /** When set, the app runs in platform (cloud-hosted) mode. Unset = local mode. */
+  /**
+   * Base URL of the ANU task API (`anu/`) the `/anu/*` screens talk to.
+   * Defaults to the local development server, http://127.0.0.1:8787.
+   */
+  readonly VITE_ANU_API_URL?: string;
   readonly VITE_PLATFORM_MODE?: string;
   /** When truthy ("1", "true", "yes"), disables platform connectivity in local mode. */
   readonly VITE_VELLUM_DISABLE_PLATFORM?: string;
   /**
-   * Live Google Play listing for ai.vellum.assistant. Android install
+   * Live Google Play listing for ai.anu.assistant. Android install
    * promotion remains hidden when this is unset or invalid.
    */
   readonly VITE_ANDROID_PLAY_STORE_URL?: string;

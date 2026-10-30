@@ -15,7 +15,7 @@ import {
   type HookFunction,
   quarantineRefusedExchanges,
   type UserPromptSubmitContext,
-} from "@vellumai/plugin-api";
+} from "@anu/plugin-api";
 
 const userPromptSubmit: HookFunction<UserPromptSubmitContext> = async (ctx) => {
   const { messages, droppedExchanges } = quarantineRefusedExchanges(

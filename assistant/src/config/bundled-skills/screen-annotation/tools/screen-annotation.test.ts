@@ -54,9 +54,9 @@ describe("screen_point_at", () => {
 
     expect(result.isError).toBe(true);
     expect(result.content).toContain(
-      "The Vellum desktop app is needed to view or control your screen",
+      "The ANU desktop app is needed to view or control your screen",
     );
-    expect(result.content).toContain("https://www.vellum.ai/downloads");
+    expect(result.content).toContain("https://www.anu.ai/downloads");
   });
 
   /** Drawing on the user's screen is a side effect a stopped turn must not have. */

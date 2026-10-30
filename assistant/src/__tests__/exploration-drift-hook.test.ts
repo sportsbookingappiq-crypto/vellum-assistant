@@ -12,6 +12,9 @@
  *   long-dig threshold; other models are unaffected; the signature comparison
  *   is key-order independent; the nudge re-fires on further duplicates and
  *   stops when the model moves on to fresh calls.
+ * - The oscillation trigger: on every model, a run whose last four calls
+ *   alternate between two identical calls (A, B, A, B) fires an oscillation
+ *   nudge; near-misses and a text break stay silent.
  * - The streak is bounded by a real user message, a non-empty assistant text
  *   block, and a non-exploration tool result.
  * - Repeat long-dig nudges are spaced one full threshold apart.
@@ -30,6 +33,7 @@ import postToolUse, {
   EXPLORATION_LOOP_REPEAT_THRESHOLD,
   EXPLORATION_NUDGE_THRESHOLD,
   explorationLoopNudgeText,
+  explorationOscillationNudgeText,
   resetExplorationDriftStateForTests,
 } from "../plugins/defaults/exploration-drift/hooks/post-tool-use.js";
 import { defaultExplorationDriftPlugin } from "../plugins/defaults/index.js";
@@ -628,6 +632,124 @@ describe("exploration-drift post-tool-use hook — loop trigger", () => {
     // The loop trigger would have fired far earlier in a live run; with a
     // cold conversation state at threshold length, the long-dig text wins.
     expect(ctx.additionalContext).toBe(EXPLORATION_DRIFT_NUDGE_TEXT);
+  });
+});
+
+/**
+ * History whose trailing exploration calls follow `pattern` (one call per
+ * letter, A and B mapping to two fixed invocations, other letters to unique
+ * ones), with the last letter as the current call.
+ */
+function patternHistory(pattern: string): {
+  messages: Message[];
+  currentToolUseId: string;
+} {
+  const inputs: Record<string, { name: string; input: Record<string, unknown> }> =
+    {
+      A: { name: "file_read", input: { path: "src/app.ts" } },
+      B: { name: "bash", input: { command: "grep -n main src/app.ts" } },
+    };
+  const messages: Message[] = [
+    { role: "user", content: [{ type: "text", text: "find the entry point" }] },
+  ];
+  const letters = [...pattern];
+  letters.forEach((letter, index) => {
+    const call = inputs[letter] ?? {
+      name: "bash",
+      input: { command: `unique-${index}` },
+    };
+    const id = `osc-${index}`;
+    messages.push(toolUseTurn(id, call.name, { ...call.input }));
+    if (index < letters.length - 1) {
+      messages.push(toolResultTurn(id));
+    }
+  });
+  return { messages, currentToolUseId: `osc-${letters.length - 1}` };
+}
+
+describe("exploration-drift post-tool-use hook: oscillation trigger", () => {
+  test("fires on any model when the last four calls alternate A, B, A, B", async () => {
+    const { messages, currentToolUseId } = patternHistory("XABAB");
+    const ctx = makeCtx(
+      freshConversationId(),
+      currentResponse(currentToolUseId),
+      messages,
+    );
+
+    await postToolUse(ctx);
+
+    expect(ctx.additionalContext).toBe(
+      explorationOscillationNudgeText("file_read", "bash"),
+    );
+    expect(ctx.toolResponse.content).toBe(BASE_CONTENT);
+  });
+
+  test("stays silent for three alternating calls or a broken alternation", async () => {
+    for (const pattern of ["ABA", "ABAX", "AABB", "ABXB"]) {
+      const { messages, currentToolUseId } = patternHistory(pattern);
+      const ctx = makeCtx(
+        freshConversationId(),
+        currentResponse(currentToolUseId),
+        messages,
+      );
+
+      await postToolUse(ctx);
+
+      expect(ctx.additionalContext).toBeNull();
+    }
+  });
+
+  test("assistant text between the calls breaks the run", async () => {
+    const { messages, currentToolUseId } = patternHistory("ABAB");
+    // Insert text after the second call's result: the run is then only A, B.
+    messages.splice(5, 0, {
+      role: "assistant",
+      content: [{ type: "text", text: "Still looking for the entry point." }],
+    });
+    const ctx = makeCtx(
+      freshConversationId(),
+      currentResponse(currentToolUseId),
+      messages,
+    );
+
+    await postToolUse(ctx);
+
+    expect(ctx.additionalContext).toBeNull();
+  });
+
+  test("does not nudge twice for the same streak", async () => {
+    const conversationId = freshConversationId();
+    const { messages, currentToolUseId } = patternHistory("ABAB");
+    const first = makeCtx(
+      conversationId,
+      currentResponse(currentToolUseId),
+      messages,
+    );
+    await postToolUse(first);
+    expect(first.additionalContext).not.toBeNull();
+
+    const again = makeCtx(
+      conversationId,
+      currentResponse(currentToolUseId),
+      messages,
+    );
+    await postToolUse(again);
+    expect(again.additionalContext).toBeNull();
+  });
+
+  test("subagent conversations are exempt", async () => {
+    const { messages, currentToolUseId } = patternHistory("ABAB");
+    const ctx = makeCtx(
+      freshConversationId(),
+      currentResponse(currentToolUseId),
+      messages,
+      GENERIC_MODEL,
+      "subagentSpawn",
+    );
+
+    await postToolUse(ctx);
+
+    expect(ctx.additionalContext).toBeNull();
   });
 });
 

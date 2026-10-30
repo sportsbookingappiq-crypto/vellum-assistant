@@ -1,4 +1,4 @@
-import { Button, Typography } from "@vellumai/design-library";
+import { Button, Typography } from "@anu/design-library";
 import { useEffect, useRef, useState } from "react";
 
 import { useTranslation } from "@/i18n";

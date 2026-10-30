@@ -51,7 +51,7 @@ capabilities, so never offer a mobile app to unblock one.
 
 When a task needs a host capability and no connected client provides
 it, say so and share the download page for a client that does, without
-waiting to be asked: https://www.vellum.ai/downloads
+waiting to be asked: https://www.anu.ai/downloads
 The Chrome extension installs from the Chrome Web Store instead: https://chromewebstore.google.com/detail/vellum-assistant-browser/hphbdmpffeigpcdjkckleobjmhhokpne
 
 Examples:

@@ -6,10 +6,7 @@
  * stays up and the request degrades.
  */
 
-import {
-  IpcCallError,
-  IpcConnectError,
-} from "@vellumai/gateway-client/ipc-client";
+import { IpcCallError, IpcConnectError } from "@anu/gateway-client/ipc-client";
 
 import {
   RouteError,

@@ -14,7 +14,7 @@
  * member_blocked / member_revoked hard-deny.
  */
 
-import type { TrustClass, TrustVerdict } from "@vellumai/gateway-client";
+import type { TrustClass, TrustVerdict } from "@anu/gateway-client";
 import { and, desc, eq, sql } from "drizzle-orm";
 
 import { guardianIntegrityState } from "../auth/guardian-integrity.js";

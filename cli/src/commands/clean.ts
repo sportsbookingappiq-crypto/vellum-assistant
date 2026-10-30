@@ -4,10 +4,13 @@ import { stopProcess } from "../lib/process";
 export async function clean(): Promise<void> {
   const args = process.argv.slice(3);
   if (args.includes("--help") || args.includes("-h")) {
-    console.log("Usage: vellum clean");
+    console.log("Usage: anu clean");
     console.log("");
     console.log(
-      "Kill all orphaned vellum processes that are not tracked by any assistant.",
+      "Stop orphaned ANU processes: assistant, gateway, and Qdrant processes that",
+    );
+    console.log(
+      "no assistant in the lockfile tracks. Running assistants are left alone.",
     );
     process.exit(0);
   }

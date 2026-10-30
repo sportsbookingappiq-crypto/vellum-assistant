@@ -16,7 +16,7 @@ export const routes = {
     },
   },
 
-  // Cross-app destinations served by other Vellum apps.
+  // Cross-app destinations served by other ANU apps.
   signup: `https://${WWW_DOMAIN}/account/signup`,
   login: `https://${WWW_DOMAIN}/account/login`,
   assistant: `https://${WWW_DOMAIN}/assistant`,
@@ -24,7 +24,7 @@ export const routes = {
   downloads: `https://${WWW_DOMAIN}/downloads`,
   iosAppStore: "https://apps.apple.com/us/app/vellum-assistant/id6759934423",
   androidPlayStore:
-    "https://play.google.com/store/apps/details?id=ai.vellum.assistant",
+    "https://play.google.com/store/apps/details?id=ai.anu.assistant",
   chromeWebStore:
     "https://chromewebstore.google.com/detail/vellum-assistant-browser/hphbdmpffeigpcdjkckleobjmhhokpne",
 } as const;

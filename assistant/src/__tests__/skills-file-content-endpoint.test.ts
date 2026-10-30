@@ -514,7 +514,7 @@ describe("getSkillFileContent — uninstalled skill (provider chain)", () => {
     mockResolvedSkills = [];
     installFetchForbidden();
 
-    // Vellum doesn't handle
+    // ANU doesn't handle
     mockVellumProvider = makeNoopProvider("vellum");
 
     // skills.sh handles and returns content
@@ -545,7 +545,7 @@ describe("getSkillFileContent — uninstalled skill (provider chain)", () => {
     mockResolvedSkills = [];
     installFetchForbidden();
 
-    // Vellum and skills.sh don't handle
+    // ANU and skills.sh don't handle
     mockVellumProvider = makeNoopProvider("vellum");
     mockSkillsshProvider = makeNoopProvider("skillssh");
 
@@ -577,7 +577,7 @@ describe("getSkillFileContent — uninstalled skill (provider chain)", () => {
     mockResolvedSkills = [];
     installFetchForbidden();
 
-    // Vellum provider claims this skill but returns null for the specific file
+    // ANU provider claims this skill but returns null for the specific file
     mockVellumProvider = {
       canHandle: () => true,
       listFiles: async () => null,
@@ -600,7 +600,7 @@ describe("getSkillFileContent — uninstalled skill (provider chain)", () => {
 
     const clawhubReadCalls: string[] = [];
 
-    // Vellum provider claims the skill but returns null for file content
+    // ANU provider claims the skill but returns null for file content
     mockVellumProvider = {
       canHandle: () => true,
       listFiles: async () => null,

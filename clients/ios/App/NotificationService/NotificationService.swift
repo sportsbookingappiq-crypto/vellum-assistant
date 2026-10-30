@@ -19,7 +19,7 @@ final class NotificationService: UNNotificationServiceExtension {
     /// rather than one that matches nothing.
     private static let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier
-            ?? "ai.vocify-inc.vellum-assistant-ios.NotificationService",
+            ?? "ai.anu.assistant-ios.NotificationService",
         category: "NotificationService"
     )
 

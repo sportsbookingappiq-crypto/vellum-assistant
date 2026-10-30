@@ -16,7 +16,7 @@
  */
 
 import type { KnownBlock } from "@slack/types";
-import type { SlackStreamTask } from "@vellumai/gateway-client";
+import type { SlackStreamTask } from "@anu/gateway-client";
 
 import { resolveSlackAuth, type SlackAuthIdentity } from "./auth.js";
 import { conversationInfo } from "./client.js";

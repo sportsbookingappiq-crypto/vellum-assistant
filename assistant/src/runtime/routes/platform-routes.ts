@@ -31,12 +31,12 @@ import {
   type BillingPlanId,
   extraCreditUsd,
   planCreditUsedFraction,
-} from "@vellumai/service-contracts/plan-credit";
+} from "@anu/service-contracts/plan-credit";
 import {
   type PlatformCredentialVerificationStatus,
   type PlatformVerifyCredentialResponse,
   PlatformVerifyCredentialResponseSchema,
-} from "@vellumai/service-contracts/platform-credential";
+} from "@anu/service-contracts/platform-credential";
 import { z } from "zod";
 
 import {
@@ -937,7 +937,7 @@ export const ROUTES: RouteDefinition[] = [
       requiredScopes: ["settings.write"],
       allowedPrincipalTypes: LOCAL_PRINCIPALS,
     },
-    summary: "Connect to the Vellum Platform",
+    summary: "Connect to the ANU Platform",
     description:
       "Checks whether the stored platform credentials still connect. Reports a stored key the platform rejects as credentialRejected, so the caller can direct the user to sign in again and replace it.",
     tags: ["platform"],
@@ -957,7 +957,7 @@ export const ROUTES: RouteDefinition[] = [
       requiredScopes: ["settings.read"],
       allowedPrincipalTypes: ACTOR_PRINCIPALS,
     },
-    summary: "Verify the Vellum-managed credential against the platform",
+    summary: "Verify the ANU-managed credential against the platform",
     description:
       "Asks the platform whether the stored assistant API key authenticates. POST because it performs a check; the result is returned, not stored.",
     tags: ["platform"],
@@ -972,7 +972,7 @@ export const ROUTES: RouteDefinition[] = [
       requiredScopes: ["settings.write"],
       allowedPrincipalTypes: LOCAL_PRINCIPALS,
     },
-    summary: "Disconnect from the Vellum Platform",
+    summary: "Disconnect from the ANU Platform",
     description:
       "Deletes stored platform credentials and emits platform_disconnected signal to connected clients.",
     tags: ["platform"],

@@ -802,7 +802,7 @@ describe("ensureCliInstalled", () => {
     // bun exits 0 without ever creating node_modules/.bin/vellum.
     lastChild.emit("close", 0);
 
-    await expect(promise).rejects.toThrow(/no vellum binary was found/);
+    await expect(promise).rejects.toThrow(/no anu binary was found/);
 
     // The lock is cleared, so a subsequent attempt reinstalls from scratch.
     const retry = ensureCliInstalled();

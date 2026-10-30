@@ -18,7 +18,7 @@
  * The fix is to treat each authorization window as a throwaway sign-in
  * surface: track the third-party hosts it navigates through, and drop their
  * cookies from the session once the window closes. The next connect therefore
- * starts signed out and the provider asks who you are. First-party Vellum
+ * starts signed out and the provider asks who you are. First-party ANU
  * hosts (and loopback, used by the local OAuth callback listener) are never
  * touched, so the app's own session is unaffected.
  *
@@ -57,7 +57,7 @@ export interface AuthPopupTrackingDeps {
 }
 
 /**
- * Hosts that belong to Vellum itself, or to the loopback listener the local
+ * Hosts that belong to ANU itself, or to the loopback listener the local
  * OAuth callback binds. Their cookies carry the user's own session and must
  * survive an authorization window.
  */

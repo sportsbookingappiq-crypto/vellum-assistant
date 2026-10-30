@@ -3,9 +3,9 @@ import type {
   SubscriptionCancelRequestRequest,
 } from "@/generated/api/types.gen";
 import { useTranslation } from "@/i18n";
-import { Textarea } from "@vellumai/design-library/components/input";
-import { Radio, RadioGroup } from "@vellumai/design-library/components/radio";
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Textarea } from "@anu/design-library/components/input";
+import { Radio, RadioGroup } from "@anu/design-library/components/radio";
+import { Typography } from "@anu/design-library/components/typography";
 
 /**
  * Stripe's fixed `cancellation_details.feedback` vocabulary, in the order the

@@ -8,9 +8,9 @@ import {
   isCancelReasonComplete,
 } from "@/domains/settings/billing/cancel-reason-survey";
 import { useTranslation } from "@/i18n";
-import { Button } from "@vellumai/design-library/components/button";
-import { Modal } from "@vellumai/design-library/components/modal";
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Button } from "@anu/design-library/components/button";
+import { Modal } from "@anu/design-library/components/modal";
+import { Typography } from "@anu/design-library/components/typography";
 
 export interface FreeDowngradeConfirmModalProps {
   open: boolean;

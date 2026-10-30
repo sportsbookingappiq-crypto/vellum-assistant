@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import type { VoiceModeChord } from "@vellumai/ipc-contract";
+import type { VoiceModeChord } from "@anu/ipc-contract";
 
 import {
   setNativeVoiceModeChord,

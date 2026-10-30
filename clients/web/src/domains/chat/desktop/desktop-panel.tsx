@@ -1,4 +1,4 @@
-import { Button } from "@vellumai/design-library";
+import { Button } from "@anu/design-library";
 import { lazy, Suspense } from "react";
 
 import { useTranslation } from "@/i18n";

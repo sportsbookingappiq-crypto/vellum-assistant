@@ -13,7 +13,7 @@ import AppIntents
 /// ones that omit it, and the drop is silent at runtime — the shortcut still
 /// appears in the Shortcuts app while Siri never matches a word of it. The
 /// token resolves to `CFBundleDisplayName`, which each environment's xcconfig
-/// sets via `BUNDLE_DISPLAY_NAME`: "Vellum", "Vellum Staging", "Vellum Dev".
+/// sets via `BUNDLE_DISPLAY_NAME`: "ANU", "ANU Staging", "ANU Dev".
 /// All three are pronounceable, so one phrase list serves every build.
 ///
 /// Localized phrases go in `Intents/<locale>.lproj/AppShortcuts.strings` — the

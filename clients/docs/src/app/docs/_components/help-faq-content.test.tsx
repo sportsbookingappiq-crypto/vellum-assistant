@@ -14,7 +14,7 @@ describe("HelpFaqContent", () => {
   test("lists Android next to iOS and links the stores", () => {
     expect(html).toContain("Android app");
     expect(html).toContain("Google Play");
-    expect(html).toContain("play.google.com/store/apps/details?id=ai.vellum.assistant");
+    expect(html).toContain("play.google.com/store/apps/details?id=ai.anu.assistant");
     expect(html).toContain("apps.apple.com/us/app/vellum-assistant/id6759934423");
   });
 
@@ -28,7 +28,7 @@ describe("HelpFaqContent", () => {
   });
 
   test("describes Base as the free plan and points at Pricing", () => {
-    expect(html).toContain("Is Vellum free?");
+    expect(html).toContain("Is ANU free?");
     expect(html).toContain("Base");
     expect(html).toContain("/docs/pricing");
   });

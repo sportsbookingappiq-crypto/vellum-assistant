@@ -93,7 +93,7 @@ export interface CatalogSkill {
 
 /**
  * Resolve the directory containing a `catalog.json` and first-party skill
- * sources — either bundled next to a compiled binary (e.g. `Vellum.app`) or
+ * sources — either bundled next to a compiled binary (e.g. `ANU.app`) or
  * in the dev repo.
  *
  * Both `getCatalog()` in `catalog-cache.ts` and `resolveCatalog()` below

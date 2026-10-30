@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
-import { Select } from "@vellumai/design-library/components/select";
-import { Toggle } from "@vellumai/design-library/components/toggle";
+import { Select } from "@anu/design-library/components/select";
+import { Toggle } from "@anu/design-library/components/toggle";
 
 import { useTranslation } from "@/i18n";
 

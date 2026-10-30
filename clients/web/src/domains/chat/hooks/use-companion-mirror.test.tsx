@@ -4,7 +4,7 @@ import { afterEach, describe, expect, mock, test } from "bun:test";
 import type {
   CompanionContext,
   WatchCaptureTarget,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 import type * as WatchController from "@/domains/chat/watch/watch-controller";
 
 const published: CompanionContext[] = [];

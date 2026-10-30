@@ -1,53 +1,53 @@
 {
-  "note": "Maps each bundled skill with a public reference page (https://www.vellum.ai/docs/skills-reference/<docsSlug>, authored in this repo at clients/docs/src/app/docs/_components/skills-reference-<docsSlug>-content.tsx) to a fingerprint of its SKILL.md. Enforced by scripts/check-skill-docs-sync.ts and assistant/src/__tests__/skill-docs-sync-guard.test.ts. When a SKILL.md changes, review its docs page, then run `bun run scripts/check-skill-docs-sync.ts --write` to re-record the fingerprint. Add an entry here when a bundled skill gains a public docs page.",
+  "note": "Maps each bundled skill with a public reference page (https://www.anu.ai/docs/skills-reference/<docsSlug>, authored in this repo at clients/docs/src/app/docs/_components/skills-reference-<docsSlug>-content.tsx) to a fingerprint of its SKILL.md. Enforced by scripts/check-skill-docs-sync.ts and assistant/src/__tests__/skill-docs-sync-guard.test.ts. When a SKILL.md changes, review its docs page, then run `bun run scripts/check-skill-docs-sync.ts --write` to re-record the fingerprint. Add an entry here when a bundled skill gains a public docs page.",
   "skills": {
     "acp": {
       "docsSlug": "acp",
-      "sha256": "856f7eb970aec89fd8095cb58315df7c675c81903a1add2b9b8962151a4ac27e"
+      "sha256": "cf384302879179379aa4becef38e0f98fe3c1c53a5431ec3acfef05ca07d946d"
     },
     "app-builder": {
       "docsSlug": "app-builder",
-      "sha256": "9fff654b8f611331996267476a21d47a6eacd260ac2d800e92be92d5db373a5e"
+      "sha256": "e83eb9a25462c572979547f624b025fa82da89a9c935ee2c7ff69f61b199d98b"
     },
     "computer-use": {
       "docsSlug": "computer-use",
-      "sha256": "ab840ea498793e330861d954445871976ae33b04061bf841ad93d7f2949ae0a9"
+      "sha256": "f28b6f5f438973e2be173cfd21a4743ca10a1af2ebbd01009405e407f11255a9"
     },
     "contacts": {
       "docsSlug": "contacts",
-      "sha256": "d32a898db0fa4ce155e83766ef893661b5dc458e98ac134f8421adff6fed9501"
+      "sha256": "b8b86b0d8e2087a33d7f3cf587e4cc76e4bad650eda6bd978df8b8c5ef6e6f6c"
     },
     "document-editor": {
       "docsSlug": "document",
-      "sha256": "2932aab14bc1050e9901f1771351ca0c6539edca2acec61ac49e2c3ac6f7b76c"
+      "sha256": "a8c8cd917368c5668c9b70d66858438523140e0d8477d7d5658e33bb720d0be0"
     },
     "followups": {
       "docsSlug": "followups",
-      "sha256": "d34b30de6ec6bd57916f3e7a9b3ee8136809609b9f145009aeecd5dee549b3bb"
+      "sha256": "354fb8b14e730af5d390ec2941f00f346e467774cd1a390feec53fdfb401847e"
     },
     "image-studio": {
       "docsSlug": "image-studio",
-      "sha256": "20b556e8da2423e07114c2eac6ac20e3f770457f36ac869896a3b89293b7db61"
+      "sha256": "c6f00f273706792f909beac85e486183a75686b453f0657e25b3d44c5944442f"
     },
     "media-processing": {
       "docsSlug": "media-processing",
-      "sha256": "aa38b7020be5ef92cd4f065b9d30a135947cd800bb09884b3fdc3323a49c8ac8"
+      "sha256": "5955c66621683b4db89a7ba9cdc8be634395ad53f19fbf5b5b4aff882ffe5b31"
     },
     "messaging": {
       "docsSlug": "messaging",
-      "sha256": "5303770a66d0b52704ce6d7393f2c21704146b34c9f91b5d441a87479bd81cb3"
+      "sha256": "4fdd296c9f98fe1c6c31c7da1ca67c8486f30877f1eb1c55bdad87636b0a2e37"
     },
     "phone-calls": {
       "docsSlug": "phone-calls",
-      "sha256": "cdfe66613ff51eda90db034a77b4cfcb8fabd5970b3730d1ff31612ae94c4f41"
+      "sha256": "08890480165185f1bf3b89a42e217e1411c48aa5cd625030ae38354dadccbe56"
     },
     "playbooks": {
       "docsSlug": "playbooks",
-      "sha256": "651bdbdee8719763cc7492b3800134c2e9ac4a88d97ea58e8a8144fcc78ae441"
+      "sha256": "3e6c186a205f27176917e91d9d27d556d16e94fdbd237185a53fa9b7db4726a0"
     },
     "schedule": {
       "docsSlug": "schedule",
-      "sha256": "ebfad7b3518fab2bf210721459566c0071046bab83428804c8cf8c73a9d4afe9"
+      "sha256": "6c7e5474cfda6bc465c43304a004d9c8ece3d37bfdc2fa4a75e51d28496f24d1"
     },
     "skill-management": {
       "docsSlug": "skill-management",
@@ -55,11 +55,11 @@
     },
     "subagent": {
       "docsSlug": "subagent",
-      "sha256": "099293c722a13d35f99bb92b03ff73acdd7e7ac3c3e5e6d7c28b48aa3cc18099"
+      "sha256": "7076effdb56640d925292d1c537c252820336cf7de8ab6fc3318411fa9ccc2c8"
     },
     "transcribe": {
       "docsSlug": "transcribe",
-      "sha256": "8e50033d564e9751f6db6ad75d6604df23b321722a93d402579185cbbdf7ede0"
+      "sha256": "e81ad18443c3d0dbf2efefd6c56e6a0434d48058ae7735b0565c967ea5aaa475"
     }
   }
 }

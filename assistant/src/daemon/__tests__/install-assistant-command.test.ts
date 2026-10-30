@@ -37,16 +37,10 @@ afterEach(() => {
   rmSync(root, { recursive: true, force: true });
 });
 
-/** Build `<root>/<prefix>/node_modules/@vellumai/assistant/src/daemon`. */
+/** Build `<root>/<prefix>/node_modules/@anu/assistant/src/daemon`. */
 function seedInstalledLayout(options: { withBin: boolean }): string {
   const nodeModules = join(root, "cli", "latest", "node_modules");
-  const moduleDir = join(
-    nodeModules,
-    "@vellumai",
-    "assistant",
-    "src",
-    "daemon",
-  );
+  const moduleDir = join(nodeModules, "@anu", "assistant", "src", "daemon");
   mkdirSync(moduleDir, { recursive: true });
   writeFileSync(join(moduleDir, "..", "index.ts"), "#!/usr/bin/env bun\n");
 
@@ -65,13 +59,13 @@ describe("resolveAssistantCommandTarget", () => {
     const moduleDir = seedInstalledLayout({ withBin: true });
 
     const target = resolveAssistantCommandTarget({
-      execPath: "/Applications/Vellum.app/Contents/Resources/bun",
+      execPath: "/Applications/ANU.app/Contents/Resources/bun",
       moduleDir,
     });
 
     expect(target).toEqual({
       kind: "bun-entry",
-      bun: "/Applications/Vellum.app/Contents/Resources/bun",
+      bun: "/Applications/ANU.app/Contents/Resources/bun",
       entry: join(root, "cli", "latest", "node_modules", ".bin", "assistant"),
     });
   });
@@ -92,7 +86,7 @@ describe("resolveAssistantCommandTarget", () => {
         "cli",
         "latest",
         "node_modules",
-        "@vellumai",
+        "@anu",
         "assistant",
         "src",
         "index.ts",
@@ -114,7 +108,7 @@ describe("resolveAssistantCommandTarget", () => {
   });
 
   test("compiled bundle resolves the sibling binary", () => {
-    const macosDir = join(root, "Vellum.app", "Contents", "MacOS");
+    const macosDir = join(root, "ANU.app", "Contents", "MacOS");
     mkdirSync(macosDir, { recursive: true });
     writeFileSync(join(macosDir, "vellum-assistant"), "");
 
@@ -144,9 +138,8 @@ describe("resolveAssistantCommandTarget", () => {
 describe("installCommandAt", () => {
   const target = {
     kind: "bun-entry" as const,
-    bun: "/Applications/Vellum Staging.app/Contents/Resources/bun",
-    entry:
-      "/Users/x/Library/Application Support/@vellumai/macos/.bin/assistant",
+    bun: "/Applications/ANU Staging.app/Contents/Resources/bun",
+    entry: "/Users/x/Library/Application Support/@anu/macos/.bin/assistant",
   };
 
   test("writes an executable wrapper that quotes paths with spaces", () => {
@@ -157,8 +150,8 @@ describe("installCommandAt", () => {
     const content = readFileSync(commandPath, "utf-8");
     expect(content.startsWith("#!/bin/sh\n")).toBe(true);
     expect(content).toContain(
-      `exec '/Applications/Vellum Staging.app/Contents/Resources/bun' ` +
-        `'/Users/x/Library/Application Support/@vellumai/macos/.bin/assistant' "$@"`,
+      `exec '/Applications/ANU Staging.app/Contents/Resources/bun' ` +
+        `'/Users/x/Library/Application Support/@anu/macos/.bin/assistant' "$@"`,
     );
     expect(lstatSync(commandPath).mode & 0o111).toBeGreaterThan(0);
   });

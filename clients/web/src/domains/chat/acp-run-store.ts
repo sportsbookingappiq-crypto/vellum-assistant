@@ -12,7 +12,7 @@
 
 import { create } from "zustand";
 
-import type { AcpSessionModelUpdateEvent } from "@vellumai/assistant-api";
+import type { AcpSessionModelUpdateEvent } from "@anu/assistant-api";
 
 import { createSelectors } from "@/utils/create-selectors";
 import { isActiveAcpStatus, type AcpRunStatus } from "@/utils/acp-run-status";

@@ -24,7 +24,7 @@ const ASSISTANT_ID = "asst-test";
 mock.module("@/assistant/use-active-assistant-id", () => ({
   useActiveAssistantId: () => ASSISTANT_ID,
 }));
-mock.module("@vellumai/design-library/components/toast", () => ({
+mock.module("@anu/design-library/components/toast", () => ({
   toast: { success: () => {}, error: () => {} },
   Toaster: () => null,
   ToastContent: () => null,
@@ -181,7 +181,7 @@ describe("TextToSpeechCard — daemon provisioning on Save", () => {
     expect(ttsBody?.services?.tts ?? {}).not.toHaveProperty("provider");
   });
 
-  test("selecting a BYOK provider from a Vellum daemon writes that provider", async () => {
+  test("selecting a BYOK provider from an ANU daemon writes that provider", async () => {
     daemonConfigData = { services: { tts: { provider: "vellum" } } };
     renderCard();
 
@@ -203,7 +203,7 @@ describe("TextToSpeechCard — daemon provisioning on Save", () => {
   });
 });
 
-describe("TextToSpeechCard — Vellum provider", () => {
+describe("TextToSpeechCard — ANU provider", () => {
   beforeEach(() => {
     localStorage.clear();
     credentialsSetCalls.length = 0;
@@ -226,17 +226,17 @@ describe("TextToSpeechCard — Vellum provider", () => {
     const trigger = document.querySelector<HTMLButtonElement>(
       'button[role="combobox"][aria-label="TTS provider"]',
     );
-    expect(trigger?.textContent).toContain("Vellum");
-    // Vellum authenticates via the platform connection, so there is no key to
+    expect(trigger?.textContent).toContain("ANU");
+    // ANU authenticates via the platform connection, so there is no key to
     // enter and nothing for the client-side Test path to use.
     expect(screen.queryByText("API Key")).toBeNull();
     expect(screen.queryByRole("button", { name: "Test" })).toBeNull();
   });
 
-  test("selecting Vellum saves provider vellum and stores no credential", async () => {
+  test("selecting ANU saves provider vellum and stores no credential", async () => {
     renderCard();
 
-    selectProvider("Vellum");
+    selectProvider("ANU");
     fireEvent.click(screen.getByRole("button", { name: "Save" }));
 
     await waitFor(() => expect(configPatchCalls.length).toBe(1));
@@ -250,7 +250,7 @@ describe("TextToSpeechCard — Vellum provider", () => {
 
   // A config written by the legacy mode toggle marks managed via `mode` while
   // `provider` holds the BYOK restore value.
-  test("a legacy managed-mode daemon renders as Vellum", () => {
+  test("a legacy managed-mode daemon renders as ANU", () => {
     daemonConfigData = {
       services: { tts: { mode: "managed", provider: "fish-audio" } },
     };
@@ -259,13 +259,13 @@ describe("TextToSpeechCard — Vellum provider", () => {
     const trigger = document.querySelector<HTMLButtonElement>(
       'button[role="combobox"][aria-label="TTS provider"]',
     );
-    expect(trigger?.textContent).toContain("Vellum");
+    expect(trigger?.textContent).toContain("ANU");
     expect(screen.queryByText("API Key")).toBeNull();
   });
 
   test("escaping a legacy managed-mode daemon resets mode alongside the provider", async () => {
     // Without the mode reset, the stale `mode: "managed"` would win over the
-    // BYOK provider choice and the user would silently stay on Vellum.
+    // BYOK provider choice and the user would silently stay on ANU.
     daemonConfigData = {
       services: { tts: { mode: "managed", provider: "fish-audio" } },
     };
@@ -290,7 +290,7 @@ describe("TextToSpeechCard — Vellum provider", () => {
       providers: [
         {
           id: "vellum",
-          displayName: "Vellum",
+          displayName: "ANU",
           subtitle: "Managed TTS.",
           supportsVoiceSelection: true,
           apiKeyPlaceholder: "",
@@ -365,7 +365,7 @@ describe("TextToSpeechCard — Vellum provider", () => {
       providers: [
         {
           id: "vellum",
-          displayName: "Vellum",
+          displayName: "ANU",
           subtitle: "Managed TTS.",
           supportsVoiceSelection: true,
           apiKeyPlaceholder: "",
@@ -406,7 +406,7 @@ describe("TextToSpeechCard — Vellum provider", () => {
       providers: [
         {
           id: "vellum",
-          displayName: "Vellum",
+          displayName: "ANU",
           subtitle: "Managed TTS.",
           supportsVoiceSelection: true,
           apiKeyPlaceholder: "",
@@ -423,7 +423,7 @@ describe("TextToSpeechCard — Vellum provider", () => {
     ).toBeTruthy();
   });
 
-  test("grafts the Vellum option onto a fetched catalog that lacks it", () => {
+  test("grafts the ANU option onto a fetched catalog that lacks it", () => {
     // A daemon serving the pre-vellum catalog omits the managed option; the
     // card must still offer it, or a legacy managed config has no selectable
     // representation and managed TTS becomes unreachable from this UI.
@@ -450,7 +450,7 @@ describe("TextToSpeechCard — Vellum provider", () => {
     const options = Array.from(
       document.querySelectorAll<HTMLElement>('[role="option"]'),
     ).map((o) => o.textContent?.trim());
-    expect(options).toContain("Vellum");
+    expect(options).toContain("ANU");
     expect(options).toContain("ElevenLabs");
   });
 });

@@ -8,7 +8,7 @@
  *
  * Two modes:
  *
- * - **Local**: CES private state lives under the Vellum root's `protected/`
+ * - **Local**: CES private state lives under the ANU root's `protected/`
  *   directory at `<rootDir>/protected/credential-executor/`.
  *
  * - **Managed**: CES private state lives at `/ces-data` by default
@@ -22,7 +22,7 @@
 import { join } from "node:path";
 import { homedir } from "node:os";
 
-import { resolveIpcEndpoint } from "@vellumai/ipc-server-utils";
+import { resolveIpcEndpoint } from "@anu/ipc-server-utils";
 
 // ---------------------------------------------------------------------------
 // Mode detection

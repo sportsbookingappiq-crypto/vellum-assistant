@@ -7,7 +7,7 @@
 
 import { beforeEach, describe, expect, mock, test } from "bun:test";
 
-import type { TunnelRecord } from "@vellumai/service-contracts/ingress";
+import type { TunnelRecord } from "@anu/service-contracts/ingress";
 
 import type { TunnelProbeResult } from "../../../inbound/tunnel-probe.js";
 import { ACTOR_PRINCIPALS } from "../../auth/route-policy.js";
@@ -361,7 +361,7 @@ describe("integrations_ingress_status route", () => {
   });
 
   test("probes the pairing tunnel over the webhook callback base", async () => {
-    // `vellum tunnel --provider tailscale` beside configured webhooks leaves
+    // `anu tunnel --provider tailscale` beside configured webhooks leaves
     // the callback base alone, so the address the user started for pairing is
     // the one this route exists to report on.
     ingressConfig = {
@@ -408,7 +408,7 @@ describe("integrations_ingress_status route", () => {
   });
 
   test("probes the pairing tunnel while callback ingress is switched off", async () => {
-    // `ingress.enabled` governs webhook callbacks. `vellum tunnel --provider
+    // `ingress.enabled` governs webhook callbacks. `anu tunnel --provider
     // tailscale` records a pairing tunnel without touching it, so the opt-out
     // must not discard the address the command just established.
     ingressConfig = {

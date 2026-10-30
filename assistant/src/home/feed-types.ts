@@ -2,7 +2,7 @@
  * Home activity feed data contract.
  *
  * The feed-item wire shapes are owned by the
- * canonical `@vellumai/assistant-api` package (`api/responses/home.ts`)
+ * canonical `@anu/assistant-api` package (`api/responses/home.ts`)
  * so the daemon route handlers, the OpenAPI generator, and external
  * clients all derive from one source. This module re-exports those
  * shapes for daemon-internal consumers and adds the on-disk file format

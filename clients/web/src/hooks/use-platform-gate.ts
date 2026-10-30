@@ -55,7 +55,7 @@ export interface PlatformGateOptions {
    * When `true`, the feature is platform-hosted only — gate it whenever
    * the **active assistant** is self-hosted, regardless of platform
    * session or feature-flag value. Use for UI surfaces that manage
-   * Vellum-hosted infrastructure (plan/billing tier, devices, machine
+   * ANU-hosted infrastructure (plan/billing tier, devices, machine
    * sizing, release channels, sleep policy, system events) which have
    * no meaningful behavior on a self-hosted assistant.
    *
@@ -231,7 +231,7 @@ export function useActiveAssistantLifecycleIsLoading(): boolean {
  *     | otherwise                         | yes              | `"full"`     |
  *
  *   - **`platformHostedOnly: true`**: for surfaces that only make sense
- *     against a Vellum-hosted assistant (billing, devices, sleep policy,
+ *     against an ANU-hosted assistant (billing, devices, sleep policy,
  *     …). Gates on the active assistant's hosting instead of the app
  *     mode. See {@link PlatformGateOptions.platformHostedOnly} for its
  *     truth table and rationale.

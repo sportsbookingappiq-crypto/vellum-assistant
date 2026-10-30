@@ -94,7 +94,7 @@ describe("truncateValue", () => {
 describe("header formatting", () => {
   test("uses the default title and eyebrow", () => {
     expect(formatHeaderEyebrow()).toBe("  Assistant");
-    expect(formatHeaderTitle()).toBe("  Meet your Assistant!");
+    expect(formatHeaderTitle()).toBe("  Not named yet");
   });
 
   test("normalizes title whitespace", () => {

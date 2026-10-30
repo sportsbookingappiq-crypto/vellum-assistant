@@ -8,7 +8,7 @@ import {
   spyOn,
   test,
 } from "bun:test";
-import { resolveExistingLocalSigningKey } from "@vellumai/local-mode";
+import { resolveExistingLocalSigningKey } from "@anu/local-mode";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -337,11 +337,11 @@ afterAll(() => {
   mock.module("../lib/http-client.js", () => realHttpClient);
 });
 
-describe("vellum wake", () => {
+describe("anu wake", () => {
   test("missing identity refuses before probing, stopping, starting, or repairing", async () => {
     delete localEntry.resources!.signingKey;
     await expect(wake()).rejects.toThrow(
-      /signing key missing.*vellum wake.*--repair-guardian/,
+      /signing key missing.*anu wake.*--repair-guardian/,
     );
     expect(resolveProcessStateMock).not.toHaveBeenCalled();
     expect(stopProcessByPidFileMock).not.toHaveBeenCalled();
@@ -794,7 +794,7 @@ describe("vellum wake", () => {
   });
 });
 
-describe("vellum wake: daemon startup failure", () => {
+describe("anu wake: daemon startup failure", () => {
   const daemonPidOf = (dir: string) => join(dir, ".vellum", "daemon.pid");
 
   beforeEach(() => {
@@ -890,7 +890,7 @@ describe("vellum wake: daemon startup failure", () => {
   });
 });
 
-describe("vellum wake — tunnel edge restore", () => {
+describe("anu wake — tunnel edge restore", () => {
   const webhookConfig = { telegram: { botUsername: "bot" } };
   const enabledConfig = {
     ingress: { enabled: true, publicBaseUrl: "https://assistant.example.com" },
@@ -1413,7 +1413,7 @@ describe("vellum wake — tunnel edge restore", () => {
     });
     ensureTunnelEdgeMock.mockRejectedValue(
       new Error(
-        "The nginx edge is still serving an outdated remote web config and could not be restarted with the updated one. Vellum could not stop the nginx process (PID 4242), even with SIGKILL. Stop it by hand and retry, or run `vellum sleep` to shut the assistant down entirely.",
+        "The nginx edge is still serving an outdated remote web config and could not be restarted with the updated one. ANU could not stop the nginx process (PID 4242), even with SIGKILL. Stop it by hand and retry, or run `anu sleep` to shut the assistant down entirely.",
       ),
     );
 
@@ -1490,9 +1490,7 @@ describe("vellum wake — tunnel edge restore", () => {
     // No tunnel is recorded here, so no provider can be named and the advice
     // points at the help that lists them.
     expect(warnSpy).toHaveBeenCalledWith(
-      expect.stringContaining(
-        "Run `vellum tunnel --help` to rebuild the edge.",
-      ),
+      expect.stringContaining("Run `anu tunnel --help` to rebuild the edge."),
     );
     expect(maybeStartNgrokTunnelMock).toHaveBeenCalledWith(
       7830,
@@ -1518,7 +1516,7 @@ describe("vellum wake — tunnel edge restore", () => {
 
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining(
-        "Run `vellum tunnel local-assistant --provider cloudflare` to rebuild the edge.",
+        "Run `anu tunnel local-assistant --provider cloudflare` to rebuild the edge.",
       ),
     );
   });
@@ -1545,7 +1543,7 @@ describe("vellum wake — tunnel edge restore", () => {
 
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining(
-        "Run `vellum tunnel local-assistant --provider tailscale` to rebuild the edge.",
+        "Run `anu tunnel local-assistant --provider tailscale` to rebuild the edge.",
       ),
     );
   });

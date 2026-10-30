@@ -1,4 +1,4 @@
-import type { IntegrationCategory } from "@vellumai/service-contracts/integration-categories";
+import type { IntegrationCategory } from "@anu/service-contracts/integration-categories";
 
 import type { OAuthConnection } from "@/generated/api/types.gen";
 import type { PlatformGateState } from "@/hooks/use-platform-gate";
@@ -75,7 +75,7 @@ export function pluginDefinition(
     category: "productivity",
     setup: {
       mode: "oauth",
-      instructions: "Sign in with the workspace you want Vellum to use.",
+      instructions: "Sign in with the workspace you want ANU to use.",
     },
     ...overrides,
   };
@@ -179,7 +179,7 @@ export const GITHUB_PROVIDER = oauthProvider(
   "Issues, pull requests, and code search on GitHub.",
 );
 
-/** Platform-hosted Notion: the MCP server leads, Vellum's OAuth is behind it. */
+/** Platform-hosted Notion: the MCP server leads, ANU's OAuth is behind it. */
 export const notionPlan = planFor({
   providers: [NOTION_PROVIDER],
   definitions: [pluginDefinition()],
@@ -189,7 +189,7 @@ export const notionPlan = planFor({
 export const googlePlan = planFor({ providers: [GOOGLE_PROVIDER] });
 
 /**
- * Linear's own MCP server with Vellum's hosted sign-in behind it: the shape a
+ * Linear's own MCP server with ANU's hosted sign-in behind it: the shape a
  * failed attempt needs, since there is somewhere else to send the user.
  */
 export const linearMcpPlan = planFor({
@@ -204,7 +204,7 @@ export const linearMcpPlan = planFor({
       setup: {
         mode: "oauth",
         instructions:
-          "Sign in with the account you want Vellum to use. A workspace admin must enable MCP.",
+          "Sign in with the account you want ANU to use. A workspace admin must enable MCP.",
       },
     }),
   ],
@@ -224,7 +224,7 @@ export const ashbyPlan = planFor({
       setup: {
         mode: "oauth",
         instructions:
-          "Sign in with the account you want Vellum to use. An organization admin must enable MCP. The server is unavailable on free plans.",
+          "Sign in with the account you want ANU to use. An organization admin must enable MCP. The server is unavailable on free plans.",
       },
     }),
   ],

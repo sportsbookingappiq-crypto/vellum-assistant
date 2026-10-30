@@ -25,7 +25,7 @@ import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { cleanup, fireEvent, render, waitFor } from "@testing-library/react";
-import { Modal } from "@vellumai/design-library/components/modal";
+import { Modal } from "@anu/design-library/components/modal";
 import { createElement, type ReactNode } from "react";
 
 import { useAssistantLifecycleStore } from "@/assistant/lifecycle-store";
@@ -54,7 +54,7 @@ let createResponseJson: unknown = null;
 let toastSuccessCalls: string[] = [];
 const initialLifecycleState = useAssistantLifecycleStore.getState();
 
-mock.module("@vellumai/design-library/components/toast", () => ({
+mock.module("@anu/design-library/components/toast", () => ({
   toast: {
     success: (message: string) => {
       toastSuccessCalls.push(message);
@@ -504,7 +504,7 @@ describe("ProviderCreateForm submit sequence", () => {
     // Ollama isn't selectable on platform-hosted assistants, so the picker
     // falls back to the first selectable provider: a keyed one, so the API
     // key field renders (adding a provider always means your own key;
-    // platform-managed routing is the Vellum row, not a per-provider choice).
+    // platform-managed routing is the ANU row, not a per-provider choice).
     expect(getInputByPlaceholder("Enter your API key")).toBeDefined();
 
     // It stays on the menu, disabled and stating why, so the restriction

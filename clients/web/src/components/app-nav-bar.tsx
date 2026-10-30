@@ -22,7 +22,7 @@ import {
   Menu,
   PanelItem,
   Typography,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 
 export interface AppNavBarProps {
   appName: string;

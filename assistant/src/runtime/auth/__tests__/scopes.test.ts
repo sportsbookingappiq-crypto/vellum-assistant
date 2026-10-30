@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { isTrustCheckedScopeProfile } from "@vellumai/gateway-client";
+import { isTrustCheckedScopeProfile } from "@anu/gateway-client";
 
 import {
   hasAllScopes,

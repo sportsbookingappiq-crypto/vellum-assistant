@@ -449,7 +449,7 @@ function retryErrorType(error: unknown): string {
  * though 400s are otherwise final.
  */
 const MANAGED_PROXY_UNSUPPORTED_MODEL_PATTERN =
-  /is not yet supported on the Vellum hosted service/;
+  /is not yet supported on the ANU hosted service/;
 
 /**
  * Whether the failure indicts one model rather than the upstream serving it: a
@@ -689,7 +689,7 @@ function normalizeSendMessageOptions(
   }
 
   if (providerName === "fireworks") {
-    // Covers BYOK Fireworks and the Vellum-managed Fireworks upstream, which
+    // Covers BYOK Fireworks and the ANU-managed Fireworks upstream, which
     // both dispatch through `FireworksProvider`. Keyless calls send no header.
     const sessionKey = [config.selectionSeed, config.conversationId].find(
       (value): value is string =>
@@ -887,7 +887,7 @@ function normalizeSendMessageOptions(
   }
 
   // Pre-adaptive Claude models (Haiku 4.5, Opus 4.5, Sonnet 4.5) reject
-  // `thinking: { type: "adaptive" }` (Anthropic 400s the request), and Vellum
+  // `thinking: { type: "adaptive" }` (Anthropic 400s the request), and ANU
   // never sends the legacy budget_tokens form. Drop an adaptive thinking
   // config for these models so the request goes out without thinking instead
   // of failing. A pass-through `{ type: "enabled", budget_tokens }` config is

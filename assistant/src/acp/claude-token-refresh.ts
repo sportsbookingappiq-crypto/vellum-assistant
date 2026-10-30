@@ -26,7 +26,7 @@
 import {
   isCredentialError,
   RefreshDeduplicator,
-} from "@vellumai/credential-storage";
+} from "@anu/credential-storage";
 
 import { refreshOAuth2Token } from "../security/oauth2.js";
 import { getLogger } from "../util/logger.js";

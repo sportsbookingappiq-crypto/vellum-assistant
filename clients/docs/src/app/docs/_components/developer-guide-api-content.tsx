@@ -155,7 +155,7 @@ VELLUM_DAEMON_URL=http://localhost:8741 vellum
 
 # macOS app
 ssh -L 8741:localhost:8741 user@remote-host -N &
-VELLUM_DAEMON_URL=http://localhost:8741 open -a Vellum`}
+VELLUM_DAEMON_URL=http://localhost:8741 open -a ANU`}
           </pre>
           <p className="mb-4 text-zinc-600">
             Autostart is disabled by default for remote connections. Set <code className="text-sm">VELLUM_DAEMON_AUTOSTART=1</code> to override.
@@ -188,13 +188,13 @@ VELLUM_DAEMON_URL=http://localhost:8741 open -a Vellum`}
                   </tr>
                   <tr>
                     <td className="py-2 pr-4">&ldquo;connection refused&rdquo;</td>
-                    <td className="py-2">Is the remote assistant running? (<code className="text-xs">vellum ps</code>)</td>
+                    <td className="py-2">Is the remote assistant running? (<code className="text-xs">anu ps</code>)</td>
                   </tr>
                 </tbody>
               </table>
             </div>
             <p className="mt-4 text-sm text-zinc-500">
-              Run <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs dark:bg-zinc-800">vellum doctor</code> for a full diagnostic check.
+              Run <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs dark:bg-zinc-800">anu doctor</code> for a full diagnostic check.
             </p>
           </section>
         </section>

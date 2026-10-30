@@ -58,7 +58,7 @@ jobs:
         run: bun run meta/sync-bundled-copies.ts --check
 
       - name: Install assistant dependencies
-        run: bun install --frozen-lockfile --ignore-scripts --filter=@vellumai/assistant
+        run: bun install --frozen-lockfile --ignore-scripts --filter=@anu/assistant
 
       - name: Validate bundled local plugin packages
         run: bun run assistant/scripts/generate-bundled-plugin-packages.ts --check

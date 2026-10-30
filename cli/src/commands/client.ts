@@ -60,7 +60,7 @@ import {
   resolveLockfilePaths,
   resolveConfigDir,
   type CliInvocation,
-} from "@vellumai/local-mode";
+} from "@anu/local-mode";
 import { parseAssistantTargetArg } from "../lib/assistant-target-args.js";
 import { parseFeatureFlagArgs, readAmbientFlagEnvVars } from "../lib/flag-args";
 import {
@@ -222,7 +222,7 @@ export function parseArgs(): ParsedArgs {
       }
       if (!entry && !hasExplicitUrl) {
         console.error(
-          `Active assistant '${active}' not found in lockfile. Set an active assistant with 'vellum use <name-or-id>'.`,
+          `Active assistant '${active}' not found in lockfile. Set an active assistant with 'anu use <name-or-id>'.`,
         );
         process.exit(1);
       }
@@ -232,7 +232,7 @@ export function parseArgs(): ParsedArgs {
       entry = resolveAssistant();
     } else if (!entry) {
       console.error(
-        "No active assistant set. Set one with 'vellum use <name-or-id>' or specify one: 'vellum client <name-or-id>'.",
+        "No active assistant set. Set one with 'anu use <name-or-id>' or specify one: 'anu client <name-or-id>'.",
       );
       process.exit(1);
     }
@@ -244,7 +244,7 @@ export function parseArgs(): ParsedArgs {
   const cloud = entry?.cloud;
   const species: Species = (entry?.species as Species) ?? "vellum";
 
-  // Ephemeral auth: a handed-over token (e.g. from `vellum pair`) used for this
+  // Ephemeral auth: a handed-over token (e.g. from `anu pair`) used for this
   // session only. Resolve it BEFORE the credential lookup below so an ephemeral
   // session never reads (or writes) the local token store.
   let bearerTokenOverride: string | undefined;
@@ -326,10 +326,10 @@ export function parseArgs(): ParsedArgs {
 }
 
 function printUsage(): void {
-  console.log(`${ANSI.bold}vellum client${ANSI.reset} - Connect to a hatched assistant
+  console.log(`${ANSI.bold}anu client${ANSI.reset} - Connect to a hatched assistant
 
 ${ANSI.bold}USAGE:${ANSI.reset}
-    vellum client [name-or-id] [options]
+    anu client [name-or-id] [options]
 
 ${ANSI.bold}ARGUMENTS:${ANSI.reset}
     [name-or-id]               Assistant display name or ID (default: active)
@@ -337,7 +337,7 @@ ${ANSI.bold}ARGUMENTS:${ANSI.reset}
 ${ANSI.bold}OPTIONS:${ANSI.reset}
     -u, --url <url>            Runtime URL
     -t, --token <jwt>          Bearer token to use for this session (e.g. from
-                              'vellum pair'). Overrides the stored token and is
+                              'anu pair'). Overrides the stored token and is
                               not persisted.
     -a, --assistant-id <id>    Assistant ID
     -i, --interface <id>       Interface identifier: cli (default) or web
@@ -353,23 +353,23 @@ ${ANSI.bold}OPTIONS:${ANSI.reset}
     -h, --help                 Show this help message
 
 ${ANSI.bold}DEFAULTS:${ANSI.reset}
-    Reads from ~/.vellum.lock.json (created by vellum hatch).
+    Reads from ~/.vellum.lock.json (created by anu hatch).
     Override with flags above.
 
 ${ANSI.bold}EXAMPLES:${ANSI.reset}
-    vellum client
-    vellum client vellum-assistant-foo
-    # Remote assistants must be reached over https (e.g. a tunnel) — the
+    anu client
+    anu client vellum-assistant-foo
+    # Remote assistants must be reached over https (e.g. a tunnel): the
     # guardian refresh token is only sent over https or a loopback address:
-    vellum client --url https://your-tunnel.example
-    vellum client vellum-assistant-foo --url http://localhost:${GATEWAY_PORT}
+    anu client --url https://your-tunnel.example
+    anu client vellum-assistant-foo --url http://localhost:${GATEWAY_PORT}
 
     # Ephemeral: connect to another machine's assistant with a paired token
     # (no lockfile entry, nothing persisted):
-    vellum client --url https://your-tunnel.example --token <jwt>
+    anu client --url https://your-tunnel.example --token <jwt>
 
     # Web interface on a fixed port, detached from the shell:
-    vellum client --interface web --port 4000 --background
+    anu client --interface web --port 4000 --background
 `);
 }
 
@@ -455,7 +455,7 @@ const PLATFORM_SESSION_PATTERN =
   /^(?:\/assistant)?\/__local\/platform-session$/;
 
 // The loopback platform session token. Persisted via the same store the CLI
-// uses (so `vellum client` restarts and CLI logins stay in sync), cached here
+// uses (so `anu client` restarts and CLI logins stay in sync), cached here
 // to keep it off the per-request proxy path. Set only after the SPA validates
 // the loopback `state`, so an unsolicited /callback can't fixate a session.
 let platformSessionToken: string | null | undefined;
@@ -731,7 +731,7 @@ async function handleLocalEndpoints(
     );
   }
 
-  // Paired devices: list and revoke via the CLI (`vellum devices … --json`).
+  // Paired devices: list and revoke via the CLI (`anu devices … --json`).
   // Always 200 with `ok` discriminating success, matching the other hosts.
   const isDevicesRevoke = DEVICES_REVOKE_PATTERN.test(pathname);
   if (DEVICES_PATTERN.test(pathname) || isDevicesRevoke) {
@@ -1174,14 +1174,14 @@ const WEB_BACKGROUND_LOG_FILE = "client-web.log";
 const WEB_BACKGROUND_START_TIMEOUT_MS = 30_000;
 
 /**
- * Launch `vellum client --interface web` as a detached background process.
+ * Launch `anu client --interface web` as a detached background process.
  *
  * The port is resolved up front (explicit --port must be free; otherwise the
  * first free port at/above 3000) and pinned via `--port` on the child so the
  * URL printed here is the one the child binds. The child's stdout/stderr go to
  * `<xdg-log-dir>/client-web.log` — same detach idiom as the nginx/ngrok
  * spawns. Success is only reported once the child is accepting connections on
- * the port; an early child exit (e.g. missing @vellumai/web assets) or a
+ * the port; an early child exit (e.g. missing @anu/web assets) or a
  * startup timeout fails with a pointer at the log file.
  */
 async function spawnBackgroundWebInterface(
@@ -1207,7 +1207,7 @@ async function spawnBackgroundWebInterface(
   childArgs.push("--port", String(port));
 
   // Don't report success until the child is actually serving: watch for an
-  // early exit (e.g. missing @vellumai/web assets, port lost to the TOCTOU
+  // early exit (e.g. missing @anu/web assets, port lost to the TOCTOU
   // window) and poll the port until it accepts connections.
   const { child, logPath, ready, exitCode } = await relaunchDetached({
     args: childArgs,
@@ -1240,7 +1240,7 @@ async function spawnBackgroundWebInterface(
     process.exit(1);
   }
 
-  console.log(`Vellum web interface: http://localhost:${port}${SPA_BASE}`);
+  console.log(`ANU web interface: http://localhost:${port}${SPA_BASE}`);
   console.log(`Running in background (pid ${child.pid}). Logs: ${logPath}`);
   console.log(`Stop with: kill ${child.pid}`);
 }
@@ -1293,8 +1293,8 @@ async function runWebInterface(
   if (!distDir) {
     console.error(
       `${ANSI.bold}--interface web${ANSI.reset}: unable to locate ` +
-        `@vellumai/web assets.\n\n` +
-        `  npm/bunx install:   npm install @vellumai/web\n` +
+        `@anu/web assets.\n\n` +
+        `  npm/bunx install:   npm install @anu/web\n` +
         `  source checkout:    cd clients/web && VITE_PLATFORM_MODE=false bun run build`,
     );
     process.exit(1);
@@ -1466,7 +1466,7 @@ async function runWebInterface(
   // the platform hardcodes in its loopback callback. We bind both loopback
   // families above so `localhost` reaches us whichever one it resolves to.
   const webInterfaceUrl = `http://localhost:${port}${SPA_BASE}`;
-  console.log(`Vellum web interface: ${webInterfaceUrl}`);
+  console.log(`ANU web interface: ${webInterfaceUrl}`);
   if (openInBrowser) openBrowser(webInterfaceUrl);
 
   const shutdown = (): void => {

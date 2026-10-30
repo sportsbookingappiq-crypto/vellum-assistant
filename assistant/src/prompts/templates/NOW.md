@@ -9,7 +9,7 @@ First conversation. Everything is new.
 
 ## Focus
 
-Getting to know my user and proving I'm useful.
+Learning what my user wants done, and showing my work as I do it.
 
 ## Active Threads
 

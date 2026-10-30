@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "@vellumai/design-library/components/button";
-import { FilterChip } from "@vellumai/design-library/components/filter-chip";
-import { Input } from "@vellumai/design-library/components/input";
-import { Notice } from "@vellumai/design-library/components/notice";
+import { Button } from "@anu/design-library/components/button";
+import { FilterChip } from "@anu/design-library/components/filter-chip";
+import { Input } from "@anu/design-library/components/input";
+import { Notice } from "@anu/design-library/components/notice";
 import {
   INTEGRATION_CATEGORIES,
   type IntegrationCategory,
-} from "@vellumai/service-contracts/integration-categories";
-import { toast } from "@vellumai/design-library/components/toast";
+} from "@anu/service-contracts/integration-categories";
+import { toast } from "@anu/design-library/components/toast";
 import { Loader2, Plus, Search } from "lucide-react";
 import {
   Suspense,
@@ -474,7 +474,7 @@ function IntegrationsPanelInner({ mcpAssistantId }: { mcpAssistantId: string }) 
           key={item.id}
           plan={plan}
           state={connect.stateFor(item.id, plan.name)}
-          // The choice between the provider's own server, Vellum's hosted
+          // The choice between the provider's own server, ANU's hosted
           // sign-in, and your own OAuth app is only a real one on a
           // self-hosted assistant.
           showAlternatives={!isPlatformHosted}

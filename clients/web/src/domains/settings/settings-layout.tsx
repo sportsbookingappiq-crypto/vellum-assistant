@@ -55,7 +55,7 @@ export function SettingsLayout() {
   const canUseInternalActions = useCanUseInternalThreadActions();
   // The Usage item is never hidden: the Usage tab reads from the local daemon
   // and works for every assistant. Its label only gains "Billing &" when the
-  // Billing tab is actually shown — i.e. signed in to the Vellum platform
+  // Billing tab is actually shown — i.e. signed in to the ANU platform
   // (`usePlatformGate() === "full"`), matching billing-page.tsx's
   // `showBillingTab`. Signed-out / self-hosted users see just "Usage".
   const billingGate = usePlatformGate();

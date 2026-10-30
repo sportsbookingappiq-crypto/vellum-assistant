@@ -15,7 +15,7 @@ import {
   DEFAULT_ROUTE_TRUST_CLASSES,
   routeAdmitsTrustClass,
   TRUST_CLASS_VALUES,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 
 import { isHttpAuthDisabled } from "../../config/env.js";
 import { getLogger } from "../../util/logger.js";

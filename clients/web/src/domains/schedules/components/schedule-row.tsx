@@ -14,9 +14,9 @@ import {
   formatTimestamp,
   type ScheduleRowUsage,
 } from "@/domains/settings/utils/schedule-formatters";
-import { Skeleton } from "@vellumai/design-library/components/skeleton";
-import { Tag } from "@vellumai/design-library/components/tag";
-import { Toggle } from "@vellumai/design-library/components/toggle";
+import { Skeleton } from "@anu/design-library/components/skeleton";
+import { Tag } from "@anu/design-library/components/tag";
+import { Toggle } from "@anu/design-library/components/toggle";
 
 import type { Schedule } from "@/domains/settings/types/schedules";
 

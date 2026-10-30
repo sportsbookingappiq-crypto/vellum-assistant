@@ -132,7 +132,7 @@ const vellumConnection = {
   name: "vellum",
   provider: "vellum",
   auth: { type: "platform" },
-  label: "Vellum",
+  label: "ANU",
   baseUrl: null,
   models: null,
 } as unknown as ProviderConnection;

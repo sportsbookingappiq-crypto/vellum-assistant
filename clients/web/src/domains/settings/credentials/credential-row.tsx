@@ -13,10 +13,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/i18n";
 import { credentialsRevealPost } from "@/generated/daemon/sdk.gen";
 import { copyToClipboard } from "@/lib/copy-to-clipboard";
-import { Button } from "@vellumai/design-library/components/button";
-import { Card } from "@vellumai/design-library/components/card";
-import { Tooltip } from "@vellumai/design-library/components/tooltip";
-import { toast } from "@vellumai/design-library/components/toast";
+import { Button } from "@anu/design-library/components/button";
+import { Card } from "@anu/design-library/components/card";
+import { Tooltip } from "@anu/design-library/components/tooltip";
+import { toast } from "@anu/design-library/components/toast";
 
 /**
  * A locally stored credential row from `POST /v1/credentials/list`. Mirrors the

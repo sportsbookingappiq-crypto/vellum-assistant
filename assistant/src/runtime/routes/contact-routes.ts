@@ -13,14 +13,14 @@ import {
   RedeemInviteByTokenRequestSchema,
   RedeemVoiceInviteRequestSchema,
   RiskThresholdSchema,
-} from "@vellumai/gateway-client";
-import type { ContactRead } from "@vellumai/gateway-client/gateway-ipc-contracts";
+} from "@anu/gateway-client";
+import type { ContactRead } from "@anu/gateway-client/gateway-ipc-contracts";
 import {
   GetContactIpcResponseSchema,
   ListContactsIpcResponseSchema,
   MergeContactsIpcResponseSchema,
   UpdateContactChannelIpcResponseSchema,
-} from "@vellumai/gateway-client/gateway-ipc-contracts";
+} from "@anu/gateway-client/gateway-ipc-contracts";
 import { z } from "zod";
 
 import {

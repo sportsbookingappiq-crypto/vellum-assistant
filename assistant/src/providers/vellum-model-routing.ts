@@ -1,5 +1,5 @@
 /**
- * Codec for Vellum-managed model routing strings.
+ * Codec for ANU-managed model routing strings.
  *
  * A single `vellum` provider connection is provider-agnostic: unlike the
  * per-provider `*-managed` connections it does not carry the upstream provider
@@ -21,10 +21,10 @@ import {
 import { PLATFORM_PROVIDER_META } from "./platform-proxy/constants.js";
 
 /**
- * Provider ids that can front a Vellum-managed (platform-proxied) route.
+ * Provider ids that can front an ANU-managed (platform-proxied) route.
  * Only these are valid prefixes for a routing string; everything else
  * (openrouter, ollama, openai-compatible, or a raw native model id) is not a
- * Vellum-routed string and `parseVellumModel` returns null for it.
+ * ANU-routed string and `parseVellumModel` returns null for it.
  */
 export const MANAGED_ROUTABLE_PROVIDERS: ReadonlySet<string> = new Set(
   Object.values(PLATFORM_PROVIDER_META)
@@ -33,18 +33,18 @@ export const MANAGED_ROUTABLE_PROVIDERS: ReadonlySet<string> = new Set(
 );
 
 /**
- * Sentinel provider id for the single, provider-agnostic Vellum-managed
+ * Sentinel provider id for the single, provider-agnostic ANU-managed
  * connection. Unlike the per-provider `*-managed` connections, this one does
  * not name an upstream provider on its DB row — the upstream is determined
  * per-request from the resolving profile. The same id is the catalog owner
- * of Vellum-hosted GPU models. Dispatch translates the identity to a
+ * of ANU-hosted GPU models. Dispatch translates the identity to a
  * factory id (including `vellum` when that is the catalog owner) before
  * adapter lookup.
  */
 export const VELLUM_MANAGED_PROVIDER = "vellum";
 
 /**
- * Name of the single provider-agnostic Vellum-managed connection row. The
+ * Name of the single provider-agnostic ANU-managed connection row. The
  * connection carries platform auth and the `vellum` sentinel instead of a
  * real upstream; the upstream is chosen per-request from the resolving
  * profile's provider. Lives in this pure module (rather than
@@ -55,7 +55,7 @@ export const VELLUM_MANAGED_PROVIDER = "vellum";
 export const VELLUM_MANAGED_CONNECTION_NAME = "vellum";
 
 /**
- * Whether a connection is the provider-agnostic Vellum-managed connection.
+ * Whether a connection is the provider-agnostic ANU-managed connection.
  * The provider column alone identifies the managed route: platform auth
  * always accompanies it (auth derivation pairs them, the connection routes
  * reject writes that split them, and DB migration 361 reconciles stored
@@ -75,13 +75,13 @@ export interface VellumModelRoute {
 }
 
 /**
- * Encode a provider + native model id into a Vellum routing string.
+ * Encode a provider + native model id into an ANU routing string.
  * Throws on a non-routable provider — that is a caller bug, not user input.
  */
 export function formatVellumModel(provider: string, model: string): string {
   if (!MANAGED_ROUTABLE_PROVIDERS.has(provider)) {
     throw new Error(
-      `formatVellumModel: "${provider}" is not a Vellum-managed provider ` +
+      `formatVellumModel: "${provider}" is not an ANU-managed provider ` +
         `(expected one of ${[...MANAGED_ROUTABLE_PROVIDERS].join(", ")})`,
     );
   }
@@ -92,15 +92,15 @@ export function formatVellumModel(provider: string, model: string): string {
 }
 
 /**
- * Decode a Vellum routing string back into provider + native model id.
+ * Decode an ANU routing string back into provider + native model id.
  *
  * Splits on the FIRST slash only so native ids that themselves contain
  * slashes (Fireworks `accounts/fireworks/models/...`) round-trip losslessly.
- * Returns null when the string is not a Vellum-routed model — no slash, empty
+ * Returns null when the string is not an ANU-routed model — no slash, empty
  * model, or a prefix that is not a managed-routable provider.
  *
  * Note: `anthropic/…` is also OpenRouter's native id shape, so this codec
- * must only be applied in a Vellum-connection context. OpenRouter is
+ * must only be applied in an ANU-connection context. OpenRouter is
  * `managed:false` and never routes through a vellum connection, so the
  * collision is unreachable in practice; the guard here is belt-and-suspenders.
  */

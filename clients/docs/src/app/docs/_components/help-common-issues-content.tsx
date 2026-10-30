@@ -87,7 +87,7 @@ export function HelpCommonIssuesContent() {
               verification email if one was sent.
             </li>
             <li>
-              If you have multiple Vellum accounts, sign out fully
+              If you have multiple ANU accounts, sign out fully
               first, then sign in with the right one.
             </li>
           </ol>
@@ -98,7 +98,7 @@ export function HelpCommonIssuesContent() {
           </SectionHeading>
           <p className="mb-0 text-zinc-600">
             You probably have more than one assistant on your account
-            (one provisioned in Vellum Cloud, one running on your
+            (one provisioned in ANU Cloud, one running on your
             Mac), and the surface you&apos;re on is pointed at a
             different one. Switch which assistant the surface is
             connected to from the app&apos;s settings, or sign out
@@ -116,12 +116,12 @@ export function HelpCommonIssuesContent() {
           </SectionHeading>
           <ol className="mb-6 list-decimal space-y-2 pl-6 text-zinc-600">
             <li>
-              In iOS Settings, find Vellum Assistant and confirm
+              In iOS Settings, find ANU and confirm
               Notifications are turned on, plus Sounds and Banners.
             </li>
             <li>
               In Focus modes (Do Not Disturb, Sleep, Work), confirm
-              Vellum Assistant isn&apos;t silenced.
+              ANU isn&apos;t silenced.
             </li>
             <li>
               Open the app once. iOS sometimes drops the push token
@@ -154,7 +154,7 @@ export function HelpCommonIssuesContent() {
           </SectionHeading>
 
           <SectionHeading id="unidentified-developer" level={3}>
-            &ldquo;Vellum can&apos;t be opened because it is from an
+            &ldquo;ANU can&apos;t be opened because it is from an
             unidentified developer&rdquo;
           </SectionHeading>
           <p className="mb-0 text-zinc-600">
@@ -170,7 +170,7 @@ export function HelpCommonIssuesContent() {
           <ol className="mb-6 list-decimal space-y-2 pl-6 text-zinc-600">
             <li>Make sure you&apos;re on macOS 14 (Sonoma) or later.</li>
             <li>
-              Check the menu bar for the Vellum icon. If it&apos;s
+              Check the menu bar for the ANU icon. If it&apos;s
               missing, the assistant daemon isn&apos;t running.
               Relaunch the app.
             </li>
@@ -191,7 +191,7 @@ export function HelpCommonIssuesContent() {
           <p className="mb-4 text-zinc-600">
             Your Mac is missing a system permission. Open{" "}
             <strong>System Settings &rsaquo; Privacy &amp; Security</strong>{" "}
-            and toggle Vellum on for whichever category you need:
+            and toggle ANU on for whichever category you need:
           </p>
           <ul className="mb-0 list-disc space-y-2 pl-6 text-zinc-600">
             <li>
@@ -222,26 +222,26 @@ export function HelpCommonIssuesContent() {
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
             Download the Windows installer from the{" "}
-            <a href="https://www.vellum.ai/download">Vellum download page</a>.
+            <a href="https://www.vellum.ai/download">ANU download page</a>.
             Use x64 for Intel or AMD PCs and ARM64 for Windows on Arm. Check the
-            system tray for Vellum if the main window is closed. The tray menu offers
+            system tray for ANU if the main window is closed. The tray menu offers
             a restart action.
           </p>
           <SectionHeading id="windows-permissions" level={3}>
             Voice, screen capture, or computer control is unavailable
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
-            Open Settings &gt; Permissions &amp; Privacy in Vellum and use the settings
+            Open Settings &gt; Permissions &amp; Privacy in ANU and use the settings
             link beside the affected permission. Windows controls microphone, screen
             capture, speech, and notification access. There is no Accessibility
             permission to enable. Elevated apps, UAC prompts, and protected windows
             cannot be controlled; use a normal, non-administrator app window.
           </p>
           <SectionHeading id="windows-cli" level={3}>
-            The vellum command is not found
+            The anu command is not found
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
-            Launch Vellum once to provision its bundled CLI, then open a new terminal.
+            Launch ANU once to provision its bundled CLI, then open a new terminal.
             The dev build adds <code>{"%LOCALAPPDATA%\\Vellum-dev\\bin"}</code> to
             your user PATH; production builds use <code>{"%LOCALAPPDATA%\\Vellum\\bin"}</code>. Run <code>where.exe vellum</code> to check which installation
             your terminal finds if another version takes precedence.
@@ -379,12 +379,12 @@ export function HelpCommonIssuesContent() {
               prompt.
             </li>
             <li>
-              <strong>iPhone</strong>: confirm Vellum Assistant has
+              <strong>iPhone</strong>: confirm ANU has
               microphone access in iOS Settings &rsaquo; Privacy
               &amp; Security &rsaquo; Microphone.
             </li>
             <li>
-              <strong>Desktop</strong>: confirm Vellum has microphone
+              <strong>Desktop</strong>: confirm ANU has microphone
               access in System Settings &rsaquo; Privacy &amp;
               Security &rsaquo; Microphone, and that you&apos;re
               holding the activation key long enough (there&apos;s a
@@ -484,7 +484,7 @@ export function HelpCommonIssuesContent() {
             <li>
               If you&apos;re on a corporate Google or Slack workspace,
               your IT team may block third-party OAuth. Ask them to
-              allow Vellum.
+              allow ANU.
             </li>
           </ol>
 

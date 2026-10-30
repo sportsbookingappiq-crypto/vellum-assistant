@@ -2,12 +2,7 @@ import { Ellipsis, MailCheck, Trash2 } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { useTranslation } from "@/i18n";
-import {
-  ActionMenu,
-  Button,
-  Toggle,
-  Typography,
-} from "@vellumai/design-library";
+import { ActionMenu, Button, Toggle, Typography } from "@anu/design-library";
 
 import { NOTIFICATIONS_PANEL_HEADER_CLASS } from "./notifications-bell-detail";
 

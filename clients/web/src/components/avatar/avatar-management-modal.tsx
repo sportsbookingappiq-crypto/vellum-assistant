@@ -8,7 +8,8 @@ import {
   useState,
 } from "react";
 
-import { Button, Modal } from "@vellumai/design-library";
+import { avatarTraitLabel } from "@anu/avatar-catalog/labels";
+import { Button, Modal } from "@anu/design-library";
 
 import {
   fetchCharacterComponents,
@@ -422,7 +423,7 @@ export function AvatarManagementModal({
                   {nameRow}
                   <TraitCycleRow
                     label={t("avatarManagementModal.body")}
-                    value={currentBody!.id}
+                    value={avatarTraitLabel("bodyShape", currentBody!.id)}
                     onPrev={() =>
                       setBodyIndex(
                         cycleIndex(
@@ -444,7 +445,7 @@ export function AvatarManagementModal({
                   />
                   <TraitCycleRow
                     label={t("avatarManagementModal.eyes")}
-                    value={currentEye!.id}
+                    value={avatarTraitLabel("eyeStyle", currentEye!.id)}
                     onPrev={() =>
                       setEyeIndex(
                         cycleIndex(
@@ -466,7 +467,7 @@ export function AvatarManagementModal({
                   />
                   <TraitCycleRow
                     label={t("avatarManagementModal.color")}
-                    value={currentColor!.id}
+                    value={avatarTraitLabel("color", currentColor!.id)}
                     colorHex={currentColor!.hex}
                     onPrev={() =>
                       setColorIndex(

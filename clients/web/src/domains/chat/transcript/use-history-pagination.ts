@@ -34,7 +34,7 @@ import type { PaginatedHistoryResult } from "@/domains/chat/transcript/types";
 import { mergeAdjacentAssistantMessages } from "@/domains/chat/utils/message-merge";
 import type { DisplayMessage } from "@/domains/chat/types/types";
 import type { BackgroundTaskEntry } from "@/domains/chat/background-task-store";
-import type { ModeSessionDescriptor } from "@vellumai/assistant-api";
+import type { ModeSessionDescriptor } from "@anu/assistant-api";
 
 const EMPTY_MODE_SESSION_DESCRIPTORS: ModeSessionDescriptor[] = [];
 const EMPTY_MODE_SESSION_IDS: string[] = [];

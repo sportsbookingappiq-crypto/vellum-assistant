@@ -1,4 +1,4 @@
-import { resolveLockfilePaths } from "@vellumai/local-mode";
+import { resolveLockfilePaths } from "@anu/local-mode";
 import {
   afterAll,
   afterEach,
@@ -180,9 +180,9 @@ describe("recover --help", () => {
     process.argv = ["bun", "vellum", "recover", "--help"];
     await expect(recover()).rejects.toThrow("process.exit(0)");
     const output = consoleLogSpy.mock.calls.flat().join("\n");
-    expect(output).toContain("Usage: vellum recover <name>");
+    expect(output).toContain("Usage: anu recover <name>");
     expect(output).toContain("Examples:");
-    expect(output).toContain("vellum recover");
+    expect(output).toContain("anu recover");
   });
 });
 

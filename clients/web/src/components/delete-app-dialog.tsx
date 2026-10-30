@@ -5,7 +5,7 @@
 
 import { useTranslation } from "@/i18n";
 import type { AppSummary } from "@/types/app-types";
-import { ConfirmDialog } from "@vellumai/design-library";
+import { ConfirmDialog } from "@anu/design-library";
 
 interface DeleteAppDialogProps {
   app: AppSummary | null;

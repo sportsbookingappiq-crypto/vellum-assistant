@@ -216,7 +216,7 @@ export function writeFileAtomicSync(
 }
 
 /**
- * Atomically write the locator file the `~/.local/bin/vellum` wrapper
+ * Atomically write the locator file the `~/.local/bin/anu` wrapper
  * sources to find the bundled bun and the current CLI bin. Refreshed on
  * every launch so app moves and version bumps self-heal. Non-fatal —
  * failures are logged but never block app startup.
@@ -235,7 +235,7 @@ export function writeCliLocator(): void {
     mkdirSync(path.dirname(locatorPath), { recursive: true });
 
     const content =
-      "# Written by Vellum.app on every launch. Do not edit.\n" +
+      "# Written by ANU.app on every launch. Do not edit.\n" +
       `VELLUM_BUN=${shQuote(getBundledBunPath())}\n` +
       `VELLUM_CLI_BIN=${shQuote(getCliBinPath())}\n`;
 
@@ -548,7 +548,7 @@ export async function ensureCliInstalled(): Promise<void> {
   // it surface downstream as a cryptic `bun run` "Module not found".
   if (!isCliInstalled()) {
     throw new Error(
-      `CLI install reported success but no vellum binary was found at ${getCliBinPath()}.`,
+      `CLI install reported success but no anu binary was found at ${getCliBinPath()}.`,
     );
   }
 }

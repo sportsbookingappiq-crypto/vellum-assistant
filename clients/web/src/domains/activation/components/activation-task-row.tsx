@@ -26,13 +26,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { ArrowUp, CircleCheck, Loader2, Pencil } from "lucide-react";
-import {
-  Button,
-  cn,
-  Input,
-  ListRow,
-  Typography,
-} from "@vellumai/design-library";
+import { Button, cn, Input, ListRow, Typography } from "@anu/design-library";
 
 import { ConversationStarterChip } from "@/components/conversation-starter-chip";
 import { ExternalAnchor } from "@/components/external-anchor";

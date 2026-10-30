@@ -43,12 +43,12 @@ export function registrationMetadata(architecture: PreviewArchitecture) {
     isolation: { previewHost: "prevhost.exe", disableProcessIsolation: false },
     classes: {
       [previewClsid]: {
-        name: "Vellum Bundle Preview",
+        name: "ANU Bundle Preview",
         appId: "{534A1E02-D58F-44F0-B58B-36CBED287C7C}",
         threadingModel: "Apartment",
       },
       [thumbnailClsid]: {
-        name: "Vellum Bundle Thumbnail",
+        name: "ANU Bundle Thumbnail",
         threadingModel: "Apartment",
       },
     },

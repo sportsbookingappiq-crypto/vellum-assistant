@@ -1,4 +1,4 @@
-import { RiskThresholdSchema } from "@vellumai/gateway-client";
+import { RiskThresholdSchema } from "@anu/gateway-client";
 import { z } from "zod";
 
 import type { GatewayRouteDefinition } from "./types.js";

@@ -18,7 +18,7 @@ import {
   startSession as coreStartSession,
   stopAllSessions as coreStopAllSessions,
   stopSession as coreStopSession,
-} from "@vellumai/egress-proxy";
+} from "@anu/egress-proxy";
 
 import {
   buildDecisionTrace,

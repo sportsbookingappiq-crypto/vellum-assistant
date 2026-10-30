@@ -9,9 +9,9 @@ import {
   THRESHOLD_PRESETS,
   presetFromThreshold,
 } from "@/utils/threshold-presets";
-import { Card } from "@vellumai/design-library/components/card";
-import { Disclosure } from "@vellumai/design-library/components/disclosure";
-import { Select } from "@vellumai/design-library/components/select";
+import { Card } from "@anu/design-library/components/card";
+import { Disclosure } from "@anu/design-library/components/disclosure";
+import { Select } from "@anu/design-library/components/select";
 
 function Divider() {
   return (

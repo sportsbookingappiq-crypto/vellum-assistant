@@ -19,17 +19,17 @@ import { captureError } from "@/lib/sentry/capture-error";
 import { useAssistantFeatureFlagStore } from "@/stores/assistant-feature-flag-store";
 import { useAssistantIdentityStore } from "@/stores/assistant-identity-store";
 import { shouldRetryDaemonError } from "@/utils/daemon-errors";
-import { Button } from "@vellumai/design-library/components/button";
-import { Card } from "@vellumai/design-library/components/card";
-import { ConfirmDialog } from "@vellumai/design-library/components/confirm-dialog";
-import { Input } from "@vellumai/design-library/components/input";
-import { Modal } from "@vellumai/design-library/components/modal";
+import { Button } from "@anu/design-library/components/button";
+import { Card } from "@anu/design-library/components/card";
+import { ConfirmDialog } from "@anu/design-library/components/confirm-dialog";
+import { Input } from "@anu/design-library/components/input";
+import { Modal } from "@anu/design-library/components/modal";
 import {
   SegmentControl,
   type SegmentControlItem,
-} from "@vellumai/design-library/components/segment-control";
-import { Tag } from "@vellumai/design-library/components/tag";
-import { toast } from "@vellumai/design-library/components/toast";
+} from "@anu/design-library/components/segment-control";
+import { Tag } from "@anu/design-library/components/tag";
+import { toast } from "@anu/design-library/components/toast";
 
 import {
   credentialInUseConnections,
@@ -123,7 +123,7 @@ function CredentialsPageInner() {
     () => listQuery.data?.credentials ?? [],
     [listQuery.data],
   );
-  // Managed credentials are provisioned by Vellum and can only be read here, so
+  // Managed credentials are provisioned by ANU and can only be read here, so
   // the list and the managed/personal split are developer-mode surfaces.
   // Standard users see just the credentials they can act on.
   const isDeveloperMode =

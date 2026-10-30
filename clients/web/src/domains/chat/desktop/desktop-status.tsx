@@ -1,4 +1,4 @@
-import { Typography } from "@vellumai/design-library";
+import { Typography } from "@anu/design-library";
 import { Loader2 } from "lucide-react";
 import type { ReactNode } from "react";
 

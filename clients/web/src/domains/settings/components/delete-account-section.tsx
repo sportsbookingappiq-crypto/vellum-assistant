@@ -12,13 +12,13 @@ import { hardNavigate } from "@/lib/auth/hard-navigate";
 import { clearConsentForUser } from "@/lib/consent/consent-persistence";
 import { useAuthStore } from "@/stores/auth-store";
 import { routes } from "@/utils/routes";
-import { Button } from "@vellumai/design-library/components/button";
-import { ConfirmDialog } from "@vellumai/design-library/components/confirm-dialog";
-import { toast } from "@vellumai/design-library/components/toast";
+import { Button } from "@anu/design-library/components/button";
+import { ConfirmDialog } from "@anu/design-library/components/confirm-dialog";
+import { toast } from "@anu/design-library/components/toast";
 
 export function DeleteAccountSection() {
   const { t } = useTranslation("settings");
-  // platformHostedOnly: deleting a Vellum platform account from a UI that
+  // platformHostedOnly: deleting an ANU platform account from a UI that
   // is actively connected to a self-hosted assistant is confusing /
   // disruptive — the user can switch to a platform-hosted assistant to
   // access this action. The standard gate would still expose it.

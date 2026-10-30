@@ -7,31 +7,32 @@ import path from "node:path";
 import {
   BUNDLES_DIR_NAME,
   VELLUMAPP_PROTOCOL,
-} from "@vellumai/electron-desktop/bundle-platform";
-import { installCsp } from "@vellumai/electron-desktop/csp";
-import { getDeviceId } from "@vellumai/electron-desktop/device-id";
+} from "@anu/electron-desktop/bundle-platform";
+import { installCsp } from "@anu/electron-desktop/csp";
+import { getDeviceId } from "@anu/electron-desktop/device-id";
 import {
   forwardGatewayRequest,
   forwardPairedGatewayRequest,
   type GatewayForwardFetcher,
-} from "@vellumai/electron-desktop/gateway-forward";
-import { getPairedGuardianAccessToken } from "@vellumai/electron-desktop/local-mode";
-import { getWatchedLockfileSnapshot } from "@vellumai/electron-desktop/lockfile-watcher";
-import { installPairedGatewayRequestGuard } from "@vellumai/electron-desktop/paired-gateway-request-guard";
-import { installPermissionHandler } from "@vellumai/electron-desktop/permissions";
+} from "@anu/electron-desktop/gateway-forward";
+import { getPairedGuardianAccessToken } from "@anu/electron-desktop/local-mode";
+import { getWatchedLockfileSnapshot } from "@anu/electron-desktop/lockfile-watcher";
+import { installPairedGatewayRequestGuard } from "@anu/electron-desktop/paired-gateway-request-guard";
+import { installPermissionHandler } from "@anu/electron-desktop/permissions";
 import {
   executePlatformForwardPlan,
   planPlatformForward,
-} from "@vellumai/electron-desktop/platform-forward";
-import { registerVellumAppProtocol } from "@vellumai/electron-desktop/vellumapp-protocol";
-import { planAppProtocolAssetRequest } from "@vellumai/electron-utils/app-protocol";
+} from "@anu/electron-desktop/platform-forward";
+import { registerVellumAppProtocol } from "@anu/electron-desktop/vellumapp-protocol";
+import { pinPackagedUserDataDir } from "@anu/electron-desktop/user-data-dir";
+import { planAppProtocolAssetRequest } from "@anu/electron-utils/app-protocol";
 import {
   pairedGatewayTargetsFromLockfile,
   readAllowedGatewayPorts,
   readPairedGatewayTargets,
   resolveLocalConfigFromEnv,
   resolveLockfilePaths,
-} from "@vellumai/local-mode";
+} from "@anu/local-mode";
 
 import {
   APP_HOST,
@@ -49,32 +50,27 @@ import { ensureVisible } from "./main-window";
 import { installWebContentsSecurity } from "./windows.client";
 
 /**
- * Linux shell for the Vellum Assistant: a hardened BrowserWindow loading
+ * Linux shell for the ANU: a hardened BrowserWindow loading
  * the clients/web renderer (Vite dev server in dev, `app://` static serving
  * of `resources/web-dist` in packaged builds). Every desktop capability is a
  * module under `./features/`, composed through the capability registry once
  * the app is ready.
  */
 
-// Dev-only: override the package `name` (`@vellumai/linux`) so
+// Dev-only: override the package `name` (`@anu/linux`) so
 // `app.getPath("userData")` resolves to its own directory, cleanly separate
-// from other Vellum installs. Packaged builds get a real `productName` from
+// from other ANU installs. Packaged builds get a real `productName` from
 // electron-builder. Must run before `userData` is first read.
 if (!app.isPackaged) {
   app.setName("Vellum Electron Linux");
 }
 
-// Packaged builds all share the same package.json `name`, so Electron
-// resolves `app.getPath("userData")` to the same directory for every
-// environment. Append an environment suffix for non-production builds so
-// dev/staging/production installs can run side-by-side; production keeps the
-// original path for backwards compatibility.
+// Packaged builds keep the legacy `userData` directory, with a channel
+// suffix for non-production builds so dev/staging/production installs can run
+// side-by-side.
 const releaseChannel = LINUX_RELEASE_INFO.releaseChannel;
 if (app.isPackaged) {
-  if (releaseChannel !== "production") {
-    const base = app.getPath("userData");
-    app.setPath("userData", `${base}-${releaseChannel}`);
-  }
+  pinPackagedUserDataDir(app, releaseChannel);
 }
 
 // Single-instance lock: relaunches focus the existing window instead of

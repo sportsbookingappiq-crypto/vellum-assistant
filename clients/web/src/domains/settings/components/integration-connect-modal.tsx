@@ -11,17 +11,17 @@ import {
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
-import { ActionMenu } from "@vellumai/design-library/components/action-menu";
-import { Button } from "@vellumai/design-library/components/button";
-import { Checkbox } from "@vellumai/design-library/components/checkbox";
-import { Collapsible } from "@vellumai/design-library/components/collapsible";
-import { ConfirmDialog } from "@vellumai/design-library/components/confirm-dialog";
-import { Input } from "@vellumai/design-library/components/input";
-import { ListRow } from "@vellumai/design-library/components/list-row";
-import { Modal } from "@vellumai/design-library/components/modal";
-import { Notice } from "@vellumai/design-library/components/notice";
-import { SplitButton } from "@vellumai/design-library/components/split-button";
-import { Tag } from "@vellumai/design-library/components/tag";
+import { ActionMenu } from "@anu/design-library/components/action-menu";
+import { Button } from "@anu/design-library/components/button";
+import { Checkbox } from "@anu/design-library/components/checkbox";
+import { Collapsible } from "@anu/design-library/components/collapsible";
+import { ConfirmDialog } from "@anu/design-library/components/confirm-dialog";
+import { Input } from "@anu/design-library/components/input";
+import { ListRow } from "@anu/design-library/components/list-row";
+import { Modal } from "@anu/design-library/components/modal";
+import { Notice } from "@anu/design-library/components/notice";
+import { SplitButton } from "@anu/design-library/components/split-button";
+import { Tag } from "@anu/design-library/components/tag";
 
 import { IntegrationIcon } from "@/components/integrations/integration-icon";
 import {

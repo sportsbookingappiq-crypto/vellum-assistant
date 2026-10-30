@@ -33,7 +33,7 @@ import {
 const tempDirs: string[] = [];
 
 const makeTempDir = (): string => {
-  const dir = mkdtempSync(path.join(tmpdir(), "Vellum Example User 用户 "));
+  const dir = mkdtempSync(path.join(tmpdir(), "ANU Example User 用户 "));
   tempDirs.push(dir);
   return dir;
 };
@@ -377,8 +377,8 @@ test("preserves a launcher owned by another installed environment", () => {
   const paths = resolveCliLauncherPaths(path.join(root, "Local App Data"));
   const source = writeRuntime(path.join(root, "runtime"), "1.0.0");
   const userRegistry = registry();
-  const productionResources = path.join(root, "Vellum", "resources");
-  const stagingResources = path.join(root, "Vellum Staging", "resources");
+  const productionResources = path.join(root, "ANU", "resources");
+  const stagingResources = path.join(root, "ANU Staging", "resources");
 
   installCliLauncher(source, "1.0.0", paths, userRegistry.run, {
     ownerId: stagingResources,
@@ -572,7 +572,7 @@ test("restores the last launcher when PATH registration fails", () => {
   expect(readLauncherSource(paths.ownership)).toBe(first);
   expect(getCliLauncherState(paths, first)).toBe("installed");
   const malformed: RegistryRunner = () => "Path REG_EXPAND_SZ";
-  expect(() => ensureUserPath("C:\\Vellum", malformed)).toThrow(
+  expect(() => ensureUserPath("C:\\ANU", malformed)).toThrow(
     "Unable to read the Windows user PATH",
   );
 });

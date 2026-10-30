@@ -1,12 +1,12 @@
 import { mkdirSync, unlinkSync, writeFileSync } from "fs";
 import { dirname } from "path";
 
-import { SEEDS, type EnvironmentDefinition } from "@vellumai/environments";
+import { SEEDS, type EnvironmentDefinition } from "@anu/environments";
 import {
   defaultEnvironmentFilePath,
   defaultEnvironmentFilePaths,
   readDefaultEnvironment as readPersistedDefaultEnvironment,
-} from "@vellumai/local-mode";
+} from "@anu/local-mode";
 
 const DEFAULT_ENVIRONMENT_NAME = "production";
 
@@ -59,7 +59,7 @@ export function getSeed(name: string): EnvironmentDefinition | undefined {
  * Priority:
  *   1. `override` argument (from a `--environment` CLI flag, when wired)
  *   2. `VELLUM_ENVIRONMENT` env var
- *   3. User config file (`~/.config/vellum/environment`, set via `vellum env set`)
+ *   3. User config file (`~/.config/vellum/environment`, set via `anu env set`)
  *   4. Default: `production`
  *
  * Per-field env-var overrides are honored on the resolved definition as
@@ -100,7 +100,7 @@ export function getCurrentEnvironment(
     const fallback = SEEDS[DEFAULT_ENVIRONMENT_NAME];
     if (!fallback) {
       throw new Error(
-        `fatal: default environment "${DEFAULT_ENVIRONMENT_NAME}" missing from seed table — this is a build error`,
+        `fatal: default environment "${DEFAULT_ENVIRONMENT_NAME}" missing from the seed table. This is a build error`,
       );
     }
     return { ...fallback };

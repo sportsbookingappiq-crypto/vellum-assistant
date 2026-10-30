@@ -1,7 +1,7 @@
 ---
 name: vellum-browser-use
 description: Browse the web using `assistant browser` CLI commands
-compatibility: "Designed for Vellum personal assistants"
+compatibility: "Designed for ANU personal assistants"
 metadata:
   emoji: "🌐"
   vellum:
@@ -73,7 +73,7 @@ The **Chrome extension** (`extension` mode) is the preferred browser backend. It
 
 If the status check shows the extension is **not available**, encourage the user to install and pair it:
 
-1. Install the **Vellum Assistant Chrome Extension** from the Chrome Web Store: https://chromewebstore.google.com/detail/vellum-assistant-browser/hphbdmpffeigpcdjkckleobjmhhokpne
+1. Install the **ANU Chrome Extension** from the Chrome Web Store: https://chromewebstore.google.com/detail/vellum-assistant-browser/hphbdmpffeigpcdjkckleobjmhhokpne
 2. Open the extension in Chrome and pair it with the assistant.
 
 The status response's `userActions` array for the `extension` mode provides these same steps when the extension is not connected.
@@ -84,7 +84,7 @@ If navigate, curl, or any fetch times out, hits an auth wall, or cannot reach a 
 
 1. Tell the user a connected desktop app or Chrome extension can open the page in a browser where they are already logged in.
 2. Give the install links:
-   - Desktop app: https://www.vellum.ai/downloads
+   - Desktop app: https://www.anu.ai/downloads
    - Chrome extension: https://chromewebstore.google.com/detail/vellum-assistant-browser/hphbdmpffeigpcdjkckleobjmhhokpne
 3. Offer those first. Only ask for a screenshot or pasted page content if they cannot install either.
 4. On iOS or Android there is no in-app browser and no extension to install on the phone. Offer the desktop app or Chrome extension on a computer. Do not describe a browser panel.

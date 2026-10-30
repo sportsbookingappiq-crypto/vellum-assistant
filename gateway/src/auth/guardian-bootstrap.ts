@@ -1164,7 +1164,7 @@ async function resolveOrCreateVellumGuardian(options: {
   if (gw) {
     log.debug(
       { guardianPrincipalId: gw.principalId },
-      "Vellum guardian binding already exists",
+      "ANU guardian binding already exists",
     );
     return {
       guardianPrincipalId: gw.principalId,

@@ -26,7 +26,7 @@ export enum ErrorCode {
 
 // ── Root ──────────────────────────────────────────────────────────────────────
 
-/** Root base class for all named Vellum errors. */
+/** Root base class for all named ANU errors. */
 export class VellumError extends Error {
   constructor(message: string, options?: ErrorOptions) {
     super(message, options);

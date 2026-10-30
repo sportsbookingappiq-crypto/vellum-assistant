@@ -1,4 +1,4 @@
-import { safeStringSlice } from "@vellumai/plugin-api";
+import { safeStringSlice } from "@anu/plugin-api";
 
 import type {
   RecallMetadata,

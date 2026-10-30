@@ -113,7 +113,7 @@ export async function retireLocal(
 
   if (otherSharesDir) {
     reporter.log(
-      `   Skipping process stop and archive — another local assistant shares ${vellumDir}.`,
+      `   Skipping process stop and archive. Another local assistant shares ${vellumDir}.`,
     );
     reporter.log("\u2705 Local instance retired (config entry removed only).");
     return { assistantId: name, archived: false, sharedDataDir: true };
@@ -189,7 +189,7 @@ export async function retireLocal(
 
   if (!existsSync(dirToArchive)) {
     reporter.log(
-      `   No data directory at ${dirToArchive} — nothing to archive.`,
+      `   No data directory at ${dirToArchive}. Nothing to archive.`,
     );
     reporter.log("\u2705 Local instance retired.");
     return { assistantId: name, archived: false };

@@ -331,7 +331,7 @@ This keeps the Twilio/phone call path intact while still reusing its lower-level
 | Twilio Media Streams protocol, mu-law frames, stream SID, call SID. | PCM from local mic; no Twilio IDs or telephony codec requirements. |
 | Always-connected phone audio with speech start/end heuristics. | Push-to-talk with explicit press/release boundaries. |
 | Phone-specific call state, DTMF, ringing, pending questions, disclosures. | Local session states: idle, listening, transcribing, thinking, speaking, ending. |
-| Phone channel metadata. | Normal Vellum/macOS conversation metadata. |
+| Phone channel metadata. | Normal ANU/macOS conversation metadata. |
 | Audio sent back through Twilio transport. | Audio chunks played through default macOS output. |
 
 ### Assistant-side module

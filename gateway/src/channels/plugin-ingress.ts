@@ -107,7 +107,7 @@ export const IngressRouteSchema = z.object({
    * arranged itself, and a guardian decides whether that route is served.
    *
    * `vellum` verifies against the platform's `webhook_secret`, for routes
-   * only Vellum calls, which would otherwise need a per-plugin secret
+   * only ANU calls, which would otherwise need a per-plugin secret
    * provisioned for a caller we already authenticate. Such a route is
    * served without a guardian approval: the trust it relies on was given
    * when the account was connected. See `findServableRoute` in
@@ -129,7 +129,7 @@ export const IngressRouteSchema = z.object({
    * case that forced it: a third party dialing a socket has no place to put a
    * header. The tradeoff is that such a URL is a bearer credential until it
    * expires, which is why it carries an expiry the minter chooses and the
-   * scheme bounds (`@vellumai/service-contracts/plugin-ingress-handshake`).
+   * scheme bounds (`@anu/service-contracts/plugin-ingress-handshake`).
    *
    * WebSocket only. An HTTP route declaring it is rejected: an HTTP request
    * always has somewhere to put a header, so the weaker scheme would buy
@@ -144,7 +144,7 @@ export const IngressRouteSchema = z.object({
    *
    * Absent (the default) means the platform scheme: `Vellum-Signature` over
    * the body, keyed by whichever `webhook_secret` {@link signer} selects.
-   * That is right for a caller Vellum controls and wrong for every other one
+   * That is right for a caller ANU controls and wrong for every other one
    * — Comms signs `X-Osis-Signature`, Photon signs `X-Spectrum-Signature` over
    * a timestamped preamble, and Linq signs Standard Webhooks
    * (`webhook-id` / `webhook-timestamp` / `webhook-signature`). None of
@@ -183,7 +183,7 @@ export const IngressRouteSchema = z.object({
    *
    * Rejected alongside `signer: "vellum"`. A `vellum`-signed route is served
    * without a guardian approval (see `findServableRoute`), which is defensible
-   * for a path only Vellum can drive and carrying no authority over the
+   * for a path only ANU can drive and carrying no authority over the
    * assistant. Delivering messages *is* such authority — it is how a
    * conversation starts — so a route that both skips approval and injects
    * turns would be reach a plugin grants itself. HTTP only, for the same

@@ -10,8 +10,8 @@
 
 import { describe, expect, test } from "bun:test";
 
-import { bindsSameIdentity, boundIdentity } from "@vellumai/gateway-client";
-import type { IdentityBindingStatus } from "@vellumai/gateway-client";
+import { bindsSameIdentity, boundIdentity } from "@anu/gateway-client";
+import type { IdentityBindingStatus } from "@anu/gateway-client";
 
 import type { IdentityMatchSession } from "../identity-match.js";
 import { checkIdentityMatch } from "../identity-match.js";

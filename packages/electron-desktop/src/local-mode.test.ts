@@ -111,7 +111,7 @@ const refreshLockfileNowMock = mock(() => {});
 
 const { configureLocalMode, getPairedGuardianAccessToken, installLocalMode } =
   await import("./local-mode");
-const { guardianTokenPath } = await import("@vellumai/local-mode");
+const { guardianTokenPath } = await import("@anu/local-mode");
 
 const allowedEvent = {};
 
@@ -1078,7 +1078,7 @@ describe("vellum:localMode:pairing handlers", () => {
   const PAIRING_LINK =
     "https://gw.example.com/assistant/pair#device_code=device-code-abc";
 
-  // The exchange itself belongs to `@vellumai/local-mode`; here the gateway is
+  // The exchange itself belongs to `@anu/local-mode`; here the gateway is
   // a stub so these cases cover the IPC wiring and nothing else.
   const realFetch = globalThis.fetch;
   let respond: () => Response;
@@ -1474,8 +1474,8 @@ describe("vellum:localMode:guardianToken handler", () => {
 
     expect(result.ok).toBe(false);
     expect(result.status).toBe(401);
-    expect(result.error).toContain("vellum hatch");
-    expect(result.error).not.toContain("vellum pair");
+    expect(result.error).toContain("anu hatch");
+    expect(result.error).not.toContain("anu pair");
     expect(spawnArgs).toHaveLength(0);
   });
 
@@ -1532,7 +1532,7 @@ describe("vellum:localMode:guardianToken handler", () => {
 
 describe("vellum:localMode:readAssistantAvatar handler", () => {
   // Disk-read semantics (manifest precedence, legacy fallbacks, size cap)
-  // live with `readLockfileAssistantAvatar` in @vellumai/local-mode; this
+  // live with `readLockfileAssistantAvatar` in @anu/local-mode; this
   // covers only the IPC wiring around it.
   type AvatarResult =
     | { ok: true; avatar: Record<string, unknown> | null }

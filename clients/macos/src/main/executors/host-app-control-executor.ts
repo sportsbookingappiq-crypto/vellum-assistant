@@ -11,12 +11,12 @@
 
 import { z } from "zod";
 
-import type { HostProxyExecutor } from "@vellumai/electron-desktop/host-proxy/router";
+import type { HostProxyExecutor } from "@anu/electron-desktop/host-proxy/router";
 import {
   HostHelperProxyExecutor,
   type CuHelperClient,
   type HostHelperProxyConfig,
-} from "@vellumai/electron-desktop/host-proxy/helper-proxy-executor";
+} from "@anu/electron-desktop/host-proxy/helper-proxy-executor";
 import log from "../logger";
 import { getSharedCuHelper } from "../sidecar/shared-cu-helper";
 

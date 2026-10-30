@@ -2,7 +2,7 @@ import type {
   RiskAllowlistOption,
   RiskDirectoryScopeOption,
   RiskPatternScopeOption,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 
 import { getIsContainerized } from "../config/env-registry.js";
 import { mapApprovalProvenance } from "../permissions/approval-provenance.js";
@@ -464,10 +464,14 @@ export class PermissionChecker {
             typeof response.decisionContext === "string"
               ? response.decisionContext.trim()
               : "";
+          // Only an answered prompt is the user's decision; an abandoned one
+          // (timeout, superseded, aborted) may be asked again.
           const denialMessage =
             contextualDenial.length > 0
               ? contextualDenial
-              : `Permission denied. The "${name}" tool was not allowed. Do NOT retry this tool call immediately. Instead, explain that the action was not performed because permission was denied, and ask whether to try again or take a different approach. Wait for an explicit response before retrying.`;
+              : outcome === "deny"
+                ? `Permission denied: the user declined this "${name}" call. Do not attempt the same action again, with this tool, another tool, or a reworded command. Tell the user it was not done and ask how they want to proceed.`
+                : `Permission denied. The "${name}" tool was not allowed. Do NOT retry this tool call immediately. Instead, explain that the action was not performed because permission was denied, and ask whether to try again or take a different approach. Wait for an explicit response before retrying.`;
           const denialReason =
             contextualDenial.length > 0
               ? `Permission denied (${name}): contextual policy`

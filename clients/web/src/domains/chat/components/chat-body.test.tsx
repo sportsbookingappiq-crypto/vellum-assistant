@@ -46,7 +46,7 @@ mock.module("@/domains/chat/components/scroll-to-latest-button", () => ({
   ),
 }));
 
-mock.module("@vellumai/design-library", () => ({
+mock.module("@anu/design-library", () => ({
   Button: ({
     children,
     iconOnly,

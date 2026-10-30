@@ -1,5 +1,5 @@
-import { ChannelDeliveryError } from "@vellumai/gateway-client/http-delivery";
-import { classifyReactionEmojiSpelling } from "@vellumai/service-contracts/reactions";
+import { ChannelDeliveryError } from "@anu/gateway-client/http-delivery";
+import { classifyReactionEmojiSpelling } from "@anu/service-contracts/reactions";
 
 import { getLogger } from "../../../util/logger.js";
 import { directDeliveryContext } from "../callback-routing.js";

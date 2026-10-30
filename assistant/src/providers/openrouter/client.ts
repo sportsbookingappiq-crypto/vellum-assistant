@@ -30,7 +30,7 @@ export interface OpenRouterProviderOptions {
 const DEFAULT_OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
 const OPENROUTER_APP_ATTRIBUTION_HEADERS = {
   "HTTP-Referer": "https://www.vellum.ai",
-  "X-OpenRouter-Title": "Vellum Assistant",
+  "X-OpenRouter-Title": "ANU",
   "X-OpenRouter-Categories": "personal-agent,cli-agent",
 };
 
@@ -254,7 +254,7 @@ export class OpenRouterProvider extends OpenAIChatCompletionsProvider {
 
   // Consult the catalog for a per-model effort ceiling before falling back to
   // the provider-wide default. Keeps grok-4.5 (low|medium|high only) from
-  // receiving Vellum's xhigh/max efforts, which its API rejects.
+  // receiving ANU's xhigh/max efforts, which its API rejects.
   protected override resolveMaxReasoningEffort(
     model: string,
   ): "high" | "xhigh" | "max" {

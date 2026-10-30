@@ -23,7 +23,7 @@ import {
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-import { TUNNEL_PROVIDERS } from "@vellumai/service-contracts/ingress";
+import { TUNNEL_PROVIDERS } from "@anu/service-contracts/ingress";
 
 import * as cloudflareTunnel from "../lib/cloudflare-tunnel.js";
 import * as ngrok from "../lib/ngrok.js";
@@ -302,7 +302,7 @@ describe("tunnel edge targeting", () => {
       "workspace",
     );
     expect(logs).toContain(
-      "Assistant 'cloud-1' runs on Vellum Cloud and needs no tunnel. " +
+      "Assistant 'cloud-1' runs on ANU Cloud and needs no tunnel. " +
         "Tunneling the local assistant 'assistant-1' instead.",
     );
     expect(ensureTunnelEdgeMock).toHaveBeenCalledWith({
@@ -373,7 +373,7 @@ describe("tunnel edge targeting", () => {
     const logs = await runTunnelCapturingLogs();
 
     expect(logs).toContain(
-      "Assistant 'cloud-1' runs on Vellum Cloud and needs no tunnel. " +
+      "Assistant 'cloud-1' runs on ANU Cloud and needs no tunnel. " +
         "Tunneling the local assistant 'docker-1' instead.",
     );
     expect(runNgrokTunnelMock).toHaveBeenCalledWith({
@@ -391,7 +391,7 @@ describe("tunnel edge targeting", () => {
 
     expect(exited).toBe(true);
     expect(errors).toContain(
-      "Assistant 'cloud-1' runs on Vellum Cloud and needs no tunnel.",
+      "Assistant 'cloud-1' runs on ANU Cloud and needs no tunnel.",
     );
     expect(errors).toContain("No local assistant found to tunnel");
     expect(ensureTunnelEdgeMock).not.toHaveBeenCalled();
@@ -410,7 +410,7 @@ describe("tunnel edge targeting", () => {
 
     expect(exited).toBe(true);
     expect(errors).toContain(
-      "Assistant 'cloud-1' runs on Vellum Cloud and needs no tunnel.",
+      "Assistant 'cloud-1' runs on ANU Cloud and needs no tunnel.",
     );
     expect(errors).toContain(
       "Pass a local assistant as the name argument: assistant-a, assistant-b.",
@@ -435,7 +435,7 @@ describe("tunnel edge targeting", () => {
 
     expect(exited).toBe(true);
     expect(errors).toContain(
-      "Assistant 'cloud-1' runs on Vellum Cloud and needs no tunnel.",
+      "Assistant 'cloud-1' runs on ANU Cloud and needs no tunnel.",
     );
     expect(errors).toContain(
       "Pass a local assistant as the name argument: assistant-1.",
@@ -528,7 +528,7 @@ describe("tunnel edge targeting", () => {
     const logs = await runTunnelCapturingLogs();
 
     expect(logs).toContain(
-      "Assistant 'cloud-1' runs on Vellum Cloud and needs no tunnel. " +
+      "Assistant 'cloud-1' runs on ANU Cloud and needs no tunnel. " +
         "Tunneling the local assistant 'apple-1' instead.",
     );
     expect(ensureTunnelEdgeMock).toHaveBeenCalledWith({
@@ -575,7 +575,7 @@ describe("tunnel edge targeting", () => {
 
     expect(exited).toBe(true);
     expect(errors).toContain(
-      "Assistant 'Cloudy (cloud-1)' runs on Vellum Cloud and needs no tunnel.",
+      "Assistant 'Cloudy (cloud-1)' runs on ANU Cloud and needs no tunnel.",
     );
     expect(errors).toContain(
       "Pass a local assistant as the name argument: assistant-1.",
@@ -657,9 +657,9 @@ describe("tunnel edge targeting", () => {
 
     expect(exited).toBe(true);
     expect(errors).toContain("--provider is required");
-    expect(errors).toContain("vellum tunnel --provider ngrok");
-    expect(errors).toContain("vellum tunnel --provider cloudflare");
-    expect(errors).toContain("vellum tunnel --provider tailscale");
+    expect(errors).toContain("anu tunnel --provider ngrok");
+    expect(errors).toContain("anu tunnel --provider cloudflare");
+    expect(errors).toContain("anu tunnel --provider tailscale");
     // Nothing is started and nothing is recorded until the user has chosen.
     expect(ensureTunnelEdgeMock).not.toHaveBeenCalled();
     expect(runTailscaleTunnelMock).not.toHaveBeenCalled();
@@ -677,8 +677,8 @@ describe("tunnel edge targeting", () => {
     expect(errors).toContain("--provider is required");
     // The suggestions keep the assistant that was asked for, so pasting one
     // cannot tunnel the active assistant instead.
-    expect(errors).toContain("vellum tunnel Ada --provider ngrok");
-    expect(errors).toContain("vellum tunnel Ada --provider tailscale");
+    expect(errors).toContain("anu tunnel Ada --provider ngrok");
+    expect(errors).toContain("anu tunnel Ada --provider tailscale");
     expect(ensureTunnelEdgeMock).not.toHaveBeenCalled();
   });
 
@@ -688,7 +688,7 @@ describe("tunnel edge targeting", () => {
 
     const { errors } = await runTunnelExpectingExit1();
 
-    expect(errors).toContain("vellum tunnel 'Bob&Alice' --provider ngrok");
+    expect(errors).toContain("anu tunnel 'Bob&Alice' --provider ngrok");
   });
 
   test("--provider tailscale keeps the webhook callback base and says so", async () => {
@@ -1243,7 +1243,7 @@ describe("ngrok --domain spawn args", () => {
       "does not match the reserved domain 'foo.ngrok.app'",
     );
     expect(combined).toContain(
-      "vellum tunnel --provider ngrok --domain foo.ngrok.app",
+      "anu tunnel --provider ngrok --domain foo.ngrok.app",
     );
 
     const config = JSON.parse(
@@ -1333,7 +1333,7 @@ describe("ngrok --domain spawn args", () => {
       "https://stale.ngrok-free.app -> localhost:7830",
     );
     expect(combined).toContain("not 18080");
-    expect(combined).toContain("vellum tunnel --provider ngrok");
+    expect(combined).toContain("anu tunnel --provider ngrok");
 
     const config = JSON.parse(
       readFileSync(join(ws, "config.json"), "utf-8"),

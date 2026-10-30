@@ -4,7 +4,7 @@ import {
   type CapabilityModule,
   type DesktopCapabilityRegistry,
   type MainWindowController,
-} from "@vellumai/electron-desktop/capability-registry";
+} from "@anu/electron-desktop/capability-registry";
 
 import {
   current,

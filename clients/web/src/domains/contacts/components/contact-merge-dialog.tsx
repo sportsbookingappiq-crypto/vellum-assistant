@@ -1,11 +1,11 @@
 import { ArrowLeft, GitMerge, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-import { Button } from "@vellumai/design-library/components/button";
-import { Input } from "@vellumai/design-library/components/input";
-import { Modal } from "@vellumai/design-library/components/modal";
-import { PanelItem } from "@vellumai/design-library/components/panel-item";
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Button } from "@anu/design-library/components/button";
+import { Input } from "@anu/design-library/components/input";
+import { Modal } from "@anu/design-library/components/modal";
+import { PanelItem } from "@anu/design-library/components/panel-item";
+import { Typography } from "@anu/design-library/components/typography";
 
 import { channelTypeLabel } from "@/domains/contacts/channel-type-labels";
 import type { ContactPayload } from "@/domains/contacts/types";

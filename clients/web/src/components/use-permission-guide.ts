@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { PermissionGuideState } from "@vellumai/ipc-contract";
+import type { PermissionGuideState } from "@anu/ipc-contract";
 
 import {
   getPermissionGuide,

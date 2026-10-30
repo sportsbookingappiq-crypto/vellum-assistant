@@ -204,7 +204,7 @@ describe("tryTranscribeAudioAttachments", () => {
     const audio = makeAudioAttachment("a1");
     mockAttachments = [audio];
     const managedMessage =
-      "Managed speech needs a working Vellum platform connection — reconnect with 'assistant platform connect'.";
+      "Managed speech needs a working ANU platform connection — reconnect with 'assistant platform connect'.";
     mockTranscriber = {
       providerId: "vellum",
       boundaryId: "daemon-batch",
@@ -229,7 +229,7 @@ describe("tryTranscribeAudioAttachments", () => {
     const audio = makeAudioAttachment("a1");
     mockAttachments = [audio];
     const creditsMessage =
-      "Vellum credits are exhausted — add funds to your Vellum account to continue using managed transcription.";
+      "ANU credits are exhausted — add funds to your ANU account to continue using managed transcription.";
     mockTranscriber = {
       providerId: "vellum",
       boundaryId: "daemon-batch",

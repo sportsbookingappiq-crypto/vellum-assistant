@@ -1,4 +1,4 @@
-import type { ChannelConversationType } from "@vellumai/gateway-client";
+import type { ChannelConversationType } from "@anu/gateway-client";
 
 import type { RoomAdmissionDropReason } from "../channels/room-admission.js";
 import type { GatewayInboundEvent } from "../types.js";

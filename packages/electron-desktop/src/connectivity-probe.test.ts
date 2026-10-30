@@ -53,7 +53,7 @@ let mockLockfileData: { ok: boolean; data?: LockfileData } = {
   ok: true,
   data: { assistants: [], activeAssistant: null },
 };
-mock.module("@vellumai/local-mode", () => ({
+mock.module("@anu/local-mode", () => ({
   getLockfileData: () => mockLockfileData,
 }));
 

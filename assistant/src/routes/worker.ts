@@ -21,8 +21,8 @@
 import { existsSync, unlinkSync, writeFileSync } from "node:fs";
 import { createServer, type Server, type Socket } from "node:net";
 
-import type { IpcEnvelope } from "@vellumai/ipc-server-utils";
-import { IpcFrameReader, writeMessage } from "@vellumai/ipc-server-utils";
+import type { IpcEnvelope } from "@anu/ipc-server-utils";
+import { IpcFrameReader, writeMessage } from "@anu/ipc-server-utils";
 
 import { runInPluginContext } from "../plugins/plugin-execution-context.js";
 import { disableStreamSeqStamping } from "../runtime/assistant-stream-state.js";

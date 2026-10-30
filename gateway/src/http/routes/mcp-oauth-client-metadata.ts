@@ -2,8 +2,8 @@ import {
   buildMcpOAuthCallbackUrl,
   buildMcpOAuthClientMetadata,
   buildMcpOAuthClientMetadataUrl,
-} from "@vellumai/service-contracts/mcp-oauth";
-import { normalizeHttpPublicBaseUrlWithoutTrailingSlash } from "@vellumai/service-contracts/ingress";
+} from "@anu/service-contracts/mcp-oauth";
+import { normalizeHttpPublicBaseUrlWithoutTrailingSlash } from "@anu/service-contracts/ingress";
 
 import type { ConfigFileCache } from "../../config-file-cache.js";
 

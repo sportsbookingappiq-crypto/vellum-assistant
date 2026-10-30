@@ -369,8 +369,8 @@ function validateSetting(
  * Remove a legacy `mode` key from a raw `services.<svc>` block. The schema
  * no longer has the field, but the settings cards still write it (for
  * compatibility with older daemons) and read `mode: "managed"` as the
- * Vellum marker — left stale after a provider switch here, the cards would
- * render Vellum while the daemon routes the newly chosen provider.
+ * ANU marker — left stale after a provider switch here, the cards would
+ * render ANU while the daemon routes the newly chosen provider.
  */
 function deleteLegacySpeechMode(
   raw: Record<string, unknown>,
@@ -463,7 +463,7 @@ export async function run(
   if (wantsManagedSpeech && !(await managedSpeechAvailable())) {
     return {
       content:
-        "Error: managed speech requires a Vellum platform connection. Run 'assistant platform connect' first.",
+        "Error: managed speech requires an ANU platform connection. Run 'assistant platform connect' first.",
       isError: true,
     };
   }

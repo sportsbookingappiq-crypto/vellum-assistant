@@ -10,7 +10,7 @@ import type { DisplayMessage } from "@/domains/chat/types/types";
 import type {
   ConversationContentBlock,
   ConversationMessage,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 import { roleCounts } from "@/lib/diagnostics";
 
 /**

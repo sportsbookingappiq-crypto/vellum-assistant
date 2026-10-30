@@ -2,7 +2,7 @@
  * Cross-surface withdrawal of guardian approval cards.
  *
  * A single guardian request is projected onto every surface it was delivered
- * to — the in-app Vellum card, a Slack message, etc. When the request reaches a
+ * to — the in-app ANU card, a Slack message, etc. When the request reaches a
  * terminal status its cards must stop offering live actions on *all* surfaces,
  * not just the one the guardian acted on. This is the withdrawal counterpart to
  * the unified card *rendering* dispatcher (`notifications/approval-card-data.ts`):
@@ -22,7 +22,7 @@
  * Every surface is attempted independently; one failure never blocks the rest.
  */
 
-import { DELIVERY_STATUS } from "@vellumai/gateway-client";
+import { DELIVERY_STATUS } from "@anu/gateway-client";
 
 import {
   type GuardianRequestDeliveryWire,

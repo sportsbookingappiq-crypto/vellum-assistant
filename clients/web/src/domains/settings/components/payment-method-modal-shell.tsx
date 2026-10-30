@@ -16,9 +16,9 @@ import {
   cardExpiryParts,
 } from "@/domains/settings/utils/payment-method-brand";
 import { useTranslation, type TFunction } from "@/i18n";
-import { Button } from "@vellumai/design-library/components/button";
-import { Modal } from "@vellumai/design-library/components/modal";
-import { cn } from "@vellumai/design-library/utils/cn";
+import { Button } from "@anu/design-library/components/button";
+import { Modal } from "@anu/design-library/components/modal";
+import { cn } from "@anu/design-library/utils/cn";
 
 export type PaymentMethodModalMode = "add" | "replace";
 

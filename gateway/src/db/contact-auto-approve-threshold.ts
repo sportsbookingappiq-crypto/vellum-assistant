@@ -8,7 +8,7 @@
 import {
   isRiskThreshold,
   type RiskThreshold,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 
 export function parseContactAutoApproveThreshold(
   value: string | null | undefined,

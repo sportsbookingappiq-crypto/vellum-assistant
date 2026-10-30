@@ -21,7 +21,7 @@ import type {
   OpenConversationEvent,
   OpenPanelEvent,
   OpenUrlEvent,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 
 export function handleOpenUrl(
   event: OpenUrlEvent,

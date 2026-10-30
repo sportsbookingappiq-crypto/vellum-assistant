@@ -267,7 +267,7 @@ export const TtsXaiProviderConfigSchema = z
 export type TtsXaiProviderConfig = z.infer<typeof TtsXaiProviderConfigSchema>;
 
 /**
- * Vellum managed provider configuration under `services.tts.providers`.
+ * ANU managed provider configuration under `services.tts.providers`.
  */
 const TtsVellumProviderConfigSchema = z
   .object({
@@ -285,7 +285,7 @@ const TtsVellumProviderConfigSchema = z
         "services.tts.providers.vellum.model.",
     ),
   })
-  .describe("Vellum managed provider configuration under services.tts");
+  .describe("ANU managed provider configuration under services.tts");
 
 export type TtsVellumProviderConfig = z.infer<
   typeof TtsVellumProviderConfigSchema
@@ -340,7 +340,7 @@ for (const id of schemaKeys) {
  * Canonical TTS service configuration.
  *
  * `provider` is the only axis: `"vellum"` synthesizes through the platform,
- * billed to Vellum credits; any other provider uses the user's own API key.
+ * billed to ANU credits; any other provider uses the user's own API key.
  */
 export const TtsServiceSchema = z
   .object({

@@ -92,7 +92,7 @@ export const EditProfile: Story = {
   args: { profileName: "my-custom" },
 };
 
-/** Managed profiles open read-only with a "Managed by Vellum" tag and "Save As New". */
+/** Managed profiles open read-only with a "Managed by ANU" tag and "Save As New". */
 export const ManagedProfile: Story = {
   args: { profileName: "balanced" },
 };

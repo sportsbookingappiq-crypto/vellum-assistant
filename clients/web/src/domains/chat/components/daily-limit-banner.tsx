@@ -8,7 +8,7 @@ import { useBillingBalanceStatus } from "@/hooks/use-billing-balance-status";
 import { useSkipDailyLimitToday } from "@/hooks/use-daily-limit-skip";
 import { dailyResetTimePhrase } from "@/utils/daily-reset-time";
 import { formatUsd } from "@/utils/format-usd";
-import { ConfirmDialog } from "@vellumai/design-library/components/confirm-dialog";
+import { ConfirmDialog } from "@anu/design-library/components/confirm-dialog";
 
 interface DailyLimitBannerProps {
   onAdjustLimit: () => void;

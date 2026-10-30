@@ -38,7 +38,7 @@ mock.module("../../ipc/gateway-client.js", () => ({
 import type {
   ActiveVoiceInvite,
   InviteRedemptionOutcome,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 
 import {
   getActiveVoiceInvite,

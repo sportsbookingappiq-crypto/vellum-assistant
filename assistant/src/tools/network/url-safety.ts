@@ -3,7 +3,7 @@ import { lookup } from "node:dns/promises";
 import {
   looksLikeHostPortShorthand,
   looksLikePathOnlyInput,
-} from "@vellumai/service-contracts/url-normalization";
+} from "@anu/service-contracts/url-normalization";
 
 export type ResolveHostAddresses = (hostname: string) => Promise<string[]>;
 

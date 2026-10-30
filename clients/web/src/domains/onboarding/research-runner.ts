@@ -110,7 +110,7 @@ export function resolveResearchCompletionStatus({
 }
 
 /**
- * Org that owns first-party, reviewed Vellum plugins. Onboarding only ever
+ * Org that owns first-party, reviewed ANU plugins. Onboarding only ever
  * surfaces and installs plugins from this owner — never third-party/external
  * marketplace repos — so a new user is never offered (or silently handed)
  * community code during onboarding.
@@ -118,10 +118,10 @@ export function resolveResearchCompletionStatus({
 const VELLUM_PLUGIN_OWNER = "vellum-ai";
 
 /**
- * Vellum-hosted plugins that are still infrastructure/meta rather than a
+ * ANU-hosted plugins that are still infrastructure/meta rather than a
  * capability worth offering a new user (a reference memory sample, the
  * self-edit diff card). Dropped on top of the owner filter. Anything else owned
- * by Vellum — including future persona plugins like a developer/PM kit — flows
+ * by ANU — including future persona plugins like a developer/PM kit — flows
  * through automatically.
  */
 const NON_RECOMMENDABLE_PLUGINS = new Set<string>([
@@ -158,7 +158,7 @@ function repoOwner(repo: string | undefined): string {
 
 /**
  * Narrow the marketplace catalog to the capabilities onboarding will surface:
- * Vellum-hosted (first-party, reviewed) plugins only, minus the meta/infra
+ * ANU-hosted (first-party, reviewed) plugins only, minus the meta/infra
  * ones, each compacted to one short line. Pure so it's unit-testable without
  * mocking the catalog fetch.
  */
@@ -574,7 +574,7 @@ export function useResearchRunner(): UseResearchRunner {
             return;
           }
 
-          // Advertise the Vellum-owned marketplace capabilities to the research
+          // Advertise the ANU-owned marketplace capabilities to the research
           // turn so it can pick the ones that best fit the person (returned as a
           // top-level `plugins` list) for us to install. The catalog filter keeps
           // onboarding scoped to first-party plugins; third-party plugin

@@ -50,7 +50,7 @@ function nameTag(name: string): string | null {
   );
 }
 
-const EXPECTED_TITLE = "Vellum: Your Personal Intelligence";
+const EXPECTED_TITLE = "ANU: Your Personal Intelligence";
 const EXPECTED_IMAGE = "https://www.vellum.ai/og-cover-v2.jpg";
 
 describe("SPA shell: Open Graph metadata", () => {
@@ -59,7 +59,7 @@ describe("SPA shell: Open Graph metadata", () => {
     expect(ogTag("og:description")).toBeTruthy();
     expect(ogTag("og:image")).toBe(EXPECTED_IMAGE);
     expect(ogTag("og:type")).toBe("website");
-    expect(ogTag("og:site_name")).toBe("Vellum");
+    expect(ogTag("og:site_name")).toBe("ANU");
   });
 
   test("declares the image dimensions so cards render on first share", () => {
@@ -214,5 +214,98 @@ describe("SPA shell: boot splash", () => {
   // lands the label while the splash is still on screen.
   test("the shell init applies the label without waiting for DOMContentLoaded", () => {
     expect(SHELL_INIT).toContain("new MutationObserver");
+  });
+});
+
+/**
+ * The splash and the browser chrome paint before any stylesheet loads, so
+ * `index.html` restates the theme's colors as literals. These tests read them
+ * back against `tokens.css`, which is what keeps a palette change from leaving
+ * the first frame on the old ground.
+ */
+const TOKENS_CSS = readFileSync(
+  path.join(import.meta.dir, "../../../packages/design-library/src/tokens.css"),
+  "utf8",
+);
+
+/** One custom property's value inside the block a theme selector opens. */
+function themeToken(theme: "light" | "dark", property: string): string {
+  const start = TOKENS_CSS.indexOf(`[data-theme="${theme}"] {`);
+  if (start === -1) {
+    throw new Error(`tokens.css has no ${theme} block`);
+  }
+  const block = TOKENS_CSS.slice(start, TOKENS_CSS.indexOf("}", start));
+  const value = new RegExp(`${property}:\\s*([^;]+);`).exec(block)?.[1];
+  if (!value) {
+    throw new Error(`the ${theme} block declares no ${property}`);
+  }
+  return value.trim();
+}
+
+const SHELL_STYLES = [...doc.querySelectorAll("style")]
+  .map((style) => style.textContent ?? "")
+  .join("\n");
+
+/** The declarations of the first rule a selector opens in the shell styles. */
+function ruleBody(selector: string): string {
+  const start = SHELL_STYLES.indexOf(`${selector} {`);
+  if (start === -1) {
+    throw new Error(`index.html styles have no ${selector} rule`);
+  }
+  return SHELL_STYLES.slice(start, SHELL_STYLES.indexOf("}", start));
+}
+
+describe("SPA shell: first-paint colors", () => {
+  test("the splash paints the light theme's ground and spinner ink", () => {
+    const rule = ruleBody("#boot-splash");
+    expect(rule).toContain(
+      `background: ${themeToken("light", "--surface-base")};`,
+    );
+    expect(rule).toContain(
+      `color: ${themeToken("light", "--content-tertiary")};`,
+    );
+  });
+
+  test("the splash paints the dark theme's ground and spinner ink", () => {
+    const rule = ruleBody(':root[data-theme="dark"] #boot-splash');
+    expect(rule).toContain(
+      `background: ${themeToken("dark", "--surface-base")};`,
+    );
+    expect(rule).toContain(
+      `color: ${themeToken("dark", "--content-tertiary")};`,
+    );
+    // The media-query fallback for a document the shell init never stamped.
+    const fallback = ruleBody(':root:not([data-theme="light"]) #boot-splash');
+    expect(fallback).toContain(
+      `background: ${themeToken("dark", "--surface-base")};`,
+    );
+    expect(fallback).toContain(
+      `color: ${themeToken("dark", "--content-tertiary")};`,
+    );
+  });
+
+  test("the browser chrome takes each scheme's ground", () => {
+    const themeColors = [
+      ...doc.querySelectorAll('meta[name="theme-color"]'),
+    ].map((meta) => [meta.getAttribute("media"), meta.getAttribute("content")]);
+    expect(themeColors).toEqual([
+      ["(prefers-color-scheme: light)", themeToken("light", "--surface-base")],
+      ["(prefers-color-scheme: dark)", themeToken("dark", "--surface-base")],
+    ]);
+  });
+});
+
+describe("SPA shell: icons", () => {
+  // Root-relative like the favicon: Vite prefixes the `/assistant/` base onto
+  // public-folder URLs in `index.html` at build time.
+  test("links an apple-touch-icon the public folder ships as a PNG", () => {
+    const href = doc
+      .querySelector('link[rel="apple-touch-icon"]')
+      ?.getAttribute("href");
+    expect(href).toBe("/apple-touch-icon.png");
+    const png = readFileSync(
+      path.join(import.meta.dir, "../public/apple-touch-icon.png"),
+    );
+    expect([...png.subarray(0, 4)]).toEqual([0x89, 0x50, 0x4e, 0x47]);
   });
 });

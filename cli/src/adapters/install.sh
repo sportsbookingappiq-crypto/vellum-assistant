@@ -226,6 +226,7 @@ symlink_cli() {
 }
 
 symlink_vellum() {
+    symlink_cli "anu"
     symlink_cli "vellum"
     symlink_cli "assistant"
 }
@@ -265,7 +266,7 @@ install_vellum() {
 
 main() {
     printf "\n"
-    printf '  %bVellum Installer%b\n' "$BOLD" "$RESET"
+    printf '  %bANU Installer%b\n' "$BOLD" "$RESET"
     printf "\n"
 
     ensure_git
@@ -284,18 +285,18 @@ main() {
     #   curl ... | bash && . ~/.config/vellum/env
     write_env_file
 
-    # Source the shell profile so vellum hatch runs with the correct PATH
+    # Source the shell profile so anu hatch runs with the correct PATH
     # in this session (the profile changes only take effect in new shells
     # otherwise).
     export BUN_INSTALL="$HOME/.bun"
     export PATH="$BUN_INSTALL/bin:$PATH"
 
-    info "Running vellum hatch..."
+    info "Running anu hatch..."
     printf "\n"
     if [ -n "${VELLUM_SSH_USER:-}" ] && [ "$(id -u)" = "0" ]; then
-        su - "$VELLUM_SSH_USER" -c "set -a; [ -f \"\$HOME/.config/vellum/env\" ] && . \"\$HOME/.config/vellum/env\"; set +a; export PATH=\"$HOME/.bun/bin:\$PATH\"; vellum hatch"
+        su - "$VELLUM_SSH_USER" -c "set -a; [ -f \"\$HOME/.config/vellum/env\" ] && . \"\$HOME/.config/vellum/env\"; set +a; export PATH=\"$HOME/.bun/bin:\$PATH\"; anu hatch"
     else
-        vellum hatch
+        anu hatch
     fi
 }
 

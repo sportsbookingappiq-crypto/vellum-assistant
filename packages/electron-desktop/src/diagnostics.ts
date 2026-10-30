@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { DIAGNOSTICS_SET_SHARE } from "@vellumai/ipc-contract";
+import { DIAGNOSTICS_SET_SHARE } from "@anu/ipc-contract";
 
 import type { DiagnosticsIpc } from "./diagnostics-contract";
 

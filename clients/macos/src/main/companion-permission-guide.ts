@@ -27,13 +27,13 @@ import {
   type DraggablePermissionKind,
   type PermissionGuideState,
   type PermissionSourceRect,
-} from "@vellumai/ipc-contract";
-import { createFloatingWindow } from "@vellumai/electron-desktop/floating-window";
+} from "@anu/ipc-contract";
+import { createFloatingWindow } from "@anu/electron-desktop/floating-window";
 import {
   getAccentHex,
   getAvatarPng,
   onAvatarChange,
-} from "@vellumai/electron-desktop/avatar";
+} from "@anu/electron-desktop/avatar";
 
 import { defaultCaptureSourceDeps } from "./companion-capture-sources";
 import { handle, on } from "./ipc";
@@ -202,7 +202,7 @@ export async function beginPermissionGuide(
   ]);
   if (!fileStat.isDirectory() || !file.endsWith(".app") || icon.isEmpty()) {
     throw new Error(
-      "The permission app is unavailable. Reinstall Vellum and try again.",
+      "The permission app is unavailable. Reinstall ANU and try again.",
     );
   }
   if (id !== generation) {

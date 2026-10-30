@@ -119,7 +119,7 @@ mock.module("../plugins/defaults/memory/substrate/boot-maintenance.js", () => ({
   maybeReseedCapabilitiesAfterManagedCredential: async () => {},
 }));
 
-// Live platform registration (`vellum login` against a running assistant)
+// Live platform registration (`anu login` against a running assistant)
 // must re-enqueue the name and avatar syncs that no-op'd at startup.
 mock.module("../platform/sync-identity.js", () => ({
   syncWorkspaceIdentityToPlatform: () => {
@@ -285,7 +285,7 @@ describe("secret routes managed proxy registry sync", () => {
       "vellum:platform_assistant_id",
     ]) {
       await expect(deleteCredential(name)).rejects.toThrow(
-        "Vellum credentials cannot be deleted",
+        "ANU credentials cannot be deleted",
       );
     }
 

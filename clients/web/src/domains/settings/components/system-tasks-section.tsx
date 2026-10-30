@@ -11,9 +11,9 @@ import {
   type ScheduleRowUsage,
 } from "@/domains/settings/utils/schedule-formatters";
 import { Trans, useTranslation } from "@/i18n";
-import { Collapsible } from "@vellumai/design-library/components/collapsible";
-import { Notice } from "@vellumai/design-library/components/notice";
-import { Tag, type TagTone } from "@vellumai/design-library/components/tag";
+import { Collapsible } from "@anu/design-library/components/collapsible";
+import { Notice } from "@anu/design-library/components/notice";
+import { Tag, type TagTone } from "@anu/design-library/components/tag";
 
 import type {
   ConsolidationConfigGetResponse,

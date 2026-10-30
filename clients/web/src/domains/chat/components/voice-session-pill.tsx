@@ -56,7 +56,7 @@ import type { CSSProperties } from "react";
 
 import { Mic, MicOff, TriangleAlert, Volume2, VolumeX, X } from "lucide-react";
 
-import { Button, Tag, cn } from "@vellumai/design-library";
+import { Button, Tag, cn } from "@anu/design-library";
 
 import {
   isLiveVoiceMicLive,

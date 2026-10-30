@@ -11,7 +11,7 @@
 
 import { Code, Eye } from "lucide-react";
 
-import { SegmentControl } from "@vellumai/design-library";
+import { SegmentControl } from "@anu/design-library";
 
 import { useTranslation } from "@/i18n";
 

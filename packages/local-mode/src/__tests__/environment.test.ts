@@ -171,7 +171,7 @@ describe("Windows path resolution", () => {
         "Invalid assistant ID",
       );
       expect(() =>
-        guardianTokenPath("C:\\Vellum", assistantId, options),
+        guardianTokenPath("C:\\ANU", assistantId, options),
       ).toThrow("Invalid assistant ID");
     }
   });

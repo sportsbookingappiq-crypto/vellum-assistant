@@ -12,7 +12,7 @@ import { VELLUM_MANAGED_PROVIDER } from "../vellum-model-routing.js";
  *
  * Runtime-supported variants:
  *   - api_key: look up `credential` in vault, inject as bearer/provider header.
- *   - platform: route via Vellum managed proxy; no client-side credential.
+ *   - platform: route via ANU managed proxy; no client-side credential.
  *   - none: no auth (e.g. Ollama running locally).
  *   - oauth_subscription: OAuth-based subscription auth (e.g. ChatGPT Codex).
  *   - service_account: Google service-account JSON key (Vertex AI); signs a
@@ -46,7 +46,7 @@ export type Auth = z.infer<typeof AuthSchema>;
 /**
  * Derive the auth configuration a provider implies when a client omits an
  * explicit `auth` object: keyless catalog providers (`setupMode: "keyless"`,
- * e.g. ollama) need none, the Vellum-managed sentinel routes via the
+ * e.g. ollama) need none, the ANU-managed sentinel routes via the
  * platform proxy, and every other provider authenticates by API key. Returns
  * null when an API key is required but no credential was supplied, so route
  * handlers can reject with a 400. `oauth_subscription` is never derived —
@@ -119,8 +119,8 @@ export type ResolvedAuth =
 export const VALID_CONNECTION_PROVIDERS: readonly string[] = [
   ...new Set([
     ...PROVIDER_CATALOG.map((p) => p.id),
-    // The provider-agnostic Vellum-managed connection stores this sentinel in
-    // its `provider` column. The same id owns Vellum-hosted GPU models in the
+    // The provider-agnostic ANU-managed connection stores this sentinel in
+    // its `provider` column. The same id owns ANU-hosted GPU models in the
     // catalog. Keep it allowlisted explicitly so a future catalog rename
     // cannot drop persisted `vellum` rows from the DB loaders.
     VELLUM_MANAGED_PROVIDER,
@@ -232,10 +232,10 @@ export const ProviderConnectionSchema = z
     createdAt: z.number().int(),
     updatedAt: z.number().int(),
     /**
-     * Whether this row is the Vellum-managed connection (`vellum`). Derived from
+     * Whether this row is the ANU-managed connection (`vellum`). Derived from
      * `MANAGED_CONNECTION_NAMES` in `connections.ts` at serialize time; the
      * DB column does not exist. Clients use this to render the read-only
-     * "Vellum" badge + view-only editor and to disable the delete affordance
+     * "ANU" badge + view-only editor and to disable the delete affordance
      * without mirroring the canonical name list locally.
      */
     isManaged: z.boolean(),

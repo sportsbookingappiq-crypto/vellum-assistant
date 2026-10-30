@@ -145,7 +145,7 @@ public class NativeBiometricPlugin: CAPPlugin, CAPBridgedPlugin {
             return
         }
 
-        let reason = call.getString("reason") ?? "Sign in to Vellum"
+        let reason = call.getString("reason") ?? "Sign in to ANU"
 
         // Preflight: check if a Keychain item exists without triggering
         // biometric auth. An LAContext with interactionNotAllowed = true

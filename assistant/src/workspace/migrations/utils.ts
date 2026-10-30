@@ -2,7 +2,7 @@ import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 
 /**
- * Resolve the legacy Vellum root directory (~/.vellum).
+ * Resolve the legacy ANU root directory (~/.vellum).
  *
  * Resolution order:
  * 1. Parent of VELLUM_WORKSPACE_DIR — e.g. /data/.vellum/workspace → /data/.vellum

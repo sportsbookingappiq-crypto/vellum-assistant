@@ -2,21 +2,21 @@ import { app, powerMonitor } from "electron";
 import fs from "node:fs/promises";
 import os from "node:os";
 
-import { installDiagnosticsIpc as installSharedDiagnosticsIpc } from "@vellumai/electron-desktop/diagnostics";
-import { installFeatureFlagsIpc as installSharedFeatureFlagsIpc } from "@vellumai/electron-desktop/feature-flags";
+import { installDiagnosticsIpc as installSharedDiagnosticsIpc } from "@anu/electron-desktop/diagnostics";
+import { installFeatureFlagsIpc as installSharedFeatureFlagsIpc } from "@anu/electron-desktop/feature-flags";
 import {
   configureFeedback,
   installFeedbackIpc,
-} from "@vellumai/electron-desktop/feedback";
+} from "@anu/electron-desktop/feedback";
 import {
   configureSentryMain,
   initSentryMain,
   setShareDiagnostics,
-} from "@vellumai/electron-desktop/sentry";
+} from "@anu/electron-desktop/sentry";
 import {
   readSetting,
   writeSetting,
-} from "@vellumai/electron-desktop/settings";
+} from "@anu/electron-desktop/settings";
 
 import { getVersionInfo } from "./about.client";
 import { getInstallLocation } from "./install-location";

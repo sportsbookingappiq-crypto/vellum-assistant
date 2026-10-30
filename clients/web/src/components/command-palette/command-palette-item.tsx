@@ -5,7 +5,7 @@ import {
   PanelItem,
   ShortcutKeys,
   acceleratorToAriaKeyShortcuts,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 
 export interface CommandPaletteItemProps {
   icon?: LucideIcon;

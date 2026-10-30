@@ -13,11 +13,11 @@ import {
   capabilityToken,
   type CapabilityModule,
   type DesktopCapabilityRegistry,
-} from "@vellumai/electron-desktop/capability-registry";
-import { createCuHelperProxyExecutor } from "@vellumai/electron-desktop/host-proxy/cu-executor";
-import type { CuHelperClient } from "@vellumai/electron-desktop/host-proxy/helper-proxy-executor";
-import type { HostProxyExecutor } from "@vellumai/electron-desktop/host-proxy/router";
-import { NativeSidecarClient } from "@vellumai/native-sidecar/supervisor";
+} from "@anu/electron-desktop/capability-registry";
+import { createCuHelperProxyExecutor } from "@anu/electron-desktop/host-proxy/cu-executor";
+import type { CuHelperClient } from "@anu/electron-desktop/host-proxy/helper-proxy-executor";
+import type { HostProxyExecutor } from "@anu/electron-desktop/host-proxy/router";
+import { NativeSidecarClient } from "@anu/native-sidecar/supervisor";
 
 import log from "../logger";
 

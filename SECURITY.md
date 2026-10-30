@@ -2,9 +2,9 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in Vellum Assistant, please report it responsibly. **Do not open a public GitHub issue.**
+If you discover a security vulnerability in ANU, please report it responsibly. **Do not open a public GitHub issue.**
 
-Email **security@vellum.ai** with:
+Email **security@anu.ai** with:
 - A description of the vulnerability
 - Steps to reproduce
 - The potential impact
@@ -25,4 +25,4 @@ This policy covers the code in this repository, including:
 
 ## Security Model
 
-For details on Vellum Assistant's security architecture — including sandboxing, credential storage, permission modes, and trust rules — see the [Security Architecture documentation](assistant/docs/architecture/security.md).
+For details on ANU's security architecture — including sandboxing, credential storage, permission modes, and trust rules — see the [Security Architecture documentation](assistant/docs/architecture/security.md).

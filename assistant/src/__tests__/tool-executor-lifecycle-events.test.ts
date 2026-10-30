@@ -386,7 +386,14 @@ describe("ToolExecutor audit terminals", () => {
     );
 
     expect(result.isError).toBe(true);
-    expect(result.content).toContain("Permission denied");
+    // The model is told the user declined, and that a reworded or other-tool
+    // attempt at the same action is still the declined action.
+    expect(result.content).toContain(
+      'Permission denied: the user declined this "bash" call.',
+    );
+    expect(result.content).toContain(
+      "Do not attempt the same action again, with this tool, another tool, or a reworded command.",
+    );
 
     // A prompt was surfaced, then the user's denial recorded a denied terminal.
     expect(promptedToolNames()).toEqual(["bash"]);
@@ -470,6 +477,9 @@ describe("ToolExecutor audit terminals", () => {
       );
 
       expect(result.isError).toBe(true);
+      // Nobody answered, so the result must not claim the user declined.
+      expect(result.content).not.toContain("the user declined");
+      expect(result.content).toContain("ask whether to try again");
       expect(promptedToolNames()).toEqual(["bash"]);
       expect(decidedOutcomes()).toEqual(["abandoned"]);
     },

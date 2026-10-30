@@ -3,9 +3,9 @@ import { useMemo } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 
-import { Button } from "@vellumai/design-library/components/button";
-import { Skeleton } from "@vellumai/design-library/components/skeleton";
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Button } from "@anu/design-library/components/button";
+import { Skeleton } from "@anu/design-library/components/skeleton";
+import { Typography } from "@anu/design-library/components/typography";
 
 import { LanguageModelSection } from "@/domains/settings/ai/language-model-section";
 import { ProviderRow } from "@/domains/settings/ai/provider-row";
@@ -33,7 +33,7 @@ interface ProvidersSectionProps {
 
 /**
  * The inline Providers list of the Language Model card (Figma
- * 7412:133535): the managed Vellum row first, then BYOK/custom
+ * 7412:133535): the managed ANU row first, then BYOK/custom
  * connections. Rows open the sidepanel editor; the kebab carries Set as
  * default / Edit / Delete per row eligibility.
  */
@@ -72,7 +72,7 @@ export function ProvidersSection({
     onDeleted: onConnectionDeleted,
   });
 
-  // Managed Vellum row pinned first, matching the Figma order.
+  // Managed ANU row pinned first, matching the Figma order.
   const connections = useMemo(() => {
     const fetched = data?.connections ?? [];
     return [

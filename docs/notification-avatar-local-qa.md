@@ -394,7 +394,7 @@ Focused Android command attempted at `92e14958c7`:
 
 ```sh
 cd clients/android
-./gradlew :app:testDevDebugUnitTest --tests ai.vellum.assistant.AndroidPushRegistrationPluginTest --tests ai.vellum.assistant.AndroidSenderNotificationPluginTest --tests ai.vellum.assistant.SafeMessagingServiceTest --tests ai.vellum.assistant.push.NotificationDeliveryCoordinatorTest --tests ai.vellum.assistant.push.PushDataMessageTest
+./gradlew :app:testDevDebugUnitTest --tests ai.anu.assistant.AndroidPushRegistrationPluginTest --tests ai.anu.assistant.AndroidSenderNotificationPluginTest --tests ai.anu.assistant.SafeMessagingServiceTest --tests ai.anu.assistant.push.NotificationDeliveryCoordinatorTest --tests ai.anu.assistant.push.PushDataMessageTest
 ```
 
 | Check | Status | Evidence |

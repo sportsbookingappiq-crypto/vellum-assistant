@@ -5,7 +5,7 @@ import {
   DiskPressureStatusResponseSchema,
   type ResourcePressureStatusResponse,
   ResourcePressureStatusResponseSchema,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 
 import {
   assistantsActivateCreate,

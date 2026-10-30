@@ -1,5 +1,5 @@
 /**
- * Browser side of the `vellum pair` flow. In desktop/local mode the SPA
+ * Browser side of the `anu pair` flow. In desktop/local mode the SPA
  * reaches the same-machine gateway over its loopback proxy
  * (`/assistant/__gateway/<port>`) and drives the two loopback-only routes the
  * CLI uses:
@@ -29,7 +29,7 @@ import type {
   RemoteWebPairingRequestListResponse,
   RemoteWebPairingRequestSummary,
   RemoteWebPairingVerificationRequest,
-} from "@vellumai/service-contracts/remote-web-pairing";
+} from "@anu/service-contracts/remote-web-pairing";
 
 import { t } from "@/i18n";
 import { getLocalGatewayUrl, getSelectedAssistant } from "@/lib/local-mode";
@@ -95,7 +95,7 @@ export interface PairDeviceTarget {
   /** The paired assistant's display name, or `null` when it has none. */
   assistantName: string | null;
   /**
-   * The public https URL `vellum tunnel` recorded for this assistant, or `null`
+   * The public https URL `anu tunnel` recorded for this assistant, or `null`
    * when none is recorded — used to prefill the URL field.
    */
   ingressUrl: string | null;

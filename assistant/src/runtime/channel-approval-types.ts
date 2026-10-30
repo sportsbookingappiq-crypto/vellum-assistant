@@ -3,16 +3,16 @@
  *
  * Wire-format types (`ApprovalUIMetadata`, `PermissionRequestDetails`,
  * `ApprovalActionOption`) are defined as Zod schemas in
- * `@vellumai/gateway-client/outbound-contract` and re-exported here for
+ * `@anu/gateway-client/outbound-contract` and re-exported here for
  * convenience. Daemon-internal types that do not cross a wire boundary
  * are defined locally.
  */
 
-import type { ApprovalActionOption } from "@vellumai/gateway-client";
+import type { ApprovalActionOption } from "@anu/gateway-client";
 import {
   GUARDIAN_DECISION_ACTION_IDS,
   isParkGuardianAction,
-} from "@vellumai/service-contracts/guardian-requests";
+} from "@anu/service-contracts/guardian-requests";
 
 import type { GuardianDecisionAction } from "./guardian-decision-types.js";
 
@@ -20,12 +20,12 @@ export type {
   ApprovalActionOption,
   ApprovalUIMetadata,
   PermissionRequestDetails,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 // Re-export shared wire types + schemas so existing daemon imports keep working.
 export {
   ApprovalUIMetadataSchema,
   PermissionRequestDetailsSchema,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 
 // ---------------------------------------------------------------------------
 // Approval actions (daemon-internal)

@@ -10,7 +10,7 @@
  * references no node built-ins — the renderer bundles it directly — and `zod`
  * is its only third-party import.
  *
- * The lockfile is written by the Vellum CLI and read across the macOS↔CLI
+ * The lockfile is written by the ANU CLI and read across the macOS↔CLI
  * boundary, which do not release in lockstep, so the parser is permissive: it
  * validates the modeled fields, salvages an entry on the strength of its
  * `assistantId` alone (dropping individual malformed optional fields rather
@@ -194,9 +194,9 @@ export const LockfileAssistantSchema = z.object({
   /** Platform organization UUID used for a self-hosted local assistant registration. */
   platformOrganizationId: z.string().optional(),
   /**
-   * Public https URL a `vellum tunnel` provider recorded for this assistant
+   * Public https URL a `anu tunnel` provider recorded for this assistant
    * (mirrored from the workspace ingress config). A public address, so it is
-   * renderer-safe: remote-web pairing surfaces (the `vellum pair` flow, the web
+   * renderer-safe: remote-web pairing surfaces (the `anu pair` flow, the web
    * "Pair a device" card) default to it instead of asking the user to retype it.
    */
   ingressUrl: z.string().optional(),

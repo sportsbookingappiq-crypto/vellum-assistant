@@ -1,4 +1,4 @@
-# Vellum Gateway
+# ANU Gateway
 
 Standalone service that serves as the public ingress boundary for all external webhooks and callbacks. It owns Telegram integration end-to-end, routes Twilio voice webhooks, handles OAuth callbacks, and acts as an authenticated reverse proxy for the assistant runtime.
 
@@ -178,7 +178,7 @@ To receive external callbacks during local development, point a tunnel service a
 
 #### Test Gateway Source Changes Locally (No Release Needed)
 
-Use this flow when you are changing files under `gateway/` and need to validate immediately without publishing `@vellumai/vellum-gateway`.
+Use this flow when you are changing files under `gateway/` and need to validate immediately without publishing `@anu/gateway`.
 
 ```bash
 # Terminal 1: restart assistant runtime HTTP server

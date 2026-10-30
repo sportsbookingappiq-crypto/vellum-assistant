@@ -123,7 +123,7 @@ export async function resolveImageRefsDetailed(
 
   const releases = await fetchReleases(releasesOptsFor(channel));
   if (releases === null) {
-    log?.("Platform unreachable — falling back to DockerHub tags");
+    log?.("Platform unreachable. Falling back to DockerHub tags");
     return {
       status: "dockerhub-fallback",
       imageTags: dockerhubImageTags(version),

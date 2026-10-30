@@ -7,7 +7,7 @@
 
 import { readFileSync } from "node:fs";
 
-import { channelForBotProvider } from "@vellumai/service-contracts/channels";
+import { channelForBotProvider } from "@anu/service-contracts/channels";
 
 import {
   getConfig,
@@ -101,12 +101,12 @@ async function requirePlatformClient(): Promise<VellumPlatformClient> {
   const client = await VellumPlatformClient.create();
   if (!client) {
     throw new BadRequestError(
-      "Not connected to Vellum platform. Run `vellum platform connect` to connect first.",
+      "Not connected to ANU platform. Run `anu platform connect` to connect first.",
     );
   }
   if (!client.platformAssistantId) {
     throw new BadRequestError(
-      "Connected to Vellum platform but no assistant ID is configured. Ensure the assistant is registered on the platform.",
+      "Connected to ANU platform but no assistant ID is configured. Ensure the assistant is registered on the platform.",
     );
   }
   return client;
@@ -126,7 +126,7 @@ async function fetchActiveConnections(
   if (!response.ok) {
     const hint =
       response.status === 401 || response.status === 403
-        ? `. Your platform session may have expired. Run \`vellum platform connect\` to reconnect.`
+        ? `. Your platform session may have expired. Run \`anu platform connect\` to reconnect.`
         : "";
     throw new InternalError(`Platform returned HTTP ${response.status}${hint}`);
   }
@@ -522,7 +522,7 @@ async function handleModeSet({ body = {} }: RouteHandlerArgs) {
     const client = await VellumPlatformClient.create();
     if (!client) {
       throw new BadRequestError(
-        "Not connected to Vellum platform. Run `vellum platform connect` to connect first.",
+        "Not connected to ANU platform. Run `anu platform connect` to connect first.",
       );
     }
   }
@@ -765,7 +765,7 @@ async function handleToken({ body = {} }: RouteHandlerArgs) {
   if (isManagedMode(b.provider)) {
     throw new BadRequestError(
       "Token retrieval is not supported for platform-managed providers. " +
-        "When a provider is in managed mode, Vellum handles OAuth tokens on your behalf — " +
+        "When a provider is in managed mode, ANU handles OAuth tokens on your behalf — " +
         "they are not exposed directly.\n\n" +
         `To verify your connection is working, run 'assistant oauth ping ${b.provider}'.\n` +
         `To make authenticated requests, use 'assistant oauth request --provider ${b.provider} <url>'.`,
@@ -1104,7 +1104,7 @@ async function handleManagedConnect({ body = {} }: RouteHandlerArgs) {
     const baseMsg = `Platform returned HTTP ${response.status}${errorText ? `: ${errorText}` : ""}`;
     if (response.status === 401 || response.status === 403) {
       throw new InternalError(
-        `${baseMsg}. Your platform session may have expired. Run \`vellum platform connect\` to reconnect.`,
+        `${baseMsg}. Your platform session may have expired. Run \`anu platform connect\` to reconnect.`,
       );
     }
     throw new InternalError(baseMsg);

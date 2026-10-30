@@ -110,7 +110,7 @@ const createHarness = ({
 };
 
 describe("typeIntoFrontApp", () => {
-  test("skips paste when a Vellum window is focused", async () => {
+  test("skips paste when an ANU window is focused", async () => {
     const harness = createHarness({ focused: true });
 
     await expect(
@@ -342,7 +342,7 @@ describe("undoInFrontAppWithDeps", () => {
     expect(harness.runAppleScript).not.toHaveBeenCalled();
   });
 
-  test("does nothing while a Vellum window is in front", async () => {
+  test("does nothing while an ANU window is in front", async () => {
     const harness = createHarness({ focused: true });
     const result = await undoInFrontAppWithDeps(harness.deps);
 

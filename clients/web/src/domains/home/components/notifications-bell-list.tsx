@@ -1,7 +1,7 @@
 import type { Ref, UIEventHandler } from "react";
 
-import type { FeedItem, FeedItemStatus } from "@vellumai/assistant-api";
-import type { GuardianDecisionActionId } from "@vellumai/service-contracts/guardian-requests";
+import type { FeedItem, FeedItemStatus } from "@anu/assistant-api";
+import type { GuardianDecisionActionId } from "@anu/service-contracts/guardian-requests";
 
 import { HomeRecapRow } from "../home-recap-row";
 import { resolveThreadName } from "../utils";

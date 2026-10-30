@@ -9,7 +9,7 @@ import type {
   ToolResultEvent,
   ToolUsePreviewStartEvent,
   ToolUseStartEvent,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 
 /**
  * Optimistic pre-input affordance: the moment the daemon recognizes a tool call

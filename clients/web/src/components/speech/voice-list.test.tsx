@@ -37,7 +37,7 @@ mock.module("@/hooks/use-is-org-ready", () => ({
   useIsOrgReady: () => orgReady,
   useOrgHeaderReadiness: () => (orgReady ? "ready" : "resolving"),
 }));
-mock.module("@vellumai/design-library/components/toast", () => ({
+mock.module("@anu/design-library/components/toast", () => ({
   toast: { success: () => {}, error: () => {} },
   Toaster: () => null,
   ToastContent: () => null,
@@ -48,7 +48,7 @@ let daemonConfigData: { services: Record<string, unknown> } = {
 };
 let providersData: { providers: unknown[] } = {
   providers: [
-    { id: "vellum", displayName: "Vellum", supportsVoiceSelection: true },
+    { id: "vellum", displayName: "ANU", supportsVoiceSelection: true },
   ],
 };
 let managedVoicesData: { voices: unknown[]; defaultModel: string | null } = {
@@ -134,7 +134,7 @@ beforeEach(() => {
   daemonConfigData = { services: { tts: { provider: "vellum" } } };
   providersData = {
     providers: [
-      { id: "vellum", displayName: "Vellum", supportsVoiceSelection: true },
+      { id: "vellum", displayName: "ANU", supportsVoiceSelection: true },
     ],
   };
   managedVoicesData = {

@@ -9,9 +9,9 @@ import {
 } from "@/generated/api/@tanstack/react-query.gen";
 import { t, useTranslation } from "@/i18n";
 import { formatUsd } from "@/utils/format-usd";
-import { Button } from "@vellumai/design-library/components/button";
-import { Input } from "@vellumai/design-library/components/input";
-import { Notice } from "@vellumai/design-library/components/notice";
+import { Button } from "@anu/design-library/components/button";
+import { Input } from "@anu/design-library/components/input";
+import { Notice } from "@anu/design-library/components/notice";
 
 /**
  * Validate the threshold input against the same bounds the backend enforces

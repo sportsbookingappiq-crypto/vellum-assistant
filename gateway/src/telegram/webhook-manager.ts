@@ -1,4 +1,4 @@
-import { normalizePublicBaseUrl } from "@vellumai/service-contracts/ingress";
+import { normalizePublicBaseUrl } from "@anu/service-contracts/ingress";
 
 import type { CredentialCache } from "../credential-cache.js";
 import type { ConfigFileCache } from "../config-file-cache.js";

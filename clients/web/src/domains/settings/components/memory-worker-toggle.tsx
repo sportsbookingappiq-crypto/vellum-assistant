@@ -9,8 +9,8 @@ import {
 } from "@/generated/daemon/@tanstack/react-query.gen";
 import { useTranslation } from "@/i18n";
 import { captureError } from "@/lib/sentry/capture-error";
-import { toast } from "@vellumai/design-library/components/toast";
-import { Toggle } from "@vellumai/design-library/components/toggle";
+import { toast } from "@anu/design-library/components/toast";
+import { Toggle } from "@anu/design-library/components/toggle";
 
 export interface MemoryWorkerToggleProps {
   /**

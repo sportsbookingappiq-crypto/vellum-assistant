@@ -1,9 +1,9 @@
 /**
- * `vellum message <assistant> <message>`
+ * `anu message <assistant> <message>`
  *
  * Send a message to a running assistant via its runtime HTTP API and
  * print the result.  This is a fire-and-send command — it does NOT
- * subscribe to SSE events (use `vellum events` for that).
+ * subscribe to SSE events (use `anu events` for that).
  */
 
 import { readFileSync } from "node:fs";
@@ -12,11 +12,15 @@ import { extractFlag } from "../lib/arg-utils.js";
 import { AssistantClient } from "../lib/assistant-client.js";
 
 function printUsage(): void {
-  console.log(`vellum message - Send a message to a running assistant
+  console.log(`anu message - Send a message to a running assistant
+
+Returns once the assistant accepts the message. The reply is not printed here:
+run 'anu events' in another terminal first to watch it arrive, or use
+'anu client' to chat interactively.
 
 USAGE:
-    vellum message [assistant] <message>
-    vellum message [assistant] --file <path>
+    anu message [assistant] <message>
+    anu message [assistant] --file <path>
 
 ARGUMENTS:
     [assistant]    Instance name (default: active assistant)
@@ -28,13 +32,13 @@ OPTIONS:
     --json                    Output raw JSON response
 
 EXAMPLES:
-    vellum message "hello"
-    vellum message my-assistant "ping"
-    vellum message --file prompt.txt
-    vellum message my-assistant --file prompt.txt
-    cat prompt.txt | vellum message --file -
-    vellum message --conversation-key my-thread "hello"
-    vellum message --json "hello"
+    anu message "hello"
+    anu message my-assistant "ping"
+    anu message --file prompt.txt
+    anu message my-assistant --file prompt.txt
+    cat prompt.txt | anu message --file -
+    anu message --conversation-key my-thread "hello"
+    anu message --json "hello"
 `);
 }
 
@@ -53,7 +57,7 @@ type ParseResult =
   | { ok: false; error: string };
 
 /**
- * Parse `vellum message` arguments. Pure: does no I/O and never exits, so the
+ * Parse `anu message` arguments. Pure: does no I/O and never exits, so the
  * positional/flag rules can be unit-tested. File reading and validation of the
  * resolved content happen in {@link message}.
  */
@@ -78,7 +82,7 @@ export function parseMessageArgs(rawArgs: string[]): ParseResult {
   }
 
   if (filePath !== undefined) {
-    // vellum message [assistant] --file <path>
+    // anu message [assistant] --file <path>
     // The message content comes from the file, so any remaining positional
     // arg is the assistant target.
     if (args.length >= 2) {
@@ -94,7 +98,7 @@ export function parseMessageArgs(rawArgs: string[]): ParseResult {
   }
 
   if (args.length >= 2) {
-    // vellum message <assistant> <message>
+    // anu message <assistant> <message>
     return {
       ok: true,
       value: {
@@ -106,7 +110,7 @@ export function parseMessageArgs(rawArgs: string[]): ParseResult {
     };
   }
   if (args.length === 1) {
-    // vellum message <message>  (uses active/latest assistant)
+    // anu message <message>  (uses active/latest assistant)
     return {
       ok: true,
       value: { conversationKey, jsonOutput, inlineMessage: args[0] },
@@ -181,15 +185,20 @@ export async function message(): Promise<void> {
   const result = (await response.json()) as {
     accepted: boolean;
     messageId: string;
+    error?: string;
   };
 
   if (jsonOutput) {
     console.log(JSON.stringify(result, null, 2));
   } else {
     if (result.accepted) {
-      console.log(`Message accepted (id: ${result.messageId})`);
+      console.log(
+        `Message accepted (id: ${result.messageId}). The reply streams to 'anu events'.`,
+      );
     } else {
-      console.log(`Message rejected (id: ${result.messageId})`);
+      console.log(
+        `Message rejected (id: ${result.messageId})${result.error ? `: ${result.error}` : ""}.`,
+      );
     }
   }
 }

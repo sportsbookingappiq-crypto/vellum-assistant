@@ -1,12 +1,12 @@
 # Contributing
 
-Thank you for your interest in Vellum Assistant! We welcome contributions of all kinds — bug fixes, new features, documentation improvements, and more.
+Bug fixes, features, tests, and docs are all welcome. This page covers setup, where code lives, and what makes a change easy to review.
 
 ## Before You Start
 
-- **Bug reports and feature requests**: [Open an issue](https://github.com/vellum-ai/vellum-assistant/issues). Use the provided templates.
-- **Security vulnerabilities**: Report these privately. See [SECURITY.md](SECURITY.md).
-- **Questions and discussion**: Join us on the #contributors channel on [Discord](https://discord.com/channels/1471183263174234245/1503398277092081875).
+- **Bug reports and feature requests**: [open an issue](../../issues) with the provided template.
+- **Security vulnerabilities**: report these privately, as described in [SECURITY.md](SECURITY.md).
+- **Questions**: open an issue and say it is a question.
 
 ## Development Setup
 
@@ -15,29 +15,36 @@ Thank you for your interest in Vellum Assistant! We welcome contributions of all
 ```bash
 git clone https://github.com/<your-username>/vellum-assistant.git
 cd vellum-assistant
-./setup.sh    # installs Bun (if needed), installs deps, links packages, registers the global vellum CLI
+./setup.sh    # installs Bun (if needed), installs deps, links packages, registers the global anu CLI
 ```
 
 Verify your setup:
 
 ```bash
-vellum --version
+anu --version
 ```
 
 ### Running the Assistant Locally
 
-**CLI only:**
-
 ```bash
-vellum hatch   # first-time setup (only needed once)
-vellum wake    # start an existing assistant
-vellum client  # interact with your assistant through the terminal
-vellum sleep   # stop but do not remove an existing assistant
+anu hatch   # create a local assistant (once)
+anu wake    # start it again later
+anu client  # chat with it in the terminal
+anu sleep   # stop it; data is kept
 ```
+
+### Running the ANU Platform
+
+The API and sandbox live in `anu/`. Setup, commands, and rules are in [`anu/README.md`](anu/README.md) and [`anu/AGENTS.md`](anu/AGENTS.md).
 
 ### Running Tests
 
+Always pass a path to `bun test`: the full suite is too large to run unscoped.
+
 ```bash
+# ANU platform (API and sandbox)
+cd anu && bun test src
+
 # Assistant
 cd assistant && bun run test
 
@@ -67,9 +74,10 @@ If you use Claude Code, see [.claude/README.md](.claude/README.md) for setup (sh
 
 | Directory | What it is |
 |---|---|
-| `assistant/` | Core assistant runtime — memory, tools, skills, scheduling, integrations |
-| `gateway/` | Public ingress — webhooks, API routes, OAuth callbacks |
-| `cli/` | The `vellum` CLI |
+| `anu/` | ANU platform: phone-login API, per-task sandbox, plan, and decisions |
+| `assistant/` | Assistant runtime, also ANU's agent harness: memory, tools, skills, scheduling, integrations |
+| `gateway/` | Public ingress: webhooks, API routes, OAuth callbacks |
+| `cli/` | The `anu` CLI |
 | `clients/` | End-user app surfaces (web, iOS, macOS/Electron) and the public docs site (`clients/docs/`) |
 | `credential-executor/` | Isolated credential execution service |
 | `packages/` | Shared internal packages |
@@ -85,13 +93,13 @@ A lot of "new feature" ideas are really *personal customization*: for example, a
 
 ### When a Core Change Is the Right Call
 
-Adding or changing a **core tool** (anything under `assistant/src/tools/` registered in the tool manifest) ships to **every** user and is loaded into the agent's context on every turn — always-loaded tools share a tight budget, so each one has to earn its place. Open a PR for core changes only when the change is:
+Adding or changing a **core tool** (anything under `assistant/src/tools/` registered in the tool manifest) ships to **every** user and is loaded into the agent's context on every turn. Always-loaded tools share a tight budget, so each one has to earn its place. Open a PR for core changes only when the change is:
 
 - a **new primitive** that can't be expressed as a skill composed from existing tools, or
 - a bug fix, performance, security, or developer-experience improvement to existing behavior, or
-- there is pre-existing discussion on GitHub or Discord with the core team on why it will be broadly useful to most users.
+- there is an issue where maintainers agreed it will be broadly useful.
 
-If you can build it as a skill in your own workspace, do that first. If you think a personal skill would genuinely benefit others, contribute it to [`skills/`](skills/) (see [`skills/AGENTS.md`](skills/AGENTS.md)) rather than adding a core tool. When in doubt, [open an issue](https://github.com/vellum-ai/vellum-assistant/issues) or ask on [Discord](https://vellum.ai/community) before writing new core capabilities.
+If you can build it as a skill in your own workspace, do that first. If you think a personal skill would genuinely benefit others, contribute it to [`skills/`](skills/) (see [`skills/AGENTS.md`](skills/AGENTS.md)) rather than adding a core tool. When in doubt, [open an issue](../../issues) before writing new core capabilities.
 
 ## Submitting a Pull Request
 
@@ -99,13 +107,14 @@ If you can build it as a skill in your own workspace, do that first. If you thin
 2. Make your changes. Write tests where applicable.
 3. Make sure CI passes locally: `bun run lint && bun run typecheck && bun run test` in the relevant package(s).
 4. Open a PR against `main`. Fill out the PR template.
-5. A maintainer will review your PR. We aim to respond within a few business days.
+5. A maintainer reviews it.
 
 ### PR guidelines
 
 - **Keep PRs focused.** One logical change per PR. Smaller PRs get reviewed faster.
 - **PR titles** follow conventional commits format: `type(scope): description` (e.g., `feat(slack): add user token support`, `fix(cli): handle missing config`).
-- **We assume AI was used.** That's fine — just include the prompt or plan you used in the PR description.
+- **We assume AI was used.** That's fine. Include the prompt or plan you used in the PR description.
+- **User-facing words follow [`docs/ANU-VOICE.md`](docs/ANU-VOICE.md).** No em dashes, and every error says what to do next.
 - **Don't submit PRs against `release/*` branches.** These are for release management only.
 
 ### What makes a good contribution
@@ -113,17 +122,14 @@ If you can build it as a skill in your own workspace, do that first. If you thin
 - Fixes a bug you encountered while using the assistant
 - Improves documentation or developer experience
 - Adds test coverage for untested paths
-- Implements a feature you've discussed in an issue or on Discord
+- Implements a feature agreed in an issue
 - Adds a broadly useful primitive or a reusable skill to [`skills/`](skills/)
 
 ### When to seek feedback
 
-**Small changes (single PR, ~300 source lines or fewer):** go straight to a PR. The PR itself is the discussion medium and serves as the explicit go-ahead from the core team. No need to coordinate ahead of time.
+**Small changes (one PR, about 300 source lines or fewer):** go straight to a PR. The PR is the discussion.
 
-**Large changes (multiple PRs, ~1,000+ source lines):** loop us in before you start. This helps us confirm (1) we aren't already planning to tackle the same area this week, and (2) your approach doesn't conflict with future plans we have in flight. You can:
-
-- DM a member of the core team directly to coordinate a call, or
-- start a thread in the [#contributors](https://discord.com/channels/1471183263174234245/1503398277092081875) channel on Discord.
+**Large changes (several PRs, about 1,000 source lines or more):** open an issue before you start, describing the approach. It confirms that nobody else is working on the same area and that the approach fits [`anu/docs/PLAN.md`](anu/docs/PLAN.md).
 
 ## Code of Conduct
 

@@ -180,7 +180,7 @@ export function registerPluginsCommand(program: Command): void {
     transport: "local",
     description: pluginsHelp.description,
     build: (plugins) => {
-      // Materialize the `@vellumai/plugin-api` shim once for the whole command
+      // Materialize the `@anu/plugin-api` shim once for the whole command
       // group, before any subcommand action runs. A subcommand that resolves a
       // plugin hook in this fresh CLI process — `uninstall` running a plugin's
       // `shutdown` — needs the package importable; the daemon materializes the
@@ -1121,7 +1121,7 @@ function printUntrustedPluginWarning(
   const ref = source.ref === DEFAULT_DIRECT_REF ? "default branch" : source.ref;
   const lines = [
     `⚠ Installing "${name}" from an unreviewed GitHub source: ${location} @ ${ref}.`,
-    "  This plugin is NOT in the Vellum marketplace and has not been reviewed.",
+    "  This plugin is NOT in the ANU marketplace and has not been reviewed.",
     "  Its hooks and tools run inside the assistant with full access — install it only if you trust the source.",
   ];
   console.error(yellow(lines.join("\n")));

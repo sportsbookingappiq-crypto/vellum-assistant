@@ -12,7 +12,7 @@ import {
   type RemoteWebPairingChallengeResponse,
   type RemoteWebPairingTokenPendingResponse,
   type RemoteWebPairingTokenRequest,
-} from "@vellumai/service-contracts/remote-web-pairing";
+} from "@anu/service-contracts/remote-web-pairing";
 import { nanoid } from "nanoid";
 
 import { guardianTokenPath } from "./config";
@@ -312,7 +312,7 @@ export function pairAssistant(
     };
   }
 
-  // A paired entry is remote by definition (`vellum pair` refuses to advertise
+  // A paired entry is remote by definition (`anu pair` refuses to advertise
   // loopback URLs), and a loopback runtimeUrl in the lockfile would otherwise
   // read as a local gateway to loopback-port consumers. Refuse it outright so
   // a crafted address cannot point a pairing at this machine's own services.
@@ -321,7 +321,7 @@ export function pairAssistant(
       ok: false,
       status: 422,
       error:
-        "A paired assistant needs a non-loopback gateway URL; run `vellum pair` " +
+        "A paired assistant needs a non-loopback gateway URL; run `anu pair` " +
         "with --url pointing at a tunnel or public https address.",
     };
   }
@@ -485,7 +485,7 @@ const PAIRING_TOKEN_PATH = "/v1/remote-web/pairing-token";
 
 /**
  * What a pairing attempt failed on. Defined by
- * `@vellumai/service-contracts/remote-web-pairing`, which also owns the
+ * `@anu/service-contracts/remote-web-pairing`, which also owns the
  * retryable classification every pairing surface reads.
  */
 export type { PairingFailureReason };
@@ -1206,7 +1206,7 @@ export function pairingCancel(handle: unknown): boolean {
 
 // ── Legacy base64 bundle import ─────────────────────────────────────────────
 //
-// The pre-pairing-link import path. Its one caller is `vellum connect import`
+// The pre-pairing-link import path. Its one caller is `anu connect import`
 // (cli/src/commands/connect/import.ts), which falls back to it for a bundle
 // minted by a host on the previous release; nothing mints bundles any more, so
 // this section goes once that release is out of support. It shares

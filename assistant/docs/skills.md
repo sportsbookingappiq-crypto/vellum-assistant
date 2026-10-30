@@ -1,6 +1,6 @@
 # Skills — Security Model
 
-This document describes the security model for the Vellum Assistant skill system, including how skills are authorized, how trust rules interact with skill versions, and how the system protects against privilege escalation through skill source mutations.
+This document describes the security model for the ANU skill system, including how skills are authorized, how trust rules interact with skill versions, and how the system protects against privilege escalation through skill source mutations.
 
 ## Overview
 
@@ -163,7 +163,7 @@ Check whether the rule has the correct `executionTarget` — a rule scoped to `s
 
 Skills can embed dynamic content by using the **inline command expansion** syntax. When a skill containing these tokens is loaded, each token is executed and replaced with its output before the skill body is delivered to the model. The syntax is shown in the fenced block below.
 
-This syntax is intentionally compatible with the convention established by [inline skill commands](https://x.com) for portable cross-agent skill authoring. Vellum adopts the exact same token format so that externally authored skills load without rewriting — but applies stricter execution constraints.
+This syntax is intentionally compatible with the convention established by [inline skill commands](https://x.com) for portable cross-agent skill authoring. ANU adopts the exact same token format so that externally authored skills load without rewriting — but applies stricter execution constraints.
 
 ### Syntax
 

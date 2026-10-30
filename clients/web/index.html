@@ -41,8 +41,15 @@
         content="frame-src 'self' https://js.stripe.com https://*.js.stripe.com https://hooks.stripe.com https://link.com https://*.link.com" />
 
   <link rel="icon" href="/favicon.svg" />
-  <link rel="apple-touch-icon" href="/favicon.svg" />
-  <title>Vellum Assistant</title>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <!--
+    The browser chrome around the page (the mobile address bar, the installed
+    web app's title bar) in the light and dark `--surface-base` the boot splash
+    below paints, so the page and its frame open on one ground.
+  -->
+  <meta name="theme-color" content="#F0F9FF" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#050B1F" media="(prefers-color-scheme: dark)" />
+  <title>ANU</title>
 
   <!--
     Open Graph fallback for every SPA route.
@@ -67,22 +74,22 @@
     the marketing site's robots.txt.
   -->
   <meta name="description" content="An assistant that knows you deeply, evolves alongside you, and belongs to no one else. Powered by memory that remembers the way you do." />
-  <meta property="og:site_name" content="Vellum" />
+  <meta property="og:site_name" content="ANU" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="en_US" />
-  <meta property="og:title" content="Vellum: Your Personal Intelligence" />
+  <meta property="og:title" content="ANU: Your Personal Intelligence" />
   <meta property="og:description" content="An assistant that knows you deeply, evolves alongside you, and belongs to no one else. Powered by memory that remembers the way you do." />
   <meta property="og:image" content="https://www.vellum.ai/og-cover-v2.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Vellum: Your Personal Intelligence" />
+  <meta property="og:image:alt" content="ANU: Your Personal Intelligence" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@vellum_ai" />
   <meta name="twitter:creator" content="@vellum_ai" />
-  <meta name="twitter:title" content="Vellum: Your Personal Intelligence" />
+  <meta name="twitter:title" content="ANU: Your Personal Intelligence" />
   <meta name="twitter:description" content="An assistant that knows you deeply, evolves alongside you, and belongs to no one else. Powered by memory that remembers the way you do." />
   <meta name="twitter:image" content="https://www.vellum.ai/og-cover-v2.jpg" />
-  <meta name="twitter:image:alt" content="Vellum: Your Personal Intelligence" />
+  <meta name="twitter:image:alt" content="ANU: Your Personal Intelligence" />
 
   <!--
     Shell init that has to run before the app bundle does. Two jobs, neither
@@ -299,8 +306,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #F6F5F4;
-      color: #71808E;
+      background: #F0F9FF;
+      color: #5B6A80;
     }
 
     #boot-splash svg {
@@ -316,14 +323,14 @@
     }
 
     :root[data-theme="dark"] #boot-splash {
-      background: #17191C;
-      color: #8D99A5;
+      background: #050B1F;
+      color: #8A99B0;
     }
 
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) #boot-splash {
-        background: #17191C;
-        color: #8D99A5;
+        background: #050B1F;
+        color: #8A99B0;
       }
     }
 

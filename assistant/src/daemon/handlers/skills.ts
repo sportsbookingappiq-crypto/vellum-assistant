@@ -481,7 +481,7 @@ async function listSkillsWithCatalog(): Promise<SlimSkillResponse[]> {
     return installed;
   }
 
-  // All entries from the Vellum platform API are first-party.
+  // All entries from the ANU platform API are first-party.
   // Create SlimSkillResponses for catalog skills not already installed.
   const available: SlimSkillResponse[] = filterSkillsByPlatform(catalogSkills)
     .filter((cs) => !installedIds.has(cs.id))
@@ -509,7 +509,7 @@ interface SkillListFilter {
 function originDisplayLabel(origin: string): string {
   switch (origin) {
     case "vellum":
-      return "Vellum";
+      return "ANU";
     case "clawhub":
       return "Clawhub";
     case "skillssh":
@@ -1282,7 +1282,7 @@ export async function installSkill(spec: {
       return { success: true, skillId: spec.slug };
     }
 
-    // Check the Vellum catalog (first-party skills hosted on the platform).
+    // Check the ANU catalog (first-party skills hosted on the platform).
     // Skip when the caller explicitly specified a community origin — this
     // prevents slug collisions where a catalog skill shadows a community
     // skill the user selected from search results.
@@ -1320,7 +1320,7 @@ export async function installSkill(spec: {
         }
         log.warn(
           { err, skillId: spec.slug },
-          "Vellum catalog install failed, falling back to community registry",
+          "ANU catalog install failed, falling back to community registry",
         );
       }
     }
@@ -1328,7 +1328,7 @@ export async function installSkill(spec: {
     if (spec.catalogOnly) {
       return {
         success: false,
-        error: `Skill "${spec.slug}" not found in the Vellum catalog`,
+        error: `Skill "${spec.slug}" not found in the ANU catalog`,
       };
     }
 

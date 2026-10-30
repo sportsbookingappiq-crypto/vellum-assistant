@@ -27,7 +27,7 @@ import {
 import { useLlmCallDetail } from "@/domains/chat/inspector/inspector-detail-api";
 import { formatCount } from "@/domains/chat/inspector/inspector-formatters";
 import { useTranslation } from "@/i18n";
-import type { LLMRequestLogEntry } from "@vellumai/assistant-api";
+import type { LLMRequestLogEntry } from "@anu/assistant-api";
 import {
   Button,
   Card,
@@ -35,7 +35,7 @@ import {
   type NoticeTone,
   Tag,
   type TagTone,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 type ChatTranslate = ReturnType<typeof useTranslation<"chat">>["t"];
 
 export interface CacheDiffCardProps {

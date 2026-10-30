@@ -18,20 +18,24 @@
 import { afterEach, describe, expect, test } from "bun:test";
 import { cleanup, render } from "@testing-library/react";
 
-import { AppIconPreview } from "@/components/avatar/app-icon-preview";
+import {
+  AppIconPreview,
+  PrimaryAppIconPreview,
+} from "@/components/avatar/app-icon-preview";
+import {
+  MARK_FACETS,
+  MARK_SILHOUETTE,
+} from "@/components/ios-widget-previews/vellum-app-icon-mark";
 import { BUNDLED_COMPONENTS } from "@/utils/avatar-bundled-components";
 import { pathBBox, unionBBox, type BBox } from "@/utils/eye-bbox";
 import type { CharacterComponents } from "@/types/avatar";
 
 const SIZE = 128;
-const GREEN_HEX = "#4C9B50";
+const GREEN_HEX = "#1FA088";
 
 /** A wide pair and a rounder one, the two ends of what the framing must fit. */
 const WIDE_EYE_STYLE = "grumpy";
 const ROUND_EYE_STYLE = "gentle";
-
-/** The pair `clients/ios/App/App/AppIcon.icon` draws, at half the icon. */
-const PRIMARY_EYE_STYLE = "quirky";
 
 /** A style the span table frames narrower than the default. */
 const NARROW_EYE_STYLE = "bashful";
@@ -47,15 +51,15 @@ const NARROW_EYE_STYLE = "bashful";
  * self-consistent.
  */
 const SAMPLED_EYE_BOUNDS: Record<string, BBox> = {
-  grumpy: { x: 90.5841, y: 226.908, w: 417.6578, h: 91.859 },
-  angry: { x: 151, y: 267, w: 397.822, h: 130.949 },
-  curious: { x: 125.514, y: 334.425, w: 276.793, h: 160.893 },
-  goofy: { x: 182.018, y: 286.568, w: 285.06, h: 206.844 },
-  surprised: { x: 150.422, y: 84.8232, w: 340.96, h: 163.0838 },
-  bashful: { x: 276, y: 280, w: 241.001, h: 115.273 },
-  gentle: { x: 176.504, y: 247.329, w: 253.453, h: 221.736 },
-  quirky: { x: 218.6091, y: 266.3528, w: 231.3574, h: 171.1384 },
-  dazed: { x: 153.352, y: 224.744, w: 382.872, h: 160.174 },
+  grumpy: { x: 95.1201, y: 258, w: 409.7598, h: 86 },
+  angry: { x: 93.9983, y: 250.86, w: 412.0033, h: 165.1477 },
+  curious: { x: 132, y: 212, w: 354, h: 172 },
+  goofy: { x: 108, y: 190, w: 392, h: 208 },
+  surprised: { x: 92, y: 202, w: 416, h: 196 },
+  bashful: { x: 104.6813, y: 251, w: 390.6373, h: 94.4787 },
+  gentle: { x: 141.25, y: 213.47, w: 317.5, h: 173.06 },
+  quirky: { x: 122, y: 214, w: 368.0062, h: 172 },
+  dazed: { x: 90.025, y: 209.93, w: 419.95, h: 180.14 },
 };
 
 /** Fraction of the icon a pair spans when the table below leaves it alone. */
@@ -232,8 +236,8 @@ describe("AppIconPreview", () => {
   });
 
   test("draws bashful narrower than surprised", () => {
-    // The two styles are the same shape, so framing both at the default span
-    // would draw two icons a user cannot tell apart.
+    // The span table frames bashful's closed arcs narrower than the default,
+    // so they read as a quiet face rather than a pair as wide as surprised's.
     const spanOf = (eyeStyleId: string) => {
       const { container } = render(
         <AppIconPreview
@@ -249,37 +253,6 @@ describe("AppIconPreview", () => {
     };
 
     expect(spanOf(NARROW_EYE_STYLE)).toBeLessThan(spanOf("surprised") * 0.9);
-  });
-
-  test("frames a primary preview on the default span whatever pair it draws", () => {
-    for (const eyeStyleId of [PRIMARY_EYE_STYLE, NARROW_EYE_STYLE]) {
-      const { container } = render(
-        <AppIconPreview
-          components={BUNDLED_COMPONENTS}
-          eyeStyle={eyeStyleId}
-          color="green"
-          size={SIZE}
-          primary
-        />,
-      );
-
-      const { box, centerX, centerY } = placement(
-        container,
-        sampledBounds(eyeStyleId),
-      );
-      expectWithinTolerance(centerX, SIZE / 2);
-      expectWithinTolerance(centerY, SIZE / 2);
-      expectWithinTolerance(
-        Math.max(box.w, box.h),
-        SIZE * DEFAULT_EYE_SPAN_FRACTION,
-      );
-      cleanup();
-    }
-    // The narrow style's own entry sits under the default, so the loop above
-    // is this prop at work rather than a span both framings would satisfy.
-    expect(expectedSpanFraction(NARROW_EYE_STYLE)).toBeLessThan(
-      DEFAULT_EYE_SPAN_FRACTION,
-    );
   });
 
   test("fits a rounder pair by whichever axis is longer", () => {
@@ -405,9 +378,10 @@ describe("AppIconPreview", () => {
   });
 
   test("frames the eyes on their ink, not on their control points", () => {
-    // `angry` is drawn with control points far below the curve, so its
-    // control-point box is 72% taller than the artwork. The generated PNG
-    // centers what the rasterizer sees, and so must this.
+    // `angry` is drawn with control points past the curve (its eyes are arcs
+    // cut off by a slanted lid), so its control-point box sits lower than the
+    // artwork. The generated PNG centers what the rasterizer sees, and so must
+    // this.
     const { container } = render(
       <AppIconPreview
         components={BUNDLED_COMPONENTS}
@@ -427,7 +401,7 @@ describe("AppIconPreview", () => {
       container,
       controlPolygonBounds(container),
     );
-    expect(Math.abs(controlPolygon.centerY - SIZE / 2)).toBeGreaterThan(1);
+    expect(Math.abs(controlPolygon.centerY - SIZE / 2)).toBeGreaterThan(0.5);
   });
 
   test("renders the field alone for an unknown eye style", () => {
@@ -524,5 +498,67 @@ describe("AppIconPreview", () => {
       container.querySelector('[data-testid="app-icon-preview-eyes"]'),
     ).toBeNull();
     expect(field(container).getAttribute("fill")).toBe(GREEN_HEX);
+  });
+});
+
+describe("PrimaryAppIconPreview", () => {
+  /** The mark group's scale and offset, read off its transform. */
+  function markPlacement(container: HTMLElement) {
+    const group = container.querySelector(
+      '[data-testid="app-icon-preview-mark"]',
+    );
+    const values = (group?.getAttribute("transform") ?? "")
+      .match(/^matrix\(([^)]+)\)$/)?.[1]
+      ?.split(",")
+      .map(Number);
+    if (!group || !values || values.length !== 6) {
+      throw new Error("No mark rendered");
+    }
+    return {
+      scale: values[0]!,
+      offsetX: values[4]!,
+      offsetY: values[5]!,
+      paths: Array.from(group.querySelectorAll("path")).map((path) => ({
+        d: path.getAttribute("d"),
+        fill: path.getAttribute("fill"),
+      })),
+    };
+  }
+
+  test("centers the mark on the ground at the share the icon gives it", () => {
+    const { container } = render(
+      <PrimaryAppIconPreview fieldColor="#0F2557" tone="ice" size={SIZE} />,
+    );
+
+    expect(field(container).getAttribute("fill")).toBe("#0F2557");
+    expect(field(container).getAttribute("rx")).toBe(String(SIZE * 0.224));
+    const { scale, offsetX, offsetY } = markPlacement(container);
+    // The Icon Composer layer scales the 100-unit canvas by 6.4 on a 1024
+    // icon, so the canvas spans 62.5% of the tile with equal margins.
+    expectWithinTolerance(scale * 100, SIZE * 0.625);
+    expectWithinTolerance(offsetX, (SIZE - SIZE * 0.625) / 2);
+    expectWithinTolerance(offsetY, (SIZE - SIZE * 0.625) / 2);
+  });
+
+  test("draws the ice two-tone for a night ground", () => {
+    const { container } = render(
+      <PrimaryAppIconPreview fieldColor="#0F2557" tone="ice" size={SIZE} />,
+    );
+
+    expect(markPlacement(container).paths).toEqual([
+      { d: MARK_SILHOUETTE, fill: "#7DD3FC" },
+      { d: MARK_FACETS, fill: "#E0F2FE" },
+    ]);
+  });
+
+  test("draws the night two-tone for a light ground", () => {
+    const { container } = render(
+      <PrimaryAppIconPreview fieldColor="#FF88C9" tone="night" size={SIZE} />,
+    );
+
+    expect(markPlacement(container).paths).toEqual([
+      { d: MARK_SILHOUETTE, fill: "#0A1633" },
+      { d: MARK_FACETS, fill: "#1E40AF" },
+    ]);
   });
 });

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The `cli/` package (`@vellumai/cli`) manages the **lifecycle of Vellum assistant instances** — creating, starting, stopping, connecting to, and deleting them. Commands here operate on or across instances and typically require specifying which assistant to target.
+The `cli/` package (`@anu/cli`) manages the **lifecycle of ANU assistant instances** — creating, starting, stopping, connecting to, and deleting them. Commands here operate on or across instances and typically require specifying which assistant to target.
 
 This contrasts with `assistant/src/cli/`, where commands are scoped to a **single running assistant** and operate on its local state (config, memory, contacts, etc.).
 
@@ -12,7 +12,7 @@ Commands here operate on or across **assistant instances** — creating, startin
 
 For commands scoped to a **single running assistant's** local state (config, memory, contacts), see `assistant/src/cli/AGENTS.md`.
 
-Examples: `hatch`, `wake`, `sleep`, `retire`, `ps`, `ssh` belong here. `config`, `memory` belong in `assistant/src/cli/`. Contact ACL writes belong on `gateway contacts` (via `vellum exec --service gateway`), not on `assistant contacts` or `vellum gateway`.
+Examples: `hatch`, `wake`, `sleep`, `retire`, `ps`, `ssh` belong here. `config`, `memory` belong in `assistant/src/cli/`. Contact ACL writes belong on `gateway contacts` (via `anu exec --service gateway`), not on `assistant contacts` or `anu gateway`.
 
 ## Assistant targeting convention
 
@@ -26,7 +26,7 @@ Use the shared helpers from `lib/assistant-config` instead of hand-rolled lookup
 
 Use `parseAssistantTargetArg()` from `lib/assistant-target-args` when parsing command arguments that may contain an unquoted multi-word display name. Do not store raw display names in `activeAssistant`; persist the resolved `assistantId`.
 
-New or modified destructive lifecycle commands must be explicit and safe. A command that deletes, retires, archives, or removes assistant state must print the resolved assistant identity before acting and require an interactive confirmation, with a documented `--yes` bypass only for automation or higher-level clients that already own confirmation. Do not expose destructive lifecycle actions as `vellum client` slash commands.
+New or modified destructive lifecycle commands must be explicit and safe. A command that deletes, retires, archives, or removes assistant state must print the resolved assistant identity before acting and require an interactive confirmation, with a documented `--yes` bypass only for automation or higher-level clients that already own confirmation. Do not expose destructive lifecycle actions as `anu client` slash commands.
 
 ## Conventions
 
@@ -57,7 +57,7 @@ The CLI is a generic lifecycle manager. It must **never** contain references to 
 
 Cross-package imports into `skills/` are forbidden. The CLI is distributed as an npm package; anything outside `cli/` is not included in the tarball and will fail to resolve at runtime.
 
-Workspace packages that `cli/src` never imports may still be listed in `package.json` `dependencies` and `bundledDependencies` when a bundled dependency depends on them (for example `@vellumai/avatar-manifest`, pulled in by `@vellumai/local-mode`); `bundledDependencies` only nests a `file:` dep when it is a direct dependency of the CLI.
+Workspace packages that `cli/src` never imports may still be listed in `package.json` `dependencies` and `bundledDependencies` when a bundled dependency depends on them (for example `@anu/avatar-manifest`, pulled in by `@anu/local-mode`); `bundledDependencies` only nests a `file:` dep when it is a direct dependency of the CLI.
 
 ## Boundary: No `.vellum/` directory access
 

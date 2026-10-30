@@ -23,14 +23,14 @@ import {
 } from "@/lib/billing/machine-sizes";
 import { Trans, useTranslation } from "@/i18n";
 import { routes } from "@/utils/routes";
-import { Button } from "@vellumai/design-library/components/button";
-import { textLinkVariants } from "@vellumai/design-library/components/text-link";
-import { cn } from "@vellumai/design-library/utils/cn";
-import { Select } from "@vellumai/design-library/components/select";
-import { Modal } from "@vellumai/design-library/components/modal";
-import { Notice } from "@vellumai/design-library/components/notice";
-import { Tag } from "@vellumai/design-library/components/tag";
-import { toast } from "@vellumai/design-library/components/toast";
+import { Button } from "@anu/design-library/components/button";
+import { textLinkVariants } from "@anu/design-library/components/text-link";
+import { cn } from "@anu/design-library/utils/cn";
+import { Select } from "@anu/design-library/components/select";
+import { Modal } from "@anu/design-library/components/modal";
+import { Notice } from "@anu/design-library/components/notice";
+import { Tag } from "@anu/design-library/components/tag";
+import { toast } from "@anu/design-library/components/toast";
 
 export interface ResizeCardProps {
   assistant: Assistant;

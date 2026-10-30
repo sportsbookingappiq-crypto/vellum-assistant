@@ -8,7 +8,7 @@
  * middle of the shared surface, so a mark is described in fractions of the
  * window and needs no idea of where on the desktop any of it sits.
  *
- * **The marks are never in the pixels.** A capture excludes Vellum's own
+ * **The marks are never in the pixels.** A capture excludes ANU's own
  * windows (`ScreenCapture.swift`), so nothing drawn here reaches the call by
  * being on screen. What reaches it is the stroke data, sent on the release
  * and drawn onto the captured frame by the window that takes it
@@ -60,7 +60,7 @@ import {
   COMPANION_ANNOTATION_MIN_STEP,
   COMPANION_ANNOTATION_STROKE,
   type CompanionAnnotationTool,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 /**
  * How long a finished mark stays at full strength before it starts to go, and

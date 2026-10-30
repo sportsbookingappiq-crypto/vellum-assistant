@@ -7,7 +7,7 @@ set -euo pipefail
 # anyone — including open-source contributors — can run `bun run openapi-ts`
 # without access to the private platform repo.
 #
-# Vellum developers: run this script after the platform repo regenerates
+# ANU developers: run this script after the platform repo regenerates
 # its specs to update the committed copies here.
 #
 # Usage:

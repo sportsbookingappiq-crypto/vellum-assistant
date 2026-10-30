@@ -1,5 +1,5 @@
-import { formatAcceleratorHint } from "@vellumai/design-library";
-import { DEFAULT_ACCELERATORS } from "@vellumai/ipc-contract";
+import { formatAcceleratorHint } from "@anu/design-library";
+import { DEFAULT_ACCELERATORS } from "@anu/ipc-contract";
 import { useSyncExternalStore } from "react";
 
 import { isElectron } from "@/runtime/is-electron";

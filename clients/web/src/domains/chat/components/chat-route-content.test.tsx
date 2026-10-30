@@ -127,7 +127,7 @@ mock.module("motion/react", () => ({
   useReducedMotion: () => true,
 }));
 
-import { BottomSheet } from "@vellumai/design-library";
+import { BottomSheet } from "@anu/design-library";
 
 import { AnimatedRightDrawer } from "@/domains/chat/components/animated-right-drawer";
 import { SuggestionDetailPanel } from "@/domains/chat/components/suggestion-detail-panel";

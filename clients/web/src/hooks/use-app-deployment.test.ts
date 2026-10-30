@@ -59,7 +59,7 @@ const successToasts: { title: string; description?: string }[] = [];
 // The stub stands in for the whole toast module, so it carries every export
 // the design-library index re-exports from it. A partial stub breaks any
 // module that pulls `Toaster` / `ToastContent` through that index.
-mock.module("@vellumai/design-library/components/toast", () => ({
+mock.module("@anu/design-library/components/toast", () => ({
   toast: {
     success: (title: string, options?: { description?: string }) => {
       successToasts.push({ title, description: options?.description });

@@ -5,7 +5,7 @@
  * - Removes lockfile entries whose IDs are no longer returned by the platform
  *   (e.g. retired assistants).
  *
- * Used by both `vellum login` and `vellum ps` to keep the lockfile fresh.
+ * Used by both `anu login` and `anu ps` to keep the lockfile fresh.
  *
  * **Contract:** callers must verify the user is logged in (i.e. a non-empty
  * platform token exists) before invoking this helper. The "is there a token?"
@@ -77,7 +77,7 @@ export async function syncCloudAssistants(
     log?.(`Failed to fetch current user: ${msg}`);
     if (isTimeoutError(err)) {
       console.warn(
-        "Warning: platform user lookup timed out — skipping cloud sync",
+        "Warning: platform user lookup timed out. Skipping cloud sync",
       );
     }
   }
@@ -94,7 +94,7 @@ export async function syncCloudAssistants(
     log?.(`fetchPlatformAssistants failed: ${msg}`);
     if (isTimeoutError(err)) {
       console.warn(
-        "Warning: platform assistant fetch timed out — using cached data",
+        "Warning: platform assistant fetch timed out. Using cached data",
       );
     }
     return null;
@@ -102,7 +102,7 @@ export async function syncCloudAssistants(
 
   if (platformAssistants.length === 0) {
     log?.(
-      "Platform returned 0 assistants — this may mean the API returned a non-ok status (check token validity)",
+      "Platform returned 0 assistants. This may mean the API returned a non-ok status (check token validity)",
     );
   }
 

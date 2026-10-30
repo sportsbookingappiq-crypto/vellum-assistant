@@ -1165,7 +1165,7 @@ describe("skill_loaded telemetry recording", () => {
     expect(recordedSkillLoadedEvents[0].skillName).toBe("catalog-skill");
   });
 
-  test("instruction-only non-Vellum skills never record", () => {
+  test("instruction-only non-ANU skills never record", () => {
     mockCatalog = [
       makeSkill("local-notes", undefined, "workspace"),
       makeSkill("homemade"),

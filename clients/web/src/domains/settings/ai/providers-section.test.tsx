@@ -5,7 +5,7 @@
  * The Default chip tracks the resolved default connection and its kebab
  * hides Delete; Set as default PUTs the explicit provider + connectionName;
  * assistants without the default-provider routes get no marker UI and no
- * status query; the managed Vellum row pins first with a Managed chip and
+ * status query; the managed ANU row pins first with a Managed chip and
  * no edit affordance; delete guards (409) surface as user-facing toasts.
  */
 
@@ -36,7 +36,7 @@ let deleteCalls: string[] = [];
 let deleteStatus = 200;
 let toastErrors: string[] = [];
 
-mock.module("@vellumai/design-library/components/toast", () => ({
+mock.module("@anu/design-library/components/toast", () => ({
   toast: {
     success: () => {},
     error: (message: string) => {
@@ -215,17 +215,17 @@ afterEach(() => {
 // ---------------------------------------------------------------------------
 
 describe("ProvidersSection - rows and chips", () => {
-  test("renders Vellum first with a Managed chip and no open affordance", async () => {
+  test("renders ANU first with a Managed chip and no open affordance", async () => {
     renderSection();
     await waitFor(() => {
       expect(rows().length).toBe(3);
     });
     const first = rows()[0];
-    expect(first.textContent).toContain("Vellum");
+    expect(first.textContent).toContain("ANU");
     expect(first.textContent).toContain("Managed");
     expect(first.textContent).toContain("Included with your plan");
     expect(
-      document.querySelector('button[aria-label="Open provider Vellum"]'),
+      document.querySelector('button[aria-label="Open provider ANU"]'),
     ).toBeNull();
   });
 
@@ -306,7 +306,7 @@ describe("ProvidersSection - kebab actions", () => {
     await waitFor(() => {
       expect(rows().length).toBe(3);
     });
-    const menu = await openKebab("Vellum");
+    const menu = await openKebab("ANU");
     expect(menuItems(menu)).toEqual(["Set as default"]);
   });
 

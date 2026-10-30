@@ -204,3 +204,81 @@ describe("AnimatedAvatar streaming morph", () => {
     expect(container.innerHTML).toBe("");
   });
 });
+
+describe("AnimatedAvatar reactions", () => {
+  /** Every inline animation in the avatar, in document order. */
+  function animations(container: HTMLElement): string[] {
+    return Array.from(container.querySelectorAll<SVGGElement>("svg g"))
+      .map((g) => g.style.animation)
+      .filter((a) => a && a !== "none");
+  }
+
+  test("rests with no reaction animation and no keyframes", () => {
+    const { container } = render(
+      <AnimatedAvatar
+        components={BUNDLED_COMPONENTS}
+        traits={TRAITS}
+        size={64}
+      />,
+    );
+    expect(container.querySelector("svg")?.dataset.reaction).toBeUndefined();
+    expect(container.querySelector("svg style")).toBeNull();
+    expect(animations(container).some((a) => a.includes("avatar-react"))).toBe(
+      false,
+    );
+  });
+
+  test("success plays one hop, on the body and the face together", () => {
+    const { container } = render(
+      <AnimatedAvatar
+        components={BUNDLED_COMPONENTS}
+        traits={TRAITS}
+        size={64}
+        reaction="success"
+      />,
+    );
+    expect(container.querySelector("svg")?.dataset.reaction).toBe("success");
+    expect(container.querySelector("svg style")?.textContent).toContain(
+      "@keyframes avatar-react-hop",
+    );
+    const hops = animations(container).filter((a) =>
+      a.includes("avatar-react-hop"),
+    );
+    // Once on the body, once on the wrapper that carries the eyes with it.
+    expect(hops).toHaveLength(2);
+    expect(hops.every((a) => !a.includes("infinite"))).toBe(true);
+    expect(
+      animations(container).some((a) => a.includes("avatar-react-lift")),
+    ).toBe(true);
+  });
+
+  test("waiting sways and glances until the prop clears", () => {
+    const { container, rerender } = render(
+      <AnimatedAvatar
+        components={BUNDLED_COMPONENTS}
+        traits={TRAITS}
+        size={64}
+        reaction="waiting"
+      />,
+    );
+    const running = animations(container);
+    expect(running.some((a) => a.includes("avatar-react-sway"))).toBe(true);
+    expect(
+      running.some(
+        (a) => a.includes("avatar-react-glance") && a.includes("infinite"),
+      ),
+    ).toBe(true);
+
+    rerender(
+      <AnimatedAvatar
+        components={BUNDLED_COMPONENTS}
+        traits={TRAITS}
+        size={64}
+        reaction={null}
+      />,
+    );
+    expect(animations(container).some((a) => a.includes("avatar-react"))).toBe(
+      false,
+    );
+  });
+});

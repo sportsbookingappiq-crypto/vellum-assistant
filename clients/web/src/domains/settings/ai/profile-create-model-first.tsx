@@ -1,17 +1,17 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 
-import { Button } from "@vellumai/design-library/components/button";
-import { Input } from "@vellumai/design-library/components/input";
-import { Radio, RadioGroup } from "@vellumai/design-library/components/radio";
-import { ScrollShadow } from "@vellumai/design-library/components/scroll-shadow";
+import { Button } from "@anu/design-library/components/button";
+import { Input } from "@anu/design-library/components/input";
+import { Radio, RadioGroup } from "@anu/design-library/components/radio";
+import { ScrollShadow } from "@anu/design-library/components/scroll-shadow";
 import {
   SearchableSelect,
   SEARCHABLE_SELECT_MENU_MIN_REACH,
   SEARCHABLE_SELECT_MENU_REACH,
   type SearchableSelectOption,
-} from "@vellumai/design-library/components/searchable-select";
-import { Tag } from "@vellumai/design-library/components/tag";
-import { Typography } from "@vellumai/design-library/components/typography";
+} from "@anu/design-library/components/searchable-select";
+import { Tag } from "@anu/design-library/components/tag";
+import { Typography } from "@anu/design-library/components/typography";
 
 import { PROVIDER_DISPLAY_NAMES } from "@/assistant/llm-model-catalog";
 import { ChatgptOAuthSection } from "@/domains/settings/ai/chatgpt-oauth-section";
@@ -709,7 +709,7 @@ function ProviderStep({
 
 /**
  * The row's annotation as this flow says it. The shared picker encoding calls
- * the Vellum route "Managed", which is what the provider-first picker and the
+ * the ANU route "Managed", which is what the provider-first picker and the
  * Providers section keep saying; a person choosing a model first is being
  * pointed at a route rather than told how it is run, so here the same row
  * reads "Recommended". Every other annotation passes through untouched.

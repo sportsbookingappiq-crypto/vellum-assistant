@@ -19,7 +19,7 @@
  * guessing whether the live view raced ahead of a lagging snapshot.
  */
 
-import type { AssistantEventEnvelope } from "@vellumai/assistant-api";
+import type { AssistantEventEnvelope } from "@anu/assistant-api";
 
 // ---------------------------------------------------------------------------
 // Types

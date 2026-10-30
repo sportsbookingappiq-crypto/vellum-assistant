@@ -27,7 +27,7 @@ import type {
   ScreenCaptureFrame,
   ShareTargetSnapshot,
   WatchCaptureTarget,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 type CompanionBridge = NonNullable<NonNullable<Window["vellum"]>["companion"]>;
 
@@ -459,7 +459,7 @@ export function companionTakesPrompts(): Promise<boolean> {
 }
 
 /**
- * Bring Vellum forward on the conversation the user was last in, which is what
+ * Bring ANU forward on the conversation the user was last in, which is what
  * pressing the avatar asks for.
  *
  * The one call here that deliberately raises the app. Everything else on the

@@ -888,7 +888,7 @@ describe("handleCreateToken: derived actor-token identity carry-forward", () => 
   test("copies both identity fields from a source row onto the derived row", async () => {
     const sourceToken = mintSourceToken();
     seedSourceActorToken(sourceToken, {
-      pairingUserAgent: "Vellum/1.2 (Macintosh; Intel Mac OS X 10_15_7)",
+      pairingUserAgent: "ANU/1.2 (Macintosh; Intel Mac OS X 10_15_7)",
       clientReportedName: "Alice's MacBook Pro",
     });
 
@@ -901,7 +901,7 @@ describe("handleCreateToken: derived actor-token identity carry-forward", () => 
     const derived = findDerivedRow();
     expect(derived?.platform).toBe("macos");
     expect(derived?.pairingUserAgent).toBe(
-      "Vellum/1.2 (Macintosh; Intel Mac OS X 10_15_7)",
+      "ANU/1.2 (Macintosh; Intel Mac OS X 10_15_7)",
     );
     expect(derived?.clientReportedName).toBe("Alice's MacBook Pro");
   });

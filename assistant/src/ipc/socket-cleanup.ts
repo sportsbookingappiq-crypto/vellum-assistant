@@ -10,10 +10,7 @@
 import { existsSync } from "node:fs";
 import { connect } from "node:net";
 
-import {
-  isNamedPipePath,
-  removeIpcEndpointFile,
-} from "@vellumai/ipc-server-utils";
+import { isNamedPipePath, removeIpcEndpointFile } from "@anu/ipc-server-utils";
 
 import { makeAddrInUseError } from "../daemon/startup-error.js";
 

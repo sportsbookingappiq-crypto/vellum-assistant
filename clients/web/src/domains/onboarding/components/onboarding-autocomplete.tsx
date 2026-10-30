@@ -35,8 +35,8 @@ import {
 } from "react";
 import { Plus, Search } from "lucide-react";
 
-import { Tag } from "@vellumai/design-library/components/tag";
-import { cn } from "@vellumai/design-library/utils/cn";
+import { Tag } from "@anu/design-library/components/tag";
+import { cn } from "@anu/design-library/utils/cn";
 
 import { MOBILE_INPUT_NO_ZOOM } from "@/domains/onboarding/onboarding-step-layout";
 import { useTranslation } from "@/i18n";

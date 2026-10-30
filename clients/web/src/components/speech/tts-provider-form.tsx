@@ -17,10 +17,10 @@ import { useAssistantIdentityStore } from "@/stores/assistant-identity-store";
 import { useIsOrgReady } from "@/hooks/use-is-org-ready";
 import { synthesizeTTS } from "@/lib/tts-synthesize";
 import { getLocalSetting, setLocalSetting } from "@/utils/local-settings";
-import { Button } from "@vellumai/design-library/components/button";
-import { Select } from "@vellumai/design-library/components/select";
-import { Input } from "@vellumai/design-library/components/input";
-import { toast } from "@vellumai/design-library/components/toast";
+import { Button } from "@anu/design-library/components/button";
+import { Select } from "@anu/design-library/components/select";
+import { Input } from "@anu/design-library/components/input";
+import { toast } from "@anu/design-library/components/toast";
 
 import {
   CredentialsGuide,
@@ -109,7 +109,7 @@ export function TtsProviderForm({
     }
     // Assistants running an older catalog omit vellum, but the managed option
     // must still be offered (and a legacy managed config still renders as
-    // Vellum) — graft the static entry on.
+    // ANU) — graft the static entry on.
     if (fetched.some((p) => p.id === "vellum")) {
       return fetched;
     }
@@ -134,13 +134,13 @@ export function TtsProviderForm({
       }
     | undefined;
   // A config written by the legacy mode toggle marks managed via `mode` while
-  // `provider` holds the BYOK restore value — the daemon routes it to Vellum,
-  // so the form must render it as Vellum too.
+  // `provider` holds the BYOK restore value — the daemon routes it to ANU,
+  // so the form must render it as ANU too.
   const daemonTtsProvider =
     daemonTts?.mode === "managed" ? "vellum" : daemonTts?.provider;
 
   // Mirrors the daemon's `services.tts.provider` schema default. Deliberately
-  // not `providers[0]` — the catalog leads with Vellum, and an unconfigured
+  // not `providers[0]` — the catalog leads with ANU, and an unconfigured
   // client must not claim the managed provider on its own.
   const defaultProviderId = "elevenlabs";
   const serverProvider = useMemo(
@@ -157,7 +157,7 @@ export function TtsProviderForm({
   const [testing, setTesting] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  // Managed (Vellum) voices, fetched live from the platform via the daemon so
+  // Managed (ANU) voices, fetched live from the platform via the daemon so
   // the offered list and default track the platform's rate card. Empty until
   // loaded — the picker renders only from platform data.
   const {
@@ -418,7 +418,7 @@ export function TtsProviderForm({
   const apiKeyPlaceholder = providerHasKey
     ? "••••••••  (Enter a new key to replace)"
     : selectedProvider.apiKeyPlaceholder;
-  // Vellum authenticates via the platform connection, so it has no key to enter
+  // ANU authenticates via the platform connection, so it has no key to enter
   // and nothing for the client-side Test path (a direct provider call) to use.
   const isManaged = draftProvider === "vellum";
   // Managed voice selection needs a daemon that persists
@@ -545,7 +545,7 @@ export function TtsProviderForm({
       )}
 
       {/* The credentials guide is the "where's my API key" helper for BYO
-          providers. The managed (Vellum) provider needs no key — the assistant
+          providers. The managed (ANU) provider needs no key — the assistant
           is already connected — so its "Connect this assistant" card is just
           noise between the voice picker and the preview button. */}
       {!hideCredentialsGuide && !isManaged && (

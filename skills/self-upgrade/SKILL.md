@@ -1,7 +1,7 @@
 ---
 name: self-upgrade
 description: Upgrade vellum to the latest version, restart the assistant, and restart the gateway
-compatibility: "Designed for Vellum personal assistants"
+compatibility: "Designed for ANU personal assistants"
 metadata:
   emoji: "⬆️"
   vellum:
@@ -9,12 +9,12 @@ metadata:
     display-name: "Self Upgrade"
 ---
 
-You are performing a self-upgrade of the Vellum assistant. Follow these steps **in order**. Use the `bash` tool to run each command. Confirm each step succeeds before moving to the next.
+You are performing a self-upgrade of the ANU assistant. Follow these steps **in order**. Use the `bash` tool to run each command. Confirm each step succeeds before moving to the next.
 
 ## Step 1: Record the current version
 
 ```bash
-vellum --version
+anu --version
 ```
 
 Save this value to report later.
@@ -28,7 +28,7 @@ bun install -g vellum@latest
 After updating, verify the new version:
 
 ```bash
-vellum --version
+anu --version
 ```
 
 ## Step 3: Restart the gateway
@@ -49,16 +49,16 @@ Then start the gateway again using whatever method the user's deployment uses (e
 
 ## Step 4: Restart the assistant
 
-Use `vellum sleep` to stop the running assistant and gateway, then `vellum wake` to start them again from the updated binary:
+Use `anu sleep` to stop the running assistant and gateway, then `anu wake` to start them again from the updated binary:
 
 ```bash
-vellum sleep && vellum wake
+anu sleep && anu wake
 ```
 
 Verify it is running:
 
 ```bash
-vellum ps
+anu ps
 ```
 
 **Important:** This is the last step because the current assistant process is the one executing this conversation. After the restart, the new assistant takes over and this conversation ends gracefully.

@@ -24,7 +24,7 @@ import type { DisplayMessage } from "@/domains/chat/types/types";
 import { useChatSessionStore } from "@/domains/chat/chat-session-store";
 import { useInteractionStore } from "@/domains/chat/interaction-store";
 import { useConversationStore } from "@/stores/conversation-store";
-import type { QuestionEntry } from "@vellumai/assistant-api";
+import type { QuestionEntry } from "@anu/assistant-api";
 
 const realPaginationModule =
   await import("@/domains/chat/transcript/use-history-pagination");

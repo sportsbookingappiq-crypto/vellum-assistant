@@ -131,7 +131,7 @@ function cloneDefaultConfig(): AssistantConfig {
  * raw config on disk, so an explicit user choice (e.g. saving "your-own"
  * via the macOS Models & Services UI) always wins.
  *
- * IS_PLATFORM is set by the Vellum platform launcher for all hosted
+ * IS_PLATFORM is set by the ANU platform launcher for all hosted
  * assistant deployments. Local, Docker, and bare-metal assistants are
  * unaffected.
  */

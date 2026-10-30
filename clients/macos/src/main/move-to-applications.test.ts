@@ -22,7 +22,7 @@ const dialogCalls: { message?: string }[] = [];
 let revealedInFinder = 0;
 let settingsStore: Record<string, unknown> = {};
 
-mock.module("@vellumai/electron-desktop/settings", () => ({
+mock.module("@anu/electron-desktop/settings", () => ({
   readSetting: (key: string) => settingsStore[key] ?? null,
   writeSetting: (key: string, value: unknown) => {
     settingsStore[key] = value;
@@ -37,7 +37,7 @@ mock.module("electron", () => ({
     on: () => undefined,
     off: () => undefined,
     getPath: () => "/tmp",
-    getName: () => "Vellum",
+    getName: () => "ANU",
     getVersion: () => "0.0.0-test",
     get isPackaged() {
       return appState.isPackaged;

@@ -122,7 +122,7 @@ async function handleGuardianActionDecision({
  *
  * Uses the conversation scope helper to union requests whose source
  * `conversationId` matches AND requests delivered to this conversation.
- * This allows guardian destination conversations (including macOS Vellum conversations)
+ * This allows guardian destination conversations (including macOS ANU conversations)
  * to surface prompts for all canonical kinds.
  *
  * The returned prompts normalize `conversationId` to the queried conversation ID

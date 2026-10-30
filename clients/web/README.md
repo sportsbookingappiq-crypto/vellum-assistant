@@ -1,7 +1,7 @@
 # clients/web
 
 Vite + [React Router v7](https://reactrouter.com/) SPA for the
-Vellum assistant web app (chat, settings, library, docs).
+ANU assistant web app (chat, settings, library, docs).
 
 ## Stack
 
@@ -84,7 +84,7 @@ bun run lint       # eslint
 [Storybook](https://storybook.js.org/) provides isolated component
 development for `clients/web` components — the ones tied to the app
 (routing, stores, layout) that don't belong in
-`@vellumai/design-library`. Design-system primitives live in their own
+`@anu/design-library`. Design-system primitives live in their own
 Storybook (`packages/design-library`, port 6006).
 
 Both Storybooks are published off `main` and cross-link to each other

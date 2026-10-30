@@ -157,10 +157,10 @@ mock.module("@/runtime/android-notification-channels", () => ({
 
 // ── @capacitor/app (lazy-imported plugin Proxy) ──────────────────────────────
 
-let bundleId = "ai.vocify-inc.vellum-assistant-ios";
+let bundleId = "ai.anu.assistant-ios";
 const getInfoMock = mock(async () => ({
   id: bundleId,
-  name: "Vellum",
+  name: "ANU",
   build: "1",
   version: "1.0.0",
 }));
@@ -271,7 +271,7 @@ beforeEach(() => {
   isNative = true;
   platform = "ios";
   androidPushRegistrationAvailable = true;
-  bundleId = "ai.vocify-inc.vellum-assistant-ios";
+  bundleId = "ai.anu.assistant-ios";
   permissionState = "granted";
   resolvedApnsEnvironment = "production";
   resolveSignedApnsEnvironmentMock.mockClear();
@@ -356,7 +356,7 @@ describe("registerForRemotePush", () => {
       body: {
         token: "apns-token-abc",
         platform: "ios",
-        bundle_id: "ai.vocify-inc.vellum-assistant-ios",
+        bundle_id: "ai.anu.assistant-ios",
         apns_environment: "production",
       },
       throwOnError: false,
@@ -366,7 +366,7 @@ describe("registerForRemotePush", () => {
 
   test("creates the Android channel before registering and omits APNs fields", async () => {
     platform = "android";
-    bundleId = "ai.vellum.assistant.dev";
+    bundleId = "ai.anu.assistant.dev";
     const handler = mock(() => {});
     setForegroundPushHandler(handler);
     androidRegisterMock.mockImplementationOnce(async () => {
@@ -381,7 +381,7 @@ describe("registerForRemotePush", () => {
     expect(lastUpsertArg?.body).toEqual({
       token: "fcm-token-abc",
       platform: "android",
-      bundle_id: "ai.vellum.assistant.dev",
+      bundle_id: "ai.anu.assistant.dev",
       capabilities: ["native-notification-render"],
     });
     expect(resolveSignedApnsEnvironmentMock).not.toHaveBeenCalled();
@@ -714,7 +714,7 @@ describe("hasSessionConfirmedRemotePushRegistration", () => {
       "vellum:push_registration",
       JSON.stringify({
         token: "persisted-token",
-        bundleId: "ai.vocify-inc.vellum-assistant-ios",
+        bundleId: "ai.anu.assistant-ios",
         assistantId: "assistant-9",
       }),
     );
@@ -748,14 +748,14 @@ describe("unregisterFromRemotePush", () => {
     expect(deleteMock).toHaveBeenCalledTimes(1);
     expect(lastDeleteArg).toEqual({
       path: { assistant_id: "11111111-1111-4111-8111-111111111111", token: "apns-token-abc" },
-      query: { bundle_id: "ai.vocify-inc.vellum-assistant-ios" },
+      query: { bundle_id: "ai.anu.assistant-ios" },
       throwOnError: false,
     });
   });
 
   test("replaces a rotated token and unregisters FCM on logout", async () => {
     platform = "android";
-    bundleId = "ai.vellum.assistant.dev";
+    bundleId = "ai.anu.assistant.dev";
     await registerForRemotePush("11111111-1111-4111-8111-111111111111");
     registrationHandler?.({ value: "fcm-old" });
     await flushMicrotasks();
@@ -787,7 +787,7 @@ describe("unregisterFromRemotePush", () => {
       "vellum:push_registration",
       JSON.stringify({
         token: "persisted-token",
-        bundleId: "ai.vocify-inc.vellum-assistant-ios",
+        bundleId: "ai.anu.assistant-ios",
         assistantId: "assistant-9",
       }),
     );
@@ -797,7 +797,7 @@ describe("unregisterFromRemotePush", () => {
     expect(deleteMock).toHaveBeenCalledTimes(1);
     expect(lastDeleteArg).toEqual({
       path: { assistant_id: "assistant-9", token: "persisted-token" },
-      query: { bundle_id: "ai.vocify-inc.vellum-assistant-ios" },
+      query: { bundle_id: "ai.anu.assistant-ios" },
       throwOnError: false,
     });
   });

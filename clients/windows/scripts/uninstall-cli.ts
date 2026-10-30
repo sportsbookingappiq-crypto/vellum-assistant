@@ -21,7 +21,7 @@ export function uninstallPackagedCli(
   );
   if (result === "blocked") {
     throw new Error(
-      "Unable to remove the Vellum command launcher. Close active vellum commands and try again.",
+      "Unable to remove the ANU command launcher. Close active vellum commands and try again.",
     );
   }
 }
@@ -30,9 +30,7 @@ if (import.meta.main) {
   try {
     const localAppData = process.env.LOCALAPPDATA;
     if (!localAppData) {
-      throw new Error(
-        "LOCALAPPDATA is unavailable. Retry uninstalling Vellum.",
-      );
+      throw new Error("LOCALAPPDATA is unavailable. Retry uninstalling ANU.");
     }
     uninstallPackagedCli(process.execPath, localAppData);
   } catch (error) {

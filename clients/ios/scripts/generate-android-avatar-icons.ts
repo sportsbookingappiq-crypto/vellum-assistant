@@ -10,7 +10,7 @@
  *
  * Measuring where an eye pair's artwork actually reaches needs the native
  * `@resvg/resvg-js` binding, so the assistant package's dependencies have to be
- * installed first: `bun install --filter=@vellumai/assistant`.
+ * installed first: `bun install --filter=@anu/assistant`.
  *
  * Every run deletes and rewrites the whole owned set, and the output is
  * deterministic, so regenerating unchanged resources produces byte-identical
@@ -138,7 +138,7 @@ const ALIAS_BLOCK_END = "<!-- avatar-icon-aliases:end -->";
 /**
  * Manifest-relative name of the activity the aliases point at, and the
  * sub-package their own names sit under. The names resolve against the manifest
- * package, so an alias is `<applicationId>/ai.vellum.assistant.icon.<resource>`
+ * package, so an alias is `<applicationId>/ai.anu.assistant.icon.<resource>`
  * at runtime, which is what the plugin toggling them has to address.
  */
 const MAIN_ACTIVITY_NAME = ".MainActivity";

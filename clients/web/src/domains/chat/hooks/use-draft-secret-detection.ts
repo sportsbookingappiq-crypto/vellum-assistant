@@ -26,7 +26,7 @@ import {
 import {
   detectSecretsInText,
   type DetectedSecret,
-} from "@vellumai/service-contracts/secret-detection";
+} from "@anu/service-contracts/secret-detection";
 
 import { useComposerStore } from "@/domains/chat/composer-store";
 

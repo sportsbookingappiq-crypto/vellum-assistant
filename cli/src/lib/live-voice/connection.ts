@@ -110,7 +110,7 @@ export async function resolveLiveVoiceConnection(
   const token = await resolveGuardianAccessToken(entry.assistantId, baseUrl);
   if (!token) {
     throw new LiveVoiceConnectionError(
-      `No credential for '${entry.assistantId}'. Run 'vellum wake ` +
+      `No credential for '${entry.assistantId}'. Run 'anu wake ` +
         `${entry.assistantId}' to lease one.`,
     );
   }
@@ -128,7 +128,7 @@ export async function resolveLiveVoiceConnection(
  * Resolve a live-voice connection to a platform-hosted assistant.
  *
  * The session token is the CLI's own platform login, not anything specific to
- * this assistant, so a missing one is a `vellum login` problem rather than an
+ * this assistant, so a missing one is a `anu login` problem rather than an
  * assistant problem and says so.
  *
  * The minted token is deliberately resolved here, at the last moment before
@@ -141,8 +141,8 @@ async function resolveCloudConnection(
   const sessionToken = readPlatformToken();
   if (!sessionToken) {
     throw new LiveVoiceConnectionError(
-      `${formatAssistantReference(entry)} is a Vellum cloud assistant, which ` +
-        "needs a platform login. Run 'vellum login' and try again.",
+      `${formatAssistantReference(entry)} is an ANU cloud assistant, which ` +
+        "needs a platform login. Run 'anu login' and try again.",
     );
   }
 

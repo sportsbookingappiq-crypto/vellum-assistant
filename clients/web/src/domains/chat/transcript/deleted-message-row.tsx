@@ -1,4 +1,4 @@
-import { Typography } from "@vellumai/design-library";
+import { Typography } from "@anu/design-library";
 
 import { useTranslation } from "@/i18n";
 

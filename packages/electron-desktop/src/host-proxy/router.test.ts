@@ -9,7 +9,7 @@ const mockGetGuardianAccessToken = mock(
     ({ ok: true, accessToken: "test-token" }),
 );
 
-type Lockfile = import("@vellumai/local-mode/contract").Lockfile;
+type Lockfile = import("@anu/local-mode/contract").Lockfile;
 let lockfileListener: ((lockfile: Lockfile) => void) | null = null;
 let sessionTokenListener: (() => void) | null = null;
 let mockCurrentLockfile: Lockfile = {

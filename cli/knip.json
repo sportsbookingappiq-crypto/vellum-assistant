@@ -8,11 +8,11 @@
   ],
   "project": ["src/**/*.ts", "src/**/*.tsx"],
   "ignoreDependencies": [
-    "@vellumai/avatar-manifest",
-    "@vellumai/environments",
-    "@vellumai/ipc-server-utils",
-    "@vellumai/local-mode",
-    "@vellumai/service-contracts",
-    "@vellumai/web"
+    "@anu/avatar-manifest",
+    "@anu/environments",
+    "@anu/ipc-server-utils",
+    "@anu/local-mode",
+    "@anu/service-contracts",
+    "@anu/web"
   ]
 }

@@ -12,7 +12,7 @@ import {
   test,
 } from "bun:test";
 
-import { credentialKey } from "@vellumai/credential-storage";
+import { credentialKey } from "@anu/credential-storage";
 
 import { PLUGIN_NAME_ENV } from "../plugin-api/plugin-name-env.js";
 import {

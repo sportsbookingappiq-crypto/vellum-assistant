@@ -1,10 +1,10 @@
 import { useMemo, useState, type ReactNode } from "react";
 
-import { Disclosure } from "@vellumai/design-library/components/disclosure";
-import { Select } from "@vellumai/design-library/components/select";
-import { Input, Textarea } from "@vellumai/design-library/components/input";
-import { Toggle } from "@vellumai/design-library/components/toggle";
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Disclosure } from "@anu/design-library/components/disclosure";
+import { Select } from "@anu/design-library/components/select";
+import { Input, Textarea } from "@anu/design-library/components/input";
+import { Toggle } from "@anu/design-library/components/toggle";
+import { Typography } from "@anu/design-library/components/typography";
 
 import { PROVIDER_DISPLAY_NAMES } from "@/assistant/llm-model-catalog";
 import { OPENAI_COMPATIBLE_PROVIDER } from "@/domains/settings/ai/constants";

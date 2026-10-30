@@ -341,7 +341,7 @@ describe("PairDeviceCard", () => {
     await waitFor(() =>
       expect(screen.getByText("loopback required")).toBeTruthy(),
     );
-    expect(screen.getByText(/vellum tunnel/)).toBeTruthy();
+    expect(screen.getByText(/anu tunnel/)).toBeTruthy();
   });
 
   test("blocks a loopback URL client-side without a network call", () => {
@@ -370,7 +370,7 @@ describe("PairDeviceCard", () => {
 
     const input = screen.getByLabelText("Public URL") as HTMLInputElement;
     expect(input.value).toBe("https://tunnel.example.ts.net");
-    // Helper text explains the prefilled address came from `vellum tunnel`.
+    // Helper text explains the prefilled address came from `anu tunnel`.
     expect(screen.getByText(/comes from/)).toBeTruthy();
     // A recorded tunnel URL suppresses the no-tunnel empty state.
     expect(screen.queryByText("Open a tunnel first")).toBeNull();
@@ -380,9 +380,9 @@ describe("PairDeviceCard", () => {
     renderCard();
 
     expect(screen.getByText("Open a tunnel first")).toBeTruthy();
-    expect(screen.getByText("vellum tunnel --provider tailscale")).toBeTruthy();
+    expect(screen.getByText("anu tunnel --provider tailscale")).toBeTruthy();
     expect(screen.getByText(/Paste it into Public URL below/)).toBeTruthy();
-    expect(screen.getByText("vellum tunnel --help")).toBeTruthy();
+    expect(screen.getByText("anu tunnel --help")).toBeTruthy();
     // The manual field stays available beneath the guidance.
     expect(screen.getByLabelText("Public URL")).toBeTruthy();
     expect(
@@ -400,7 +400,7 @@ describe("PairDeviceCard", () => {
 
     expect(
       screen.getByText(
-        "This is Tailscale's website, not your assistant's address. Start a tunnel on the host to get one; `vellum tunnel --help` lists the providers.",
+        "This is Tailscale's website, not your assistant's address. Start a tunnel on the host to get one; `anu tunnel --help` lists the providers.",
       ),
     ).toBeTruthy();
     // The bad URL is refused client-side — no challenge is ever minted.
@@ -461,7 +461,7 @@ describe("PairDeviceCard", () => {
 
     expect(screen.getByText("Pair a device")).toBeTruthy();
     // The mount-time pending-request poll settles; the device list is never
-    // fetched, so the host `vellum devices` spawn never happens.
+    // fetched, so the host `anu devices` spawn never happens.
     await waitFor(() =>
       expect(
         fetchLog.some((r) => r.url.endsWith("/v1/remote-web/pairing-requests")),
@@ -710,10 +710,10 @@ describe("PairDeviceCard: tunnel status", () => {
     expect(screen.queryByText("Open a tunnel first")).toBeNull();
 
     expect(await screen.findByText("Open a tunnel first")).toBeTruthy();
-    expect(screen.getByText("vellum tunnel --provider tailscale")).toBeTruthy();
+    expect(screen.getByText("anu tunnel --provider tailscale")).toBeTruthy();
   });
 
-  // The user leaves this state to run `vellum tunnel` in a terminal beside the
+  // The user leaves this state to run `anu tunnel` in a terminal beside the
   // window, which is never a foreground edge, so `app.resume` alone would
   // strand the card on "Open a tunnel first" until a full reload.
   test("re-checks from the first-run notice, which the row cannot offer", async () => {
@@ -755,7 +755,7 @@ describe("PairDeviceCard: tunnel status", () => {
     await screen.findByText("The tunnel is running and reachable.");
     openUrlField();
     expect(urlField().value).toBe(TUNNEL_URL);
-    // The helper text still credits `vellum tunnel` for the address.
+    // The helper text still credits `anu tunnel` for the address.
     expect(screen.getByText(/comes from/)).toBeTruthy();
   });
 
@@ -963,7 +963,7 @@ describe("PairDeviceCard: tunnel status", () => {
     expect(urlField().value).toBe("");
     expect(screen.queryByText("Open a tunnel first")).toBeNull();
     // No provider on record, so nothing claims to know the restart command.
-    expect(screen.queryByText(/vellum tunnel --provider/)).toBeNull();
+    expect(screen.queryByText(/anu tunnel --provider/)).toBeNull();
   });
 
   test("keeps the URL field leading when the verdict carries no address", async () => {
@@ -999,7 +999,7 @@ describe("PairDeviceCard: tunnel status", () => {
     ).toBeTruthy();
     expect(screen.getByText("connection refused")).toBeTruthy();
     expect(
-      screen.getByText("vellum tunnel 'My Assistant' --provider tailscale"),
+      screen.getByText("anu tunnel 'My Assistant' --provider tailscale"),
     ).toBeTruthy();
   });
 
@@ -1014,7 +1014,7 @@ describe("PairDeviceCard: tunnel status", () => {
 
     expect(await screen.findByText("Open a tunnel first")).toBeTruthy();
     expect(
-      screen.getByText("vellum tunnel 'My Assistant' --provider tailscale"),
+      screen.getByText("anu tunnel 'My Assistant' --provider tailscale"),
     ).toBeTruthy();
   });
 

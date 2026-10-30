@@ -65,7 +65,7 @@ export const systemRegistryRunner: RegistryRunner = (command, args) =>
 
 const ENVIRONMENT_CHANGE_SCRIPT = [
   "$signature = '[System.Runtime.InteropServices.DllImport(\"user32.dll\", SetLastError = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)] public static extern System.IntPtr SendMessageTimeout(System.IntPtr hWnd, uint message, System.UIntPtr wParam, string lParam, uint flags, uint timeout, out System.UIntPtr result);'",
-  "$native = Add-Type -MemberDefinition $signature -Name NativeMethods -Namespace Vellum -PassThru",
+  "$native = Add-Type -MemberDefinition $signature -Name NativeMethods -Namespace ANU -PassThru",
   "$result = [UIntPtr]::Zero",
   '$native::SendMessageTimeout([IntPtr]0xffff, 0x001a, [UIntPtr]::Zero, "Environment", 0x0002, 5000, [ref]$result) | Out-Null',
 ].join("; ");

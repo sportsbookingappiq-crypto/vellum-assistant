@@ -12,7 +12,7 @@ import type {
   DirectoryScopeOption,
   ScopeOption,
 } from "@/types/interaction-ui-types";
-import { Card } from "@vellumai/design-library";
+import { Card } from "@anu/design-library";
 
 export interface ConfirmationPromptCardProps {
   confirmation: {

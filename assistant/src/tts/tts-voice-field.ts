@@ -32,7 +32,7 @@ export const TTS_VOICE_FIELD_BY_PROVIDER: Record<string, TtsVoiceField> = {
   },
   vellum: {
     path: "services.tts.providers.vellum.model",
-    label: "Vellum managed voice",
+    label: "ANU managed voice",
     alphanumericOnly: false,
   },
   deepgram: {

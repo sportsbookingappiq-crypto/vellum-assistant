@@ -135,7 +135,7 @@ describe("platform push proxy", () => {
     const payload = {
       token: "device-token",
       platform: "ios",
-      bundle_id: "ai.vellum.assistant",
+      bundle_id: "ai.anu.assistant",
     };
 
     const res = await handler.handleUpsertPushToken(
@@ -170,7 +170,7 @@ describe("platform push proxy", () => {
 
     const res = await handler.handleDeletePushToken(
       new Request(
-        "http://localhost:7830/v1/assistants/self/push-tokens/device-token/?bundle_id=ai.vellum.assistant",
+        "http://localhost:7830/v1/assistants/self/push-tokens/device-token/?bundle_id=ai.anu.assistant",
         { method: "DELETE" },
       ),
       "device-token",
@@ -179,7 +179,7 @@ describe("platform push proxy", () => {
     expect(res.status).toBe(204);
     const upstream = capturedFetch();
     expect(upstream.url).toBe(
-      `${PLATFORM_BASE_URL}/v1/assistants/${PLATFORM_ASSISTANT_ID}/push-tokens/device-token/?bundle_id=ai.vellum.assistant`,
+      `${PLATFORM_BASE_URL}/v1/assistants/${PLATFORM_ASSISTANT_ID}/push-tokens/device-token/?bundle_id=ai.anu.assistant`,
     );
     expect(upstream.method).toBe("DELETE");
     expect(upstream.headers.get("Authorization")).toBe(

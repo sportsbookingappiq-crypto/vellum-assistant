@@ -5,7 +5,7 @@ import { OnboardingLayout } from "@/components/onboarding-layout";
 import { useOnboardingLogin } from "@/hooks/use-onboarding-login";
 import { useTranslation } from "@/i18n";
 import { isElectron } from "@/runtime/is-electron";
-import { Button } from "@vellumai/design-library/components/button";
+import { Button } from "@anu/design-library/components/button";
 
 /**
  * The way off the welcome screen that isn't logging in. Local onboarding

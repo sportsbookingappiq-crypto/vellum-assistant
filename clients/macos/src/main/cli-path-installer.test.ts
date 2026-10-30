@@ -141,7 +141,7 @@ const {
 } = await import("./cli-path-installer");
 
 const wrapperDir = `${mockHome}/.local/bin`;
-const wrapperPath = `${wrapperDir}/vellum`;
+const wrapperPath = `${wrapperDir}/anu`;
 const locatorPath = `${userDataPath}/cli/locator.sh`;
 
 afterEach(() => {
@@ -170,7 +170,7 @@ describe("getWrapperDir", () => {
 });
 
 describe("getWrapperPath", () => {
-  test("returns ~/.local/bin/vellum", () => {
+  test("returns ~/.local/bin/anu", () => {
     expect(getWrapperPath()).toBe(wrapperPath);
   });
 });
@@ -394,7 +394,7 @@ describe("getCliPathInstallState", () => {
       inPath: false,
       runtimeReady: false,
     });
-    expect(findExecutablesCalls).toEqual([["vellum", shellPathValue]]);
+    expect(findExecutablesCalls).toEqual([["anu", shellPathValue]]);
   });
 
   test("returns installed with inPath true when the wrapper is the first hit", async () => {

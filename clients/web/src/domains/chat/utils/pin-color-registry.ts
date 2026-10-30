@@ -16,7 +16,7 @@
  */
 
 import type { CSSProperties } from "react";
-import { panelItemWashStyle } from "@vellumai/design-library";
+import { panelItemWashStyle } from "@anu/design-library";
 
 import { BUNDLED_COLORS } from "@/utils/avatar-bundled-colors";
 

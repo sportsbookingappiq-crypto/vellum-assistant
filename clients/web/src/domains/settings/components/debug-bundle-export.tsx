@@ -13,8 +13,8 @@ import {
   useSupportsDebugExportProfile,
 } from "@/lib/backwards-compat/use-supports-debug-export-profile";
 import { getLocalGatewayUrl, getSelectedAssistant } from "@/lib/local-mode";
-import { Button } from "@vellumai/design-library/components/button";
-import { toast } from "@vellumai/design-library/components/toast";
+import { Button } from "@anu/design-library/components/button";
+import { toast } from "@anu/design-library/components/toast";
 
 const POLL_INTERVAL_MS = 2_000;
 // Matches the daemon's own upload deadline (EXPORT_TO_GCS_PUT_TIMEOUT_MS), so
@@ -25,7 +25,7 @@ const sleep = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
- * Vellum staff cannot reach a self-hosted assistant, so the owner sends
+ * ANU staff cannot reach a self-hosted assistant, so the owner sends
  * them a copy instead: the daemon's debug export (workspace, logs, and the
  * gateway's own database, never credentials) uploaded to the platform's
  * debug-bundle bucket, where it is kept for seven days.

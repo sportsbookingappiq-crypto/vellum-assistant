@@ -188,7 +188,7 @@ async function verifyLlmsTxt(): Promise<void> {
   check(res.status === 200, `/docs/llms.txt: expected 200, got ${res.status}`);
   const body = await res.text();
   check(
-    body.startsWith("# Vellum Docs"),
+    body.startsWith("# ANU Docs"),
     "/docs/llms.txt: unexpected content",
   );
   for (const route of REDIRECT_STUB_ROUTES) {

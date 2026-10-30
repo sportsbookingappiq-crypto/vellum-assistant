@@ -31,7 +31,7 @@ import AppIntents
 struct SendMessageToChatIntent: AppIntent {
     static var title: LocalizedStringResource = "Send Message to Chat"
     static var description = IntentDescription(
-        "Open a chosen Vellum chat and send your message there, continuing that conversation."
+        "Open a chosen ANU chat and send your message there, continuing that conversation."
     )
 
     @Parameter(

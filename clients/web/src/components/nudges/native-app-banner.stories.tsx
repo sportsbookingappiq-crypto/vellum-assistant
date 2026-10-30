@@ -6,7 +6,7 @@
  * link their store listing. Generic names neither, and covers the two cases
  * where naming one would be wrong: a mobile browser the OS checks could not
  * identify, and Android on a deployment with no Play Store listing
- * configured. It sends those readers to the Vellum downloads page instead.
+ * configured. It sends those readers to the ANU downloads page instead.
  *
  * The subtitle and the CTA label are shared by all three.
  */
@@ -27,7 +27,7 @@ import {
 const ANDROID_PROMOTION: NativeAppPromotion = {
   target: "android",
   appName: getNativeAppName("android"),
-  storeUrl: "https://play.google.com/store/apps/details?id=ai.vellum.assistant",
+  storeUrl: "https://play.google.com/store/apps/details?id=ai.anu.assistant",
 };
 
 const meta: Meta<typeof NativeAppBanner> = {

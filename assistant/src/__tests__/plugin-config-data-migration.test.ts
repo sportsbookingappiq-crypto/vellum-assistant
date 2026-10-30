@@ -47,7 +47,7 @@ const PLUGINS_DATA_DIR = join(ROOT, "plugins-data");
 
 const SIMPLE_PKG = {
   version: "1.0.0",
-  peerDependencies: { "@vellumai/plugin-api": "*" },
+  peerDependencies: { "@anu/plugin-api": "*" },
 };
 
 function freshPluginDir(name: string): string {

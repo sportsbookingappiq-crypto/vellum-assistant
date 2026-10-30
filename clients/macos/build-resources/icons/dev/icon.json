@@ -17,10 +17,10 @@
           "image-name" : "white-V.svg",
           "name" : "white-V",
           "position" : {
-            "scale" : 11,
+            "scale" : 6.4,
             "translation-in-points" : [
               0,
-              12
+              0
             ]
           }
         }

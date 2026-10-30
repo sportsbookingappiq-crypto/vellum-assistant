@@ -1,4 +1,4 @@
-import type { ChannelConversationType } from "@vellumai/gateway-client";
+import type { ChannelConversationType } from "@anu/gateway-client";
 
 export type { AllowlistOption, ScopeOption } from "../tools/tool-types.js";
 export { RiskLevel } from "../tools/tool-types.js";

@@ -4,7 +4,7 @@ import {
   COMPANION_DICTATION_OFFER_MAX,
   type FnClaimant,
   type UnplacedDictationOffer,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import { forwardUnplacedDictationOffer } from "@/runtime/companion-surface";
 import { isPopoutWindowLifetime } from "@/runtime/popout-window";
@@ -123,7 +123,7 @@ export function sawInputSinceArming(): boolean {
 }
 
 /**
- * Offer Vellum's words, unless the user has already moved on: a press since
+ * Offer ANU's words, unless the user has already moved on: a press since
  * the hold ended means the other app's paste is no longer the last edit, so
  * there is nothing "use" could safely replace. Returns whether the offer was
  * made.

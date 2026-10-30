@@ -157,7 +157,7 @@ describe("safe-env Windows forwarding", () => {
       const windowsEnv = buildSanitizedEnv(
         "win32",
         {
-          Path: "C:\\Windows\\System32;C:\\Program Files\\Vellum",
+          Path: "C:\\Windows\\System32;C:\\Program Files\\ANU",
           systemroot: "C:\\Windows",
           ComSpec: "C:\\Windows\\System32\\cmd.exe",
         },
@@ -165,7 +165,7 @@ describe("safe-env Windows forwarding", () => {
       );
 
       expect(windowsEnv.PATH).toBe(
-        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32;C:\\Program Files\\Vellum",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32;C:\\Program Files\\ANU",
       );
       expect(windowsEnv.SystemRoot).toBe("C:\\Windows");
       expect(windowsEnv.COMSPEC).toBe("C:\\Windows\\System32\\cmd.exe");
@@ -181,7 +181,7 @@ describe("safe-env Windows forwarding", () => {
     // "powershell.exe", so every shell command failed with
     // `Executable not found in $PATH: "powershell.exe"`.
     const env = buildSanitizedEnv("win32", {
-      Path: "C:\\Program Files\\Vellum\\cli\\0.12.6-x;C:\\Windows\\System32;C:\\Windows",
+      Path: "C:\\Program Files\\ANU\\cli\\0.12.6-x;C:\\Windows\\System32;C:\\Windows",
       SystemRoot: "C:\\WINDOWS",
     });
 

@@ -3,11 +3,8 @@ import {
   companionGapFor,
   companionNearEdgeFor,
   companionScaleFor,
-} from "@vellumai/ipc-contract";
-import type {
-  CompanionCardGrowth,
-  CompanionGrowth,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
+import type { CompanionCardGrowth, CompanionGrowth } from "@anu/ipc-contract";
 import type { CSSProperties } from "react";
 
 /** As much of a rect as hit-testing a point against it needs. */

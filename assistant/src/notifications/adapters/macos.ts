@@ -1,5 +1,5 @@
 /**
- * Vellum channel adapter: delivers notifications to connected desktop
+ * ANU channel adapter: delivers notifications to connected desktop
  * and mobile clients via the daemon's event broadcast mechanism.
  *
  * The adapter broadcasts a `notification_intent` message that the client
@@ -129,7 +129,7 @@ export class VellumAdapter implements ChannelAdapter {
           recipientScoped: targetActorPrincipalId != null,
           silent,
         },
-        "Vellum notification intent broadcast",
+        "ANU notification intent broadcast",
       );
 
       return { success: true };
@@ -137,7 +137,7 @@ export class VellumAdapter implements ChannelAdapter {
       const message = err instanceof Error ? err.message : String(err);
       log.error(
         { err, sourceEventName: payload.sourceEventName },
-        "Failed to broadcast Vellum notification intent",
+        "Failed to broadcast ANU notification intent",
       );
       return { success: false, error: message };
     }
@@ -170,7 +170,7 @@ export class VellumAdapter implements ChannelAdapter {
     if (patch.body === undefined) {
       log.info(
         { deliveryId: delivery.deliveryId, messageId: delivery.messageId },
-        "Vellum notification edit carried no body, conversation message left as is",
+        "ANU notification edit carried no body, conversation message left as is",
       );
       return { success: true, messageId: delivery.messageId };
     }
@@ -181,14 +181,14 @@ export class VellumAdapter implements ChannelAdapter {
       }
       log.info(
         { deliveryId: delivery.deliveryId, messageId: delivery.messageId },
-        "Vellum notification conversation message updated",
+        "ANU notification conversation message updated",
       );
       return { success: true, messageId: delivery.messageId };
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       log.error(
         { err, deliveryId: delivery.deliveryId, messageId: delivery.messageId },
-        "Failed to update Vellum notification conversation message",
+        "Failed to update ANU notification conversation message",
       );
       return { success: false, error: message };
     }

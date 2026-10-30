@@ -13,10 +13,7 @@ import { describe, expect, test } from "bun:test";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import { PromptTab } from "./prompt-tab";
-import type {
-  LLMContextSection,
-  LLMRequestLogEntry,
-} from "@vellumai/assistant-api";
+import type { LLMContextSection, LLMRequestLogEntry } from "@anu/assistant-api";
 
 function makeEntry(sections: LLMContextSection[]): LLMRequestLogEntry {
   return {

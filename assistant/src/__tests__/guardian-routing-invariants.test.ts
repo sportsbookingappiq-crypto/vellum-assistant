@@ -178,7 +178,7 @@ describe("routing invariant: all decision paths reference applyGuardianDecision"
       path: "runtime/routes/guardian-action-routes.ts",
       symbols: ["processGuardianDecision"],
     },
-    // Surface action route handler (Vellum in-app card buttons) — intercepts
+    // Surface action route handler (ANU in-app card buttons) — intercepts
     // apr:* action IDs and routes through processGuardianDecision
     {
       path: "runtime/routes/surface-action-routes.ts",

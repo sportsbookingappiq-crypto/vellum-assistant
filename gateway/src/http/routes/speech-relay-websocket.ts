@@ -4,7 +4,7 @@
  * The assistant daemon must never dial velay itself — velay contact is
  * gateway-only so deterministic policy stays in a process the agent cannot
  * rewrite. This route accepts a WebSocket from the daemon, dials velay's
- * speech relay (`/v1/speech/{stt,tts}/stream`) with the Vellum assistant
+ * speech relay (`/v1/speech/{stt,tts}/stream`) with the ANU assistant
  * API key, and pipes frames verbatim in both directions. The wire protocol
  * on both legs is Deepgram's own (plus velay's `velay_error` control
  * frame), so the gateway stays byte-transparent.
@@ -22,7 +22,7 @@
 
 import type { OutgoingHttpHeaders } from "node:http";
 
-import { velayHostForPlatformHost } from "@vellumai/service-contracts/ingress";
+import { velayHostForPlatformHost } from "@anu/service-contracts/ingress";
 
 import { resolveScopeProfile } from "../../auth/scopes.js";
 import { validateEdgeToken } from "../../auth/token-exchange.js";
@@ -157,8 +157,8 @@ function jsonError(status: number, code: string, detail: string): Response {
 }
 
 /**
- * Map a Vellum platform host onto its environment's velay origin. The
- * host-naming convention lives in `@vellumai/service-contracts/ingress`,
+ * Map an ANU platform host onto its environment's velay origin. The
+ * host-naming convention lives in `@anu/service-contracts/ingress`,
  * shared with the web live-voice client; this wrapper adds the scheme.
  */
 export function velayOriginForPlatformHost(host: string): string | null {
@@ -334,7 +334,7 @@ export function createSpeechRelayUpgradeHandler(
         return jsonError(
           401,
           "missing_platform_connection",
-          "no Vellum assistant API key is stored — connect the platform account",
+          "no ANU assistant API key is stored — connect the platform account",
         );
       }
       const rejection = await probeVelay(
@@ -408,7 +408,7 @@ export function getSpeechRelayWebsocketHandlers() {
         sendRelayError(
           ws,
           "missing_platform_connection",
-          "no Vellum assistant API key is stored — connect the platform account",
+          "no ANU assistant API key is stored — connect the platform account",
         );
         ws.close(1011, "missing_platform_connection");
         return;

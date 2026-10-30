@@ -6,7 +6,7 @@
 import type { CSSProperties } from "react";
 import { useCallback } from "react";
 
-import { cn, Typography } from "@vellumai/design-library";
+import { cn, Typography } from "@anu/design-library";
 
 import { AppPreviewThumbnail } from "@/components/app-card";
 import {

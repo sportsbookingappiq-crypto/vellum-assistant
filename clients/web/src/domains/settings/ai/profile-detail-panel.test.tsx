@@ -38,7 +38,7 @@ function configPayload() {
   };
 }
 
-mock.module("@vellumai/design-library/components/toast", () => ({
+mock.module("@anu/design-library/components/toast", () => ({
   toast: {
     success: (message: string) => {
       toastSuccessCalls.push(message);
@@ -248,7 +248,7 @@ describe("ProfileDetailPanel - managed profiles", () => {
     await waitFor(() => {
       expect(getInputByPlaceholder("e.g. Claude Opus 4.8").disabled).toBe(true);
     });
-    expect(document.body.textContent).toContain("Managed by Vellum");
+    expect(document.body.textContent).toContain("Managed by ANU");
     expect(
       Array.from(document.querySelectorAll("button")).some(
         (b) => b.textContent?.trim() === "Save As New",

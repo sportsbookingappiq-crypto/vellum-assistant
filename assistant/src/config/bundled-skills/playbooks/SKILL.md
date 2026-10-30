@@ -1,7 +1,7 @@
 ---
 name: playbooks
 description: Trigger-action automation rules for handling incoming messages
-compatibility: "Designed for Vellum personal assistants"
+compatibility: "Designed for ANU personal assistants"
 metadata:
   emoji: "📖"
   vellum:

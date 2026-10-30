@@ -27,7 +27,7 @@ import {
   SegmentControl,
   ShortcutKeys,
   acceleratorToAriaKeyShortcuts,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 
 import {
   isDispatchableProfile,

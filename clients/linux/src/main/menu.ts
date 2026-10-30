@@ -12,19 +12,19 @@ import {
   dispatchToFocused,
   onHotkeyOverridesChange,
   type VellumCommand,
-} from "@vellumai/electron-desktop/commands";
-import { areChromeDevToolsEnabled } from "@vellumai/electron-desktop/devtools";
-import type { IpcHandle } from "@vellumai/electron-desktop/ipc";
+} from "@anu/electron-desktop/commands";
+import { areChromeDevToolsEnabled } from "@anu/electron-desktop/devtools";
+import type { IpcHandle } from "@anu/electron-desktop/ipc";
 import {
   onSettingChange,
   readSetting,
-} from "@vellumai/electron-desktop/settings";
-import { readOnboardingActive } from "@vellumai/electron-desktop/window-state";
+} from "@anu/electron-desktop/settings";
+import { readOnboardingActive } from "@anu/electron-desktop/window-state";
 import {
   MENU_POPUP,
   MENU_SET_PLATFORM_SESSION,
   MENU_TITLES,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import { onOnboardingChange } from "./main-window";
 
@@ -79,7 +79,7 @@ export const buildLinuxMenu = ({
       ...(app.isPackaged
         ? [
             {
-              label: "Install vellum Command...",
+              label: "Install anu Command...",
               enabled: installCli !== undefined,
               click: installCli,
             },
@@ -168,9 +168,9 @@ export const buildLinuxMenu = ({
         : []),
       commandItem("Send Feedback...", { kind: "shareFeedback" }),
       {
-        label: "Vellum Documentation",
+        label: "ANU Documentation",
         click: () => {
-          void shell.openExternal("https://www.vellum.ai/docs");
+          void shell.openExternal("https://www.anu.ai/docs");
         },
       },
       { type: "separator" },

@@ -8,7 +8,7 @@
  */
 
 import type { CSSProperties } from "react";
-import { cn } from "@vellumai/design-library";
+import { cn } from "@anu/design-library";
 
 import { CAMERA_MEDIA_GLASS_CLASS } from "@/domains/chat/voice/voice-room/camera-mode-paint";
 

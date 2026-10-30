@@ -60,6 +60,6 @@ describe("toAppPathFromHref", () => {
   test("rejects workspace and empty hrefs", () => {
     expect(toAppPathFromHref("/workspace/scratch/a.png")).toBeNull();
     expect(toAppPathFromHref("")).toBeNull();
-    expect(toAppPathFromHref("https://www.vellum.ai/docs")).toBeNull();
+    expect(toAppPathFromHref("https://www.anu.ai/docs")).toBeNull();
   });
 });

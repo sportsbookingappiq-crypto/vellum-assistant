@@ -144,7 +144,7 @@ async function resolveSttGap(
       },
       clause:
         entry.credentialProvider === "vellum"
-          ? `a Vellum platform connection for managed speech (run 'assistant platform connect')`
+          ? `an ANU platform connection for managed speech (run 'assistant platform connect')`
           : `an API key for the speech-to-text provider "${entry.id}"`,
     };
   }
@@ -207,9 +207,9 @@ async function resolveTtsGap(
         gap: {
           kind: "tts",
           providerId: entry.id,
-          reason: `TTS provider "${entry.id}" needs a Vellum platform connection for managed speech`,
+          reason: `TTS provider "${entry.id}" needs an ANU platform connection for managed speech`,
         },
-        clause: `a Vellum platform connection for managed speech (run 'assistant platform connect')`,
+        clause: `an ANU platform connection for managed speech (run 'assistant platform connect')`,
       };
     }
     return null;

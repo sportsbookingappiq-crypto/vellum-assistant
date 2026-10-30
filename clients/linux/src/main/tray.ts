@@ -2,20 +2,17 @@ import path from "node:path";
 
 import { app, nativeImage, shell, type NativeImage } from "electron";
 
-import { openAboutWindow } from "@vellumai/electron-desktop/about";
-import { acceleratorOption } from "@vellumai/electron-desktop/commands";
-import { getWatchedLockfile } from "@vellumai/electron-desktop/lockfile-watcher";
-import { configureStatusIconFallback } from "@vellumai/electron-desktop/status-icon";
+import { openAboutWindow } from "@anu/electron-desktop/about";
+import { acceleratorOption } from "@anu/electron-desktop/commands";
+import { getWatchedLockfile } from "@anu/electron-desktop/lockfile-watcher";
+import { configureStatusIconFallback } from "@anu/electron-desktop/status-icon";
 import {
   configureTrayModel,
   installTray,
   type TrayMenuIcon,
-} from "@vellumai/electron-desktop/tray-model";
-import { readOnboardingActive } from "@vellumai/electron-desktop/window-state";
-import {
-  DEFAULT_COMPANION_SIZE,
-  type VellumCommand,
-} from "@vellumai/ipc-contract";
+} from "@anu/electron-desktop/tray-model";
+import { readOnboardingActive } from "@anu/electron-desktop/window-state";
+import { DEFAULT_COMPANION_SIZE, type VellumCommand } from "@anu/ipc-contract";
 
 import {
   MENU_ICON_CIRCLECHECK,

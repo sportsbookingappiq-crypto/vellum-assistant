@@ -10,7 +10,7 @@ import { captureError } from "@/lib/sentry/capture-error";
 import {
   SubagentDetailResponseSchema,
   type SubagentDetailResponse,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 
 import { subagentsByIdGet } from "@/generated/daemon/sdk.gen";
 

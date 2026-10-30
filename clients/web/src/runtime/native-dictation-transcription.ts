@@ -1,4 +1,4 @@
-import type { VellumBridge } from "@vellumai/ipc-contract";
+import type { VellumBridge } from "@anu/ipc-contract";
 
 type NativeTranscriptionBridge = Required<
   Pick<

@@ -20,10 +20,7 @@
  *    interfere.
  */
 
-import type {
-  ConversationDeletedContext,
-  HookFunction,
-} from "@vellumai/plugin-api";
+import type { ConversationDeletedContext, HookFunction } from "@anu/plugin-api";
 
 import { removeSkillUpdateReceiptEntriesForConversation } from "../../../../persistence/jobs-store.js";
 import { purgeConversationMemoryTables } from "../conversation-memory-purge.js";

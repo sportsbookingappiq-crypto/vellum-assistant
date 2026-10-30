@@ -41,12 +41,7 @@ import {
   PanelMenuDivider,
 } from "@/domains/chat/components/panel-menu-item";
 import { MARK_ALL_READ_ICON } from "@/utils/read-state-icon";
-import {
-  BottomSheet,
-  ContextMenu,
-  Menu,
-  Popover,
-} from "@vellumai/design-library";
+import { BottomSheet, ContextMenu, Menu, Popover } from "@anu/design-library";
 
 // ---------------------------------------------------------------------------
 // Shared group menu items — used by the hover popover, the right-click

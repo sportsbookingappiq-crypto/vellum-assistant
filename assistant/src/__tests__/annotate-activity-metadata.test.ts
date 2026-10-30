@@ -117,15 +117,15 @@ const webSearchActivity: ToolActivityMetadata = {
     results: [
       {
         rank: 1,
-        title: "Vellum",
+        title: "ANU",
         url: "https://vellum.ai",
         domain: "vellum.ai",
       },
       {
         rank: 2,
         title: "Docs",
-        url: "https://docs.vellum.ai",
-        domain: "docs.vellum.ai",
+        url: "https://docs.anu.ai",
+        domain: "docs.anu.ai",
       },
     ],
   },

@@ -13,16 +13,16 @@ import { useSupportsBulkFeedStatus } from "@/lib/backwards-compat/bulk-feed-stat
 import { useResolvedAssistantsStore } from "@/stores/resolved-assistants-store";
 import { mergeConversationLists } from "@/utils/conversation-cache";
 import { navigateToConversation } from "@/utils/conversation-navigation";
-import type { FeedItem, FeedItemStatus } from "@vellumai/assistant-api";
-import type { GuardianDecisionActionId } from "@vellumai/service-contracts/guardian-requests";
+import type { FeedItem, FeedItemStatus } from "@anu/assistant-api";
+import type { GuardianDecisionActionId } from "@anu/service-contracts/guardian-requests";
 import {
   BottomSheet,
   Button,
   Popover,
   Tooltip,
   Typography,
-} from "@vellumai/design-library";
-import { toast } from "@vellumai/design-library/components/toast";
+} from "@anu/design-library";
+import { toast } from "@anu/design-library/components/toast";
 
 import { useFeedItemConversationLink } from "../hooks/use-feed-item-conversation-link";
 import { useFeedItemEntityLinks } from "../hooks/use-feed-item-entity-links";

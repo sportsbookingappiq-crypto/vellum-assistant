@@ -7,11 +7,8 @@
  * read with the same `RememberInputSchema` the daemon parses it with.
  */
 
-import {
-  type RememberInput,
-  RememberInputSchema,
-} from "@vellumai/assistant-api";
-import { Typography } from "@vellumai/design-library";
+import { type RememberInput, RememberInputSchema } from "@anu/assistant-api";
+import { Typography } from "@anu/design-library";
 
 import { ClampedContent, SectionLabel } from "@/components/detail-primitives";
 import { ToolOutputBody } from "@/domains/chat/components/tool-activity/tool-output-body";

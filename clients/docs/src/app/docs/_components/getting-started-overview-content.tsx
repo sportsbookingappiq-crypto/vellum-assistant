@@ -4,7 +4,7 @@ import { DocsContent } from "@/app/docs/_components/docs-content";
 
 const GETTING_STARTED_PAGES = [
   {
-    title: "What is Vellum?",
+    title: "What is ANU?",
     href: "/docs/getting-started/what-is-vellum",
     description:
       "The big picture. What it is, what it isn't, why it exists.",
@@ -13,7 +13,7 @@ const GETTING_STARTED_PAGES = [
     title: "Installation",
     href: "/docs/getting-started/installation",
     description:
-      "Sign up for Vellum Cloud, install the desktop app, or self-host. (All easy, we promise.)",
+      "Sign up for ANU Cloud, install the desktop app, or self-host. (All easy, we promise.)",
   },
   {
     title: "Quick Start",

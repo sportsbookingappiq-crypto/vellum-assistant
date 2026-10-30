@@ -530,7 +530,7 @@ describe("renderHistoryContent", () => {
         results: [
           {
             rank: 1,
-            title: "Vellum",
+            title: "ANU",
             url: "https://vellum.ai",
             domain: "vellum.ai",
           },

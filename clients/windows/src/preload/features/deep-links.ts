@@ -3,12 +3,12 @@ import { ipcRenderer } from "electron";
 import type {
   BridgeCapabilityRegistry,
   CapabilityModule,
-} from "@vellumai/electron-desktop/capability-registry";
+} from "@anu/electron-desktop/capability-registry";
 import {
   createDeepLinksBridge,
   createLaunchAtLoginBridge,
-} from "@vellumai/electron-desktop/preload";
-import type { VellumBridge } from "@vellumai/ipc-contract";
+} from "@anu/electron-desktop/preload";
+import type { VellumBridge } from "@anu/ipc-contract";
 
 const deepLinksFeature: CapabilityModule<
   BridgeCapabilityRegistry<VellumBridge>

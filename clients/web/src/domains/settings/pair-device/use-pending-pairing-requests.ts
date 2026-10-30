@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import type { RemoteWebPairingRequestSummary } from "@vellumai/service-contracts/remote-web-pairing";
+import type { RemoteWebPairingRequestSummary } from "@anu/service-contracts/remote-web-pairing";
 
 import { t } from "@/i18n";
 import { captureError } from "@/lib/sentry/capture-error";

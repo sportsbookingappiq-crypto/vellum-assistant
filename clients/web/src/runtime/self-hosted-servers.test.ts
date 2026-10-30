@@ -408,7 +408,7 @@ describe("nativeSwitchToOrigin", () => {
   });
 
   test("returning to the baked origin drops the snapshot as well", async () => {
-    // The way back to Vellum Cloud is an origin swap like any other, and it
+    // The way back to ANU Cloud is an origin swap like any other, and it
     // is the one the assistant chooser and the pair page take.
     await nativeSwitchToOrigin(null);
 

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Button } from "@vellumai/design-library";
+import { Button } from "@anu/design-library";
 
 import { DetailCard } from "./detail-card";
 import { InsetDetailCard } from "./inset-detail-card";

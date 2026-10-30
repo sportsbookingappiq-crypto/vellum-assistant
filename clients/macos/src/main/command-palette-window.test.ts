@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 
-import type { CommandPaletteWindowDependencies } from "@vellumai/electron-desktop/command-palette-window";
-import type { FloatingWindowDependencies } from "@vellumai/electron-desktop/floating-window";
+import type { CommandPaletteWindowDependencies } from "@anu/electron-desktop/command-palette-window";
+import type { FloatingWindowDependencies } from "@anu/electron-desktop/floating-window";
 
 import { RENDERER_BASE_PROD, getDevRendererBase } from "./app-config";
 
@@ -44,7 +44,7 @@ type CreateWindowOptions = {
   navigation: unknown;
 };
 
-const appState = { isPackaged: false, name: "Vellum" };
+const appState = { isPackaged: false, name: "ANU" };
 const created: Array<{ opts: CreateWindowOptions; win: StubWindow }> = [];
 const ipcHandlers = new Map<string, (...args: unknown[]) => unknown>();
 
@@ -232,7 +232,7 @@ mock.module("./main-window", () => ({
   dispatchToMain: dispatchToMainMock,
 }));
 
-mock.module("@vellumai/electron-desktop/settings", () => ({
+mock.module("@anu/electron-desktop/settings", () => ({
   readHotkeyOverride: () => null,
   readSetting: () => null,
   writeSetting: () => {},
@@ -251,7 +251,7 @@ mock.module("./devtools", () => ({
   areChromeDevToolsEnabled: () => false,
 }));
 
-mock.module("@vellumai/electron-desktop/window-state", () => ({
+mock.module("@anu/electron-desktop/window-state", () => ({
   readOnboardingActive: () => false,
   readCompanionHidden: () => false,
   onCompanionHiddenChange: () => () => {},
@@ -269,7 +269,7 @@ mock.module("./companion-window", () => ({
 mock.module("./cli-path-installer", () => ({
   WRAPPER_MARKER: "# vellum-cli-wrapper v1",
   getWrapperDir: () => "/tmp/.local/bin",
-  getWrapperPath: () => "/tmp/.local/bin/vellum",
+  getWrapperPath: () => "/tmp/.local/bin/anu",
   buildWrapperScript: () => "",
   readWrapperOwnership: () => "absent",
   installWrapper: () => "installed",
@@ -290,9 +290,9 @@ const {
   installCommandPaletteWindow,
   openCommandPaletteWindow,
   selectCommandPaletteCommand,
-} = await import("@vellumai/electron-desktop/command-palette-window");
+} = await import("@anu/electron-desktop/command-palette-window");
 const { configureFloatingWindows, createWindowRouteResolver } = await import(
-  "@vellumai/electron-desktop/floating-window"
+  "@anu/electron-desktop/floating-window"
 );
 
 configureFloatingWindows({

@@ -16,14 +16,14 @@ import {
 import { hostname, platform } from "os";
 import { dirname, join } from "path";
 
-import { SEEDS } from "@vellumai/environments";
+import { SEEDS } from "@anu/environments";
 import {
   guardianTokenPath,
   isConfidentialRefreshUrl,
   resolveConfigDir,
   saveGuardianToken as writeGuardianToken,
   type GuardianTokenData,
-} from "@vellumai/local-mode";
+} from "@anu/local-mode";
 
 import { getConfigDir, getConfigDirs } from "./environments/paths.js";
 import { getCurrentEnvironment } from "./environments/resolve.js";
@@ -34,7 +34,7 @@ const DEVICE_ID_SALT = "vellum-assistant-host-id";
 export type { GuardianTokenData };
 
 function getGuardianTokenPath(assistantId: string): string {
-  // Resolve via the shared @vellumai/local-mode resolver — the same one every
+  // Resolve via the shared @anu/local-mode resolver — the same one every
   // host-seam reader (`getGuardianAccessToken`) uses — so the token is always
   // written where it's read. Must stay in lockstep with `getConfigDir(
   // getCurrentEnvironment())`; the parity test in guardian-token.test.ts guards
@@ -44,7 +44,7 @@ function getGuardianTokenPath(assistantId: string): string {
 
 /**
  * Best-effort removal of an assistant's stored guardian token (used by
- * `vellum unpair` to forget a paired connection). Never throws if the token
+ * `anu unpair` to forget a paired connection). Never throws if the token
  * file or its per-assistant directory is already absent.
  */
 export function deleteGuardianToken(assistantId: string): void {
@@ -174,7 +174,7 @@ export function saveGuardianToken(
   assistantId: string,
   data: GuardianTokenData,
 ): void {
-  // Delegates to the shared @vellumai/local-mode writer (0700 dir, 0600 file)
+  // Delegates to the shared @anu/local-mode writer (0700 dir, 0600 file)
   // with the same env-resolved config dir the path resolver above uses.
   writeGuardianToken(resolveConfigDir(process.env), assistantId, data);
 }
@@ -377,7 +377,7 @@ function classifyRefreshHttpStatus(status: number): GuardianTokenRefreshResult {
  *
  * Concurrency-safe: the gateway rotates refresh tokens and treats reuse of an
  * already-rotated token as replay (revoking the whole token family), so two
- * processes (e.g. `vellum message` + `vellum events`) refreshing the same
+ * processes (e.g. `anu message` + `anu events`) refreshing the same
  * stored token at once would self-revoke and force re-pairing. We serialize on
  * a per-assistant lock and, once held, re-read the stored token: if another
  * process already rotated it while we waited, we return that fresh token
@@ -417,7 +417,7 @@ export async function refreshGuardianTokenResult(
     return {
       ok: false,
       status: 401,
-      error: "Guardian token expired. Re-run `vellum hatch` or `vellum wake`.",
+      error: "Guardian token expired. Re-run `anu hatch` or `anu wake`.",
     };
   }
 

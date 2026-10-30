@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { resolveLockfilePaths } from "@vellumai/local-mode";
+import { resolveLockfilePaths } from "@anu/local-mode";
 import {
   mkdirSync,
   mkdtempSync,
@@ -67,9 +67,7 @@ test("CLI wake emits actionable structured identity error and exits 1 without mu
     const payload = JSON.parse(line!.slice("CLI_ERROR:".length));
     expect(payload.error).toBe("AUTH_IDENTITY_UNAVAILABLE");
     expect(payload.detail).toBe("missing");
-    expect(payload.message).toContain(
-      'vellum wake "example" --repair-guardian',
-    );
+    expect(payload.message).toContain('anu wake "example" --repair-guardian');
     expect(payload.message).toContain("all clients to authenticate again");
     expect(readFileSync(registry, "utf8")).toBe(original);
   } finally {

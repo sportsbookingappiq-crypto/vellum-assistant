@@ -16,10 +16,7 @@
  * the raw image.
  */
 
-import {
-  type HookFunction,
-  type PostCompactContext,
-} from "@vellumai/plugin-api";
+import { type HookFunction, type PostCompactContext } from "@anu/plugin-api";
 
 import {
   captionImagesInMessages,

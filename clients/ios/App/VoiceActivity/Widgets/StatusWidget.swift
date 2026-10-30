@@ -27,7 +27,7 @@ struct StatusWidget: Widget {
                 .containerBackground(WidgetTheme.surface, for: .widget)
         }
         .configurationDisplayName("Status")
-        .description("See what is unread or still working in Vellum, with camera, voice and chat a tap away when nothing is waiting.")
+        .description("See what is unread or still working in ANU, with camera, voice and chat a tap away when nothing is waiting.")
         .supportedFamilies([.systemSmall])
         .contentMarginsDisabled()
     }

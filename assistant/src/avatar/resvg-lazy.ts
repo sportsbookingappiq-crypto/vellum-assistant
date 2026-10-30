@@ -1,5 +1,5 @@
 import type { Resvg as ResvgType } from "@resvg/resvg-js";
-import type { NotificationAvatarMediaType } from "@vellumai/avatar-manifest/notification-avatar";
+import type { NotificationAvatarMediaType } from "@anu/avatar-manifest/notification-avatar";
 
 import { getLogger } from "../util/logger.js";
 

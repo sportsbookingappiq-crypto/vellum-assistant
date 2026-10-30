@@ -55,7 +55,7 @@ function configPayload(): ConfigGetResponse {
   } as ConfigGetResponse;
 }
 
-mock.module("@vellumai/design-library/components/toast", () => ({
+mock.module("@anu/design-library/components/toast", () => ({
   toast: { success: () => {}, error: () => {} },
   Toaster: () => null,
   ToastContent: () => null,

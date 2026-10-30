@@ -5,7 +5,7 @@ import {
   PERMISSIONS_OPEN_SETTINGS,
   PERMISSIONS_REQUEST,
   TEXT_INSERT,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 type Handler = (args: unknown[]) => unknown;
 

@@ -24,8 +24,9 @@ import {
   appIconNameForTraits,
   traitsForAppIconName,
 } from "@/utils/avatar-app-icon";
-import { Button } from "@vellumai/design-library/components/button";
-import { Modal } from "@vellumai/design-library/components/modal";
+import { avatarTraitLabel } from "@anu/avatar-catalog/labels";
+import { Button } from "@anu/design-library/components/button";
+import { Modal } from "@anu/design-library/components/modal";
 import type { CharacterComponents } from "@/types/avatar";
 
 /** Size of the live preview, matching the avatar builder's own. */
@@ -93,7 +94,7 @@ export function AppIconModal({
   // Open on what the home screen already holds, so the picker starts from the
   // user's icon rather than from the top of the catalog. A user who has never
   // swapped starts on their avatar's pair, and a user with no avatar of their
-  // own on the pair the default icon is drawn from.
+  // own on the picker's fixed starting pair.
   useEffect(() => {
     if (!open) {
       return;
@@ -171,7 +172,7 @@ export function AppIconModal({
           <div className="space-y-3">
             <TraitCycleRow
               label={t("appIcon.eyes")}
-              value={eyeStyleId}
+              value={avatarTraitLabel("eyeStyle", eyeStyleId)}
               onPrev={() =>
                 setEyeIndex(
                   stepIndex(eyeIndex, components?.eyeStyles.length ?? 0, -1),
@@ -185,7 +186,7 @@ export function AppIconModal({
             />
             <TraitCycleRow
               label={t("appIcon.color")}
-              value={colorId}
+              value={avatarTraitLabel("color", colorId)}
               colorHex={color?.hex}
               onPrev={() =>
                 setColorIndex(

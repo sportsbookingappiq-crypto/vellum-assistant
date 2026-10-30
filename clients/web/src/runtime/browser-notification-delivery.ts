@@ -1,4 +1,4 @@
-import type { NotificationIdentity } from "@vellumai/ipc-contract";
+import type { NotificationIdentity } from "@anu/ipc-contract";
 
 import { subscribe } from "@/lib/event-bus";
 import { captureError } from "@/lib/sentry/capture-error";

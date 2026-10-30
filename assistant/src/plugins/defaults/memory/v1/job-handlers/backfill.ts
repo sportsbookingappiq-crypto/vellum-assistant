@@ -1,4 +1,4 @@
-import { parseMessageMetadata } from "@vellumai/plugin-api";
+import { parseMessageMetadata } from "@anu/plugin-api";
 import { and, asc, eq, gt, or } from "drizzle-orm";
 
 import type { AssistantConfig } from "../../../../../config/types.js";

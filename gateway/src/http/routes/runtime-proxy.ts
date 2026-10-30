@@ -4,7 +4,7 @@ import {
   createTimeoutController,
   isTimeoutError,
   stripHopByHop,
-} from "@vellumai/assistant-client";
+} from "@anu/assistant-client";
 
 import {
   validateEdgeToken,

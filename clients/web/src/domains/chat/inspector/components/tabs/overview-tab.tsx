@@ -16,8 +16,8 @@ import type {
   LatencyBreakdown,
   LLMCallSummary,
   LLMRequestLogEntry,
-} from "@vellumai/assistant-api";
-import { Card } from "@vellumai/design-library";
+} from "@anu/assistant-api";
+import { Card } from "@anu/design-library";
 
 interface OverviewTabProps {
   entry: LLMRequestLogEntry;

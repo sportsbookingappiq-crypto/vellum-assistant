@@ -13,8 +13,8 @@ import type { DisplayMessage } from "@/domains/chat/types/types";
 import { messagePlainText } from "@/domains/chat/utils/message-plain-text";
 import { useSupportsQueueSteering } from "@/lib/backwards-compat/use-supports-queue-steering";
 import { isPointerCoarse } from "@/utils/pointer";
-import { Button } from "@vellumai/design-library";
-import { cn } from "@vellumai/design-library/utils/cn";
+import { Button } from "@anu/design-library";
+import { cn } from "@anu/design-library/utils/cn";
 
 // ---------------------------------------------------------------------------
 // Types

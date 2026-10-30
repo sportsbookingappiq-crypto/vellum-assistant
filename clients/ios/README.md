@@ -296,9 +296,9 @@ for what the extra App IDs cost at release time.
 
 | Target | Bundle ID | Display Name | Icon | Server |
 |--------|-----------|-------------|------|--------|
-| App | `ai.vocify-inc.vellum-assistant-ios` | Vellum | Green | `www.vellum.ai` |
-| App Staging | `.staging` | Vellum Staging | Yellow | staging server |
-| App Dev | `.dev` | Vellum Dev | Pink | dev server |
+| App | `ai.anu.assistant-ios` | ANU | Green | `www.vellum.ai` |
+| App Staging | `.staging` | ANU Staging | Yellow | staging server |
+| App Dev | `.dev` | ANU Dev | Pink | dev server |
 
 Build settings shared across all three targets live in
 `App/App/Config/Base.xcconfig`. Per-target overrides (bundle ID, display
@@ -308,15 +308,14 @@ inline in `App/project.yml` under the `AppEnvironment` template.
 
 ### App icon + launch screen
 
-- `App/App/AppIcon.icon/` is an Icon Composer bundle: a solid `#4C9B50`
-  background (the `green` entry in the avatar palette in
-  `packages/avatar-catalog`) with the `quirky` eye
-  pair from that same library centred on top, spanning half the icon
-  width. The six paths in `Assets/eyes.svg` are copied verbatim out of
-  `getCharacterComponents().eyeStyles`, keeping the icon and the in-app
-  avatars in sync.
+- `App/App/AppIcon.icon/` is an Icon Composer bundle: a solid `#0F2557`
+  background (Night 800 from `assets/brand/BRAND.md`) with the ANU
+  snowflake centred on top at 62.5% of the icon. `Assets/anu-mark.svg` is
+  the two-tone (Sky base, Ice facets) cut of `assets/brand/anu-mark.svg`,
+  path for path.
 - `AppIcon-Staging.icon` (`#E9C91A`) and `AppIcon-Dev.icon` (`#FF88C9`)
-  carry the same eyes; only the `fill-specializations` colour differs.
+  carry the same mark in the night two-tone (`Assets/anu-mark-night.svg`)
+  so it reads on their light grounds.
 - A bundle's `fill-specializations` solid is a **Display P3** value, so an
   sRGB hex has to be converted before it goes in. All three bundles carry a
   true conversion of their hex. Pasting the raw sRGB components straight
@@ -350,7 +349,7 @@ inline in `App/project.yml` under the `AppEnvironment` template.
   `cd clients/ios && bun test scripts/__tests__/generate-avatar-icons.test.ts`.
   Both the generator and the test rasterize through the native
   `@resvg/resvg-js` binding, so the assistant package's dependencies have to
-  be installed first: `bun install --filter=@vellumai/assistant`.
+  be installed first: `bun install --filter=@anu/assistant`.
   `pr-native-drift.yaml` and `ci-main-native-drift.yaml` run that same check,
   and both watch `packages/avatar-catalog/**` as well as
   `assistant/src/avatar/**`, so a catalog edit without a regeneration fails
@@ -379,7 +378,7 @@ inline in `App/project.yml` under the `AppEnvironment` template.
   the shell lists it in `available`, so a missing name reads as a disabled Set
   button rather than a failed swap.
 - `App/App/Base.lproj/LaunchScreen.storyboard` uses a black background with the
-  white Vellum wordmark centered at its native 92×28 point size. The vector
+  white ANU wordmark centered at its native 92×28 point size. The vector
   image lives in the `VellumLogo` imageset in `Assets.xcassets/`.
 
 #### Alternate icon size cost
@@ -423,8 +422,8 @@ There's a deliberate mismatch:
 
 | Where                       | Value                                      |
 | --------------------------- | ------------------------------------------ |
-| Xcode `PRODUCT_BUNDLE_IDENTIFIER` | `ai.vocify-inc.vellum-assistant-ios` ← real one |
-| `capacitor.config.ts` `appId`     | `ai.vellum.assistant`                     |
+| Xcode `PRODUCT_BUNDLE_IDENTIFIER` | `ai.anu.assistant-ios` ← real one |
+| `capacitor.config.ts` `appId`     | `ai.anu.assistant`                     |
 
 Capacitor requires `appId` to use Java package form because Android uses it as
 the application namespace. The iOS project is generated from `project.yml`
@@ -451,7 +450,7 @@ copy in `clients/ios/App/App/public/`) and then `xcodegen generate` to refresh
 
 **HTTPS origin (self-hosted assistant, or any valid-TLS host):** set
 `VELLUM_SERVER_URL` when syncing. It overrides the environment-derived
-Vellum Cloud URL and is baked into `server.url` the same way:
+ANU Cloud URL and is baked into `server.url` the same way:
 
 ```bash
 cd clients/web
@@ -541,9 +540,9 @@ The bundle compiles only the sources listed under the `AppTests` target in
 
 On first build after pulling:
 
-- [ ] Home-screen icon is Vellum green with a white "V" (not the blue X
+- [ ] Home-screen icon is ANU green with a white "V" (not the blue X
       Capacitor placeholder)
-- [ ] Launch screen briefly displays the white Vellum wordmark on black
+- [ ] Launch screen briefly displays the white ANU wordmark on black
 - [ ] WebView loads the configured server URL and you can sign in
 - [ ] Chat streams token-by-token (verifies SSE is intact — if tokens
       arrive in one big blob, CapacitorHttp got turned on somewhere)
@@ -552,7 +551,7 @@ On first build after pulling:
 - [ ] Voice-room camera opens a sharp native preview on a physical device,
       flips cameras, captures a photo, and leaves live-voice audio running
 - [ ] Xcode → App target → General → Bundle Identifier reads
-      `ai.vocify-inc.vellum-assistant-ios`
+      `ai.anu.assistant-ios`
 
 ## Gotchas
 
@@ -834,15 +833,15 @@ build of the affected environment fails while signing or exporting.
 
 | Environment | Extension bundle ID | Profile name (exact) | GitHub secret |
 |-------------|---------------------|----------------------|---------------|
-| production | `ai.vocify-inc.vellum-assistant-ios.VoiceActivity` | `Vellum Assistant iOS VoiceActivity Distribution` | `IOS_PROVISIONING_PROFILE_EXT` |
-| staging | `ai.vocify-inc.vellum-assistant-ios.staging.VoiceActivity` | `Vellum Assistant iOS Staging VoiceActivity Distribution` | `IOS_PROVISIONING_PROFILE_EXT_STAGING` |
-| dev | `ai.vocify-inc.vellum-assistant-ios.dev.VoiceActivity` | `Vellum Assistant iOS Dev VoiceActivity Distribution` | `IOS_PROVISIONING_PROFILE_EXT_DEV` |
-| production | `ai.vocify-inc.vellum-assistant-ios.Share` | `Vellum Assistant iOS Share Distribution` | `IOS_PROVISIONING_PROFILE_SHARE` |
-| staging | `ai.vocify-inc.vellum-assistant-ios.staging.Share` | `Vellum Assistant iOS Staging Share Distribution` | `IOS_PROVISIONING_PROFILE_SHARE_STAGING` |
-| dev | `ai.vocify-inc.vellum-assistant-ios.dev.Share` | `Vellum Assistant iOS Dev Share Distribution` | `IOS_PROVISIONING_PROFILE_SHARE_DEV` |
-| production | `ai.vocify-inc.vellum-assistant-ios.NotificationService` | `Vellum Assistant iOS NotificationService Distribution` | `IOS_PROVISIONING_PROFILE_NSE` |
-| staging | `ai.vocify-inc.vellum-assistant-ios.staging.NotificationService` | `Vellum Assistant iOS Staging NotificationService Distribution` | `IOS_PROVISIONING_PROFILE_NSE_STAGING` |
-| dev | `ai.vocify-inc.vellum-assistant-ios.dev.NotificationService` | `Vellum Assistant iOS Dev NotificationService Distribution` | `IOS_PROVISIONING_PROFILE_NSE_DEV` |
+| production | `ai.anu.assistant-ios.VoiceActivity` | `ANU iOS VoiceActivity Distribution` | `IOS_PROVISIONING_PROFILE_EXT` |
+| staging | `ai.anu.assistant-ios.staging.VoiceActivity` | `ANU iOS Staging VoiceActivity Distribution` | `IOS_PROVISIONING_PROFILE_EXT_STAGING` |
+| dev | `ai.anu.assistant-ios.dev.VoiceActivity` | `ANU iOS Dev VoiceActivity Distribution` | `IOS_PROVISIONING_PROFILE_EXT_DEV` |
+| production | `ai.anu.assistant-ios.Share` | `ANU iOS Share Distribution` | `IOS_PROVISIONING_PROFILE_SHARE` |
+| staging | `ai.anu.assistant-ios.staging.Share` | `ANU iOS Staging Share Distribution` | `IOS_PROVISIONING_PROFILE_SHARE_STAGING` |
+| dev | `ai.anu.assistant-ios.dev.Share` | `ANU iOS Dev Share Distribution` | `IOS_PROVISIONING_PROFILE_SHARE_DEV` |
+| production | `ai.anu.assistant-ios.NotificationService` | `ANU iOS NotificationService Distribution` | `IOS_PROVISIONING_PROFILE_NSE` |
+| staging | `ai.anu.assistant-ios.staging.NotificationService` | `ANU iOS Staging NotificationService Distribution` | `IOS_PROVISIONING_PROFILE_NSE_STAGING` |
+| dev | `ai.anu.assistant-ios.dev.NotificationService` | `ANU iOS Dev NotificationService Distribution` | `IOS_PROVISIONING_PROFILE_NSE_DEV` |
 
 The containing app App IDs already exist, and each one already carries
 the App Group from the VoiceActivity row. A new Share or
@@ -853,9 +852,9 @@ distribution profile:
 
 | Environment | App bundle ID | Profile name (exact) | GitHub secret |
 |-------------|--------------|----------------------|---------------|
-| production | `ai.vocify-inc.vellum-assistant-ios` | `Vellum Assistant iOS Distribution` | `IOS_PROVISIONING_PROFILE` |
-| staging | `ai.vocify-inc.vellum-assistant-ios.staging` | `Vellum Assistant iOS Staging Distribution` | `IOS_PROVISIONING_PROFILE_STAGING` |
-| dev | `ai.vocify-inc.vellum-assistant-ios.dev` | `Vellum Assistant iOS Dev Distribution` | `IOS_PROVISIONING_PROFILE_DEV` |
+| production | `ai.anu.assistant-ios` | `ANU iOS Distribution` | `IOS_PROVISIONING_PROFILE` |
+| staging | `ai.anu.assistant-ios.staging` | `ANU iOS Staging Distribution` | `IOS_PROVISIONING_PROFILE_STAGING` |
+| dev | `ai.anu.assistant-ios.dev` | `ANU iOS Dev Distribution` | `IOS_PROVISIONING_PROFILE_DEV` |
 
 For the NotificationService rows only, step 2 below also enables
 **Communication Notifications** on the containing app's App ID, and step 4
@@ -872,9 +871,9 @@ Release workflow to prove the setup on that track):
    → **Identifiers** → **+** → **App IDs** → **App**. Set
    **Bundle ID** to **Explicit** and paste the exact string from the
    first table. Description can be anything descriptive
-   (e.g. "Vellum Assistant iOS Dev VoiceActivity"). Enable **App
+   (e.g. "ANU iOS Dev VoiceActivity"). Enable **App
    Groups** and nothing else, then assign the group for this row's
-   environment (`group.ai.vocify-inc.vellum-assistant-ios`, plus the
+   environment (`group.ai.anu.assistant-ios`, plus the
    `.staging` / `.dev` suffix; create it under **Identifiers → App
    Groups** first if it does not exist). Push in particular
    stays off: the extension's entitlements file carries the App Group
@@ -962,18 +961,18 @@ inspect_profile() {
 inspect_profile \
   "$app_path/PlugIns/VoiceActivity Dev.appex" \
   voice-activity \
-  "Vellum Assistant iOS Dev VoiceActivity Distribution" \
-  "7FZDXZR8P5.ai.vocify-inc.vellum-assistant-ios.dev.VoiceActivity"
+  "ANU iOS Dev VoiceActivity Distribution" \
+  "7FZDXZR8P5.ai.anu.assistant-ios.dev.VoiceActivity"
 inspect_profile \
   "$app_path/PlugIns/Share Dev.appex" \
   share \
-  "Vellum Assistant iOS Dev Share Distribution" \
-  "7FZDXZR8P5.ai.vocify-inc.vellum-assistant-ios.dev.Share"
+  "ANU iOS Dev Share Distribution" \
+  "7FZDXZR8P5.ai.anu.assistant-ios.dev.Share"
 inspect_profile \
   "$app_path/PlugIns/NotificationService Dev.appex" \
   notification-service \
-  "Vellum Assistant iOS Dev NotificationService Distribution" \
-  "7FZDXZR8P5.ai.vocify-inc.vellum-assistant-ios.dev.NotificationService"
+  "ANU iOS Dev NotificationService Distribution" \
+  "7FZDXZR8P5.ai.anu.assistant-ios.dev.NotificationService"
 
 # Verify signature integrity separately from embedded profile contents.
 codesign --verify --strict --verbose=2 "$app_path"
@@ -1027,7 +1026,7 @@ seconds of wall clock on top of the request's idle timeout, which bounds only a
 stall. Android bounds the same download the same way, reading 8 KB chunks under
 the same 512 KB cap against a three-second budget that spans the response head
 and the body (`RESPONSE_BUDGET_MILLIS` in
-`clients/android/app/src/main/java/ai/vellum/assistant/push/AvatarCache.java`).
+`clients/android/app/src/main/java/ai/anu/assistant/push/AvatarCache.java`).
 iOS buffers 16 KB chunks out of a per-byte `URLSession.AsyncBytes` sequence and
 reads a monotonic clock once per byte, since any stride between checks is a
 window a host answering fewer bytes than that stride hides in.

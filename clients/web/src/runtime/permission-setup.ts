@@ -4,7 +4,7 @@ import type {
   PermissionGuideState,
   PermissionSourceRect,
   SystemPermissionStateItem,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import { isElectron } from "@/runtime/is-electron";
 

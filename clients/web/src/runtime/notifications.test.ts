@@ -14,7 +14,7 @@ import type {
   NotificationDeliveryResult,
   NotificationIdentity,
   ShowNotificationPayload,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 import type { SenderNotificationPostRequest } from "@/runtime/sender-notification";
 import type { AndroidSenderNotificationPostRequest } from "@/runtime/android-sender-notification";
 

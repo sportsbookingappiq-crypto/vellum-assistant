@@ -20,10 +20,7 @@ import { afterEach, describe, expect, test } from "bun:test";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import { CacheDiffCard } from "./cache-diff-card";
-import type {
-  LLMContextSection,
-  LLMRequestLogEntry,
-} from "@vellumai/assistant-api";
+import type { LLMContextSection, LLMRequestLogEntry } from "@anu/assistant-api";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false }, mutations: { retry: false } },

@@ -37,11 +37,11 @@ import type {
   ConversationTextBlock,
   LlmContextResponse,
   LLMRequestLogEntry,
-} from "@vellumai/assistant-api";
-import { Button } from "@vellumai/design-library";
-import { toast } from "@vellumai/design-library/components/toast";
-import { Tabs } from "@vellumai/design-library/components/tabs";
-import { Toggle } from "@vellumai/design-library/components/toggle";
+} from "@anu/assistant-api";
+import { Button } from "@anu/design-library";
+import { toast } from "@anu/design-library/components/toast";
+import { Tabs } from "@anu/design-library/components/tabs";
+import { Toggle } from "@anu/design-library/components/toggle";
 
 import { CallRail } from "./components/call-rail";
 import {

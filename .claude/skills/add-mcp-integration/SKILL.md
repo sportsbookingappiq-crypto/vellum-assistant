@@ -91,7 +91,7 @@ Register a throwaway client with the same shape as
 
 ```bash
 curl -sS -X POST <registration_endpoint> -H 'content-type: application/json' \
-  -d '{"client_name":"Vellum Assistant (registration probe)","redirect_uris":["https://example.com/webhooks/oauth/callback"],"token_endpoint_auth_method":"none","grant_types":["authorization_code","refresh_token"],"response_types":["code"],"logo_uri":"https://www.vellum.ai/favicon.ico","software_version":"0.0.0"}'
+  -d '{"client_name":"ANU (registration probe)","redirect_uris":["https://example.com/webhooks/oauth/callback"],"token_endpoint_auth_method":"none","grant_types":["authorization_code","refresh_token"],"response_types":["code"],"logo_uri":"https://www.vellum.ai/favicon.ico","software_version":"0.0.0"}'
 ```
 
 A `client_id` with `token_endpoint_auth_method: "none"` in the response means

@@ -22,7 +22,7 @@ import {
   test,
 } from "bun:test";
 
-import { NOTIFICATION_AVATAR_SPEC_VERSION } from "@vellumai/avatar-manifest/notification-avatar";
+import { NOTIFICATION_AVATAR_SPEC_VERSION } from "@anu/avatar-manifest/notification-avatar";
 
 import type { AvatarState } from "../avatar/avatar-manifest.js";
 import * as realAvatarManifest from "../avatar/avatar-manifest.js";
@@ -580,7 +580,7 @@ describe("syncAvatarToPlatform", () => {
     expect(patches[0].body.notification_avatar_base64).toBe(
       Buffer.from("disc-green").toString("base64"),
     );
-    expect(lastResvgSvg).toContain('fill="#E6F1E7"');
+    expect(lastResvgSvg).toContain('fill="#E0F2EE"');
   });
 
   test("derives and persists an accent the manifest predates, then draws it", async () => {

@@ -22,7 +22,7 @@ import { useAssistantCapability } from "@/hooks/use-assistant-capability";
 import { useTranslation } from "@/i18n";
 import { useAssistantFeatureFlagStore } from "@/stores/assistant-feature-flag-store";
 import { routes } from "@/utils/routes";
-import { Button } from "@vellumai/design-library";
+import { Button } from "@anu/design-library";
 
 import { CenteredMessage } from "./centered-message";
 import {

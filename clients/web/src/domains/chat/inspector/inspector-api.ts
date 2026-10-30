@@ -14,7 +14,7 @@ import type {
   LLMRequestLogEntry,
   MemoryRecallLog,
   MemoryV2ActivationLog,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 
 /**
  * Query helpers for the inspector. Two fetch modes:

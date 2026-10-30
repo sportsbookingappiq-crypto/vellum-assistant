@@ -26,7 +26,7 @@ import type {
   ConversationContentBlock,
   ConversationMessage,
   ConversationMessageToolCall,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 
 function wireMessage(
   overrides: Partial<ConversationMessage>,

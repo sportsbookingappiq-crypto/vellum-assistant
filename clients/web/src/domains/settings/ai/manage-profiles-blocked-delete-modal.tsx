@@ -1,7 +1,7 @@
-import { Button } from "@vellumai/design-library/components/button";
-import { Select } from "@vellumai/design-library/components/select";
-import { Modal } from "@vellumai/design-library/components/modal";
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Button } from "@anu/design-library/components/button";
+import { Select } from "@anu/design-library/components/select";
+import { Modal } from "@anu/design-library/components/modal";
+import { Typography } from "@anu/design-library/components/typography";
 
 import { profilePickerLabel } from "@/assistant/profile-pickers";
 import type { ProfileWithName } from "@/domains/settings/ai/utils";

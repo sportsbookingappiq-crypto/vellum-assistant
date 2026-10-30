@@ -20,8 +20,8 @@ import {
   useState,
 } from "react";
 import { Link } from "react-router";
-import { Button } from "@vellumai/design-library/components/button";
-import { type NoticeTone } from "@vellumai/design-library/components/notice";
+import { Button } from "@anu/design-library/components/button";
+import { type NoticeTone } from "@anu/design-library/components/notice";
 
 import {
   type LocalAssistantHealth,
@@ -806,8 +806,7 @@ function useAssistantBannerConfig(): BannerConfig | null {
       if (!result.ok) {
         setIsLocalWakeSettling(false);
         setWakeLocalAssistantError(
-          result.error ||
-            "Wake failed. Try running vellum wake in your terminal.",
+          result.error || "Wake failed. Try running anu wake in your terminal.",
         );
         return;
       }
@@ -822,7 +821,7 @@ function useAssistantBannerConfig(): BannerConfig | null {
       setIsLocalWakeSettling(false);
       captureError(err, { context: "wake_local_assistant_status_banner" });
       setWakeLocalAssistantError(
-        "Wake failed. Try running vellum wake in your terminal.",
+        "Wake failed. Try running anu wake in your terminal.",
       );
     } finally {
       setIsWakingLocalAssistant(false);
@@ -873,7 +872,7 @@ function useAssistantBannerConfig(): BannerConfig | null {
           : "Your assistant runs locally",
       icon: <CloudOff className="h-4 w-4" aria-hidden="true" />,
       children:
-        "Open the Vellum desktop app or run vellum wake in your terminal to start it.",
+        "Open the ANU desktop app or run anu wake in your terminal to start it.",
     };
   }
 
@@ -886,7 +885,7 @@ function useAssistantBannerConfig(): BannerConfig | null {
       ? "starting"
       : localHealth;
   // Only offer "Wake up" when the CLI can actually start this assistant —
-  // `vellum wake` works on plain local entries, not Docker/apple-container,
+  // `anu wake` works on plain local entries, not Docker/apple-container,
   // and never a paired entry (the remote host isn't ours to start).
   const localWakeAction =
     !isPairedActiveAssistant &&
@@ -926,7 +925,7 @@ function useAssistantBannerConfig(): BannerConfig | null {
   ) {
     return {
       tone: "error",
-      title: "Trying to reach Vellum…",
+      title: "Trying to reach ANU…",
       icon: <CloudOff className="h-4 w-4" aria-hidden="true" />,
       actions: (
         <Button variant="outlined" size="compact" onClick={retryConnectivity}>

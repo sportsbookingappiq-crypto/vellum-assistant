@@ -118,7 +118,7 @@ function supportedEffortsForModel(
   );
 }
 
-/** Translate a Vellum effort value onto the Responses wire for `model`. */
+/** Translate an ANU effort value onto the Responses wire for `model`. */
 function mapResponsesReasoningEffort(
   effort: string,
   model: string,

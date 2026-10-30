@@ -12,10 +12,7 @@
  * id lives in `data.skill`.
  */
 
-import type {
-  LLMContextSection,
-  LLMRequestLogEntry,
-} from "@vellumai/assistant-api";
+import type { LLMContextSection, LLMRequestLogEntry } from "@anu/assistant-api";
 
 export interface SkillLoad {
   skill: string;

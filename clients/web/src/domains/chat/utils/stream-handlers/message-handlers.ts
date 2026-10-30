@@ -14,7 +14,7 @@ import type {
   GenerationHandoffEvent,
   MessageCompleteEvent,
   UserMessageEchoEvent,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 import { useSubagentStore } from "@/domains/chat/subagent-store";
 import { useChatSessionStore } from "@/domains/chat/chat-session-store";
 import { useInteractionStore } from "@/domains/chat/interaction-store";

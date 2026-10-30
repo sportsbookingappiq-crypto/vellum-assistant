@@ -24,7 +24,7 @@ import { eq } from "drizzle-orm";
 
 import "./test-preload.js";
 
-import { hashVerificationSecret } from "@vellumai/gateway-client";
+import { hashVerificationSecret } from "@anu/gateway-client";
 
 import {
   getGatewayDb,

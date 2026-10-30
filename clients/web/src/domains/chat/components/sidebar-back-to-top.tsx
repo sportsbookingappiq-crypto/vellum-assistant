@@ -21,7 +21,7 @@ import { useTranslation } from "@/i18n";
 
 import { ArrowUp } from "lucide-react";
 
-import { Button, cn } from "@vellumai/design-library";
+import { Button, cn } from "@anu/design-library";
 
 export interface SidebarBackToTopProps {
   visible: boolean;

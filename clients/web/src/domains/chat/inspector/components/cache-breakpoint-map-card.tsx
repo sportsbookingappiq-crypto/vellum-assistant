@@ -23,8 +23,8 @@ import {
 import { useLlmLogPayload } from "@/domains/chat/inspector/inspector-payload-api";
 import { formatCount } from "@/domains/chat/inspector/inspector-formatters";
 import { useTranslation } from "@/i18n";
-import type { LLMRequestLogEntry } from "@vellumai/assistant-api";
-import { Card, Notice, Tag } from "@vellumai/design-library";
+import type { LLMRequestLogEntry } from "@anu/assistant-api";
+import { Card, Notice, Tag } from "@anu/design-library";
 type ChatTranslate = ReturnType<typeof useTranslation<"chat">>["t"];
 
 export interface CacheBreakpointMapCardProps {

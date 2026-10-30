@@ -653,7 +653,7 @@ its rules here.
 ### Log component names
 
 `getLogger("<scope>")` tags every line the module emits with that scope, so a
-scope name is **observable**: saved log queries, `vellum logs` filters, and
+scope name is **observable**: saved log queries, `anu logs` filters, and
 support runbooks grep on it. Renaming one does not fail a build and does not
 lose data — it silently empties whatever was filtering on the old name. Not
 frozen the way a table or a wire string is, but rename deliberately and expect
@@ -913,7 +913,7 @@ or the tree and the published spec go out of sync:
 - **route** — `conversation-query-routes.ts`'s read (item 2 above);
 - **wire contract** — `assistant/src/api/responses/memory-v2-activation-log.ts`
   (`MemoryV2ActivationLogSchema`, re-exported from `src/api/index.ts` and so
-  published through `@vellumai/assistant-api`), embedded in
+  published through `@anu/assistant-api`), embedded in
   `api/responses/llm-context-response.ts`. `memoryV2Activation` is a
   **required** property on both LLM-context responses in
   `assistant/openapi.yaml`, so removing it regenerates the spec and the

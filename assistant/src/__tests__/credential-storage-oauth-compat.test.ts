@@ -1,6 +1,6 @@
 /**
  * Compatibility tests for OAuth primitives extracted into
- * @vellumai/credential-storage.
+ * @anu/credential-storage.
  *
  * Verifies that the shared helpers produce identical key paths, expiry
  * calculations, circuit breaker behavior, credential error classification,
@@ -27,7 +27,7 @@ import {
   RefreshDeduplicator,
   type SecureKeyBackend,
   type SecureKeyDeleteResult,
-} from "@vellumai/credential-storage";
+} from "@anu/credential-storage";
 
 // ---------------------------------------------------------------------------
 // In-memory SecureKeyBackend for testing

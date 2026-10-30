@@ -1,6 +1,6 @@
 # Third-party licences
 
-Licences and notices for third-party code distributed with the Vellum web
+Licences and notices for third-party code distributed with the ANU web
 client. Served from the build root so the notice travels with the distributed
 bundle.
 
@@ -15,15 +15,15 @@ Listed below are the ones whose licence asks for more.
 
 ## noVNC
 
-|                    |                                                           |
-| ------------------ | --------------------------------------------------------- |
-| Component          | `@novnc/novnc`                                            |
-| Version            | 1.7.0                                                     |
-| Copyright          | Copyright (C) 2022 The noVNC authors                      |
-| Licence            | MPL-2.0 (Mozilla Public License 2.0)                      |
-| Source             | https://github.com/novnc/noVNC/tree/v1.7.0                |
-| Package            | https://registry.npmjs.org/@novnc/novnc/-/novnc-1.7.0.tgz |
-| Modified by Vellum | **No.** Imported and used as published.                   |
+|                 |                                                           |
+| --------------- | --------------------------------------------------------- |
+| Component       | `@novnc/novnc`                                            |
+| Version         | 1.7.0                                                     |
+| Copyright       | Copyright (C) 2022 The noVNC authors                      |
+| Licence         | MPL-2.0 (Mozilla Public License 2.0)                      |
+| Source          | https://github.com/novnc/noVNC/tree/v1.7.0                |
+| Package         | https://registry.npmjs.org/@novnc/novnc/-/novnc-1.7.0.tgz |
+| Modified by ANU | **No.** Imported and used as published.                   |
 
 noVNC is the VNC client that renders the assistant desktop viewer
 (`clients/web/src/domains/chat/desktop/`).
@@ -33,7 +33,7 @@ files, which are combined here into a Larger Work distributed under this
 repository's MIT licence, as MPL-2.0 section 3.3 permits. If noVNC's files are
 ever modified rather than merely imported, those modified files remain under
 MPL-2.0 and their Source Code must be made available to recipients; update the
-"Modified by Vellum" row above if that ever changes.
+"Modified by ANU" row above if that ever changes.
 
 ### noVNC's own licence notice
 

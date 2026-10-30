@@ -136,7 +136,7 @@ export const InteractiveTrailing: Story = {
   render: () => (
     <ListRow
       title="Balanced"
-      subtitle="Claude Sonnet 4.5  •  Managed by Vellum"
+      subtitle="Claude Sonnet 4.5  •  Managed by ANU"
       onClick={() => {}}
       showChevron={false}
       trailingInteractive

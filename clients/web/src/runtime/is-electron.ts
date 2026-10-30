@@ -1,7 +1,7 @@
 /**
  * Ambient declaration of the `window.vellum` bridge exposed by the Electron
  * preload script (see `clients/macos/src/preload/index.ts`). Types are imported
- * from `@vellumai/ipc-contract` — the single source of truth for IPC payload
+ * from `@anu/ipc-contract` — the single source of truth for IPC payload
  * shapes shared by main, preload, and renderer.
  *
  * Feature code in `clients/web/` should NOT call `window.vellum.*` directly.
@@ -12,10 +12,7 @@
  * `window.vellum`, `isNativePlatform()` calls Capacitor, and the web branch
  * uses `localStorage` — so consumers stay platform-agnostic.
  */
-import type {
-  Lockfile,
-  LockfileWriteResult,
-} from "@vellumai/local-mode/contract";
+import type { Lockfile, LockfileWriteResult } from "@anu/local-mode/contract";
 import type {
   AppVersionInfo,
   AssistantStatus,
@@ -94,7 +91,7 @@ import type {
   VoiceActivityState,
   WatchCaptureTarget,
   WindowAttentionPayload,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 export type {
   AppVersionInfo,

@@ -13,10 +13,10 @@ import type {
   PostToolUseContext,
   ToolResultContent,
   UserPromptSubmitContext,
-} from "@vellumai/plugin-api";
+} from "@anu/plugin-api";
 
 // The current-turn boundary and the vision-rejection classifier are the real
-// host helpers the plugin reaches through `@vellumai/plugin-api`; wire them
+// host helpers the plugin reaches through `@anu/plugin-api`; wire them
 // into the mock so the tests exercise the shipped behavior rather than a
 // stand-in.
 import { retainedToolResultMediaKeysBeforeCap } from "../../../../context/outbound-sanitize.js";
@@ -58,7 +58,7 @@ let persistedCards: Array<{
 }> = [];
 let cardPersistenceFails = false;
 
-// Mock @vellumai/plugin-api — only the runtime handles the plugin imports.
+// Mock @anu/plugin-api — only the runtime handles the plugin imports.
 // `extractAllText` stays real (imported from the relative path, not plugin-api).
 // One factory backs every install so a per-test override (e.g. a
 // call-counting provider) cannot silently drop the rest of the surface. The
@@ -66,7 +66,7 @@ let cardPersistenceFails = false;
 // export the plugin's hooks import, including ones only sibling test files
 // exercise.
 function installPluginApiMock(overrides: Record<string, unknown> = {}): void {
-  mock.module("@vellumai/plugin-api", () => ({
+  mock.module("@anu/plugin-api", () => ({
     doesSupportVision: (arg: ModelProfileInfo | string) =>
       typeof arg === "string"
         ? visionModels.has(arg)

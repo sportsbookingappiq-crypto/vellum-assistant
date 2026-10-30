@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 
-import { cn } from "@vellumai/design-library";
+import { cn } from "@anu/design-library";
 
 /** Instrument Serif, as the onboarding cards set their titles. */
 const TITLE_STYLE: CSSProperties = {

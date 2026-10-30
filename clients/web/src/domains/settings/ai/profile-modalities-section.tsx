@@ -1,7 +1,7 @@
 
-import { Disclosure } from "@vellumai/design-library/components/disclosure";
-import { Toggle } from "@vellumai/design-library/components/toggle";
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Disclosure } from "@anu/design-library/components/disclosure";
+import { Toggle } from "@anu/design-library/components/toggle";
+import { Typography } from "@anu/design-library/components/typography";
 
 import {
   INPUT_MODALITIES,

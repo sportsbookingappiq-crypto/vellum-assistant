@@ -14,11 +14,11 @@ import { useAndroidBillingHandoff } from "@/lib/billing/android-billing-handoff"
 import { checkoutReturnTarget } from "@/lib/billing/checkout-return-target";
 import { openUrl, openUrlFinishedListener } from "@/runtime/browser";
 import { routes } from "@/utils/routes";
-import { Button } from "@vellumai/design-library/components/button";
-import { Select } from "@vellumai/design-library/components/select";
-import { Modal } from "@vellumai/design-library/components/modal";
-import { cn } from "@vellumai/design-library/utils/cn";
-import { textLinkVariants } from "@vellumai/design-library/components/text-link";
+import { Button } from "@anu/design-library/components/button";
+import { Select } from "@anu/design-library/components/select";
+import { Modal } from "@anu/design-library/components/modal";
+import { cn } from "@anu/design-library/utils/cn";
+import { textLinkVariants } from "@anu/design-library/components/text-link";
 
 const DEFAULT_TOP_UP_AMOUNTS: [string, ...string[]] = [
   "10.00",

@@ -7,7 +7,7 @@ Applies to all code under `clients/`. Subordinate to root [`AGENTS.md`](../AGENT
 - `clients/web/`, `clients/macos/`, `clients/linux/`, `clients/windows/`, and `clients/docs/`
   are members of the root bun workspace: the single root `bun.lock` covers them, and
   `bun install` anywhere in the tree resolves to the workspace root (scope
-  with `--filter=@vellumai/<name>` when needed). Each keeps its own
+  with `--filter=@anu/<name>` when needed). Each keeps its own
   `package.json`, `tsconfig.json`, and lint config.
 - `clients/chrome-extension/` is the one standalone package, with its own
   `bun.lock` and per-package `bun install`. Native shell directories
@@ -26,7 +26,7 @@ Applies to all code under `clients/`. Subordinate to root [`AGENTS.md`](../AGENT
   compiles without a bundler, use NodeNext with `.js` extensions (matching
   `assistant/`, `gateway/`, `cli/`).
 - `clients/docs/` is the public docs site: an SSR Next.js app serving
-  www.vellum.ai/docs. See [`clients/docs/AGENTS.md`](docs/AGENTS.md) for its
+  www.anu.ai/docs. See [`clients/docs/AGENTS.md`](docs/AGENTS.md) for its
   URL, theme, and attribution contracts.
 
 ## Adding a new client

@@ -12,7 +12,7 @@
  * turn has finished.
  */
 
-import { PERSONALITY_AXIS_IDS } from "@vellumai/assistant-api";
+import { PERSONALITY_AXIS_IDS } from "@anu/assistant-api";
 
 /**
  * Consecutive identical assistant reads that mark the rewrite turn settled —

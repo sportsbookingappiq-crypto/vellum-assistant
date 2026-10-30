@@ -21,7 +21,7 @@ import {
   resetSseDebugStateForTests,
 } from "@/lib/streaming/stream-debug";
 import type { AssistantEvent } from "@/types/event-types";
-import type { AssistantEventEnvelope } from "@vellumai/assistant-api";
+import type { AssistantEventEnvelope } from "@anu/assistant-api";
 
 beforeEach(() => {
   resetSseDebugStateForTests();

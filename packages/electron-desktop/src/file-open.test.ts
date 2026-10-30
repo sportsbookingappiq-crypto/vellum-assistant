@@ -119,7 +119,7 @@ describe("extractVellumFilePathsFromArgv", () => {
 
     expect(
       extractVellumFilePathsFromArgv([
-        "Vellum.exe",
+        "ANU.exe",
         relativePath,
         path.resolve(relativePath),
       ]),
@@ -140,7 +140,7 @@ describe("extractVellumFilePathsFromArgv", () => {
   test("resolves relative paths from the launching working directory", () => {
     expect(
       extractVellumFilePathsFromArgv(
-        ["Vellum.exe", "exports/example.vellum"],
+        ["ANU.exe", "exports/example.vellum"],
         "/launching-directory",
       ),
     ).toEqual(["/launching-directory/exports/example.vellum"]);

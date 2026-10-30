@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { type FormEvent, type ReactNode, useState } from "react";
 
-import { Button, Card, Input } from "@vellumai/design-library";
+import { Button, Card, Input } from "@anu/design-library";
 import { useTranslation } from "@/i18n";
 
 /**

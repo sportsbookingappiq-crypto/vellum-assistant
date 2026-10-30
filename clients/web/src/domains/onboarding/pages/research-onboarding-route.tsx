@@ -319,7 +319,7 @@ export function ResearchOnboardingRoute() {
   // platform's managed Google Calendar OAuth. A local-hosting onboarding can
   // run with no platform session at all (the assistant itself is fully
   // local), where that connect can only fail — skip the calendar steps
-  // entirely and go straight to the research reveal. Vellum-cloud onboarding
+  // entirely and go straight to the research reveal. ANU-cloud onboarding
   // keeps them: a managed hatch implies a platform session.
   const skipCheckinSteps = adoptExistingAssistant;
   // The claim-credits step ("integration") promises managed free credits,

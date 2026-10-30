@@ -460,7 +460,7 @@ export interface ToolExecutedTelemetryEvent extends ModelTelemetryEventBase {
 
 /**
  * Skill-loaded event — one per skill load. Emitted only for
- * Vellum-produced skills (bundled, or managed with vellum origin).
+ * ANU-produced skills (bundled, or managed with vellum origin).
  * Metadata only — no skill output or conversation content.
  */
 export interface SkillLoadedTelemetryEvent extends ModelTelemetryEventBase {

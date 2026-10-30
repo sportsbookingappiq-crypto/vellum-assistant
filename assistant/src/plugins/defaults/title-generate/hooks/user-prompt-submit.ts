@@ -10,10 +10,7 @@
  * title service (see `persistence/conversation-title-service.ts`).
  */
 
-import type {
-  HookFunction,
-  UserPromptSubmitContext,
-} from "@vellumai/plugin-api";
+import type { HookFunction, UserPromptSubmitContext } from "@anu/plugin-api";
 
 import { getConversation } from "../../../../persistence/conversation-crud.js";
 import { queueGenerateConversationTitle } from "../../../../persistence/conversation-title-service.js";

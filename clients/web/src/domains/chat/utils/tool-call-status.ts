@@ -1,4 +1,4 @@
-import type { ConversationMessageToolCall } from "@vellumai/assistant-api";
+import type { ConversationMessageToolCall } from "@anu/assistant-api";
 
 type ToolCallStateFields = Pick<
   ConversationMessageToolCall,

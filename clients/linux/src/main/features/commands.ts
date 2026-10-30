@@ -4,21 +4,21 @@ import {
   configureAboutRuntime,
   installAbout,
   openAboutWindow,
-} from "@vellumai/electron-desktop/about";
+} from "@anu/electron-desktop/about";
 import type {
   CapabilityModule,
   DesktopCapabilityRegistry,
-} from "@vellumai/electron-desktop/capability-registry";
+} from "@anu/electron-desktop/capability-registry";
 import {
   configureHotkeySettings,
   HOTKEY_SETTINGS,
-} from "@vellumai/electron-desktop/commands";
-import { installGlobalShortcuts } from "@vellumai/electron-desktop/global-shortcuts";
-import { installHotkeysIpc } from "@vellumai/electron-desktop/hotkeys";
-import { getName, onNameChange } from "@vellumai/electron-desktop/identity";
-import { installImageContextMenu } from "@vellumai/electron-desktop/image-context-menu";
-import { toggleQuickInput } from "@vellumai/electron-desktop/quick-input-window";
-import { installTextContextMenu } from "@vellumai/electron-desktop/text-context-menu";
+} from "@anu/electron-desktop/commands";
+import { installGlobalShortcuts } from "@anu/electron-desktop/global-shortcuts";
+import { installHotkeysIpc } from "@anu/electron-desktop/hotkeys";
+import { getName, onNameChange } from "@anu/electron-desktop/identity";
+import { installImageContextMenu } from "@anu/electron-desktop/image-context-menu";
+import { toggleQuickInput } from "@anu/electron-desktop/quick-input-window";
+import { installTextContextMenu } from "@anu/electron-desktop/text-context-menu";
 
 import { getRendererBase } from "../app-config";
 import { checkForUpdates } from "../auto-update";

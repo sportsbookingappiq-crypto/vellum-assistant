@@ -1,4 +1,4 @@
-import { formatGuardianRefreshCliFailure } from "@vellumai/local-mode";
+import { formatGuardianRefreshCliFailure } from "@anu/local-mode";
 
 import {
   lookupAssistantByIdentifier,
@@ -10,7 +10,7 @@ import {
 } from "../../lib/guardian-token.js";
 
 function printUsage(): void {
-  console.log("Usage: vellum gateway token <subcommand> <assistantId>");
+  console.log("Usage: anu gateway token <subcommand> <assistantId>");
   console.log("");
   console.log("Manage gateway authentication tokens.");
   console.log("");

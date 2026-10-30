@@ -67,9 +67,9 @@ describe("host_file_read cross-client guards", () => {
     );
     expect(result.isError).toBe(true);
     expect(result.content).toContain(
-      "The Vellum desktop app is needed to access files on your computer",
+      "The ANU desktop app is needed to access files on your computer",
     );
-    expect(result.content).toContain("https://www.vellum.ai/downloads");
+    expect(result.content).toContain("https://www.anu.ai/downloads");
   });
 
   test("returns 'specified client disconnected' error when targetClientId set but proxy unavailable on web", async () => {

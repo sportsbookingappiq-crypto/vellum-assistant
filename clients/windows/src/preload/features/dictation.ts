@@ -3,7 +3,7 @@ import { ipcRenderer, type IpcRendererEvent } from "electron";
 import type {
   BridgeCapabilityRegistry,
   CapabilityModule,
-} from "@vellumai/electron-desktop/capability-registry";
+} from "@anu/electron-desktop/capability-registry";
 import {
   HELPER_DICTATION_FINALIZED_EVENT,
   HELPER_DICTATION_PARTIAL_EVENT,
@@ -22,7 +22,7 @@ import {
   type HotkeyEvent,
   type VoiceModeChordRegistrationResult,
   type VellumBridge,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 const subscribe =
   <T>(channel: string) =>

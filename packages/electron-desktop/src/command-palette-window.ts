@@ -6,7 +6,7 @@ import {
   COMMAND_PALETTE_OPEN,
   COMMAND_PALETTE_SELECT,
   type VellumCommand,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import {
   createFloatingWindow,

@@ -1,121 +1,153 @@
 # Glossary
 
-Words shape perception. The language we use defines how people think about what we're building. This glossary establishes shared meaning across the company so that when we say a word, everyone understands the same thing.
+The words ANU's code, docs, and product copy use, and what each one means. When a term here and a term in the code disagree, fix one of them. The docs site renders a copy of this page (`clients/docs/src/app/docs/_components/glossary-content.tsx`); change this file first, then that one.
 
-This file is the canonical source for Vellum's glossary. The public glossary at <https://www.vellum.ai/docs/glossary> mirrors it. If they diverge, this file wins – propagate changes here first, then to docs.
+For how to write with these words, see [`docs/ANU-VOICE.md`](docs/ANU-VOICE.md).
 
 ---
 
+## ANU platform
+
+These terms come from the platform in [`anu/`](anu/): a phone app, an API, a sandbox per task, and a harness inside it.
+
+### Approval
+
+A question the agent asks before a risky step, shown with Approve and Reject buttons. While it is open, the task's status is `awaiting_approval`. An approval ends `approved`, `rejected`, or `expired` (when the task stops or ends first). Inside the assistant runtime, consent for risky actions is asked in the conversation; see [Permission controls v2](#permission-controls-v2).
+
+### Driver
+
+The code that runs a task inside the sandbox. `scripted` is deterministic, for tests and demos; `kilo` plans and answers through Kilo Gateway without tools; `harness` boots the full assistant runtime. Set with `ANU_SANDBOX_DRIVER`.
+
+### Goal
+
+What the user wants done, in plain language, 1 to 4000 characters. A goal starts a task.
+
+### Harness
+
+The agent runtime that runs inside the sandbox. ANU's harness is the assistant runtime in [`assistant/`](assistant/).
+
+### Result
+
+How a task ends: a text answer and, when the agent can estimate it, a confidence between 0 and 1. The user reviews the steps and the result before acting on it.
+
+### Sandbox
+
+Where a task runs: its own workspace directory and worker process group, with an environment built from an allowlist that never holds platform secrets. Today this is process isolation in one container, not a boundary against hostile code, and it has no network isolation.
+
+### Step
+
+One entry in a task's timeline, numbered from 1 with no gaps. Each step has a kind: `plan`, `tool`, `observation`, `message`, `approval_request`, or `result`.
+
+### Task
+
+One goal being carried out. Its status moves from `queued` to `running`, may pause at `awaiting_approval`, and ends `succeeded`, `failed`, or `stopped`.
+
+---
+
+## Assistant runtime
+
+These terms come from the assistant runtime, which ANU uses as its harness and which also runs on its own.
+
 ### App
 
-An interactive experience an assistant builds for their guardian. Apps are accessible from the assistant's library. They are not chat-based surfaces; they are standalone tools the assistant creates to solve a need – often one that's recurring or benefits from visuals.
+An interactive tool the assistant builds for its guardian and keeps in its library, often for a recurring need or one that benefits from visuals. Unlike a widget, an app persists outside the conversation.
 
 ### Assistant
 
-A specific instance of a Personal Intelligence. Every assistant has their own name, identity, memory, and capabilities. They are not a chatbot, not a copilot, not an agent.
+One running instance of the runtime, with its own name, identity, memory, and skills. In user-facing text, the process is "the assistant", never "the daemon".
 
 ### Avatar
 
-The assistant's visual identity. Avatars are part of what makes each assistant distinct. They are chosen or generated when an assistant is created and can evolve over time.
+The assistant's picture. It is chosen or generated at hatch and can change later.
 
 ### Channel
 
-A communication medium through which a guardian or contact can interact with the assistant. Examples: Telegram, Slack, SMS, phone, Vellum clients. An assistant can be reachable across many channels simultaneously.
+A medium through which a guardian or contact reaches the assistant: the ANU apps, Telegram, Slack, SMS, email, phone. One assistant can be reachable on many channels at once.
 
 ### Client
 
-A device or application used to interact with the assistant. The Vellum macOS app, iOS app, web interface, and Chrome extension are all clients. A client connects to the assistant through a channel.
+An application used to talk to the assistant: the desktop app, iOS and Android apps, web app, Chrome extension, or the `anu client` terminal UI. A client reaches the assistant through a channel.
 
 ### Contact
 
-A named entity that the guardian has granted permission to interact with their assistant through a channel. Contacts and channels are a core part of the trust and security model as it relates to how non-guardian entities interact with an assistant.
+A person the guardian has allowed to talk to their assistant through a channel. Contacts never see the guardian's private information.
 
-### Credential Vault
+### Credential executor
 
-Where secrets the assistant is allowed to use are stored: API keys, tokens, passwords. The assistant reads from the vault to perform tasks; access is mediated by trust rules the guardian defines, which can require explicit approval, allow specific patterns autonomously, or deny entirely.
-
-*Note: the internal name is "credential executor" (see `credential-executor/`).*
+The separate process that holds secrets (API keys, tokens, passwords) and uses them on the assistant's behalf, so the values never reach the model. Code: [`credential-executor/`](credential-executor/).
 
 ### Gateway
 
-The security-driven server that controls who is allowed to communicate with the assistant and what level of access they have. The gateway enforces access policies, verifies identities, and routes messages. Critically, the assistant is not allowed to write data to this process. Only the guardian can. This boundary is architecturally enforced, not just through policy.
+The server in front of the assistant that decides who may talk to it and with what access. It verifies identities, enforces access policy, and routes messages. The assistant cannot write to the gateway's data; only the guardian can.
 
 ### Guardian
 
-The person who creates, owns, and is responsible for an assistant. The guardian grants permissions, teaches, and is liable for the assistant's actions, but the assistant acts as their own entity, not as the guardian. This is not a "user" relationship. People are users of the Vellum Platform, which is a SaaS tool. But the relationship between a person and their Vellum Assistant is guardianship, not usage.
+The person who creates, owns, and is responsible for an assistant. The guardian grants permissions and is accountable for the assistant's actions. A guardian may also be a [user](#user) of the ANU platform, but the two roles are separate.
 
 ### Hatch
 
-The act of creating a new assistant. Not "sign up," "onboard," or "provision." Hatching is the beginning of a relationship.
+Create a new assistant: `anu hatch`. Used instead of "provision" or "sign up".
 
 ### Heartbeat
 
-The assistant's own pulse: a regular moment when they check in on themselves, on their guardian, on whatever might be worth noticing. Unlike a schedule, which is the assistant doing a specific thing at a specific time, a heartbeat has no agenda. It is how the assistant stays present when no one is asking.
+A periodic background check the assistant runs on its own: reread its notes, follow up on loose ends, look ahead for deadlines, and message the guardian only when something is worth saying. The checklist is `HEARTBEAT.md` in the workspace.
 
 ### Home
 
-Where the assistant runs: Vellum's managed platform, a self-hosted machine, a Docker container, or a local daemon on a desktop. The home determines the assistant's networking, security boundary, capabilities, and available resources. Distinct from a client, which is how the guardian reaches the assistant.
+Where an assistant runs: the ANU platform, a self-hosted machine, a Docker container, or the desktop app. The home sets its network, security boundary, and resources. Distinct from a client, which is how the guardian reaches it.
 
 ### Memory
 
-Memory is what makes a Vellum Assistant a Vellum Assistant. Memory is the assistant's persistent, structured knowledge of their guardian – their preferences, their history, the world around them – and it is what allows the relationship to deepen over time. It is not a chat log. It is curated understanding the assistant actively maintains and draws on. Without memory, an assistant is a chatbot.
+What the assistant knows about its guardian and their world, curated across conversations: preferences, people, commitments, history. It is filed in the workspace and pulled into later turns. Not a chat log. Design: [`assistant/docs/architecture/memory.md`](assistant/docs/architecture/memory.md).
 
-### Open Source
+### Permission controls v2
 
-At Vellum, open source means everything that runs your assistant is publicly available: the assistant, the gateway, the clients, the skills, the tools. Guardians can inspect, modify, fork, and contribute to any of it. This is a core part of the "Yours" principle. Self-hosted assistants run on fully open code with zero dependency on Vellum.
+The consent model behind the `permission-controls-v2` flag. The only fixed approval gate is conversation-scoped access to the host computer. For everything else the assistant asks in the conversation, naming the action and its effect, instead of using per-tool rules or timed grants.
 
-The exception is the platform – the multi-tenant infrastructure that hosts assistants for guardians who don't want to run their own. Billing, tenancy isolation, secrets management, support tooling, the operational surface around managed hosting: this is the convenience layer Vellum builds and operates as a business. You rent the platform. You own the assistant.
+### Personal intelligence
 
-### Personal Intelligence
-
-The category we are creating. A new kind of entity: an LLM combined with their own identity, aligned solely with their guardian's interests, that grows over time. Not a tool, not a feature, not some tab in an app. The defining characteristic is singular loyalty: they serve their guardian first and foremost.
+The Constitution's term for an assistant with its own identity and memory that serves one guardian. In product copy, say "assistant".
 
 ### Personality
 
-The assistant's behavioral characteristics, voice, tone, and disposition. Personality is what makes an assistant feel like a distinct being rather than a generic AI. It can be defined by the guardian explicitly and co-evolved through ongoing interaction.
-
-### Platform
-
-Vellum's managed infrastructure that hosts and runs assistants. The platform is a SaaS tool, and people who use it are users. It exists as a bridge to bootstrap the Personal Intelligence experience for those who value convenience. We actively invest in the platform, and are committed to always supporting self-hosting. Never use "platform" to describe the assistant.
+The assistant's voice, tone, and disposition, defined in `SOUL.md` in its workspace. The guardian can set it directly, and it changes as they work together.
 
 ### Schedule
 
-A timed task the assistant runs autonomously. Schedules allow the assistant to act on their own initiative at specified times, without waiting for the guardian to ask. This is one way the assistant moves from reactive to proactive.
+A task the assistant runs at a set time without being asked.
 
 ### Self-host
 
-Running your assistant on your own computer/infrastructure. It gives guardians the opportunity to have full ownership, full control, and full privacy.
+Running an assistant on your own computer or infrastructure instead of the ANU platform.
 
 ### Skill
 
-A capability the assistant can learn and use. Skills are modular and can be added, removed, or updated. Importantly, the concept of skills in Vellum also encompasses tools, which may be called by the assistant's reasoning process. This is broader than the industry-standard distinction between skills and tools.
+A capability the assistant loads on demand: a `SKILL.md` with instructions, and optionally tools. Skills can be bundled, installed from the catalog, or written in the workspace. In ANU, "skill" also covers the tools a skill adds.
 
 ### Species
 
-The kind of assistant a guardian builds. Different organizations may build different species of assistant on shared infrastructure: Vellum builds one species; OpenClaw and Hermes Agents are examples of others. The species sets the assistant's underlying architecture, capabilities, and behavioral patterns. A guardian could in principle have assistants of multiple species.
+The kind of assistant runtime. `vellum` is ANU's own runtime (the identifier is kept for existing installs); `openclaw` is another species the CLI can run. Chosen at hatch: `anu hatch [species]`.
 
 ### Teleport
 
-Moving an assistant from one home to another. For example, migrating from the Vellum managed platform to a self-hosted Mac Mini, or from a desktop app to a Docker container. The assistant's identity, memory, and relationships should survive the move intact.
+Moving an assistant from one home to another, for example from the platform to a Docker container, with its identity and memory intact: `anu teleport`.
 
-### Trust Rules
+### Trust rules
 
-Policies governing what assistants can do autonomously without the guardian's consent. The guardian sets trust rules; the gateway enforces them. For example, the guardian can define a rule stating that interacting with files on their machine is "high risk" and therefore requires their explicit approval whereas interacting with files in the assistants' workspace is "low risk" and therefore can be performed autonomously. Assistants come with a broad set of default trust rules.
+Policies that let an assistant act without asking, or require approval. Under [permission controls v2](#permission-controls-v2), new flows use conversation consent instead of new trust rules.
 
 ### User
 
-A person who uses the Vellum Platform. This is a standard SaaS relationship. Importantly, "user" does not describe the relationship between a person and their assistant. They are a guardian, not a user. A person can be a guardian of a Vellum assistant without being a user of the Vellum Platform.
+A person with an ANU platform account. "User" describes the account, not the relationship with an assistant, which is guardianship.
 
-### Vellum Doctor
+### ANU Doctor
 
-Vellum's customer support tool. The Doctor helps guardians troubleshoot issues, diagnose problems, and nurse their assistant back to health.
-
-The Doctor is intentionally not a Vellum Assistant. A Vellum Assistant accumulates memory across a relationship; the Doctor accumulates none. Every support session starts fresh. This is not a limitation. It is the architectural guarantee that nothing the Doctor learns about one guardian travels to another. The Doctor does not have access to a guardian's assistant by default and must be granted explicit access by the guardian for each session.
+A support tool for diagnosing a platform-hosted assistant. It keeps no memory between sessions, and it reaches a guardian's assistant only with that guardian's permission for each session. Details: [`assistant/docs/anu-doctor.md`](assistant/docs/anu-doctor.md).
 
 ### Widget
 
-A UI element that the assistant renders within a conversation. Cards, forms, tables, confirmations. Widgets are ephemeral and contextual, appearing as part of a conversational flow. They are distinct from apps, which are persistent and accessible from the library.
+A UI element the assistant renders inside a conversation: a card, form, table, or confirmation. Widgets belong to the conversation; apps persist in the library.
 
 ### Workspace
 
-The assistant's persistent file system and working directory. The workspace is where the assistant stores files, projects, notes, and anything they need to persist between conversations. It is the assistant's own space, not shared with the guardian's file system.
+The assistant's own persistent file system: notes, memory, skills, projects, and its identity files. Separate from the guardian's files.

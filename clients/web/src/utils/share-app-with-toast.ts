@@ -11,7 +11,7 @@
  * detail page).
  */
 
-import { toast } from "@vellumai/design-library";
+import { toast } from "@anu/design-library";
 
 import { captureError } from "@/lib/sentry/capture-error";
 import type { AppSummary } from "@/types/app-types";

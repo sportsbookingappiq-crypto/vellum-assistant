@@ -243,7 +243,7 @@ function resolveSoundsDir(): string {
   const workspace = process.env.VELLUM_WORKSPACE_DIR;
   if (!workspace) {
     fail(
-      "VELLUM_WORKSPACE_DIR is not set. This script must run inside the Vellum skill sandbox.",
+      "VELLUM_WORKSPACE_DIR is not set. This script must run inside the ANU skill sandbox.",
     );
   }
   return join(workspace, "data", "sounds");

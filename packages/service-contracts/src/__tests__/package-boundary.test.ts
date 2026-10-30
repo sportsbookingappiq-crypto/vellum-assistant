@@ -1,16 +1,16 @@
 /**
- * Package boundary tests for @vellumai/service-contracts.
+ * Package boundary tests for @anu/service-contracts.
  *
  * Ensures the package:
  * 1. Does NOT import from assistant, gateway, credential-executor, or other
  *    service runtime modules.
  * 2. Does NOT import from runtime shared packages that sit above it in the
- *    dependency hierarchy (@vellumai/credential-storage, @vellumai/egress-proxy).
- * 3. Does NOT import from x-client packages (@vellumai/assistant-client,
- *    @vellumai/ces-client, @vellumai/gateway-client).
+ *    dependency hierarchy (@anu/credential-storage, @anu/egress-proxy).
+ * 3. Does NOT import from x-client packages (@anu/assistant-client,
+ *    @anu/ces-client, @anu/gateway-client).
  * 4. Remains a pure schema/type package — no runtime dependencies beyond zod.
  *
- * @vellumai/service-contracts is the lowest layer of the shared packages
+ * @anu/service-contracts is the lowest layer of the shared packages
  * hierarchy and must not depend on any higher-layer package.
  */
 
@@ -52,34 +52,34 @@ const FORBIDDEN_IMPORT_PATTERNS = [
   // Assistant runtime
   /from\s+["'](?:\.\.\/)*assistant(?:\/|["'])/,
   /require\s*\(\s*["'](?:\.\.\/)*assistant(?:\/|["'])/,
-  /from\s+["']@vellumai\/assistant(?:\/|["'])/,
-  /require\s*\(\s*["']@vellumai\/assistant(?:\/|["'])/,
+  /from\s+["']@anu\/assistant(?:\/|["'])/,
+  /require\s*\(\s*["']@anu\/assistant(?:\/|["'])/,
 
   // Gateway
   /from\s+["'](?:\.\.\/)*gateway(?:\/|["'])/,
   /require\s*\(\s*["'](?:\.\.\/)*gateway(?:\/|["'])/,
-  /from\s+["']@vellumai\/(?:vellum-)?gateway(?:\/|["'])/,
-  /require\s*\(\s*["']@vellumai\/(?:vellum-)?gateway(?:\/|["'])/,
+  /from\s+["']@anu\/(?:vellum-)?gateway(?:\/|["'])/,
+  /require\s*\(\s*["']@anu\/(?:vellum-)?gateway(?:\/|["'])/,
 
   // Credential executor
   /from\s+["'](?:\.\.\/)*credential-executor(?:\/|["'])/,
   /require\s*\(\s*["'](?:\.\.\/)*credential-executor(?:\/|["'])/,
-  /from\s+["']@vellumai\/credential-executor(?:\/|["'])/,
-  /require\s*\(\s*["']@vellumai\/credential-executor(?:\/|["'])/,
+  /from\s+["']@anu\/credential-executor(?:\/|["'])/,
+  /require\s*\(\s*["']@anu\/credential-executor(?:\/|["'])/,
 
   // Runtime shared packages (higher layer)
-  /from\s+["']@vellumai\/credential-storage(?:\/|["'])/,
-  /require\s*\(\s*["']@vellumai\/credential-storage(?:\/|["'])/,
-  /from\s+["']@vellumai\/egress-proxy(?:\/|["'])/,
-  /require\s*\(\s*["']@vellumai\/egress-proxy(?:\/|["'])/,
+  /from\s+["']@anu\/credential-storage(?:\/|["'])/,
+  /require\s*\(\s*["']@anu\/credential-storage(?:\/|["'])/,
+  /from\s+["']@anu\/egress-proxy(?:\/|["'])/,
+  /require\s*\(\s*["']@anu\/egress-proxy(?:\/|["'])/,
 
   // x-client packages (higher layer)
-  /from\s+["']@vellumai\/assistant-client(?:\/|["'])/,
-  /require\s*\(\s*["']@vellumai\/assistant-client(?:\/|["'])/,
-  /from\s+["']@vellumai\/ces-client(?:\/|["'])/,
-  /require\s*\(\s*["']@vellumai\/ces-client(?:\/|["'])/,
-  /from\s+["']@vellumai\/gateway-client(?:\/|["'])/,
-  /require\s*\(\s*["']@vellumai\/gateway-client(?:\/|["'])/,
+  /from\s+["']@anu\/assistant-client(?:\/|["'])/,
+  /require\s*\(\s*["']@anu\/assistant-client(?:\/|["'])/,
+  /from\s+["']@anu\/ces-client(?:\/|["'])/,
+  /require\s*\(\s*["']@anu\/ces-client(?:\/|["'])/,
+  /from\s+["']@anu\/gateway-client(?:\/|["'])/,
+  /require\s*\(\s*["']@anu\/gateway-client(?:\/|["'])/,
 ];
 
 describe("package boundary", () => {
@@ -112,7 +112,7 @@ describe("package boundary", () => {
         `Found ${violations.length} forbidden import(s) in service-contracts package:\n` +
           violations.map((v) => `  - ${v}`).join("\n") +
           "\n\n" +
-          "@vellumai/service-contracts is a pure schema/type package and must not\n" +
+          "@anu/service-contracts is a pure schema/type package and must not\n" +
           "import from runtime services or higher-layer packages.",
       );
     }
@@ -137,12 +137,12 @@ describe("package boundary", () => {
 
     const forbidden = Object.keys(allDeps).filter((dep) =>
       [
-        "@vellumai/assistant",
-        "@vellumai/credential-storage",
-        "@vellumai/egress-proxy",
-        "@vellumai/assistant-client",
-        "@vellumai/ces-client",
-        "@vellumai/gateway-client",
+        "@anu/assistant",
+        "@anu/credential-storage",
+        "@anu/egress-proxy",
+        "@anu/assistant-client",
+        "@anu/ces-client",
+        "@anu/gateway-client",
       ].includes(dep),
     );
 

@@ -8,7 +8,7 @@ import {
   pluginsByNameEnablePost,
 } from "@/generated/daemon/sdk.gen";
 import type { PluginsGetResponse } from "@/generated/daemon/types.gen";
-import { toast } from "@vellumai/design-library";
+import { toast } from "@anu/design-library";
 
 interface TogglePluginVariables {
   name: string;

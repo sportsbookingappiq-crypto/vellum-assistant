@@ -11,7 +11,7 @@
 
 import { useState } from "react";
 
-import { Popover } from "@vellumai/design-library/components/popover";
+import { Popover } from "@anu/design-library/components/popover";
 
 import { SelectTriggerRow } from "@/components/speech/select-trigger-row";
 import { useManagedVoiceSelection } from "@/components/speech/use-managed-voice-selection";
@@ -37,7 +37,7 @@ export function VoicePickerField({
   const [open, setOpen] = useState(false);
   // Gate on the catalog, not the saved-config `available`: this field is always
   // parent-controlled (the Text-to-Speech card decides to show it from its
-  // draft provider), so a draft switch to Vellum must reveal the picker before
+  // draft provider), so a draft switch to ANU must reveal the picker before
   // the provider is persisted.
   const { voices } = useManagedVoiceSelection(assistantId);
 

@@ -16,7 +16,7 @@ import {
 import { networkInterfaces } from "node:os";
 import { join } from "node:path";
 
-import { cloudAssistantHubUrl } from "@vellumai/environments";
+import { cloudAssistantHubUrl } from "@anu/environments";
 
 import {
   getAssistantDisplayName,
@@ -40,7 +40,7 @@ export { findWebDistDir } from "./web-dist.js";
  * CLI-managed nginx reverse proxy that fronts the gateway as the canonical
  * tunnel target: browser → tunnel (TLS) → nginx@127.0.0.1 → gateway@127.0.0.1.
  *
- * `vellum tunnel` (and the wake restore path) bring this edge up via
+ * `anu tunnel` (and the wake restore path) bring this edge up via
  * `ensureTunnelEdge` and always front its loopback listen port.
  */
 
@@ -152,7 +152,7 @@ export interface RemoteWebIngressOptions {
 
 /**
  * Cloud web SPA base URL for a build environment. The mapping lives in
- * `@vellumai/environments` (`cloudAssistantHubUrl`) and is shared with the
+ * `@anu/environments` (`cloudAssistantHubUrl`) and is shared with the
  * Capacitor shell's `server.url`, so the two consumers cannot drift.
  */
 export function cloudWebHubUrl(env: string | undefined): string {
@@ -761,7 +761,7 @@ const OWNERSHIP_SETTLE_INTERVAL_MS = 100;
 /**
  * Outcome of an attempt to bring up the nginx ingress edge. Callers render
  * their own messaging per variant: `ensureTunnelEdge` maps failure variants to
- * thrown errors with actionable text, which `vellum tunnel` and
+ * thrown errors with actionable text, which `anu tunnel` and
  * `nginx-ingress up` print before exiting non-zero while the wake restore path
  * warns and continues.
  */
@@ -808,7 +808,7 @@ export type StartRemoteWebIngressResult =
  * requested config.
  *
  * Pure mechanism: it performs no console output and never exits the process, so
- * every edge caller (`vellum tunnel`, `nginx-ingress up`, the wake restore
+ * every edge caller (`anu tunnel`, `nginx-ingress up`, the wake restore
  * path) can share one implementation and map the returned result to its own UX.
  */
 export async function startRemoteWebIngress(opts: {
@@ -1048,8 +1048,8 @@ function stuckEdgeRecoveryHint(workspaceDir: string): string {
   const pid = getIngressPid(workspaceDir);
   const target = pid !== null ? `the nginx process (PID ${pid})` : "it";
   return (
-    `Vellum could not stop ${target}, even with SIGKILL. ` +
-    `Stop it by hand and retry, or run \`vellum sleep\` to shut the ` +
+    `ANU could not stop ${target}, even with SIGKILL. ` +
+    `Stop it by hand and retry, or run \`anu sleep\` to shut the ` +
     `assistant down entirely. Check the nginx log: ${logPath}`
   );
 }
@@ -1142,7 +1142,7 @@ export async function ensureTunnelEdge(opts: {
       throw new Error(
         "Unable to locate built web assets for the remote web edge. " +
           "Build the SPA (`cd clients/web && VITE_PLATFORM_MODE=false bun run build`) " +
-          "or install @vellumai/web so its packaged dist directory is available.",
+          "or install @anu/web so its packaged dist directory is available.",
       );
     case "unreachable":
       throw new Error(

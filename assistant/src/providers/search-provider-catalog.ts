@@ -46,8 +46,8 @@ export interface SearchProviderCatalogEntry {
    * Authentication style for the search provider choice.
    *
    * `managed` means the choice does not require a user-supplied search API key.
-   * `vellum` searches through the Vellum platform search proxy, billed to
-   * Vellum credits; the platform connection is the credential. For
+   * `vellum` searches through the ANU platform search proxy, billed to
+   * ANU credits; the platform connection is the credential. For
    * `inference-provider-native`, the daemon uses the inference API's native
    * hosted web-search tool only when the selected inference provider/model
    * supports it; otherwise the app-executed `web_search` tool runs, falling
@@ -90,8 +90,8 @@ export const SEARCH_PROVIDER_CATALOG: readonly SearchProviderCatalogEntry[] = [
   // vellum leads: it is the managed option, selected like any other provider.
   {
     id: "vellum",
-    displayName: "Vellum",
-    displayNameLong: "Vellum Managed Search",
+    displayName: "ANU",
+    displayNameLong: "ANU Managed Search",
     kind: "managed",
   },
   {

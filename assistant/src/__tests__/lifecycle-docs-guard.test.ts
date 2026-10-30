@@ -5,8 +5,8 @@ import { describe, expect, it } from "bun:test";
 
 /**
  * Guard test: prevent stale lifecycle instructions from being reintroduced
- * into documentation. The canonical lifecycle commands are `vellum wake`,
- * `vellum ps`, and `vellum sleep`. Repo-local slash commands live in
+ * into documentation. The canonical lifecycle commands are `anu wake`,
+ * `anu ps`, and `anu sleep`. Repo-local slash commands live in
  * `.claude/skills/`, not `.claude/commands/`.
  *
  * See AGENTS.md for the conventions these tests enforce.
@@ -66,21 +66,19 @@ describe("lifecycle docs guard", () => {
     }> = [
       {
         file: "README.md",
-        pattern: "vellum wake\\|vellum ps\\|vellum sleep",
-        description:
-          "README.md should mention vellum wake, vellum ps, or vellum sleep",
+        pattern: "anu wake\\|anu ps\\|anu sleep",
+        description: "README.md should mention anu wake, anu ps, or anu sleep",
       },
       {
         file: "assistant/README.md",
-        pattern: "vellum wake\\|vellum ps",
-        description:
-          "assistant/README.md should mention vellum wake or vellum ps",
+        pattern: "anu wake\\|anu ps",
+        description: "assistant/README.md should mention anu wake or anu ps",
       },
       {
         file: "AGENTS.md",
-        pattern: "vellum ps\\|vellum sleep\\|vellum wake",
+        pattern: "anu ps\\|anu sleep\\|anu wake",
         description:
-          "AGENTS.md should mention vellum ps, vellum sleep, or vellum wake in the /update command description",
+          "AGENTS.md should mention anu ps, anu sleep, or anu wake in the /update command description",
       },
     ];
 
@@ -103,7 +101,7 @@ describe("lifecycle docs guard", () => {
         "",
         ...failures.map((f) => `  - ${f}`),
         "",
-        "These docs should reference vellum CLI lifecycle commands (wake/ps/sleep).",
+        "These docs should reference anu CLI lifecycle commands (wake/ps/sleep).",
       ].join("\n");
 
       expect(failures, message).toEqual([]);
@@ -195,7 +193,7 @@ describe("lifecycle docs guard", () => {
     if (violations.length > 0) {
       const message = [
         "Found docs using stale daemon startup patterns as primary instructions.",
-        "Use `vellum wake` / `vellum sleep` instead. Raw bun commands are acceptable",
+        "Use `anu wake` / `anu sleep` instead. Raw bun commands are acceptable",
         "only in collapsed <details> sections or dev-only contexts.",
         "",
         "Violations:",

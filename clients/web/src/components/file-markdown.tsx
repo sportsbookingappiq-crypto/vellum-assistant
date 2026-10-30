@@ -8,7 +8,7 @@
  * `ExternalAnchor`, which the native shells need to open a link at all.
  */
 
-import { MarkdownMessage } from "@vellumai/design-library";
+import { MarkdownMessage } from "@anu/design-library";
 
 import { ExternalAnchor } from "@/components/external-anchor";
 

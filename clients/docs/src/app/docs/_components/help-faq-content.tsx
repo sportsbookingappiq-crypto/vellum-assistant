@@ -25,14 +25,14 @@ export function HelpFaqContent() {
           </SectionHeading>
 
           <SectionHeading id="what-is-vellum" level={3}>
-            What is Vellum?
+            What is ANU?
           </SectionHeading>
           <p className="mb-6 text-zinc-600">
             A personal AI assistant that lives on your computer. It can take real actions on your
             behalf: reading files, sending emails, browsing the web, controlling your Mac or Windows PC, building
             apps, managing your schedule, making phone calls, and more. It has its own identity,
             personality, and long-term memory that persists across conversations. See{" "}
-            <a href="/docs/getting-started/what-is-vellum">What is Vellum?</a> for the full
+            <a href="/docs/getting-started/what-is-vellum">What is ANU?</a> for the full
             overview.
           </p>
 
@@ -41,20 +41,20 @@ export function HelpFaqContent() {
           </SectionHeading>
           <p className="mb-6 text-zinc-600">
             Those are conversation tools. You type, they respond, you copy-paste the answer
-            somewhere. Vellum is different because it has tools (it can actually do things on your
+            somewhere. ANU is different because it has tools (it can actually do things on your
             computer and across services), memory (it remembers you across conversations with a
             full hybrid search system), a persistent identity (its own personality, name, and
             behavioral rules you can customize), and it reaches you everywhere (desktop,
             Telegram, Slack, voice calls). More detail in{" "}
-            <a href="/docs/getting-started/what-is-vellum">What is Vellum?</a>.
+            <a href="/docs/getting-started/what-is-vellum">What is ANU?</a>.
           </p>
 
           <SectionHeading id="is-vellum-free" level={3}>
-            Is Vellum free?
+            Is ANU free?
           </SectionHeading>
           <p className="mb-6 text-zinc-600">
-            You can start without paying. Vellum Cloud has a free{" "}
-            <strong>Base</strong> plan, and you can also run Vellum locally with your own
+            You can start without paying. ANU Cloud has a free{" "}
+            <strong>Base</strong> plan, and you can also run ANU locally with your own
             model API key at no cost beyond that API usage. Paid{" "}
             <strong>Pro</strong> packages add a larger machine, more storage, and included
             monthly credits. See{" "}
@@ -87,7 +87,7 @@ export function HelpFaqContent() {
             What platforms does it support?
           </SectionHeading>
           <p className="mb-6 text-zinc-600">
-            On Vellum Cloud, you can reach your assistant from any modern browser at{" "}
+            On ANU Cloud, you can reach your assistant from any modern browser at{" "}
             <Link
               href="https://vellum.ai"
               className="font-semibold text-emerald-700 underline hover:text-emerald-800"
@@ -103,7 +103,7 @@ export function HelpFaqContent() {
               href={routes.downloads}
               className="font-semibold text-emerald-700 underline hover:text-emerald-800"
             >
-              vellum.ai/downloads
+              anu.ai/downloads
             </Link>
             . Beyond those first-party surfaces, channels include Telegram, Slack, email,
             and phone calls.
@@ -122,11 +122,11 @@ export function HelpFaqContent() {
                   href="/docs/hosting-options/cloud-hosting"
                   className="font-semibold text-emerald-700 underline hover:text-emerald-800"
                 >
-                  Vellum Cloud
+                  ANU Cloud
                 </Link>
               </strong>{" "}
               (recommended). Always on, sandboxed per account, reachable
-              from web, desktop, iOS, voice, and chat. Vellum runs the
+              from web, desktop, iOS, voice, and chat. ANU runs the
               infrastructure. The right pick if you want it to just work
               and be available 24/7 across your devices.
             </li>
@@ -205,7 +205,7 @@ export function HelpFaqContent() {
               href={routes.downloads}
               className="font-semibold text-emerald-700 underline hover:text-emerald-800"
             >
-              vellum.ai/downloads
+              anu.ai/downloads
             </Link>
             . You can also open{" "}
             <Link
@@ -252,7 +252,7 @@ export function HelpFaqContent() {
             Is my data safe?
           </SectionHeading>
           <p className="mb-6 text-zinc-600">
-            On Vellum Cloud (the default), your workspace, memories, and
+            On ANU Cloud (the default), your workspace, memories, and
             credentials live in your private, encrypted cloud account, not
             shared with other users. If you self-host, all of that stays on
             your machine instead, with credentials kept in the macOS Keychain
@@ -265,7 +265,7 @@ export function HelpFaqContent() {
           </p>
 
           <SectionHeading id="does-vellum-train-on-my-data" level={3}>
-            Does Vellum train on my data?
+            Does ANU train on my data?
           </SectionHeading>
           <p className="mb-6 text-zinc-600">
             No. From our side, your data is not used for training or fine-tuning. Anthropic&apos;s API
@@ -275,7 +275,7 @@ export function HelpFaqContent() {
           </p>
 
           <SectionHeading id="does-vellum-collect-telemetry" level={3}>
-            Does Vellum collect telemetry?
+            Does ANU collect telemetry?
           </SectionHeading>
           <p className="mb-6 text-zinc-600">
             Only if you opt in. There are two optional toggles in Settings &gt; Privacy: usage
@@ -285,10 +285,10 @@ export function HelpFaqContent() {
           </p>
 
           <SectionHeading id="can-my-employer-see-what-i-do-with-vellum" level={3}>
-            Can my employer see what I do with Vellum?
+            Can my employer see what I do with ANU?
           </SectionHeading>
           <p className="mb-6 text-zinc-600">
-            Your assistant is yours. Vellum doesn&apos;t have a dashboard, an
+            Your assistant is yours. ANU doesn&apos;t have a dashboard, an
             admin panel, or any way for your employer to see your usage.
             That said, if you&apos;re using your employer&apos;s computer or
             network, they could potentially see the API calls or web traffic
@@ -301,12 +301,12 @@ export function HelpFaqContent() {
             What happens if I delete the app?
           </SectionHeading>
           <p className="mb-6 text-zinc-600">
-            On Vellum Cloud, your account and workspace stick around unless
+            On ANU Cloud, your account and workspace stick around unless
             you ask us to delete them. You can export your workspace at any
             time, or request full deletion through the account settings or
             support. If you self-host, your workspace folder
             (<code>~/.vellum/</code>) stays on your machine until you delete
-            it manually; <code>vellum retire</code> from the CLI archives the
+            it manually; <code>anu retire</code> from the CLI archives the
             workspace as a tarball before removal. See{" "}
             <a href="/docs/trust-security/security-best-practices">Security Best Practices</a>{" "}
             for the full reset process.

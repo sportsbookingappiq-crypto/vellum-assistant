@@ -24,9 +24,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CalendarClock, KeyRound, Sparkles } from "lucide-react";
 
-import type { DiskPressureStatus } from "@vellumai/assistant-api";
-import { Button } from "@vellumai/design-library/components/button";
-import { Tag } from "@vellumai/design-library/components/tag";
+import type { DiskPressureStatus } from "@anu/assistant-api";
+import { Button } from "@anu/design-library/components/button";
+import { Tag } from "@anu/design-library/components/tag";
 import { withQueryCache } from "@/lib/story-query-cache";
 import { useResolvedAssistantsStore } from "@/stores/resolved-assistants-store";
 
@@ -238,7 +238,7 @@ export const CreditWalls: Story = {
               />
             }
             title="Daily credit limit reached"
-            subtitle="This limit applies to Vellum credit spend and resets at midnight UTC."
+            subtitle="This limit applies to ANU credit spend and resets at midnight UTC."
             action={{ label: "Adjust Limit", onClick: () => {} }}
           />
         </WallCase>
@@ -247,7 +247,7 @@ export const CreditWalls: Story = {
           wall="Provider billing (bring-your-own key)"
           trigger="The user's own model provider is out of funds."
           cta="Open Settings"
-          destination="/assistant/settings/ai (no Vellum upsell)"
+          destination="/assistant/settings/ai (no ANU upsell)"
         >
           <BillingErrorBanner
             ariaLabel="Your API key needs credits"

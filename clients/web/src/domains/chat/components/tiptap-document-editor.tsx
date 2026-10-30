@@ -11,7 +11,7 @@
 
 import { EditorContent, useEditor } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
-import { cn } from "@vellumai/design-library";
+import { cn } from "@anu/design-library";
 import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 
 import { BubbleToolbar } from "@/domains/chat/components/tiptap-bubble-toolbar";

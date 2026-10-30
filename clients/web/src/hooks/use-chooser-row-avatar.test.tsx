@@ -28,7 +28,7 @@ import type * as AvatarApi from "@/assistant/avatar-api";
 import type { Assistant } from "@/generated/api";
 import { publish } from "@/lib/event-bus";
 import type * as AvatarLastSeenCache from "@/lib/avatar-last-seen-cache";
-import type { LocalReadAssistantAvatarResult } from "@vellumai/ipc-contract";
+import type { LocalReadAssistantAvatarResult } from "@anu/ipc-contract";
 import type * as LocalModeHost from "@/runtime/local-mode-host";
 import type { ResolvedAssistant } from "@/stores/resolved-assistants-store";
 import type {
@@ -232,7 +232,7 @@ function createWrapper(
   };
 }
 
-/** A signed-in platform account on this device, the state a `vellum login` leaves. */
+/** A signed-in platform account on this device, the state a `anu login` leaves. */
 function signInToPlatform(): void {
   useAuthStore.setState({
     platformSession: "present",

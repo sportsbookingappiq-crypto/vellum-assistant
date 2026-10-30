@@ -2,9 +2,9 @@ import { SkillsReferenceSubagentContent } from "@/app/docs/_components/skills-re
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({
-  title: "Subagent - Vellum Docs",
+  title: "Subagent - ANU Docs",
   description:
-    "Subagent skill for Vellum — spawns autonomous background agents that work independently on tasks.",
+    "Subagent skill for ANU — spawns autonomous background agents that work independently on tasks.",
   path: "/docs/skills-reference/subagent",
 });
 

@@ -55,7 +55,7 @@ import { dirname, join } from "node:path";
 import type {
   SecureKeyBackend,
   SecureKeyDeleteResult,
-} from "@vellumai/credential-storage";
+} from "@anu/credential-storage";
 
 // ---------------------------------------------------------------------------
 // Constants (must match assistant/src/security/encrypted-store.ts)
@@ -346,7 +346,7 @@ export class StoreUnavailableError extends Error {
  * persisting refreshed OAuth tokens. `delete` removes a key from the
  * encrypted store.
  *
- * @param vellumRoot - The Vellum root directory (e.g. `~/.vellum`).
+ * @param vellumRoot - The ANU root directory (e.g. `~/.vellum`).
  * @param options.entropyOverride - If provided, used instead of local
  *   machine entropy for key derivation. In managed mode the CES sidecar
  *   runs in a different container with a different hostname/user, so it

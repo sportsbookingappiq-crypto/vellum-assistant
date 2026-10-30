@@ -35,9 +35,9 @@ const DOCK_BUST_MARKER = path.join(
 // makes `new Notification().show()` fail with `UNErrorDomain error 1`
 // (notificationsNotAllowed). Stamp our own owned identifier so the dev app
 // gets a clean authorization prompt, mirroring electron-builder's dev scheme
-// (`com.vellum.vellum-assistant-electron-${env}`) in electron-builder.config.cjs.
+// (`ai.anu.assistant-electron-${env}`) in electron-builder.config.cjs.
 const VELLUM_ENVIRONMENT = process.env.VELLUM_ENVIRONMENT || "local";
-const DEV_BUNDLE_ID = `com.vellum.vellum-assistant-electron-${VELLUM_ENVIRONMENT}`;
+const DEV_BUNDLE_ID = `ai.anu.assistant-electron-${VELLUM_ENVIRONMENT}`;
 
 const REQUIRED_PLIST_STRINGS: Record<string, string> = {
   CFBundleDisplayName: "Vellum Electron",

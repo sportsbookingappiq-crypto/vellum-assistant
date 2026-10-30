@@ -11,7 +11,7 @@ import {
   type CompanionPopover as CompanionPopoverContent,
   type CompanionPopoverView,
   type VoiceActivityState,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 /**
  * The popover and the call's bar together, the way a user on a call sees

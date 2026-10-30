@@ -1,8 +1,8 @@
 import { Loader2 } from "lucide-react";
 import { Outlet, useNavigate } from "react-router";
 
-import { Typography } from "@vellumai/design-library";
-import { Button } from "@vellumai/design-library/components/button";
+import { Typography } from "@anu/design-library";
+import { Button } from "@anu/design-library/components/button";
 
 import { useAssistantLifecycleStore } from "@/assistant/lifecycle-store";
 import { useOnboardingLogin } from "@/hooks/use-onboarding-login";

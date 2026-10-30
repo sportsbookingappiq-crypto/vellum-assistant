@@ -2,7 +2,7 @@ import { ArrowUp, ChevronDown, Loader2, Play } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Button } from "@vellumai/design-library/components/button";
+import { Button } from "@anu/design-library/components/button";
 
 import { DetailPanelStopButton } from "@/components/detail-panel-stop-button";
 import { ShareFeedbackModal } from "@/components/share-feedback-modal";

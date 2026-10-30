@@ -1,4 +1,4 @@
-import { FN_CLAIMANTS, type FnClaimant } from "@vellumai/ipc-contract";
+import { FN_CLAIMANTS, type FnClaimant } from "@anu/ipc-contract";
 
 import { runningApps } from "@/runtime/running-apps";
 

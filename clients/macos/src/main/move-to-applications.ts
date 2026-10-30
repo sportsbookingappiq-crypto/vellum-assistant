@@ -3,7 +3,7 @@ import { app, BrowserWindow, dialog, shell } from "electron";
 import {
   readSetting,
   writeSetting,
-} from "@vellumai/electron-desktop/settings";
+} from "@anu/electron-desktop/settings";
 
 import {
   getInstallLocation,
@@ -17,10 +17,10 @@ import log from "./logger";
 declare const __VELLUM_ENVIRONMENT__: string;
 
 /**
- * The app's user-facing product name ("Vellum", "Vellum Local", "Vellum Dev",
+ * The app's user-facing product name ("ANU", "ANU Local", "ANU Dev",
  * …). `app.getName()` can't be used here: electron-builder writes the product
  * name to the bundle Info.plist (`CFBundleName`), not into the asar'd
- * package.json, so `app.getName()` returns the package `name` (`@vellumai/macos`)
+ * package.json, so `app.getName()` returns the package `name` (`@anu/macos`)
  * for packaged builds. We instead mirror the per-environment derivation in
  * electron-builder.config.cjs so the two always agree. (Setting it via
  * `app.setName()` is avoided — that would shift the production `userData` path.)
@@ -30,8 +30,8 @@ function productDisplayName(): string {
     typeof __VELLUM_ENVIRONMENT__ === "string"
       ? __VELLUM_ENVIRONMENT__
       : "production";
-  if (env === "production") return "Vellum";
-  return `Vellum ${env.charAt(0).toUpperCase()}${env.slice(1)}`;
+  if (env === "production") return "ANU";
+  return `ANU ${env.charAt(0).toUpperCase()}${env.slice(1)}`;
 }
 
 /**
@@ -44,15 +44,15 @@ function productDisplayName(): string {
 function installSplashHtml(productName: string): string {
   return `<!doctype html><html><head><meta charset="utf-8"><style>
     html,body{margin:0;height:100%}
-    body{font-family:-apple-system,system-ui,"SF Pro Text",sans-serif;background:#fff;
-      color:#1d1d1f;height:100vh;display:flex;flex-direction:column;align-items:center;
+    body{font-family:-apple-system,system-ui,"SF Pro Text",sans-serif;background:#F0F9FF;
+      color:#0A1633;height:100vh;display:flex;flex-direction:column;align-items:center;
       justify-content:center;gap:7px;-webkit-user-select:none;user-select:none;cursor:default}
     .t{font-size:15px;font-weight:600}
-    .s{font-size:12px;color:#6e6e73}
-    .bar{margin-top:16px;width:220px;height:6px;border-radius:3px;background:#ececef;
+    .s{font-size:12px;color:#4A5A70}
+    .bar{margin-top:16px;width:220px;height:6px;border-radius:3px;background:#E0F2FE;
       overflow:hidden;position:relative}
     .bar::after{content:"";position:absolute;top:0;left:0;height:100%;width:40%;
-      border-radius:3px;background:#4f7cff;animation:slide 1.1s ease-in-out infinite}
+      border-radius:3px;background:#2563EB;animation:slide 1.1s ease-in-out infinite}
     @keyframes slide{0%{left:-40%}100%{left:100%}}
   </style></head><body>
     <div class="t">Installing ${productName}</div>
@@ -74,7 +74,7 @@ function createInstallSplash(): BrowserWindow {
     show: false,
     center: true,
     alwaysOnTop: true,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#F0F9FF",
     title: `Installing ${name}`,
     webPreferences: {
       contextIsolation: true,
@@ -93,7 +93,7 @@ function createInstallSplash(): BrowserWindow {
  * new location.
  *
  * This is the "double-click to install" half of the DMG installer flow: the
- * DMG ships a single app icon under "Install Vellum / Double click the icon
+ * DMG ships a single app icon under "Install ANU / Double click the icon
  * below" with no Applications alias, and the app installs itself here instead
  * of asking the user to drag it. It also resolves macOS app translocation —
  * an app launched from a quarantined DMG runs from a randomized read-only path
@@ -158,7 +158,7 @@ export async function relocateToApplicationsFolder(): Promise<boolean> {
         if (conflictType === "existsAndRunning") {
           // Another copy is already installed and running. Leave it be and
           // keep running from the current location for this session rather
-          // than nagging — the user clearly already has Vellum installed.
+          // than nagging — the user clearly already has ANU installed.
           conflictedWithRunningCopy = true;
           log.info(
             "[move-to-applications] /Applications copy already running; skipping move",

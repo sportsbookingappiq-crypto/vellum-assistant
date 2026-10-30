@@ -1,7 +1,7 @@
 /**
  * IPC route for the daemon's debug export.
  *
- * A debug bundle (a `.vbundle` a self-hosted owner sends to Vellum staff)
+ * A debug bundle (a `.vbundle` a self-hosted owner sends to ANU staff)
  * carries the gateway's database and recent logs alongside the daemon's
  * data. The daemon cannot read those itself: in local mode the database
  * lives in the protected directory next to the encryption keys, and in
@@ -14,7 +14,7 @@ import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-import { GatewayDebugExportIpcParamsSchema } from "@vellumai/gateway-client/gateway-ipc-contracts";
+import { GatewayDebugExportIpcParamsSchema } from "@anu/gateway-client/gateway-ipc-contracts";
 
 import type { GatewayConfig } from "../config.js";
 import { snapshotGatewayDb } from "../db/connection.js";

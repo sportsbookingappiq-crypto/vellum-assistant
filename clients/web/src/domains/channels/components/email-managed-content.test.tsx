@@ -46,7 +46,7 @@ let provisionImpl: (opts: unknown) => Promise<{
   response: { ok: boolean };
 }>;
 
-mock.module("@vellumai/design-library/components/toast", () => ({
+mock.module("@anu/design-library/components/toast", () => ({
   toast: {
     success: (message: string) => {
       toastSuccessCalls.push(message);

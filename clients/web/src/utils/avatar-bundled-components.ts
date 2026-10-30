@@ -8,11 +8,11 @@
  * builds a fresh object every call, so calling per site would hand them a new
  * identity on every render.
  *
- * This module carries the ~47 kB of SVG path data. Boot-path code that needs
+ * This module carries the ~25 kB of SVG path data. Boot-path code that needs
  * only the palette imports `@/utils/avatar-bundled-colors` instead.
  */
 
-import { getCharacterComponents } from "@vellumai/avatar-catalog";
+import { getCharacterComponents } from "@anu/avatar-catalog";
 
 import type { CharacterComponents } from "@/types/avatar";
 

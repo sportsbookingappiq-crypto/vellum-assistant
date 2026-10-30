@@ -14,7 +14,7 @@
 import {
   isLoopbackGatewayCloud,
   type Lockfile,
-} from "@vellumai/local-mode/contract";
+} from "@anu/local-mode/contract";
 
 import { HostProxySseClient, type HostProxySseMessage } from "./sse";
 import { HostProxyPoster, type PresenceState } from "./poster";
@@ -46,7 +46,7 @@ export interface HostProxyLogger {
 
 /**
  * Guardian-token result for a local host-proxy connect. Mirrors the
- * `TokenResult` from `@vellumai/local-mode` so the startup ride-out can
+ * `TokenResult` from `@anu/local-mode` so the startup ride-out can
  * retry a still-starting gateway (`503`) without stalling on a missing
  * (`404`), spent (`401`), refused (`403`), or permanent (`500`) credential.
  */

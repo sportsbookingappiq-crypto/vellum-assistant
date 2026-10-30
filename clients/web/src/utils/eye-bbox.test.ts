@@ -31,13 +31,14 @@ const HUMP = "M0 0C0 100 100 100 100 0Z";
 /**
  * Ground truth for two bundled eye styles, in path units, measured by walking
  * every curve at 40,000 points and keeping the extremes. `angry` is the style
- * whose control points sit furthest from its ink and `grumpy` the one style
- * that uses `H`, so between them they cover both things this parser has to get
- * right. Regenerate rather than adjust if the bundled art changes.
+ * whose control points sit furthest from its ink (its lids are arcs cut off
+ * mid-curve) and `grumpy` the one built mostly of straight lid lines with only
+ * rounded corners, so between them they cover both ends of what this parser
+ * has to get right. Regenerate rather than adjust if the bundled art changes.
  */
 const SAMPLED_BOUNDS = {
-  angry: { x: 151, y: 267, w: 397.822, h: 130.949 },
-  grumpy: { x: 90.5841, y: 226.908, w: 417.6578, h: 91.859 },
+  angry: { x: 93.9983, y: 250.86, w: 412.0033, h: 165.1477 },
+  grumpy: { x: 95.1201, y: 258, w: 409.7598, h: 86 },
 } as const;
 
 /** Slack for the sampled numbers above, in path units. */
@@ -74,7 +75,7 @@ describe("tightPathBBox", () => {
   });
 
   test("tracks the current point through `H` and `V`", () => {
-    // `grumpy` is the one bundled style that uses `H`.
+    // No bundled style uses `H` today, but path data from elsewhere may.
     const withH = "M10 40H70V90Z";
     expect(tightPathBBox(withH)).toEqual({ x: 10, y: 40, w: 60, h: 50 });
   });
@@ -121,11 +122,13 @@ describe("tightPathBBox", () => {
   test("drops the control-point overshoot the `angry` style carries", () => {
     const tight = unionOf("angry", tightPathBBox);
     const control = unionOf("angry", pathBBox);
-    expect(tight.w).toBeCloseTo(control.w, 6);
-    // Its sclera curve is drawn with control points well below the ink, so the
-    // control-point box is the one that disagrees with the sampled truth.
-    expect(control.h / tight.h).toBeGreaterThan(1.5);
+    // Its eyes are circles cut by a slanted lid, so the arcs start and end
+    // mid-curve and their control points reach past the ink on every side.
+    // The control-point box is the one that disagrees with the sampled truth.
+    expect(control.w - tight.w).toBeGreaterThan(10);
+    expect(control.h / tight.h).toBeGreaterThan(1.05);
     expect(Math.abs(control.h - SAMPLED_BOUNDS.angry.h)).toBeGreaterThan(1);
+    expect(Math.abs(control.w - SAMPLED_BOUNDS.angry.w)).toBeGreaterThan(1);
   });
 });
 

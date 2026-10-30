@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import type { SubagentDetailEvent } from "@vellumai/assistant-api";
+import type { SubagentDetailEvent } from "@anu/assistant-api";
 
 import { mapDetailEvents } from "./map-detail-events";
 

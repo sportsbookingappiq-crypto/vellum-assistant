@@ -13,7 +13,7 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { act, cleanup, renderHook } from "@testing-library/react";
 
-import type { RemoteWebPairingRequestSummary } from "@vellumai/service-contracts/remote-web-pairing";
+import type { RemoteWebPairingRequestSummary } from "@anu/service-contracts/remote-web-pairing";
 
 import {
   createTimerHarness,

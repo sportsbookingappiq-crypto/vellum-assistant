@@ -2,8 +2,8 @@ import { useMemo } from "react";
 
 import { useTranslation } from "@/i18n";
 import { routes } from "@/utils/routes";
-import type { FeedItem } from "@vellumai/assistant-api";
-import { Button, Typography } from "@vellumai/design-library";
+import type { FeedItem } from "@anu/assistant-api";
+import { Button, Typography } from "@anu/design-library";
 
 import {
   getFeedItemSkillId,

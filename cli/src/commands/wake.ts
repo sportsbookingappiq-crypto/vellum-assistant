@@ -1,7 +1,7 @@
 import {
   SigningKeyContinuityError,
   resolveExistingLocalSigningKey,
-} from "@vellumai/local-mode";
+} from "@anu/local-mode";
 import { writeFileSync } from "fs";
 import { join } from "path";
 
@@ -44,7 +44,7 @@ import {
 export async function wake(): Promise<void> {
   const args = process.argv.slice(3);
   if (args.includes("--help") || args.includes("-h")) {
-    console.log("Usage: vellum wake [<name>] [options]");
+    console.log("Usage: anu wake [<name>] [options]");
     console.log("");
     console.log("Start the assistant and gateway processes.");
     console.log("");
@@ -62,7 +62,7 @@ export async function wake(): Promise<void> {
     );
     console.log(
       "  --repair-guardian  Force-re-provision the guardian token (resets the\n" +
-        "                     gateway bootstrap and re-leases — REVOKES other device-bound\n" +
+        "                     gateway bootstrap and re-leases; REVOKES other device-bound\n" +
         "                     tokens; replaces an unrecoverable signing key and restarts services only then.\n" +
         "                     Clients may need to authenticate again. Use deliberately.)",
     );
@@ -76,7 +76,7 @@ export async function wake(): Promise<void> {
   // Gate it behind an explicit flag so the automatic connect-repair path
   // (`runWake` spawns `wake <id>` with no flags) can never revoke a live session
   // — it only ever restarts + sibling-seeds. A genuine spent-bootstrap brick is
-  // recovered deliberately via `vellum wake <id> --repair-guardian`.
+  // recovered deliberately via `anu wake <id> --repair-guardian`.
   const repairGuardian = args.includes("--repair-guardian");
   const nameArg = args.find((a) => !a.startsWith("-"));
   const entry = resolveTargetAssistant(nameArg);
@@ -100,21 +100,21 @@ export async function wake(): Promise<void> {
 
   if (entry.cloud === "apple-container") {
     console.error(
-      `Error: '${entry.assistantId}' uses the Apple Containers runtime. Its lifecycle is managed by the macOS app — use the app to start it.`,
+      `Error: '${entry.assistantId}' uses the Apple Containers runtime. Its lifecycle is managed by the macOS app. Use the app to start it.`,
     );
     process.exit(1);
   }
 
   if (entry.cloud === "paired") {
     console.error(
-      `Error: '${entry.assistantId}' is a remote assistant paired from another machine — its lifecycle is managed on its host machine, not here. Use \`vellum client ${entry.assistantId}\` to chat with it.`,
+      `Error: '${entry.assistantId}' is a remote assistant paired from another machine. Its lifecycle is managed on its host machine, not here. Use \`anu client ${entry.assistantId}\` to chat with it.`,
     );
     process.exit(1);
   }
 
   if (entry.cloud && entry.cloud !== "local") {
     console.error(
-      `Error: 'vellum wake' only works with local and docker assistants. '${entry.assistantId}' is a ${entry.cloud} instance.`,
+      `Error: 'anu wake' only works with local and docker assistants. '${entry.assistantId}' is a ${entry.cloud} instance.`,
     );
     process.exit(1);
   }
@@ -135,7 +135,7 @@ export async function wake(): Promise<void> {
       throw error;
     }
     if (!repairGuardian) {
-      error.message += ` Run vellum wake ${JSON.stringify(entry.assistantId)} --repair-guardian to recover access. Repair may replace the signing key and require all clients to authenticate again.`;
+      error.message += ` Run anu wake ${JSON.stringify(entry.assistantId)} --repair-guardian to recover access. Repair may replace the signing key and require all clients to authenticate again.`;
       throw error;
     }
     console.warn(
@@ -209,7 +209,7 @@ export async function wake(): Promise<void> {
       );
     } else if (watch && isAssistantWatchModeAvailable()) {
       console.log(
-        `Assistant running (pid ${daemonState.pid}) — restarting in watch mode...`,
+        `Assistant running (pid ${daemonState.pid}). Restarting in watch mode...`,
       );
       const stopped = await stopProcessByPidFile(
         pidFile,
@@ -230,7 +230,7 @@ export async function wake(): Promise<void> {
       daemonMigrationsFailed = daemonState.status === "migration_failed";
       if (watch) {
         console.log(
-          `Assistant running (pid ${daemonState.pid}) — watch mode not available (no source files). Keeping existing process.`,
+          `Assistant running (pid ${daemonState.pid}). Watch mode not available (no source files). Keeping existing process.`,
         );
       } else if (daemonMigrationsFailed) {
         console.log(
@@ -238,7 +238,7 @@ export async function wake(): Promise<void> {
         );
       } else if (daemonUnready) {
         console.log(
-          `Assistant running (pid ${daemonState.pid}) — database migrations still running.`,
+          `Assistant running (pid ${daemonState.pid}). Database migrations still running.`,
         );
       } else {
         console.log(`Assistant already running (pid ${daemonState.pid}).`);
@@ -296,7 +296,7 @@ export async function wake(): Promise<void> {
     const cesPidFile = join(vellumDir, "ces.pid");
     const cesAlive = isProcessAlive(cesPidFile).alive;
     if (!cesAlive) {
-      console.log("CES sibling not running — relaunching...");
+      console.log("CES sibling not running. Relaunching...");
       await startCes(watch, resources);
     }
   }
@@ -338,24 +338,24 @@ export async function wake(): Promise<void> {
       const restartWithWatch = watch && isGatewayWatchModeAvailable();
       if (restartWithWatch) {
         console.log(
-          `Gateway running (pid ${gatewayState.pid}) — restarting to apply bootstrap secret...`,
+          `Gateway running (pid ${gatewayState.pid}). Restarting to apply bootstrap secret...`,
         );
       } else {
         console.log(
-          `Gateway running (pid ${gatewayState.pid}) — restarting without watch mode to apply bootstrap secret...`,
+          `Gateway running (pid ${gatewayState.pid}). Restarting without watch mode to apply bootstrap secret...`,
         );
       }
       gatewayStarted = await restartGateway(restartWithWatch);
     } else if (gatewayAlive) {
       if (watch && isGatewayWatchModeAvailable()) {
         console.log(
-          `Gateway running (pid ${gatewayState.pid}) — restarting in watch mode...`,
+          `Gateway running (pid ${gatewayState.pid}). Restarting in watch mode...`,
         );
         gatewayStarted = await restartGateway(watch);
       } else {
         if (watch) {
           console.log(
-            `Gateway running (pid ${gatewayState.pid}) — watch mode not available (no source files). Keeping existing process.`,
+            `Gateway running (pid ${gatewayState.pid}). Watch mode not available (no source files). Keeping existing process.`,
           );
         } else {
           console.log(`Gateway already running (pid ${gatewayState.pid}).`);
@@ -460,7 +460,7 @@ export async function wake(): Promise<void> {
 
   if (daemonMigrationsFailed) {
     console.log(
-      "Assistant database migrations FAILED — DB-backed routes will return 503 until the assistant is restarted. Check the daemon logs.",
+      "Assistant database migrations FAILED. DB-backed routes will return 503 until the assistant is restarted. Check 'anu logs' for the cause.",
     );
   } else if (daemonUnready) {
     console.log(

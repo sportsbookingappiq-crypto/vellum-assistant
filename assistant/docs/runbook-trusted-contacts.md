@@ -11,7 +11,7 @@ Two databases hold this state — pick the right one before reaching for SQL:
 
 Prefer the CLI and HTTP surfaces below over raw SQL — they go through the gateway's validation (status vocabulary, revoke-of-blocked guard) and emit the change events clients rely on. Raw SQL is break-glass only.
 
-**Break-glass SQLite rules:** the running gateway holds a live connection to `gateway.sqlite` (and the daemon to `assistant.db`). Open read-only for inspection (`sqlite3 "file:$GW_DB?mode=ro"`). For writes, stop the services first (`vellum sleep`), run the statement, then `vellum wake` — a write against a live DB races the owning process and can hit SQLite lock contention.
+**Break-glass SQLite rules:** the running gateway holds a live connection to `gateway.sqlite` (and the daemon to `assistant.db`). Open read-only for inspection (`sqlite3 "file:$GW_DB?mode=ro"`). For writes, stop the services first (`anu sleep`), run the statement, then `anu wake` — a write against a live DB races the owning process and can hit SQLite lock contention.
 
 ## Prerequisites
 
@@ -149,7 +149,7 @@ sqlite3 "file:$GW_DB?mode=ro" \
 Contact writes are gateway-owned, and they reach it two ways. An operator ACL
 write (a risk ceiling) goes through the gateway CLI directly, not through
 `assistant contacts`. From the host, run the same command via
-`vellum exec --service gateway --`. A write that changes the contact graph
+`anu exec --service gateway --`. A write that changes the contact graph
 itself (the record, or a channel binding) goes through `assistant contacts`,
 which opens a form in the guardian's app and writes nothing until they submit
 it; the gateway still performs the write.

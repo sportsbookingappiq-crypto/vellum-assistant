@@ -1,5 +1,5 @@
 {
-  "name": "@vellumai/cli",
+  "name": "@anu/cli",
   "version": "0.12.6",
   "description": "CLI tools for vellum-assistant",
   "type": "module",
@@ -15,6 +15,7 @@
     "./src/commands/*": "./src/commands/*.ts"
   },
   "bin": {
+    "anu": "./src/index.ts",
     "vellum": "./src/index.ts"
   },
   "scripts": {
@@ -26,14 +27,14 @@
     "test": "bun test",
     "typecheck": "bunx tsc --noEmit"
   },
-  "author": "Vellum AI",
+  "author": "ANU",
   "license": "MIT",
   "dependencies": {
-    "@vellumai/avatar-manifest": "workspace:*",
-    "@vellumai/environments": "workspace:*",
-    "@vellumai/ipc-server-utils": "workspace:*",
-    "@vellumai/local-mode": "workspace:*",
-    "@vellumai/service-contracts": "workspace:*",
+    "@anu/avatar-manifest": "workspace:*",
+    "@anu/environments": "workspace:*",
+    "@anu/ipc-server-utils": "workspace:*",
+    "@anu/local-mode": "workspace:*",
+    "@anu/service-contracts": "workspace:*",
     "chalk": "5.6.2",
     "ink": "6.8.0",
     "nanoid": "5.1.7",
@@ -42,11 +43,11 @@
     "react-devtools-core": "7.0.1"
   },
   "bundledDependencies": [
-    "@vellumai/avatar-manifest",
-    "@vellumai/environments",
-    "@vellumai/ipc-server-utils",
-    "@vellumai/local-mode",
-    "@vellumai/service-contracts"
+    "@anu/avatar-manifest",
+    "@anu/environments",
+    "@anu/ipc-server-utils",
+    "@anu/local-mode",
+    "@anu/service-contracts"
   ],
   "devDependencies": {
     "@types/bun": "1.3.11",

@@ -1269,7 +1269,7 @@ export function rejectManagedProfileDeletion(
     if (profiles[name] !== null || !MANAGED_PROFILE_NAMES.has(name)) {
       continue;
     }
-    // Only block deletion when the on-disk entry is Vellum-managed. A
+    // Only block deletion when the on-disk entry is ANU-managed. A
     // user-owned profile sharing a managed name carries a non-managed `source`
     // and is freely deletable.
     const existing = asMutablePlainObject(existingProfiles[name]);
@@ -2050,7 +2050,7 @@ async function handleReplaceInferenceProfile({
       MANAGED_ROUTABLE_PROVIDERS.has(provider) &&
       getConnection(db, VELLUM_MANAGED_CONNECTION_NAME)
     ) {
-      // Managed-routable providers are served by the single Vellum-managed
+      // Managed-routable providers are served by the single ANU-managed
       // connection; prefer it over lazily creating a personal connection.
       fragment.provider_connection = VELLUM_MANAGED_CONNECTION_NAME;
     } else if (!PROVIDERS_REQUIRING_BASE_URL_AND_MODELS.has(provider)) {

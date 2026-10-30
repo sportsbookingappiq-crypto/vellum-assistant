@@ -24,13 +24,13 @@
             }
           ],
           "glass": false,
-          "image-name": "eyes.svg",
-          "name": "eyes",
+          "image-name": "anu-mark-night.svg",
+          "name": "anu-mark-night",
           "position": {
-            "scale": 2.213,
+            "scale": 6.4,
             "translation-in-points": [
-              61.33,
-              -14.21
+              0,
+              0
             ]
           }
         }

@@ -1,6 +1,6 @@
 import type { IpcRenderer } from "electron";
 
-import type { VellumBridge } from "@vellumai/ipc-contract";
+import type { VellumBridge } from "@anu/ipc-contract";
 
 type RendererIpc = Pick<IpcRenderer, "invoke">;
 

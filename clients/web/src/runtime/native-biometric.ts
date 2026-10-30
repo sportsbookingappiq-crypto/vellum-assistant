@@ -33,7 +33,7 @@ export interface BiometricCapability {
   label: string;
 }
 
-const NativeBiometric =
+export const NativeBiometric =
   registerPlugin<NativeBiometricPlugin>("NativeBiometric");
 
 const BIOMETRIC_LABELS: Record<BiometricType, string> = {
@@ -121,7 +121,7 @@ let pendingRetrieval: Promise<string | null> | null = null;
 async function retrieveTokenForServer(server: string): Promise<string> {
   const { token } = await NativeBiometric.retrieveToken({
     server,
-    reason: "Sign in to Vellum",
+    reason: "Sign in to ANU",
   });
   return token;
 }

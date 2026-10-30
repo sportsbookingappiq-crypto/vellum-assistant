@@ -18,7 +18,11 @@ import {
 } from "@testing-library/react";
 import { createElement } from "react";
 
-import { APP_ICON_GROUNDS } from "@/components/ios-widget-previews/vellum-app-icon-mark";
+import {
+  APP_ICON_GROUNDS,
+  MARK_FACETS,
+  MARK_SILHOUETTE,
+} from "@/components/ios-widget-previews/vellum-app-icon-mark";
 import { appIconNameForTraits } from "@/utils/avatar-app-icon";
 import { BUNDLED_COMPONENTS } from "@/utils/avatar-bundled-components";
 import { tightPathBBox, unionBBox } from "@/utils/eye-bbox";
@@ -37,6 +41,54 @@ interface FillSpecialization {
   value?: { solid?: string };
 }
 
+/** The one artwork layer each bundle draws over its fill. */
+interface BundleLayer {
+  "image-name": string;
+  position: { scale: number };
+}
+
+/** A bundle's `icon.json`, as far as these tests read it. */
+function readBundle(bundle: string): {
+  "fill-specializations"?: FillSpecialization[];
+  groups: { layers: BundleLayer[] }[];
+} {
+  return JSON.parse(
+    readFileSync(join(ICON_BUNDLE_DIR, bundle, "icon.json"), "utf8"),
+  );
+}
+
+/** The bundle's single artwork layer; every bundle here carries exactly one. */
+function bundleLayer(bundle: string): BundleLayer {
+  const layers = readBundle(bundle).groups.flatMap((group) => group.layers);
+  if (layers.length !== 1) {
+    throw new Error(`${bundle} carries ${layers.length} layers, not one`);
+  }
+  return layers[0]!;
+}
+
+/**
+ * The two tones a bundle's own mark artwork is drawn in, silhouette first,
+ * read off the SVG the layer names so the thumbnail cannot keep a tone the
+ * installed icon dropped.
+ */
+function bundleMarkFills(bundle: string): string[] {
+  const svg = readFileSync(
+    join(ICON_BUNDLE_DIR, bundle, "Assets", bundleLayer(bundle)["image-name"]),
+    "utf8",
+  );
+  return [...svg.matchAll(/<path[^>]*\sfill="(#[0-9A-Fa-f]{6})"/g)].map(
+    (match) => match[1]!,
+  );
+}
+
+/**
+ * Share of the icon the mark's 100-unit canvas spans: the layer scales it on
+ * a 1024-point canvas.
+ */
+function bundleMarkSpan(bundle: string): number {
+  return (bundleLayer(bundle).position.scale * 100) / 1024;
+}
+
 /**
  * The `color(display-p3 ...)` a bundle's own ground reads as, taken off the
  * bundle rather than named here, so a fill edited in Icon Composer fails this
@@ -45,9 +97,7 @@ interface FillSpecialization {
  * these bundles pins the same fill.
  */
 function bundleGroundP3(bundle: string): string {
-  const path = join(ICON_BUNDLE_DIR, bundle, "icon.json");
-  const specializations: FillSpecialization[] =
-    JSON.parse(readFileSync(path, "utf8"))["fill-specializations"] ?? [];
+  const specializations = readBundle(bundle)["fill-specializations"] ?? [];
   const solid = specializations.find(
     (entry) => entry.appearance === undefined,
   )?.value?.solid;
@@ -70,6 +120,7 @@ function bundleGroundP3(bundle: string): string {
   return `color(display-p3 ${channels.join(" ")})`;
 }
 
+const PRODUCTION_GROUND_P3 = bundleGroundP3("AppIcon.icon");
 const DEV_GROUND_P3 = bundleGroundP3("AppIcon-Dev.icon");
 const STAGING_GROUND_P3 = bundleGroundP3("AppIcon-Staging.icon");
 
@@ -94,6 +145,22 @@ function flavorLauncherBackground(flavor: string): string {
     throw new Error(`${flavor} declares no launcher_background`);
   }
   return fill;
+}
+
+/**
+ * The tones of the launcher foreground every flavor shares, silhouette first:
+ * the flavors override only their `launcher_background`.
+ */
+function androidMarkFills(): string[] {
+  const path = join(
+    ANDROID_FLAVOR_DIR,
+    "main/res/drawable/ic_launcher_foreground.xml",
+  );
+  return [
+    ...readFileSync(path, "utf8").matchAll(
+      /android:fillColor="(#[0-9A-Fa-f]{6})"/g,
+    ),
+  ].map((match) => match[1]!);
 }
 
 const CHARACTER: AvatarState = {
@@ -141,12 +208,12 @@ const setAppIcon = mock(async (name: string | null) => {
  * from, since the icon belongs to the installed build rather than to the web
  * deploy loaded into it.
  */
-let shellAppId: string | null = "ai.vocify-inc.vellum-assistant-ios";
+let shellAppId: string | null = "ai.anu.assistant-ios";
 const getInfoMock = mock(async () => {
   if (shellAppId === null) {
     throw new Error("App.getInfo unavailable");
   }
-  return { id: shellAppId, name: "Vellum", version: "1.0.0", build: "1" };
+  return { id: shellAppId, name: "ANU", version: "1.0.0", build: "1" };
 });
 
 import * as platformDetection from "@/runtime/platform-detection";
@@ -234,6 +301,34 @@ function previewFill(): string | null {
     '[data-testid="app-icon-preview-field"]',
   );
   return fields[0]?.getAttribute("fill") ?? null;
+}
+
+/** The ANU mark the primary preview draws: each path's outline and tone. */
+function previewMark(): { d: string | null; fill: string | null }[] {
+  const group = document.querySelector('[data-testid="app-icon-preview-mark"]');
+  return Array.from(group?.querySelectorAll("path") ?? []).map((path) => ({
+    d: path.getAttribute("d"),
+    fill: path.getAttribute("fill"),
+  }));
+}
+
+/** The mark drawn in the given tones, silhouette first. */
+function markIn(fills: string[]): { d: string; fill: string | null }[] {
+  return [
+    { d: MARK_SILHOUETTE, fill: fills[0] ?? null },
+    { d: MARK_FACETS, fill: fills[1] ?? null },
+  ];
+}
+
+/** Share of the preview the mark's 100-unit canvas spans. */
+function previewMarkSpan(): number {
+  const group = document.querySelector('[data-testid="app-icon-preview-mark"]');
+  const transform = group?.getAttribute("transform") ?? "";
+  const scale = Number(transform.match(/^matrix\((-?[\d.]+),/)?.[1]);
+  if (!Number.isFinite(scale)) {
+    throw new Error(`Unexpected mark transform: ${transform}`);
+  }
+  return (scale * 100) / previewSize();
 }
 
 function previewEyePaths(): (string | null)[] {
@@ -326,7 +421,7 @@ beforeEach(() => {
   // not about that runs in the one users install.
   previousBuildEnv = buildEnv.VITE_SENTRY_ENVIRONMENT;
   buildEnv.VITE_SENTRY_ENVIRONMENT = "production";
-  shellAppId = "ai.vocify-inc.vellum-assistant-ios";
+  shellAppId = "ai.anu.assistant-ios";
   avatarState = CHARACTER;
   nativeIOS = true;
   nativeAndroid = false;
@@ -385,8 +480,11 @@ describe("AppIconRow", () => {
     await waitFor(() => {
       expect(buttonByText("Change")).toBeDefined();
     });
-    expect(previewFill()).toBe(hexFor("green"));
-    expect(previewEyePaths()).toEqual(catalogPaths("quirky"));
+    // The ANU mark on Night 800, in the tones the bundle's own artwork uses,
+    // and no eye pair: the primary icon carries none.
+    expect(previewFill()).toBe(PRODUCTION_GROUND_P3);
+    expect(previewMark()).toEqual(markIn(bundleMarkFills("AppIcon.icon")));
+    expect(previewEyePaths()).toEqual([]);
   });
 
   test("previews the icon the home screen holds", async () => {
@@ -407,29 +505,34 @@ describe("AppIconRow", () => {
   // question and gets this backwards whenever the two disagree.
   describe("the default thumbnail follows the shell", () => {
     test("draws the Dev shell's pink field", async () => {
-      shellAppId = "ai.vocify-inc.vellum-assistant-ios.dev";
+      shellAppId = "ai.anu.assistant-ios.dev";
 
       await renderRow();
 
       await waitFor(() => {
         expect(previewFill()).toBe(DEV_GROUND_P3);
       });
-      expect(previewEyePaths()).toEqual(catalogPaths("quirky"));
+      // The lighter ground carries the mark in its night tones.
+      expect(previewMark()).toEqual(
+        markIn(bundleMarkFills("AppIcon-Dev.icon")),
+      );
     });
 
     test("draws the Staging shell's yellow field", async () => {
-      shellAppId = "ai.vocify-inc.vellum-assistant-ios.staging";
+      shellAppId = "ai.anu.assistant-ios.staging";
 
       await renderRow();
 
       await waitFor(() => {
         expect(previewFill()).toBe(STAGING_GROUND_P3);
       });
-      expect(previewEyePaths()).toEqual(catalogPaths("quirky"));
+      expect(previewMark()).toEqual(
+        markIn(bundleMarkFills("AppIcon-Staging.icon")),
+      );
     });
 
     test("reads an Android shell's flavor suffix too", async () => {
-      shellAppId = "ai.vellum.assistant.dev";
+      shellAppId = "ai.anu.assistant.dev";
 
       await renderRow();
 
@@ -438,7 +541,7 @@ describe("AppIconRow", () => {
       });
     });
 
-    test("keeps a production shell green on a dev web deploy", async () => {
+    test("keeps a production shell on its own ground on a dev web deploy", async () => {
       buildEnv.VITE_SENTRY_ENVIRONMENT = "dev";
 
       await renderRow();
@@ -446,7 +549,7 @@ describe("AppIconRow", () => {
       await waitFor(() => {
         expect(getInfoMock).toHaveBeenCalled();
       });
-      expect(previewFill()).toBe(hexFor("green"));
+      expect(previewFill()).toBe(PRODUCTION_GROUND_P3);
     });
 
     test("falls back to the build environment for an unknown shell", async () => {
@@ -475,7 +578,7 @@ describe("AppIconRow", () => {
     // reading is what a renderer that cannot parse `color()` falls back to.
     test("paints the sRGB ground where color() will not parse", async () => {
       dropDisplayP3Support();
-      shellAppId = "ai.vocify-inc.vellum-assistant-ios.dev";
+      shellAppId = "ai.anu.assistant-ios.dev";
 
       await renderRow();
 
@@ -497,7 +600,7 @@ describe("AppIconRow", () => {
     });
 
     test("leaves an applied alternate in its own color off production", async () => {
-      shellAppId = "ai.vocify-inc.vellum-assistant-ios.dev";
+      shellAppId = "ai.anu.assistant-ios.dev";
       iconState = {
         supported: true,
         current: AVATAR_ICON,
@@ -518,7 +621,7 @@ describe("AppIconRow", () => {
   // for the primary icon reads the shell's platform as well as its build.
   describe("the default thumbnail follows the Android flavor", () => {
     test("draws the dev flavor's pink field", async () => {
-      runOnAndroidShell("ai.vellum.assistant.dev");
+      runOnAndroidShell("ai.anu.assistant.dev");
 
       await renderRow();
 
@@ -529,11 +632,13 @@ describe("AppIconRow", () => {
       // resource and the shared constant agree, so this comparison fails
       // whenever either side moves alone.
       expect(flavorLauncherBackground("dev")).toBe(APP_ICON_GROUNDS.dev);
-      expect(previewEyePaths()).toEqual(catalogPaths("quirky"));
+      // Every flavor shares one foreground, so even the pink field carries
+      // the ice tones.
+      expect(previewMark()).toEqual(markIn(androidMarkFills()));
     });
 
     test("draws the staging flavor's yellow field", async () => {
-      runOnAndroidShell("ai.vellum.assistant.staging");
+      runOnAndroidShell("ai.anu.assistant.staging");
 
       await renderRow();
 
@@ -543,22 +648,24 @@ describe("AppIconRow", () => {
       expect(flavorLauncherBackground("staging")).toBe(
         APP_ICON_GROUNDS.staging,
       );
-      expect(previewEyePaths()).toEqual(catalogPaths("quirky"));
+      expect(previewMark()).toEqual(markIn(androidMarkFills()));
     });
 
-    test("leaves the production flavor on the catalog green", async () => {
-      runOnAndroidShell("ai.vellum.assistant");
+    test("draws the production flavor's ANU mark on Night 800", async () => {
+      runOnAndroidShell("ai.anu.assistant");
 
       await renderRow();
 
       await waitFor(() => {
         expect(buttonByText("Change")).toBeDefined();
       });
-      // Production is the one flavor the row names no field for, which is only
-      // honest while the flavor itself declares the catalog's own green.
-      expect(flavorLauncherBackground("production")).toBe(hexFor("green"));
-      expect(hexFor("green")).toBe(APP_ICON_GROUNDS.production);
-      expect(previewFill()).toBe(hexFor("green"));
+      expect(previewFill()).toBe(flavorLauncherBackground("production"));
+      expect(flavorLauncherBackground("production")).toBe(
+        APP_ICON_GROUNDS.production,
+      );
+      expect(previewMark()).toEqual(markIn(androidMarkFills()));
+      // No avatar tile stands in for it: the primary icon carries no eyes.
+      expect(previewEyePaths()).toEqual([]);
     });
   });
 
@@ -567,7 +674,7 @@ describe("AppIconRow", () => {
   // drop a pinned shortcut on the way.
   describe("the picker's copy follows the shell", () => {
     test("names the deferred apply and the pinned shortcut on Android", async () => {
-      runOnAndroidShell("ai.vellum.assistant");
+      runOnAndroidShell("ai.anu.assistant");
       await renderRow();
       await waitFor(() => {
         expect(buttonByText("Change")).toBeDefined();
@@ -583,7 +690,7 @@ describe("AppIconRow", () => {
 
     test("names Android as the shell that kept the old icon", async () => {
       swapSucceeds = false;
-      runOnAndroidShell("ai.vellum.assistant");
+      runOnAndroidShell("ai.anu.assistant");
       await renderRow();
       await waitFor(() => {
         expect(buttonByText("Change")).toBeDefined();
@@ -609,8 +716,8 @@ describe("AppIconRow", () => {
     await waitFor(() => {
       expect(buttonByText("Change")).toBeDefined();
     });
-    // The icon the app ships spans half its field whatever pair it draws.
-    expect(previewEyeWidth()).toBeCloseTo(previewSize() / 2, 1);
+    // The mark's canvas spans the share of the icon the bundle's layer gives it.
+    expect(previewMarkSpan()).toBeCloseTo(bundleMarkSpan("AppIcon.icon"), 3);
   });
 
   test("frames an applied alternate the way its own bundle frames it", async () => {
@@ -693,7 +800,8 @@ describe("AppIconRow", () => {
     await waitFor(() => {
       expect(modal()).toBeNull();
     });
-    expect(previewFill()).toBe(hexFor("green"));
+    expect(previewFill()).toBe(PRODUCTION_GROUND_P3);
+    expect(previewMark()).toEqual(markIn(bundleMarkFills("AppIcon.icon")));
   });
 
   test("hands a character avatar the one-tap shortcut", async () => {

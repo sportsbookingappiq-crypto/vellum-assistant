@@ -1,10 +1,7 @@
 import { cleanup, fireEvent, render } from "@testing-library/react";
 import { afterEach, describe, expect, mock, test } from "bun:test";
 
-import type {
-  VoiceActivityState,
-  VoiceActivityWork,
-} from "@vellumai/ipc-contract";
+import type { VoiceActivityState, VoiceActivityWork } from "@anu/ipc-contract";
 
 import { CompanionSurface } from "@/components/companion-surface";
 

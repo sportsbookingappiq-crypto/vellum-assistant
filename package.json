@@ -1,5 +1,5 @@
 {
-  "name": "vellum-workspace",
+  "name": "anu-workspace",
   "private": true,
   "workspaces": [
     "assistant",

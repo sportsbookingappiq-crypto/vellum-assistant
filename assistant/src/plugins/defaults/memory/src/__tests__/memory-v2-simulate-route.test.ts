@@ -19,11 +19,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 
-import type {
-  Message,
-  Provider,
-  SendMessageOptions,
-} from "@vellumai/plugin-api";
+import type { Message, Provider, SendMessageOptions } from "@anu/plugin-api";
 
 import type { ToolDefinition } from "../../llm-helpers.js";
 
@@ -92,12 +88,12 @@ interface ProviderCall {
 const providerCalls: ProviderCall[] = [];
 // The route imports `getConfiguredProvider` plus the identity reads
 // (`getAssistantName`/`resolveUserName`, via the router) from
-// `@vellumai/plugin-api`. Spread the real contract so the identity reads run
+// `@anu/plugin-api`. Spread the real contract so the identity reads run
 // (returning null on a missing IDENTITY.md in the temp workspace); override only
 // `getConfiguredProvider`. The pure `extractToolUse` helper runs for real from
 // the plugin's `llm-helpers`.
-const realPluginApi = await import("@vellumai/plugin-api");
-mock.module("@vellumai/plugin-api", () => ({
+const realPluginApi = await import("@anu/plugin-api");
+mock.module("@anu/plugin-api", () => ({
   ...realPluginApi,
   getConfiguredProvider: async () => providerStub,
 }));

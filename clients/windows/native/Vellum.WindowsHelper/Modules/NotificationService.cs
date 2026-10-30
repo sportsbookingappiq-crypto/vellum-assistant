@@ -290,7 +290,7 @@ public sealed class NotificationService : IRpcModule, INotificationAdapter
         _appIdRegistered = true;
         using var key = Registry.CurrentUser.CreateSubKey(
             $@"Software\Classes\AppUserModelId\{AppUserModelId}");
-        key.SetValue("DisplayName", "Vellum");
+        key.SetValue("DisplayName", "ANU");
     }
 
     private void OnActivated(string token, object args)

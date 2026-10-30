@@ -16,7 +16,7 @@
  * Auth: Bearer token from a caller-supplied config.
  */
 
-import type { CredentialRecord } from "@vellumai/service-contracts/credential-rpc";
+import type { CredentialRecord } from "@anu/service-contracts/credential-rpc";
 
 // ---------------------------------------------------------------------------
 // Types

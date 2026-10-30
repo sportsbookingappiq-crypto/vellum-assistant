@@ -4,10 +4,10 @@ import path from "node:path";
 
 import { SENSITIVE_KEYS } from "./lockfile-contract";
 
-const CLI_PACKAGE_NAME = "@vellumai/cli";
+const CLI_PACKAGE_NAME = "@anu/cli";
 
 /**
- * How to invoke the Vellum CLI as a child process: a base command plus the
+ * How to invoke the ANU CLI as a child process: a base command plus the
  * leading arguments that precede the subcommand. Each host resolves its own
  * invocation — the dev hosts run the CLI from source via `bun run <entry>`,
  * a packaged host would point at its bundled runtime — and the shared
@@ -120,7 +120,7 @@ let _resolvedCliPath: string | undefined;
  * Resolve the CLI entry point.
  *
  * 1. Source tree — `<baseDir>/cli/src/index.ts` (dev mode in monorepo).
- * 2. Installed package — `require.resolve("@vellumai/cli/package.json")`.
+ * 2. Installed package — `require.resolve("@anu/cli/package.json")`.
  */
 function resolveCliPath(baseDir: string, importMetaUrl?: string): string {
   if (_resolvedCliPath) return _resolvedCliPath;
@@ -148,7 +148,7 @@ function resolveCliPath(baseDir: string, importMetaUrl?: string): string {
   }
 
   throw new Error(
-    `Vellum CLI not found. Looked for source tree at ${sourceTreePath} and npm package ${CLI_PACKAGE_NAME}.`,
+    `ANU CLI not found. Looked for source tree at ${sourceTreePath} and npm package ${CLI_PACKAGE_NAME}.`,
   );
 }
 

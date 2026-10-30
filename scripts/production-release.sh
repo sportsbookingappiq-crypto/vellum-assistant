@@ -4,7 +4,7 @@
 #
 # Fetches the most recent GitHub release from vellum-ai/vellum-assistant,
 # downloads vellum-assistant.dmg, SCPs it to the Mac mini, and installs
-# Vellum.app into /Applications.
+# ANU.app into /Applications.
 #
 # Configuration is read from scripts/.env (see scripts/.env.example).
 #
@@ -153,8 +153,8 @@ remote_ssh "${SCP_HOST}" bash -s <<'REMOTE_SCRIPT'
 set -euo pipefail
 DMG="/tmp/vellum-assistant.dmg"
 
-# Kill running Vellum instance if any
-pkill -x "Vellum" 2>/dev/null || true
+# Kill running ANU instance if any
+pkill -x "ANU" 2>/dev/null || true
 sleep 1
 
 # Mount, copy to /Applications, unmount
@@ -164,14 +164,14 @@ if [ -z "$MOUNT_POINT" ]; then
   exit 1
 fi
 
-rm -rf "/Applications/Vellum.app"
-cp -R "$MOUNT_POINT/Vellum.app" "/Applications/Vellum.app"
+rm -rf "/Applications/ANU.app"
+cp -R "$MOUNT_POINT/ANU.app" "/Applications/ANU.app"
 hdiutil detach "$MOUNT_POINT" -quiet 2>/dev/null || true
 rm -f "$DMG"
 
-echo "Installed: /Applications/Vellum.app"
+echo "Installed: /Applications/ANU.app"
 REMOTE_SCRIPT
 
 rm -f "$LOCAL_DMG"
 
-echo "Done! Vellum app installed to /Applications on ${SCP_HOST} (${RELEASE_TAG})"
+echo "Done! ANU app installed to /Applications on ${SCP_HOST} (${RELEASE_TAG})"

@@ -58,7 +58,7 @@ mock.module("@/lib/sentry/capture-error", () => ({
   captureError: () => {},
 }));
 
-mock.module("@vellumai/design-library/components/toast", () => ({
+mock.module("@anu/design-library/components/toast", () => ({
   toast: {
     success: () => {},
     error: (message: string) => {

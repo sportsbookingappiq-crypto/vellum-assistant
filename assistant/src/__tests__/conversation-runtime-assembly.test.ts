@@ -2,7 +2,7 @@ import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 
-import type { PostCompactContext } from "@vellumai/plugin-api";
+import type { PostCompactContext } from "@anu/plugin-api";
 import { eq } from "drizzle-orm";
 
 import { setConfig } from "./helpers/set-config.js";

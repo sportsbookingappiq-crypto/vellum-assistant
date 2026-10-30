@@ -16,7 +16,7 @@ import {
   type PluginLogger,
   type Provider,
   resolveMediaSourceData,
-} from "@vellumai/plugin-api";
+} from "@anu/plugin-api";
 
 import {
   getCachedCaption,

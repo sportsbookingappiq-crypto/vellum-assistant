@@ -10,7 +10,7 @@
  *
  * Measuring the eye artwork needs the native `@resvg/resvg-js` binding, so the
  * assistant package's dependencies have to be installed first
- * (`bun install --filter=@vellumai/assistant`).
+ * (`bun install --filter=@anu/assistant`).
  *
  * The committed resources are XML rather than an image format nobody can read,
  * which makes them tempting to hand-edit. Everything below exists so an edit
@@ -398,9 +398,12 @@ describe("committed Android avatar icons", () => {
       expect(legacy).toContain('android:pathData="M0,0h108v108h-108z"');
     }
 
-    expect(readCommitted("values/avatar_icon_colors.xml")).toContain(
-      '<color name="avatar_icon_bg_green">#4C9B50</color>',
-    );
+    const colorsXml = readCommitted("values/avatar_icon_colors.xml");
+    for (const [id, hex] of colorHex) {
+      expect(colorsXml).toContain(
+        `<color name="avatar_icon_bg_${id}">${hex}</color>`,
+      );
+    }
   });
 });
 
@@ -479,19 +482,21 @@ describe.each(SAMPLED_EYE_STYLES)("avatar_eyes_*_%s", (eyeStyleId) => {
 
 describe("alternate icon sizing", () => {
   /**
-   * The alternates have to read at the same size as the default launcher icon
-   * sitting next to them in the picker.
+   * The alternates have to read at one consistent size in the picker. The
+   * default launcher icon is the ANU mark rather than an eye pair, so there is
+   * no shipped pair to match; instead the plain styles are pinned to the
+   * default fraction of the 72dp a launcher mask keeps visible.
    *
-   * The two numbers are derived rather than copied: the committed default was
-   * rounded by hand off the artwork's geometric bounding box, while the
-   * generator measures by rasterizing, which reports whole probe pixels and so
-   * lands within a rounding step of it.
+   * The generator measures by rasterizing, which reports whole probe pixels,
+   * so the span lands within a rounding step of the fraction.
    */
-  test("draw quirky at the default launcher icon's scale", () => {
-    const generated = committedTransform("drawable/avatar_eyes_fg_quirky.xml");
-    const shipped = committedTransform("drawable/ic_launcher_foreground.xml");
-    expect(Number(generated.scaleX)).toBeCloseTo(Number(shipped.scaleX), 3);
-  });
+  test(
+    "draw quirky at the default span of the masked area",
+    () => {
+      expect(spanFractionOf("quirky")).toBeCloseTo(0.5, 2);
+    },
+    GENERATION_TIMEOUT_MS,
+  );
 
   /**
    * `dazed` is framed wider and `bashful` narrower than the default fraction.

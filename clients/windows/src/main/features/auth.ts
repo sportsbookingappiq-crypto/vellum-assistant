@@ -3,22 +3,22 @@ import { app, session, shell, type Event } from "electron";
 import type {
   CapabilityModule,
   DesktopCapabilityRegistry,
-} from "@vellumai/electron-desktop/capability-registry";
-import { resolveAuthCallbackScheme } from "@vellumai/electron-desktop/deep-links";
+} from "@anu/electron-desktop/capability-registry";
+import { resolveAuthCallbackScheme } from "@anu/electron-desktop/deep-links";
 import {
   configureNativeAuth,
   installNativeAuth,
-} from "@vellumai/electron-desktop/native-auth";
+} from "@anu/electron-desktop/native-auth";
 import {
   clearSessionToken,
   getSessionToken,
   saveSessionToken,
   setSessionTokenLogger,
-} from "@vellumai/electron-desktop/session-token-store";
+} from "@anu/electron-desktop/session-token-store";
 import {
   resolveEnvironmentName,
   resolveLocalConfigFromEnv,
-} from "@vellumai/local-mode";
+} from "@anu/local-mode";
 
 import { startWindowsAuthCallback } from "../auth-callback";
 import { handle, handleSync } from "../ipc.client";

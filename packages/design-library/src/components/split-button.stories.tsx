@@ -26,7 +26,7 @@ const meta: Meta<typeof SplitButton> = {
       <ActionMenu.Item
         key="vellum"
         icon={ShieldCheck}
-        label="Sign in through Vellum"
+        label="Sign in through ANU"
       />,
       <ActionMenu.Item
         key="own"

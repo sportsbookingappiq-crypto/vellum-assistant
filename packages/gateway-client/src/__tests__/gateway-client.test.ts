@@ -1,5 +1,5 @@
 /**
- * Tests for @vellumai/gateway-client
+ * Tests for @anu/gateway-client
  *
  * Covers:
  * 1. Package independence — no imports from assistant/ or gateway/.

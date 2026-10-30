@@ -27,7 +27,7 @@ import { join } from "node:path";
 import type {
   SecureKeyBackend,
   SecureKeyDeleteResult,
-} from "@vellumai/credential-storage";
+} from "@anu/credential-storage";
 
 import { getIsContainerized } from "../config/env-registry.js";
 import {
@@ -60,7 +60,7 @@ import { ACP_OAUTH_TOKEN_FIELD, ACP_SERVICE } from "../acp/acp-credentials.js";
 
 /**
  * Re-export shared-package secure-key abstractions so downstream consumers
- * can import from this module without a direct @vellumai/credential-storage
+ * can import from this module without a direct @anu/credential-storage
  * dependency.
  */
 export type { SecureKeyBackend, SecureKeyDeleteResult };

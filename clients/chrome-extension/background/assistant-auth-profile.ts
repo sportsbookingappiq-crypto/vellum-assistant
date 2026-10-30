@@ -6,7 +6,7 @@
  *   WebSocket relay to the same gateway. Used for locally running
  *   assistants where the extension can reach the gateway over loopback
  *   (or a user-provided URL).
- * - `vellum-cloud` — Vellum-cloud-managed assistant. Auth relies on the
+ * - `vellum-cloud` — ANU-cloud-managed assistant. Auth relies on the
  *   WorkOS session token and the SSE `/events` transport.
  * - `unsupported` — the topology is not recognised by this version of
  *   the extension.
@@ -24,7 +24,7 @@ export interface LockfileTopology {
 /** Cloud values that map to self-hosted direct pairing. */
 const LOCAL_CLOUD_VALUES = new Set(['local', 'apple-container']);
 
-/** Cloud values that map to Vellum-cloud (WorkOS session auth). */
+/** Cloud values that map to ANU-cloud (WorkOS session auth). */
 const VELLUM_CLOUD_VALUES = new Set(['vellum', 'platform']);
 
 /**

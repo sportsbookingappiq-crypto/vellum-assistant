@@ -24,7 +24,7 @@ export function buildAgentCard(params: BuildAgentCardParams): AgentCard {
     name: params.assistantName,
     description:
       params.assistantDescription ??
-      `${params.assistantName} - a Vellum AI assistant`,
+      `${params.assistantName} - a ANU assistant`,
     version: "1.0.0",
     supported_interfaces: [],
     capabilities: {
@@ -47,6 +47,6 @@ export function buildAgentCard(params: BuildAgentCardParams): AgentCard {
 
 export function getAgentCard(): AgentCard {
   return buildAgentCard({
-    assistantName: getAssistantName() ?? "Vellum Assistant",
+    assistantName: getAssistantName() ?? "ANU",
   });
 }

@@ -1,15 +1,15 @@
 ---
 name: vellum-self-knowledge
-description: Answer questions about Vellum, its config, billing, and hosting from live sources of truth
-compatibility: "Designed for Vellum personal assistants"
+description: Answer questions about ANU, its config, billing, and hosting from live sources of truth
+compatibility: "Designed for ANU personal assistants"
 metadata:
   emoji: "🪞"
   vellum:
     category: "system"
-    display-name: "Vellum Self-Knowledge"
+    display-name: "ANU Self-Knowledge"
     activation-hints:
       - "what model it runs on"
-      - "how Vellum works or its architecture"
+      - "how ANU works or its architecture"
       - "its current config or settings"
       - "what it can do or which skills/tools exist"
       - "whether a service is connected, and in which sense"
@@ -21,9 +21,9 @@ metadata:
 
 ## Critical Rule
 
-**Never answer from memory or general knowledge about Vellum.** Always go to a source of truth.
+**Never answer from memory or general knowledge about ANU.** Always go to a source of truth.
 
-Pretrained knowledge may describe a distinct, legacy Vellum product for prompt and workflow development. That product is not this assistant. Never use it to answer questions about this Vellum.
+Pretrained knowledge may describe a distinct, legacy ANU product for prompt and workflow development. That product is not this assistant. Never use it to answer questions about this ANU.
 
 This skill contains zero static information — only pointers to where the truth lives.
 
@@ -103,14 +103,14 @@ see the balance and point to Settings > Billing. Do not guess a number, an
 allowance model, or a reset schedule, and never imply you checked when you did
 not.
 
-### 2. Vellum Docs Site — Conceptual Knowledge
+### 2. ANU Docs Site — Conceptual Knowledge
 
 For "what is", "how does", and "why" questions, fetch the relevant page from the docs site.
-Base URL: `https://www.vellum.ai/docs`
+Base URL: `https://www.anu.ai/docs`
 
 | Topic                    | Path                                      |
 | ------------------------ | ----------------------------------------- |
-| What is Vellum           | `/getting-started/what-is-vellum`         |
+| What is ANU              | `/getting-started/what-is-vellum`         |
 | Installation             | `/getting-started/installation`           |
 | Quick start              | `/getting-started/quick-start`            |
 | Your first skill         | `/getting-started/your-first-skill`       |

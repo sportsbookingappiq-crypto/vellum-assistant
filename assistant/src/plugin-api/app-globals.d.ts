@@ -1,7 +1,7 @@
 /**
- * Ambient global types for the **app-side** Vellum bridge — `window.vellum`.
+ * Ambient global types for the **app-side** ANU bridge — `window.vellum`.
  *
- * A Vellum plugin app runs inside a sandboxed iframe, and the host injects a
+ * An ANU plugin app runs inside a sandboxed iframe, and the host injects a
  * `window.vellum` object into it at load time (see the assistant's
  * `sandbox-bridge` runtime). This file is the type-only counterpart to that
  * injection: it teaches TypeScript the shape of `window.vellum` so an app can
@@ -12,19 +12,19 @@
  * actually use. Other injected members are intentionally left undeclared until
  * there's a concrete need.
  *
- * A plugin app that depends on `@vellumai/plugin-api` pulls this in via a
+ * A plugin app that depends on `@anu/plugin-api` pulls this in via a
  * one-line reference (recommended — no runtime import, which apps can't rely
  * on inside the sandbox):
  *
  * ```ts
- * /// <reference types="@vellumai/plugin-api/app" />
+ * /// <reference types="@anu/plugin-api/app" />
  * ```
  *
- * or by adding `"@vellumai/plugin-api/app"` to `compilerOptions.types` in
+ * or by adding `"@anu/plugin-api/app"` to `compilerOptions.types` in
  * `tsconfig.json`. Either way the app no longer needs its own `vellum.d.ts`.
  *
  * The named types below are also exported, so app code that wants to annotate
- * a variable can `import type { VellumAppBridge } from "@vellumai/plugin-api/app"`.
+ * a variable can `import type { VellumAppBridge } from "@anu/plugin-api/app"`.
  */
 
 /**

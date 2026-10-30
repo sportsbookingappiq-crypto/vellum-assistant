@@ -19,11 +19,7 @@ import {
   type ReactNode,
 } from "react";
 
-import {
-  CardRoot,
-  Typography,
-  type TypographyAs,
-} from "@vellumai/design-library";
+import { CardRoot, Typography, type TypographyAs } from "@anu/design-library";
 
 import { CopyButton } from "@/components/copy-button";
 import { useOverflows } from "@/hooks/use-overflows";

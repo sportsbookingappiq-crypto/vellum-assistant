@@ -17,9 +17,9 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-import type { MarkdownLinkComponent } from "@vellumai/design-library";
-import { MarkdownMessage } from "@vellumai/design-library";
-import { Button } from "@vellumai/design-library/components/button";
+import type { MarkdownLinkComponent } from "@anu/design-library";
+import { MarkdownMessage } from "@anu/design-library";
+import { Button } from "@anu/design-library/components/button";
 
 import { ExternalAnchor } from "@/components/external-anchor";
 import type {

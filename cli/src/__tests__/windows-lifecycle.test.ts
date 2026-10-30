@@ -55,14 +55,12 @@ test("selects a direct process-table command with fixed arguments", () => {
 
 test("preserves command lines containing spaces and Unicode usernames", () => {
   const [parsed] = parseRemotePs(
-    "42 1 C:\\Users\\Example User 用户\\Vellum\\vellum-daemon.exe --port 3030",
+    "42 1 C:\\Users\\Example User 用户\\ANU\\vellum-daemon.exe --port 3030",
   );
-  expect(parsed.command).toContain(
-    "Example User 用户\\Vellum\\vellum-daemon.exe",
-  );
+  expect(parsed.command).toContain("Example User 用户\\ANU\\vellum-daemon.exe");
   expect(
     isInteractiveCliSession(
-      '"C:\\Users\\Example User 用户\\Vellum\\vellum.exe" exec -it --service vellum-gateway',
+      '"C:\\Users\\Example User 用户\\ANU\\vellum.exe" exec -it --service vellum-gateway',
     ),
   ).toBeTrue();
 });
@@ -75,7 +73,7 @@ test("rejects a stale PID file", () => {
   rmSync(dir, { recursive: true, force: true });
 });
 
-test("recognizes only Vellum Bun-hosted process command lines", () => {
+test("recognizes only ANU Bun-hosted process command lines", () => {
   expect(
     isVellumCommandLine(
       "bun.exe C:\\Users\\Example User 用户\\.vellum\\runtime\\assistant\\src\\daemon\\main.ts",

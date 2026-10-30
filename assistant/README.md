@@ -1,4 +1,4 @@
-# Vellum Assistant Runtime
+# ANU Runtime
 
 Bun + TypeScript assistant runtime that owns conversation history, attachment storage, and channel delivery state in a local SQLite database. Exposes an HTTP+SSE API for native clients (macOS, iOS) and the gateway.
 
@@ -52,12 +52,12 @@ cp .env.example .env
 Use the `vellum` CLI to manage assistant and gateway processes:
 
 ```bash
-vellum wake    # start assistant + gateway from current checkout
-vellum ps      # list assistants and per-assistant process status
-vellum sleep   # stop assistant + gateway (directory-agnostic)
+anu wake    # start assistant + gateway from current checkout
+anu ps      # list assistants and per-assistant process status
+anu sleep   # stop assistant + gateway (directory-agnostic)
 ```
 
-> **Note:** `vellum wake` requires a hatched assistant. Run `vellum hatch` first, or launch the macOS app which handles hatching automatically.
+> **Note:** `anu wake` requires a hatched assistant. Run `anu hatch` first, or launch the macOS app which handles hatching automatically.
 
 ### Development: raw bun commands
 
@@ -72,9 +72,9 @@ bun run src/index.ts                # interactive CLI session
 
 | Command                                                    | Description                                      |
 | ---------------------------------------------------------- | ------------------------------------------------ |
-| `vellum wake`                                              | Start assistant + gateway from current checkout  |
-| `vellum sleep`                                             | Stop assistant + gateway processes               |
-| `vellum ps`                                                | List assistants and per-assistant process status |
+| `anu wake`                                                 | Start assistant + gateway from current checkout  |
+| `anu sleep`                                                | Stop assistant + gateway processes               |
+| `anu ps`                                                   | List assistants and per-assistant process status |
 | `assistant`                                                | Launch interactive CLI session                   |
 | `assistant conversations list\|search\|new\|export\|clear` | Manage conversations                             |
 | `assistant config set\|get\|list`                          | Manage configuration                             |
@@ -247,7 +247,7 @@ The channel guardian service generates verification challenge instructions with 
 - **Rebind requirement:** Creating a new guardian challenge when a binding already exists requires `rebind: true` in the HTTP request. Without it, the assistant returns `already_bound`. On text channels the resulting code can only be redeemed by the account already bound, which is how the same guardian verifies again; to move the guardian to a different account, revoke the binding first and verify again. An outbound phone verification is the exception: its code replaces the bound number.
 - **Takeover prevention:** On text channels, verification is rejected when an active binding exists for a different external user: the code is spent, the reply is the generic "invalid or expired", and the sender is made neither guardian nor contact. Same-user re-verification is allowed, including for a guardian who revoked their binding and is verifying the same account again. Phone differs: an outbound verification with `rebind: true` replaces the bound number once its code is entered, and an inbound call from a different number is not bound.
 
-### Vellum Guardian Identity (Actor Tokens)
+### ANU Guardian Identity (Actor Tokens)
 
 The vellum channel (macOS) uses JWTs to bind guardian identity to HTTP requests. This enables identity-based authentication for the local desktop channel, paralleling how external channels (Telegram) use `actorExternalId` for guardian identity. The CLI authenticates using its bearer token obtained during `hatch`.
 

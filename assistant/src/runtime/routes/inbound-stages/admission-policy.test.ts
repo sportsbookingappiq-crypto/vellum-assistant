@@ -8,7 +8,7 @@
  */
 import { describe, expect, test } from "bun:test";
 
-import type { AdmissionPolicy } from "@vellumai/gateway-client";
+import type { AdmissionPolicy } from "@anu/gateway-client";
 
 import type { AdmissionPolicyInput } from "./admission-policy.js";
 import {

@@ -19,7 +19,7 @@ import { Brain, MoreHorizontal, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 
-import { Button, Menu, Notice, Typography } from "@vellumai/design-library";
+import { Button, Menu, Notice, Typography } from "@anu/design-library";
 
 import { useTranslation } from "@/i18n";
 import { FileMarkdown } from "@/components/file-markdown";

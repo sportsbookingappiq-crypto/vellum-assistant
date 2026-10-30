@@ -22,10 +22,10 @@ mock.module("@/lib/platform-assistant-id", () => ({
 
 // ── @capacitor/app (lazy-imported plugin Proxy) ──────────────────────────────
 
-const bundleId = "ai.vocify-inc.vellum-assistant-ios";
+const bundleId = "ai.anu.assistant-ios";
 const getInfoMock = mock(async () => ({
   id: bundleId,
-  name: "Vellum",
+  name: "ANU",
   build: "1",
   version: "1.0.0",
 }));

@@ -78,7 +78,7 @@ describe("requirePlatformConnection", () => {
       const output = stdoutChunks.join("");
       const parsed = JSON.parse(output);
       expect(parsed.ok).toBe(false);
-      expect(parsed.error).toContain("vellum platform connect");
+      expect(parsed.error).toContain("anu platform connect");
       expect(parsed.error).toContain("Not connected");
     } finally {
       process.stdout.write = originalWrite;

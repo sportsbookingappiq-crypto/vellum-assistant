@@ -1,10 +1,10 @@
-# Vellum Assistant Chrome Extension
+# ANU Chrome Extension
 
-MV3 Chrome extension that connects your browser to a running Vellum assistant via a WebSocket relay. It discovers assistants from the local lockfile, handles auth automatically, and maintains a persistent background connection.
+MV3 Chrome extension that connects your browser to a running ANU assistant via a WebSocket relay. It discovers assistants from the local lockfile, handles auth automatically, and maintains a persistent background connection.
 
 ## Install from Chrome Web Store
 
-Install the [Vellum Assistant](https://chromewebstore.google.com/detail/vellum-assistant-browser/hphbdmpffeigpcdjkckleobjmhhokpne) extension directly from the Chrome Web Store. This is the recommended approach for most users — no developer mode required.
+Install the [ANU](https://chromewebstore.google.com/detail/vellum-assistant-browser/hphbdmpffeigpcdjkckleobjmhhokpne) extension directly from the Chrome Web Store. This is the recommended approach for most users — no developer mode required.
 
 ## Development
 

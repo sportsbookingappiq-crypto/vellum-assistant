@@ -6,7 +6,7 @@
  * The daemon never dials velay itself — velay contact is gateway-only so
  * deterministic policy stays in a process the agent cannot rewrite. The
  * gateway route authenticates the daemon with a self-minted service JWT
- * (both processes share the HMAC signing key), attaches the Vellum
+ * (both processes share the HMAC signing key), attaches the ANU
  * assistant API key on its own upstream leg to velay, and pipes Deepgram
  * wire frames verbatim. The gateway mirrors velay's error contract:
  * rejections are JSON `{code, detail}` bodies, and mid-session failures
@@ -104,13 +104,13 @@ export function mapVelayError(error: VelayErrorInfo): {
       return {
         category: "auth",
         message:
-          "The Vellum speech relay rejected this assistant's API key — the assistant's platform environment may not match the relay it is dialing (set VELAY_BASE_URL on the gateway to the matching environment, e.g. https://velay-staging.vellum.ai for staging).",
+          "The ANU speech relay rejected this assistant's API key — the assistant's platform environment may not match the relay it is dialing (set VELAY_BASE_URL on the gateway to the matching environment, e.g. https://velay-staging.vellum.ai for staging).",
       };
     case "missing_platform_connection":
       return {
         category: "auth",
         message:
-          "Managed speech needs a working Vellum platform connection — reconnect with 'assistant platform connect'.",
+          "Managed speech needs a working ANU platform connection — reconnect with 'assistant platform connect'.",
       };
     case "invalid_token":
       return {
@@ -122,7 +122,7 @@ export function mapVelayError(error: VelayErrorInfo): {
       return {
         category: "provider-error",
         message:
-          "Managed speech is paused: your Vellum organization is out of credits. Top up credits to continue.",
+          "Managed speech is paused: your ANU organization is out of credits. Top up credits to continue.",
       };
     case "provider_unreachable":
     case "upstream_error":

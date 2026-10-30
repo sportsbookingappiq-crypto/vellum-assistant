@@ -6,9 +6,9 @@ import {
   AVATAR_IMAGE_FILENAME,
   AVATAR_MANIFEST_FILENAME,
   resolveAvatarDir,
-} from "@vellumai/avatar-manifest";
-import { SEEDS } from "@vellumai/environments";
-import { assertTestPathIsEphemeral as assertEphemeralInTests } from "@vellumai/environments/test-path-guard";
+} from "@anu/avatar-manifest";
+import { SEEDS } from "@anu/environments";
+import { assertTestPathIsEphemeral as assertEphemeralInTests } from "@anu/environments/test-path-guard";
 
 import { getWorkspaceDirOverride } from "../config/env-registry.js";
 
@@ -22,7 +22,7 @@ import { getWorkspaceDirOverride } from "../config/env-registry.js";
 const VELLUM_ROOT = join(homedir(), ".vellum");
 
 /**
- * Returns the Vellum root directory.
+ * Returns the ANU root directory.
  *
  * Resolution order (mirrors workspace/migrations/utils.ts):
  * 1. Parent of VELLUM_WORKSPACE_DIR — e.g. /data/.vellum/workspace → /data/.vellum
@@ -236,13 +236,13 @@ export function getAvatarManifestPath(): string {
 }
 
 // The set of known environment names, derived from the shared
-// `@vellumai/environments` seed table so this site can never drift from the
+// `@anu/environments` seed table so this site can never drift from the
 // CLI. The Swift client mirrors the same list (it can't import TS); that
 // cross-language pair is guarded by `cli/src/__tests__/env-drift.test.ts`.
 const KNOWN_ENVIRONMENTS: ReadonlySet<string> = new Set(Object.keys(SEEDS));
 
 /**
- * Returns the env-scoped XDG config subdirectory name for Vellum
+ * Returns the env-scoped XDG config subdirectory name for ANU
  * (`vellum` in production, `vellum-<env>` otherwise). Mirrors the Swift
  * side's `VellumPaths.configDir` and the CLI's
  * `environments/paths.ts:getConfigDir`.
@@ -398,7 +398,7 @@ export function getProcPidPath(name: string): string {
 // A test process must never resolve the workspace (or the vellum root) to a
 // real, non-temp directory: production code exercised by a test would then
 // read and destructively write live state. The containment assertion is
-// shared with the gateway via @vellumai/environments/test-path-guard;
+// shared with the gateway via @anu/environments/test-path-guard;
 // src/__tests__/assert-not-live-db.ts keeps its own containment check
 // because test machinery must not import production dependencies.
 

@@ -128,7 +128,7 @@ export function buildAccessRequestWarnings(
 /**
  * Signal-driven introduction-card action list for a parsed access-request
  * payload. Shared by every card renderer (Slack Card block, Telegram inline
- * keyboard, Vellum Surface card) so the offered actions never drift between
+ * keyboard, ANU Surface card) so the offered actions never drift between
  * surfaces.
  */
 export function buildIntroductionActionsForPayload(
@@ -413,7 +413,7 @@ export function stripAccessRequestReplyMechanicsFromCopy(
 
 /**
  * Display-ready projection of an access request, shared by every renderer
- * (the Vellum Surface card and the Slack Card block). It carries the
+ * (the ANU Surface card and the Slack Card block). It carries the
  * sanitized, pre-computed facts each renderer needs — identity sanitizing,
  * warnings, permalink, DM detection, preview sanitizing — so that projection
  * lives in exactly one place. Renderers lay these facts out in their

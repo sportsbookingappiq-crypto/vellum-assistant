@@ -1,5 +1,5 @@
 /**
- * Client for the platform's managed speech endpoints: Vellum-held Deepgram
+ * Client for the platform's managed speech endpoints: ANU-held Deepgram
  * key, billed to the org's credits. The daemon sends complete audio (STT) or
  * text (TTS) and the platform does the provider call — no speech credentials
  * ever live on this machine.
@@ -66,8 +66,7 @@ async function resolveClient(): Promise<
       error: {
         ok: false,
         kind: "unavailable",
-        message:
-          "Managed speech is unavailable: no Vellum platform connection.",
+        message: "Managed speech is unavailable: no ANU platform connection.",
       },
     };
   }

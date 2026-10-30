@@ -25,7 +25,7 @@ export function TrustSecurityBestPracticesContent() {
       >
         <p className="mb-8 text-zinc-600">
           Your assistant is a powerful tool. Powerful tools deserve thoughtful use.
-          Here are practical tips for getting the most out of Vellum while staying
+          Here are practical tips for getting the most out of ANU while staying
           safe.
         </p>
 
@@ -183,7 +183,7 @@ export function TrustSecurityBestPracticesContent() {
             Your credentials are isolated behind a{" "}
             <strong>Credential Execution Service</strong> (CES), a separate
             process that handles authentication so the assistant itself
-            never sees credential values in plaintext. On Vellum Cloud,
+            never sees credential values in plaintext. On ANU Cloud,
             CES runs in its own isolated container with private storage.
             On a local install, credentials live in an encrypted file
             under your assistant&apos;s protected directory, sealed with
@@ -324,13 +324,13 @@ export function TrustSecurityBestPracticesContent() {
           </p>
 
           <h3 className="mb-2 mt-6 text-lg font-semibold text-zinc-800">
-            On Vellum Cloud
+            On ANU Cloud
           </h3>
           <ol className="mb-4 list-decimal space-y-2 pl-6 text-zinc-600">
             <li>
               <strong>Reset your workspace</strong> from the web app to
               clear identity, memory, and conversations while keeping
-              your Vellum account.
+              your ANU account.
             </li>
             <li>
               <strong>Or delete the assistant entirely</strong> from
@@ -341,7 +341,7 @@ export function TrustSecurityBestPracticesContent() {
             <li>
               <strong>Revoke OAuth connections</strong> at each
               connected service (Google, Slack, etc.) and remove the
-              Vellum app on their side too.
+              ANU app on their side too.
             </li>
           </ol>
 
@@ -351,7 +351,7 @@ export function TrustSecurityBestPracticesContent() {
           <ol className="mb-4 list-decimal space-y-2 pl-6 text-zinc-600">
             <li>
               <strong>Archive your workspace:</strong> Run{" "}
-              <code>vellum retire</code> from the CLI. This creates a
+              <code>anu retire</code> from the CLI. This creates a
               tarball backup of your workspace before removing it.
             </li>
             <li>
@@ -361,12 +361,12 @@ export function TrustSecurityBestPracticesContent() {
             </li>
             <li>
               <strong>Revoke macOS permissions:</strong> System Settings
-              &gt; Privacy &amp; Security &gt; remove Vellum from
+              &gt; Privacy &amp; Security &gt; remove ANU from
               Accessibility, Screen Recording, and Microphone.
             </li>
             <li>
               <strong>Revoke OAuth connections</strong> at each
-              connected service and remove the Vellum app on their side.
+              connected service and remove the ANU app on their side.
             </li>
           </ol>
 

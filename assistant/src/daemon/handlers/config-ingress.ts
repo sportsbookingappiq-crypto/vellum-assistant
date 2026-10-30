@@ -7,7 +7,7 @@ import {
   parseTunnelRecord,
   selectRestartTunnelRecord,
   type TunnelRecord,
-} from "@vellumai/service-contracts/ingress";
+} from "@anu/service-contracts/ingress";
 
 import { updatePhoneNumberWebhooks } from "../../calls/twilio-rest.js";
 import {
@@ -34,10 +34,10 @@ export function computeGatewayTarget(): string {
 /**
  * The `ingress` section of the raw workspace config.
  *
- * `vellum tunnel` writes this section (`cli/src/lib/ingress-config.ts`). The
+ * `anu tunnel` writes this section (`cli/src/lib/ingress-config.ts`). The
  * CLI is a separate build unit the assistant does not depend on, so the key
  * names and the record validation are shared through
- * `@vellumai/service-contracts/ingress` instead.
+ * `@anu/service-contracts/ingress` instead.
  */
 function readIngressSection(): Record<string, unknown> {
   const ingress = loadRawConfig().ingress;

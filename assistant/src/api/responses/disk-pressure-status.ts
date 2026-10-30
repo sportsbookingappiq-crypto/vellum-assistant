@@ -10,7 +10,7 @@
  *
  * Canonical wire-contract source. Assistant code imports the types
  * directly from this file via relative paths; external consumers
- * (web client, gateway, evals) import via `@vellumai/assistant-api`.
+ * (web client, gateway, evals) import via `@anu/assistant-api`.
  */
 
 import { z } from "zod";

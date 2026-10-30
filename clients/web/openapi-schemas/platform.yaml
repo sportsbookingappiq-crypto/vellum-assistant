@@ -1550,8 +1550,8 @@ paths:
   /v1/assistants/{assistant_id}/managed-search-proxy/{provider}/:
     post:
       operationId: assistants_managed_search_proxy_create
-      description: Proxy a managed search-provider API request through Vellum. The
-        caller supplies the provider-shaped request path/query/body; Vellum validates
+      description: Proxy a managed search-provider API request through ANU. The
+        caller supplies the provider-shaped request path/query/body; ANU validates
         the route, checks billing eligibility, strips caller credentials, injects
         managed provider credentials, and returns the upstream response envelope.
       parameters:
@@ -1624,8 +1624,8 @@ paths:
   /v1/assistants/{assistant_id}/managed-speech/stt/transcribe/:
     post:
       operationId: assistants_managed_speech_stt_transcribe_create
-      description: Transcribe pre-recorded audio through Vellum's managed Deepgram
-        speech-to-text proxy. Vellum validates the request, checks billing eligibility,
+      description: Transcribe pre-recorded audio through ANU's managed Deepgram
+        speech-to-text proxy. ANU validates the request, checks billing eligibility,
         calls Deepgram with managed credentials, bills the transcribed duration, and
         returns the transcript. Pass 'language' to name the spoken language (a BCP-47
         code, or 'multi' for code-switching); omitting it decodes as English rather
@@ -1695,8 +1695,8 @@ paths:
   /v1/assistants/{assistant_id}/managed-speech/tts/synthesize/:
     post:
       operationId: assistants_managed_speech_tts_synthesize_create
-      description: Synthesize speech audio from text through Vellum's managed text-to-speech
-        proxy. Vellum validates the request, checks billing eligibility, calls the
+      description: Synthesize speech audio from text through ANU's managed text-to-speech
+        proxy. ANU validates the request, checks billing eligibility, calls the
         speech provider for the selected voice with managed credentials, bills the
         input character count, and returns the synthesized audio bytes.
       parameters:
@@ -1765,7 +1765,7 @@ paths:
   /v1/assistants/{assistant_id}/managed-speech/tts/voices/:
     get:
       operationId: assistants_managed_speech_tts_voices_retrieve
-      description: List the voices offered by Vellum's managed text-to-speech, in
+      description: List the voices offered by ANU's managed text-to-speech, in
         display order, with the platform's default voice. Only voices that are currently
         priced (and therefore usable via the synthesize endpoint) are returned.
       parameters:
@@ -2891,7 +2891,7 @@ paths:
     post:
       operationId: assistants_debug_bundle_upload_url_create
       description: Returns a signed PUT URL the assistant uploads a debug-profile
-        .vbundle to, so Vellum staff can open it on a debug clone. Only while the
+        .vbundle to, so ANU staff can open it on a debug clone. Only while the
         owner's staff access grant is active. Bundles are deleted after seven days.
       summary: Mint a signed upload URL for a debug bundle
       parameters:
@@ -3975,7 +3975,7 @@ paths:
   /v1/managed-speech/tts/voices/:
     get:
       operationId: managed_speech_tts_voices_retrieve
-      description: List the voices offered by Vellum's managed text-to-speech, in
+      description: List the voices offered by ANU's managed text-to-speech, in
         display order, with the platform's default voice. Only voices that are currently
         priced (and therefore usable via the synthesize endpoint) are returned.
       tags:
@@ -6031,7 +6031,7 @@ components:
       properties:
         access_consented:
           type: boolean
-          description: 'When True, Vellum staff may access this assistant and its
+          description: 'When True, ANU staff may access this assistant and its
             data for debugging: daemon log files, an admin terminal on the running
             assistant, and a disposable clone of its disk. Defaults to False; the
             owner can revoke at any time, which blocks new access and further commands
@@ -9331,7 +9331,7 @@ components:
       properties:
         access_consented:
           type: boolean
-          description: 'When True, Vellum staff may access this assistant and its
+          description: 'When True, ANU staff may access this assistant and its
             data for debugging: daemon log files, an admin terminal on the running
             assistant, and a disposable clone of its disk. Defaults to False; the
             owner can revoke at any time, which blocks new access and further commands

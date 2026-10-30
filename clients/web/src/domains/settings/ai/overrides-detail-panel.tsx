@@ -39,11 +39,11 @@ import { captureError } from "@/lib/sentry/capture-error";
 import { useTranslation } from "@/i18n";
 import { SectionLabel } from "@/components/detail-primitives";
 import { DetailShell, DetailShellLoading } from "@/components/detail-shell";
-import { Notice } from "@vellumai/design-library/components/notice";
-import { Button } from "@vellumai/design-library/components/button";
-import { ConfirmDialog } from "@vellumai/design-library/components/confirm-dialog";
-import { Input } from "@vellumai/design-library/components/input";
-import { toast } from "@vellumai/design-library/components/toast";
+import { Notice } from "@anu/design-library/components/notice";
+import { Button } from "@anu/design-library/components/button";
+import { ConfirmDialog } from "@anu/design-library/components/confirm-dialog";
+import { Input } from "@anu/design-library/components/input";
+import { toast } from "@anu/design-library/components/toast";
 
 export interface OverridesDetailPanelProps {
   assistantId: string;

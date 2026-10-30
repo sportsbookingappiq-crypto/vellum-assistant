@@ -10,14 +10,14 @@ import {
 } from "react";
 import { Link, Navigate, useSearchParams } from "react-router";
 
-import { Button } from "@vellumai/design-library/components/button";
-import { textLinkVariants } from "@vellumai/design-library/components/text-link";
-import { cn } from "@vellumai/design-library/utils/cn";
-import { Select } from "@vellumai/design-library/components/select";
-import { SegmentControl } from "@vellumai/design-library/components/segment-control";
-import { Slider } from "@vellumai/design-library/components/slider";
-import { ShortcutKeys } from "@vellumai/design-library/components/shortcut-keys";
-import { Toggle } from "@vellumai/design-library/components/toggle";
+import { Button } from "@anu/design-library/components/button";
+import { textLinkVariants } from "@anu/design-library/components/text-link";
+import { cn } from "@anu/design-library/utils/cn";
+import { Select } from "@anu/design-library/components/select";
+import { SegmentControl } from "@anu/design-library/components/segment-control";
+import { Slider } from "@anu/design-library/components/slider";
+import { ShortcutKeys } from "@anu/design-library/components/shortcut-keys";
+import { Toggle } from "@anu/design-library/components/toggle";
 
 import { ActivationKeyOption } from "@/domains/settings/pages/activation-key-option";
 import { ListeningLanguageCard } from "@/domains/settings/pages/listening-language-card";

@@ -4,14 +4,14 @@ import { z } from "zod";
 import type {
   CapabilityModule,
   DesktopCapabilityRegistry,
-} from "@vellumai/electron-desktop/capability-registry";
+} from "@anu/electron-desktop/capability-registry";
 import {
   DICTATION_PUSH_SAMPLE_RATE,
   dictationPartialsHelperResultSchema,
   DictationOwnerRouter,
   requestDictationTranscription,
   toAudioBuffer,
-} from "@vellumai/electron-desktop/dictation-routing";
+} from "@anu/electron-desktop/dictation-routing";
 import {
   HELPER_DICTATION_FINALIZED_EVENT,
   HELPER_DICTATION_PARTIAL_EVENT,
@@ -24,11 +24,11 @@ import {
   HELPER_STATE_EVENT,
   type DictationPartialsResult,
   type HelperRestartResult,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 import {
   type NativeSidecarClient,
   type NativeSidecarState,
-} from "@vellumai/native-sidecar/supervisor";
+} from "@anu/native-sidecar/supervisor";
 
 import { handle, on } from "../ipc.client";
 import log from "../logger";

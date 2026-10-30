@@ -16,7 +16,7 @@ const BASE_INDEX: DocsSearchIndexFile = {
       heading: "Getting Started",
       headingLevel: 1,
       sectionId: null,
-      body: "Install Vellum quickly and run your first workflow.",
+      body: "Install ANU quickly and run your first workflow.",
       keywords: ["installation", "quickstart"],
     },
     {

@@ -602,7 +602,7 @@ describe("SubagentDetailPanel: nested detail reads the live call", () => {
             results: [
               {
                 rank: 1,
-                title: "Vellum",
+                title: "ANU",
                 url: "https://vellum.ai",
                 domain: "vellum.ai",
               },

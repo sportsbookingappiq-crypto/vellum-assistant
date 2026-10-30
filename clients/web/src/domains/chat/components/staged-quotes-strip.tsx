@@ -13,17 +13,12 @@
 import { X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef } from "react";
-import {
-  Button,
-  Card,
-  ScrollShadow,
-  Typography,
-} from "@vellumai/design-library";
+import { Button, Card, ScrollShadow, Typography } from "@anu/design-library";
 import {
   quoteBlockquoteAccentClassName,
   quoteBlockquoteClassName,
   quoteBlockquoteContentClassName,
-} from "@vellumai/design-library/components/markdown-message";
+} from "@anu/design-library/components/markdown-message";
 
 import {
   type StagedQuote,

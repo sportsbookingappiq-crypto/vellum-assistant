@@ -18,7 +18,7 @@ export function DeveloperGuideArchitectureContent() {
     <>
       <DocsContent title="Architecture" breadcrumb="Docs / Developer Guide / Architecture">
         <p className="mb-8 text-zinc-600">
-          The Vellum Assistant platform has three main domains that work together: a runtime that manages conversations and tools,
+          The ANU platform has three main domains that work together: a runtime that manages conversations and tools,
           a native client for macOS, and a gateway that handles all external communication.
         </p>
 
@@ -80,7 +80,7 @@ export function DeveloperGuideArchitectureContent() {
 ├── gateway/              # Gateway service (Telegram, Twilio, OAuth, reverse proxy)
 ├── credential-executor/  # Credential Execution Service (isolated RPC boundary)
 ├── packages/             # Shared private packages (CES contracts, credential storage, egress proxy)
-├── cli/                  # Vellum CLI
+├── cli/                  # ANU CLI
 ├── skills/               # Bundled skill definitions
 ├── benchmarking/         # Load testing scripts
 ├── scripts/              # Utility scripts (publishing, tunneling, releases)

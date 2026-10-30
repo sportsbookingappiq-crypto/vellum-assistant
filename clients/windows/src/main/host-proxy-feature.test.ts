@@ -47,13 +47,12 @@ mock.module("electron-log/main", () => {
   };
 });
 
-const { __testing } =
-  await import("@vellumai/electron-desktop/host-proxy/router");
+const { __testing } = await import("@anu/electron-desktop/host-proxy/router");
 const { default: hostProxyFeature } = await import("./features/host-proxy");
 const { COMPUTER_USE_ACTION_EXECUTORS } =
   await import("./features/computer-use-actions");
 const { DesktopCapabilityRegistry } =
-  await import("@vellumai/electron-desktop/capability-registry");
+  await import("@anu/electron-desktop/capability-registry");
 
 afterEach(() => {
   __testing.reset();

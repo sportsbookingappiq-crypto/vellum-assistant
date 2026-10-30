@@ -43,8 +43,7 @@ const {
   getLockfilePaths,
   getMultiInstanceDir,
 } = await import("../paths.js");
-type EnvironmentDefinition =
-  import("@vellumai/environments").EnvironmentDefinition;
+type EnvironmentDefinition = import("@anu/environments").EnvironmentDefinition;
 
 const prod: EnvironmentDefinition = {
   name: "production",

@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 
-import { cn } from "@vellumai/design-library";
+import { cn } from "@anu/design-library";
 
 /**
  * Shared chrome for the app's small floating affordances: a lifted surface,

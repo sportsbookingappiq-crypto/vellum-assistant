@@ -21,9 +21,9 @@ import {
 } from "@/generated/daemon/@tanstack/react-query.gen";
 import type { SoundsConfigGetResponse } from "@/generated/daemon/types.gen";
 import { useTranslation } from "@/i18n";
-import { Button } from "@vellumai/design-library/components/button";
-import { Card } from "@vellumai/design-library/components/card";
-import { Toggle } from "@vellumai/design-library/components/toggle";
+import { Button } from "@anu/design-library/components/button";
+import { Card } from "@anu/design-library/components/card";
+import { Toggle } from "@anu/design-library/components/toggle";
 
 type SoundsConfig = SoundsConfigGetResponse;
 

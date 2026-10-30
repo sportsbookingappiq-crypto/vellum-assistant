@@ -12,12 +12,12 @@ import type {
   ChannelDeliveryResult,
   MessageAudience,
   StreamOp,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 import {
   classifyReactionEmojiSpelling,
   type ReactionEmojiIdentity,
-} from "@vellumai/service-contracts/reactions";
-import { slackEmojiCharacter } from "@vellumai/slack-text";
+} from "@anu/service-contracts/reactions";
+import { slackEmojiCharacter } from "@anu/slack-text";
 
 import type { AssistantActivityPhase } from "../../../api/index.js";
 import { getAttachmentContent } from "../../../persistence/attachments-store.js";

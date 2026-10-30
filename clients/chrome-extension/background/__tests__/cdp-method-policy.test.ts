@@ -7,7 +7,7 @@ import {
 } from "../cdp-method-policy.js";
 
 describe("cdp-method-policy", () => {
-  test("allows page-scoped browser tool methods and mediated Vellum helpers", () => {
+  test("allows page-scoped browser tool methods and mediated ANU helpers", () => {
     expect(isAllowedCdpMethod("Page.navigate")).toBe(true);
     expect(isAllowedCdpMethod("Runtime.evaluate")).toBe(true);
     expect(isAllowedCdpMethod("DOM.getDocument")).toBe(true);

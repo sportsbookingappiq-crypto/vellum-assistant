@@ -131,7 +131,7 @@ export interface SkillSummary {
   activationHints?: string[];
   /** Conditions under which this skill should NOT be loaded. */
   avoidWhen?: string[];
-  /** Category slug declared in frontmatter, used as a fallback when the skill is not in the Vellum catalog. */
+  /** Category slug declared in frontmatter, used as a fallback when the skill is not in the ANU catalog. */
   category?: string;
   /**
    * When true, this skill is pinned into the memory-v3 selector's stable-prefix

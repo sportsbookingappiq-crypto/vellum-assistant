@@ -20,14 +20,14 @@ import {
   HELPER_HOTKEY_READ_FRONT_SELECTION,
   HELPER_HOTKEY_SET_CHORDS,
   HELPER_HOTKEY_SET_MODIFIER_HOLD,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 import {
   DICTATION_PUSH_SAMPLE_RATE,
   dictationPartialsHelperResultSchema,
   DictationOwnerRouter,
   requestDictationTranscription,
   toAudioBuffer,
-} from "@vellumai/electron-desktop/dictation-routing";
+} from "@anu/electron-desktop/dictation-routing";
 import type {
   ChordBinding,
   ChordRegistrationResult,
@@ -40,7 +40,7 @@ import type {
   HotkeySelectionResult,
   ModifierHold,
   ModifierHoldRegistrationResult,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import {
   coachmarkPressed,
@@ -925,7 +925,7 @@ const sendHotkeyEventToOwner = (event: HotkeyEvent): void => {
 };
 
 const sendInputActivityToOwner = (): void => {
-  // A press on the companion is a press on Vellum's own controls: the offer
+  // A press on the companion is a press on ANU's own controls: the offer
   // those controls answer must not be taken down by the click answering it.
   if (isPointerOnCompanion()) {
     return;

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import type {
   CompanionIntroBeat,
   PermissionSourceRect,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import {
   beginPermissionGuide,

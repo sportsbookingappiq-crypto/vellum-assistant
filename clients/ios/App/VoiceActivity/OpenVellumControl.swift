@@ -2,7 +2,7 @@ import AppIntents
 import SwiftUI
 import WidgetKit
 
-/// One-tap "Open Vellum" for Control Center and the Lock Screen.
+/// One-tap "Open ANU" for Control Center and the Lock Screen.
 ///
 /// The app-launcher control other chat apps ship: tap the logo, be in the
 /// app. The action is `OpenVellumIntent`, which does nothing beyond
@@ -16,7 +16,7 @@ import WidgetKit
 /// The glyph is the custom `VellumV` symbol (`Assets.xcassets` in this
 /// extension), the same "V" every app icon variant draws. A control is
 /// identified by its glyph alone once placed, and no system symbol reads as
-/// Vellum.
+/// ANU.
 ///
 /// **iOS 18+.** `ControlWidget` did not exist before then and the app deploys
 /// to 17.0, so this is availability-gated exactly like `StartVoiceControl`:

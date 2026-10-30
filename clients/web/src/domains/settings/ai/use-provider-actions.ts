@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { toast } from "@vellumai/design-library/components/toast";
+import { toast } from "@anu/design-library/components/toast";
 
 import { isDefaultProviderId } from "@/domains/settings/ai/provider-row-meta";
 import { t } from "@/i18n";

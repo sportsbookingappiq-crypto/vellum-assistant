@@ -40,7 +40,7 @@ import {
   readPairedGatewayTargets,
   authorizePairedForwardHeaders,
   type CliInvocation,
-} from "@vellumai/local-mode";
+} from "@anu/local-mode";
 
 const GUARDIAN_TOKEN_PATTERN =
   /^(?:\/assistant)?\/__local\/guardian-token\/([^/]+)$/;
@@ -281,13 +281,28 @@ function configMiddleware(configJson: string): Connect.NextHandleFunction {
   };
 }
 
+/**
+ * Top-level SPA branches that live outside Vite's `/assistant/` base: the
+ * account pages and the ANU task screens. Each is served `index.html` so
+ * the router can take it from there.
+ */
+const TOP_LEVEL_SPA_PREFIXES = ["/account", "/anu"] as const;
+
+function isTopLevelSpaPath(url: string | undefined): boolean {
+  if (!url) {
+    return false;
+  }
+  return TOP_LEVEL_SPA_PREFIXES.some(
+    (prefix) =>
+      url === prefix ||
+      url.startsWith(`${prefix}/`) ||
+      url.startsWith(`${prefix}?`),
+  );
+}
+
 function accountSpaFallback(server: ViteDevServer): Connect.NextHandleFunction {
   return (req, res, next) => {
-    if (
-      !req.url?.startsWith("/account/") &&
-      !req.url?.startsWith("/account?") &&
-      req.url !== "/account"
-    ) {
+    if (!isTopLevelSpaPath(req.url)) {
       return next();
     }
 
@@ -789,7 +804,7 @@ function wakeMiddleware(baseDir: string): Connect.NextHandleFunction {
   };
 }
 
-// Paired-device management via the CLI (`vellum devices … --json`). POST-only
+// Paired-device management via the CLI (`anu devices … --json`). POST-only
 // (the renderer's postLocalCommand always POSTs); run-helper results respond
 // 200 with `ok` discriminating success so all hosts share one wire shape.
 function devicesMiddleware(baseDir: string): Connect.NextHandleFunction {

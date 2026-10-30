@@ -27,10 +27,10 @@ import {
   type CompanionPopover,
   type CompanionPopoverAction,
   type CompanionPopoverPermission,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 import type { ChatMessageToolCall } from "@/domains/chat/api/event-types";
 import type { PendingConfirmationState } from "@/domains/chat/types";
-import { CardSurfaceDataSchema } from "@vellumai/assistant-api";
+import { CardSurfaceDataSchema } from "@anu/assistant-api";
 
 import { useChatSessionStore } from "@/domains/chat/chat-session-store";
 import { useInteractionStore } from "@/domains/chat/interaction-store";

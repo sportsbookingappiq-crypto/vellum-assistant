@@ -27,7 +27,7 @@ export async function backup(): Promise<void> {
 
   if (args.includes("--help") || args.includes("-h")) {
     console.log(
-      "Usage: vellum backup <name> [--output <path>] [--export-timeout <seconds>]",
+      "Usage: anu backup <name> [--output <path>] [--export-timeout <seconds>]",
     );
     console.log("");
     console.log(
@@ -47,18 +47,16 @@ export async function backup(): Promise<void> {
     );
     console.log("");
     console.log("Examples:");
-    console.log("  vellum backup my-assistant");
-    console.log(
-      "  vellum backup my-assistant --output ~/Desktop/backup.vbundle",
-    );
-    console.log("  vellum backup my-assistant --export-timeout 600");
+    console.log("  anu backup my-assistant");
+    console.log("  anu backup my-assistant --output ~/Desktop/backup.vbundle");
+    console.log("  anu backup my-assistant --export-timeout 600");
     process.exit(0);
   }
 
   const name = args[0];
   if (!name || name.startsWith("-")) {
     console.error(
-      "Usage: vellum backup <name> [--output <path>] [--export-timeout <seconds>]",
+      "Usage: anu backup <name> [--output <path>] [--export-timeout <seconds>]",
     );
     process.exit(1);
   }
@@ -85,7 +83,7 @@ export async function backup(): Promise<void> {
   const entry = findAssistantByName(name);
   if (!entry) {
     console.error(`No assistant found with name '${name}'.`);
-    console.error("Run 'vellum hatch' first, or check the instance name.");
+    console.error("Run 'anu hatch' first, or check the instance name.");
     process.exit(1);
   }
 
@@ -124,7 +122,7 @@ export async function backup(): Promise<void> {
         console.error(
           `Error: Could not connect to assistant '${name}'. Is it running?`,
         );
-        console.error(`Try: vellum wake ${name}`);
+        console.error(`Try: anu wake ${name}`);
         process.exit(1);
       }
       throw err;
@@ -189,7 +187,7 @@ export async function backup(): Promise<void> {
       console.error(
         `Error: Could not connect to assistant '${name}'. Is it running?`,
       );
-      console.error(`Try: vellum wake ${name}`);
+      console.error(`Try: anu wake ${name}`);
       process.exit(1);
     }
     throw err;
@@ -231,7 +229,7 @@ export async function backup(): Promise<void> {
 // The runtime exports the bundle straight to a platform-issued signed GCS
 // URL; the CLI then downloads from GCS to local disk. Bytes never flow
 // through Django. Same architectural shape as the platform-source half of
-// `vellum teleport`. Output format and success log lines match mode 1
+// `anu teleport`. Output format and success log lines match mode 1
 // (runtime-direct local backup) so users see one consistent UX.
 //
 // Lifecycle: the GCS bucket has a 1-day TTL on `uploads/<org>/*` objects
@@ -249,7 +247,7 @@ async function backupPlatform(
   const platformToken = readPlatformToken();
   if (!platformToken) {
     console.error(
-      "Not logged in. Run 'vellum login' first (required for platform-managed backup).",
+      "Not logged in. Run 'anu login' first (required for platform-managed backup).",
     );
     process.exit(1);
   }
@@ -325,7 +323,7 @@ async function backupPlatform(
       const refreshed = readPlatformToken();
       if (!refreshed) {
         throw new Error(
-          "Platform auth expired during export and no credential was found on disk. Run 'vellum login' and retry.",
+          "Platform auth expired during export and no credential was found on disk. Run 'anu login' and retry.",
         );
       }
       exportPlatformToken = refreshed;

@@ -10,7 +10,7 @@ import {
   getFlagDefinition,
   storeKeyToFlagKey,
 } from "@/lib/feature-flags/feature-flag-catalog";
-import { toast } from "@vellumai/design-library/components/toast";
+import { toast } from "@anu/design-library/components/toast";
 
 /**
  * Internal store fields that are NOT feature flag values. Surfaces that

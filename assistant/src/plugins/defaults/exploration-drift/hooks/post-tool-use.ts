@@ -33,6 +33,13 @@
  *    only models prone to this looping; the one legitimate identical-call pattern
  *    (polling an external process's output) is rare inside an unbroken
  *    read-only run and the nudge is advisory anyway.
+ * 3. **Oscillation** (all models): the last
+ *    {@link EXPLORATION_OSCILLATION_WINDOW} calls of the run alternate between
+ *    two distinct calls, each byte-identical to the one two steps earlier
+ *    (A, B, A, B). Neither half yields anything new, and the plain repeat
+ *    count stays below the loop threshold, so the loop trigger misses it.
+ *    Four identical read-only calls in strict alternation are rare enough in
+ *    productive runs to check on every model; the nudge is advisory.
  *
  * The trailing run is derived from conversation history on every call
  * (mirroring the tool-error plugin) so the signal survives mid-run compaction
@@ -58,7 +65,7 @@ import type {
   HookFunction,
   Message,
   PostToolUseContext,
-} from "@vellumai/plugin-api";
+} from "@anu/plugin-api";
 
 /**
  * Canonical long-dig notice. Module-level constant so tests and wrapping
@@ -79,6 +86,22 @@ export function explorationLoopNudgeText(
 ): string {
   return `<system_notice>You have issued this exact ${toolName} call ${repeatCount} times in the current run of exploration tool calls. Repeating an identical read-only call yields no new information, you are likely stuck. Do two things now: (1) send the user a brief summary of what you have found so far and what you are still missing, do not keep working silently; (2) stop exploring inline and delegate the remaining investigation to a subagent: call subagent_spawn with role 'researcher' and a precise objective that includes what you have already checked and ruled out. It will investigate in its own context window and return a compact root-cause report. Do not re-issue this call again.</system_notice>`;
 }
+
+/**
+ * Canonical oscillation notice, naming the two alternating calls.
+ */
+export function explorationOscillationNudgeText(
+  firstToolName: string,
+  secondToolName: string,
+): string {
+  return `<system_notice>Your last exploration calls alternate between the same two calls (${firstToolName} and ${secondToolName}) with identical inputs, so they are not producing new information. Do not issue either call again. Send the user a brief summary of what you know and what is still missing, then take a different approach or ask the user for what you need.</system_notice>`;
+}
+
+/**
+ * Number of trailing calls (including the current one) checked for A, B, A, B
+ * alternation by the oscillation trigger.
+ */
+export const EXPLORATION_OSCILLATION_WINDOW = 4;
 
 /**
  * Exploration streak length that triggers the first long-dig nudge; repeat
@@ -244,6 +267,41 @@ function currentCallRepeatCount(
   return count;
 }
 
+/**
+ * Whether the current call and the most recent calls of the trailing run
+ * alternate between two distinct invocations (A, B, A, B, newest last).
+ * Returns the two tool names when they do. `runToolUseIds` is newest first.
+ */
+function oscillatingPair(
+  current: ToolInvocation,
+  runToolUseIds: ReadonlyArray<string>,
+  usesById: ReadonlyMap<string, ToolInvocation>,
+): [string, string] | null {
+  const recent: ToolInvocation[] = [current];
+  for (const id of runToolUseIds.slice(0, EXPLORATION_OSCILLATION_WINDOW - 1)) {
+    const use = usesById.get(id);
+    if (use === undefined) {
+      return null;
+    }
+    recent.push(use);
+  }
+  if (recent.length < EXPLORATION_OSCILLATION_WINDOW) {
+    return null;
+  }
+  const signatures = recent.map(
+    (use) => `${use.name}\u0000${stableStringify(use.input)}`,
+  );
+  if (signatures[0] === signatures[1]) {
+    return null;
+  }
+  for (let i = 2; i < signatures.length; i++) {
+    if (signatures[i] !== signatures[i - 2]) {
+      return null;
+    }
+  }
+  return [recent[1]!.name, recent[0]!.name];
+}
+
 const postToolUse: HookFunction<PostToolUseContext> = async (ctx) => {
   const usesById = toolUsesById(ctx.messages);
   const currentUse = usesById.get(ctx.toolResponse.tool_use_id);
@@ -286,7 +344,14 @@ const postToolUse: HookFunction<PostToolUseContext> = async (ctx) => {
   }
   const loopNudge = loopRepeatCount >= EXPLORATION_LOOP_REPEAT_THRESHOLD;
 
-  if (!longDigNudge && !loopNudge) {
+  // Oscillation: all models, same growth-since-last-nudge dedupe as the loop
+  // trigger.
+  const oscillation =
+    !longDigNudge && !loopNudge && streak > lastNudged
+      ? oscillatingPair(currentUse, run.toolUseIds, usesById)
+      : null;
+
+  if (!longDigNudge && !loopNudge && !oscillation) {
     return;
   }
 
@@ -299,13 +364,15 @@ const postToolUse: HookFunction<PostToolUseContext> = async (ctx) => {
   lastNudgedStreakByConversation.set(ctx.conversationId, streak);
   const nudgeText = loopNudge
     ? explorationLoopNudgeText(currentUse.name, loopRepeatCount)
-    : EXPLORATION_DRIFT_NUDGE_TEXT;
+    : oscillation
+      ? explorationOscillationNudgeText(oscillation[0], oscillation[1])
+      : EXPLORATION_DRIFT_NUDGE_TEXT;
   ctx.logger.info(
     {
       plugin: "exploration-drift",
       streak,
       toolName: currentUse.name,
-      trigger: loopNudge ? "loop" : "long-dig",
+      trigger: loopNudge ? "loop" : oscillation ? "oscillation" : "long-dig",
       ...(loopNudge ? { repeatCount: loopRepeatCount } : {}),
     },
     "Exploration drift detected: nudging summary + researcher delegation",

@@ -274,7 +274,7 @@ const HOOK_REFERENCE: HookReference[] = [
     name: "post-model-call",
     context: "PostModelCallContext",
     when: "At every model-call outcome: a finalized assistant message, or a provider rejection. Fires once per model call, before a finalized reply is persisted and streamed.",
-    can: "Transform the reply's text blocks (leave tool_use intact), and own the continue decision. On a degenerate no-tool reply or a recoverable rejection, repair the history and set decision to continue to re-query the model. Use isMaxTokensStopReason() from @vellumai/plugin-api on ctx.stopReason to detect truncated replies that may need continuation.",
+    can: "Transform the reply's text blocks (leave tool_use intact), and own the continue decision. On a degenerate no-tool reply or a recoverable rejection, repair the history and set decision to continue to re-query the model. Use isMaxTokensStopReason() from @anu/plugin-api on ctx.stopReason to detect truncated replies that may need continuation.",
     example: {
       label: "advisor",
       href: "https://github.com/vellum-ai/vellum-assistant/blob/5a79f009573790dd085223a0133135410a6fe41d/assistant/src/plugins/defaults/advisor/hooks/post-model-call.ts",
@@ -822,7 +822,7 @@ export function ExtensibilityHooksContent() {
           </p>
           <pre className="mb-4 overflow-x-auto rounded-lg bg-zinc-900 p-4 text-sm text-zinc-100">
             <code>{`// hooks/pre-model-call.ts
-import type { PreModelCallContext } from "@vellumai/plugin-api";
+import type { PreModelCallContext } from "@anu/plugin-api";
 
 export default async function preModelCall(
   ctx: PreModelCallContext,
@@ -837,7 +837,7 @@ export default async function preModelCall(
           <p className="mb-0 text-zinc-600 dark:text-zinc-400">
             Context types and constants come from{" "}
             <Link href={PLUGIN_API_URL} className={linkClass}>
-              <code>@vellumai/plugin-api</code>
+              <code>@anu/plugin-api</code>
             </Link>
             , the only supported contract.
           </p>

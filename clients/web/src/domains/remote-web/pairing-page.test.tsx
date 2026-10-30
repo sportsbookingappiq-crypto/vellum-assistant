@@ -10,7 +10,7 @@ import { MemoryRouter } from "react-router";
 
 // The implementation `@/lib/auth/remote-gateway-session` re-exports, imported
 // from its owner so the mock below hands the page the production parser.
-import { parseRemoteWebPairingParams } from "@vellumai/service-contracts/remote-web-pairing";
+import { parseRemoteWebPairingParams } from "@anu/service-contracts/remote-web-pairing";
 
 import type { RemoteWebPairingTokenResult } from "@/lib/auth/remote-gateway-session";
 
@@ -494,7 +494,7 @@ describe("RemoteWebPairingPage", () => {
     );
 
     const link = await screen.findByRole("link", {
-      name: "Open in the Vellum app",
+      name: "Open in the ANU app",
     });
     const href = link.getAttribute("href") ?? "";
     expect(href.startsWith("vellum-assistant://connect?")).toBe(true);
@@ -527,7 +527,7 @@ describe("RemoteWebPairingPage", () => {
     );
 
     const link = await screen.findByRole("link", {
-      name: "Open in the Vellum app",
+      name: "Open in the ANU app",
     });
     const href = link.getAttribute("href") ?? "";
     expect(href.startsWith("intent://connect?")).toBe(true);
@@ -536,7 +536,7 @@ describe("RemoteWebPairingPage", () => {
     expect(query.get("url")).toBe(window.location.origin);
     expect(query.get("code")).toBe("android-device");
     expect(href.slice(intentIndex)).toContain(
-      "#Intent;scheme=vellum-assistant;package=ai.vellum.assistant;",
+      "#Intent;scheme=vellum-assistant;package=ai.anu.assistant;",
     );
     expect(androidIntentFallback(href)).toBe(window.location.href);
     expect(exchangeRemoteWebPairingTokenMock).not.toHaveBeenCalled();
@@ -556,7 +556,7 @@ describe("RemoteWebPairingPage", () => {
     );
 
     const link = await screen.findByRole("link", {
-      name: "Open in the Vellum app",
+      name: "Open in the ANU app",
     });
     const href = link.getAttribute("href") ?? "";
     const query = new URLSearchParams(href.slice(href.indexOf("?") + 1));
@@ -581,7 +581,7 @@ describe("RemoteWebPairingPage", () => {
     );
 
     const link = await screen.findByRole("link", {
-      name: "Open in the Vellum app",
+      name: "Open in the ANU app",
     });
     const href = link.getAttribute("href") ?? "";
     expect(androidIntentQuery(href).get("name")).toBe("My Homelab");
@@ -604,7 +604,7 @@ describe("RemoteWebPairingPage", () => {
       );
 
       const link = await screen.findByRole("link", {
-        name: "Open in the Vellum app",
+        name: "Open in the ANU app",
       });
       const href = link.getAttribute("href") ?? "";
       const query = new URLSearchParams(href.slice(href.indexOf("?") + 1));
@@ -632,7 +632,7 @@ describe("RemoteWebPairingPage", () => {
     );
 
     const link = await screen.findByRole("link", {
-      name: "Open in the Vellum app",
+      name: "Open in the ANU app",
     });
     const href = link.getAttribute("href") ?? "";
     const query = androidIntentQuery(href);
@@ -657,7 +657,7 @@ describe("RemoteWebPairingPage", () => {
       );
     });
     expect(
-      screen.queryByRole("link", { name: "Open in the Vellum app" }),
+      screen.queryByRole("link", { name: "Open in the ANU app" }),
     ).toBeNull();
   });
 
@@ -680,7 +680,7 @@ describe("RemoteWebPairingPage", () => {
       );
 
       const link = await screen.findByRole("link", {
-        name: "Open in the Vellum app",
+        name: "Open in the ANU app",
       });
       const href = link.getAttribute("href") ?? "";
       expect(androidIntentFallback(href)).toBe(window.location.href);
@@ -698,7 +698,7 @@ describe("RemoteWebPairingPage", () => {
         );
       });
       expect(
-        screen.queryByRole("link", { name: "Open in the Vellum app" }),
+        screen.queryByRole("link", { name: "Open in the ANU app" }),
       ).toBeNull();
     } finally {
       window.history.pushState(null, "", "/");
@@ -730,7 +730,7 @@ describe("RemoteWebPairingPage", () => {
         );
       });
       expect(
-        screen.queryByRole("link", { name: "Open in the Vellum app" }),
+        screen.queryByRole("link", { name: "Open in the ANU app" }),
       ).toBeNull();
     },
   );

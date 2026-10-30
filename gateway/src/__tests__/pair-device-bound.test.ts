@@ -225,7 +225,7 @@ describe("/v1/pair device-bound minting", () => {
 });
 
 describe("/v1/pair cli interface", () => {
-  // The cli interface (e.g. `vellum pair`) is loopback-gated like the rest of
+  // The cli interface (e.g. `anu pair`) is loopback-gated like the rest of
   // /v1/pair, but is NOT a browser, so it carries no Origin header.
   function makeCliRequest(body?: Record<string, unknown>): Request {
     return new Request("http://localhost:7830/v1/pair", {
@@ -275,7 +275,7 @@ describe("/v1/pair cli interface", () => {
 
   test("rejects a cli request carrying an Origin header (WebView exfiltration vector)", async () => {
     // A browser/WebView page (e.g. a dynamic surface at *.vellum.local) always
-    // sends an Origin; a real `vellum pair` never does. Such a request would
+    // sends an Origin; a real `anu pair` never does. Such a request would
     // otherwise pass the loopback guards (it runs on the same machine) and mint
     // a broadly-scoped token the page could read back via the WebView CORS
     // allowance — so it must be refused, minting nothing.

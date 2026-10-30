@@ -17,12 +17,12 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { PassThrough } from "node:stream";
 
-import { resolveIpcEndpoint } from "@vellumai/ipc-server-utils";
+import { resolveIpcEndpoint } from "@anu/ipc-server-utils";
 import {
   CES_PROTOCOL_VERSION,
   type HandshakeAck,
   type RpcEnvelope,
-} from "@vellumai/service-contracts/credential-rpc";
+} from "@anu/service-contracts/credential-rpc";
 
 import {
   getCesDataRoot,
@@ -393,7 +393,7 @@ describe("CES data paths", () => {
     }
   });
 
-  test("local data root is under the Vellum root, not the workspace", () => {
+  test("local data root is under the ANU root, not the workspace", () => {
     const root = getCesDataRoot("local");
     // Must be under .vellum/protected/, NOT .vellum/workspace/
     expect(root).toMatch(/\.vellum[/\\]protected[/\\]/);

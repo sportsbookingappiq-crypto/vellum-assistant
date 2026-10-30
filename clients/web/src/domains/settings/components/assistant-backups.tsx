@@ -30,10 +30,10 @@ import { useTranslation } from "@/i18n";
 import { copyToClipboard } from "@/lib/copy-to-clipboard";
 import { captureError } from "@/lib/sentry/capture-error";
 import { saveFile } from "@/runtime/native-file";
-import { Button } from "@vellumai/design-library/components/button";
-import { ConfirmDialog } from "@vellumai/design-library/components/confirm-dialog";
-import { type TagTone, Tag } from "@vellumai/design-library/components/tag";
-import { toast } from "@vellumai/design-library/components/toast";
+import { Button } from "@anu/design-library/components/button";
+import { ConfirmDialog } from "@anu/design-library/components/confirm-dialog";
+import { type TagTone, Tag } from "@anu/design-library/components/tag";
+import { toast } from "@anu/design-library/components/toast";
 
 const MAX_POINT_IN_TIME_BACKUPS = 3;
 

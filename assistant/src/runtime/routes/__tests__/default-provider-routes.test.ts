@@ -374,7 +374,7 @@ describe("GET config/llm/default-provider", () => {
 
     const result = await get();
     expect(availability(result).status).toBe("provider_mismatch");
-    expect(availability(result).message).toContain("Vellum-managed");
+    expect(availability(result).message).toContain("ANU-managed");
   });
 
   test("service_account connection with invalid credential → missing_credential", async () => {

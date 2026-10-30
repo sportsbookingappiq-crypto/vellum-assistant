@@ -1,10 +1,7 @@
 import { beforeEach, describe, expect, mock, test } from "bun:test";
 
-import type { ChannelDeliveryResult, StreamOp } from "@vellumai/gateway-client";
-import {
-  ChannelReplyPayloadSchema,
-  StreamOpSchema,
-} from "@vellumai/gateway-client";
+import type { ChannelDeliveryResult, StreamOp } from "@anu/gateway-client";
+import { ChannelReplyPayloadSchema, StreamOpSchema } from "@anu/gateway-client";
 
 type DeliverCall = { callbackUrl: string; payload: Record<string, unknown> };
 

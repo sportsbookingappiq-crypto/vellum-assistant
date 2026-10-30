@@ -9,12 +9,12 @@ import {
   STORYBOOKS,
   resolveStorybookUrl,
   siblingOf,
-} from "@vellumai/design-library/storybook-links";
+} from "@anu/design-library/storybook-links";
 
 const lightManagerTheme = create({
   base: "light",
 
-  brandTitle: "Vellum Web",
+  brandTitle: "ANU Web",
   brandUrl: "https://github.com/vellum-ai/vellum-assistant",
   appBorderRadius: 8,
 

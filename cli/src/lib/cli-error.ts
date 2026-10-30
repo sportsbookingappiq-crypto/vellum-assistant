@@ -1,4 +1,4 @@
-import { SigningKeyContinuityError } from "@vellumai/local-mode";
+import { SigningKeyContinuityError } from "@anu/local-mode";
 
 /**
  * Structured CLI error reporting for upgrade/rollback commands.

@@ -2,7 +2,7 @@
  * Device ID resolver.
  *
  * Reads or creates a stable per-device UUID stored in device.json under the
- * Vellum config directory. The file is a JSON object (`{ "deviceId": "<uuid>" }`)
+ * ANU config directory. The file is a JSON object (`{ "deviceId": "<uuid>" }`)
  * extensible for future per-device metadata.
  *
  * Path resolution:

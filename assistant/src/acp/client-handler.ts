@@ -1,9 +1,9 @@
 /**
- * ACP client handler — bridges ACP agent events to Vellum's SSE message protocol.
+ * ACP client handler — bridges ACP agent events to ANU's SSE message protocol.
  *
  * Implements the ACP SDK's Client interface, forwarding session updates,
  * permission requests, file operations, and terminal management to
- * connected Vellum clients.
+ * connected ANU clients.
  */
 
 import { type ChildProcess, spawn } from "node:child_process";
@@ -73,8 +73,8 @@ interface TerminalState {
 }
 
 /**
- * Vellum's ACP Client handler. Receives events from an ACP agent and
- * forwards them as AssistantEvent objects to connected Vellum clients.
+ * ANU's ACP Client handler. Receives events from an ACP agent and
+ * forwards them as AssistantEvent objects to connected ANU clients.
  */
 export class VellumAcpClientHandler implements Client {
   private terminals = new Map<string, TerminalState>();
@@ -110,7 +110,7 @@ export class VellumAcpClientHandler implements Client {
     ) => void,
   ) {}
 
-  /** Forwards an update to Vellum, stamping a contiguous per-session `seq`. */
+  /** Forwards an update to ANU, stamping a contiguous per-session `seq`. */
   private forwardUpdate(
     update: Omit<AcpSessionUpdateEvent, "type" | "acpSessionId" | "seq">,
   ): void {
@@ -164,7 +164,7 @@ export class VellumAcpClientHandler implements Client {
   }
 
   /**
-   * Begins suppressing session updates from being forwarded to Vellum.
+   * Begins suppressing session updates from being forwarded to ANU.
    *
    * Per the ACP spec, `session/load` replays the entire conversation history
    * as `session/update` notifications before the load response resolves. The
@@ -303,7 +303,7 @@ export class VellumAcpClientHandler implements Client {
 
       default: {
         // Other update types (available_commands_update, current_mode_update,
-        // session_info_update) are not forwarded to Vellum.
+        // session_info_update) are not forwarded to ANU.
         log.debug(
           {
             acpSessionId: this.acpSessionId,

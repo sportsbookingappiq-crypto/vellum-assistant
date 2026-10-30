@@ -2,8 +2,8 @@ import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node
 import { dirname, join } from "node:path";
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 
-import { credentialKey } from "@vellumai/credential-storage";
-import type { CredentialRecord } from "@vellumai/service-contracts/credential-rpc";
+import { credentialKey } from "@anu/credential-storage";
+import type { CredentialRecord } from "@anu/service-contracts/credential-rpc";
 
 import type { CredentialRecordBackend } from "../security/ces-rpc-record-backend.js";
 import {

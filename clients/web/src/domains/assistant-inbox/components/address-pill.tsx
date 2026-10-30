@@ -5,7 +5,7 @@ import {
   cn,
   panelItemWashStyle,
   type CustomPropertyStyle,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 
 import { AssistantEyesMark } from "@/components/avatar/assistant-eyes-mark";
 import { ChatAvatar } from "@/components/avatar/chat-avatar";

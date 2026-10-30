@@ -1,5 +1,5 @@
 {
-  "name": "@vellumai/electron-desktop",
+  "name": "@anu/electron-desktop",
   "version": "0.0.1",
   "private": true,
   "license": "MIT",
@@ -83,6 +83,7 @@
     "./text-context-menu": "./src/text-context-menu.ts",
     "./tray-model": "./src/tray-model.ts",
     "./vellumapp-protocol": "./src/vellumapp-protocol.ts",
+    "./user-data-dir": "./src/user-data-dir.ts",
     "./window-attention": "./src/window-attention.ts",
     "./window-readiness": "./src/window-readiness.ts",
     "./window-state": "./src/window-state.ts",
@@ -94,10 +95,10 @@
     "test": "bun scripts/run-tests.ts"
   },
   "dependencies": {
-    "@vellumai/electron-utils": "workspace:*",
-    "@vellumai/ipc-contract": "workspace:*",
-    "@vellumai/local-mode": "workspace:*",
-    "@vellumai/service-contracts": "workspace:*",
+    "@anu/electron-utils": "workspace:*",
+    "@anu/ipc-contract": "workspace:*",
+    "@anu/local-mode": "workspace:*",
+    "@anu/service-contracts": "workspace:*",
     "electron-store": "11.0.2",
     "jszip": "3.10.1"
   },

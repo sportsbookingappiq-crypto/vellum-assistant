@@ -35,10 +35,10 @@ export interface AppIconTraits {
 const AVATAR_ICON_PREFIX = "avatar-eyes-";
 
 /**
- * The pair the icon shipped as each shell's default is drawn from: quirky eyes
- * on the green field, held by `clients/ios/App/App/AppIcon.icon` and by the
- * Android `ic_launcher` adaptive icon. It carries no alternate-icon name of its
- * own, so a surface previewing "no alternate applied" draws this instead.
+ * The pair the picker opens on when neither the home screen nor the avatar
+ * names one: quirky eyes on the catalog green. The icon each shell ships as its
+ * default is the ANU mark, which carries no eye pair at all, so this is a
+ * starting point among the alternates and never a depiction of the default.
  */
 export const DEFAULT_APP_ICON_TRAITS: AppIconTraits = {
   eyeStyle: "quirky",

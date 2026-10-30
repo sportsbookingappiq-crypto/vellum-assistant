@@ -2,12 +2,12 @@ import { useState } from "react";
 
 import { ChevronDown } from "lucide-react";
 
-import { Button } from "@vellumai/design-library/components/button";
-import { Collapsible } from "@vellumai/design-library/components/collapsible";
-import { Input } from "@vellumai/design-library/components/input";
-import { Notice } from "@vellumai/design-library/components/notice";
-import { cn } from "@vellumai/design-library/utils/cn";
-import type { TunnelProviderName } from "@vellumai/service-contracts/ingress";
+import { Button } from "@anu/design-library/components/button";
+import { Collapsible } from "@anu/design-library/components/collapsible";
+import { Input } from "@anu/design-library/components/input";
+import { Notice } from "@anu/design-library/components/notice";
+import { cn } from "@anu/design-library/utils/cn";
+import type { TunnelProviderName } from "@anu/service-contracts/ingress";
 
 import { DetailCard } from "@/components/detail-card";
 import { useBusSubscription } from "@/hooks/use-bus-subscription";
@@ -57,14 +57,14 @@ const DOUBTED_KINDS = new Set<TunnelStatusView["kind"]>([
   "foreign",
 ]);
 
-const TUNNEL_HELP_COMMAND = "vellum tunnel --help";
+const TUNNEL_HELP_COMMAND = "anu tunnel --help";
 
 /** Public how-to for the whole tunnel-and-pair flow this card is one step of. */
 const PAIRING_DOCS_URL = docsUrl(routes.docs.pairADevice);
 
 /**
  * Settings card that pairs another device to this assistant without shell
- * commands, the UI equivalent of `vellum pair`. It mints and auto-approves a
+ * commands, the UI equivalent of `anu pair`. It mints and auto-approves a
  * device-code challenge against the host's loopback gateway and renders the
  * https pair URL as a QR with a copyable link and expiry countdown. It also
  * hosts the approval list for pairing requests minted elsewhere
@@ -86,7 +86,7 @@ const PAIRING_DOCS_URL = docsUrl(routes.docs.pairADevice);
  * pairing routes ({@link useSupportsRemoteWebPairing}). The client-scoped
  * `paired-devices-ui` flag decides only whether the paired-devices list +
  * revoke section renders inside the card; revocation itself stays available
- * via `vellum devices` on the host.
+ * via `anu devices` on the host.
  */
 export function PairDeviceCard() {
   const { t } = useTranslation("settings");
@@ -315,7 +315,7 @@ export function PairDeviceCard() {
         />
 
         {/* Poll while a code is live so an externally claimed pairing shows up.
-            Gating at the render site also keeps the host `vellum devices`
+            Gating at the render site also keeps the host `anu devices`
             fetch from ever firing while the flag is off. */}
         {pairedDevicesUIOn && (
           <PairedDevicesSection

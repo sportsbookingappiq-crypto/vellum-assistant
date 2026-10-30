@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { type StepperStep } from "@vellumai/design-library";
+import { type StepperStep } from "@anu/design-library";
 import {
   ChannelSetupWizard,
   type MutationStatus,

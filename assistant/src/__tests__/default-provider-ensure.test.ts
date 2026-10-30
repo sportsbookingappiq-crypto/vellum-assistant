@@ -290,7 +290,7 @@ describe("ensureDefaultProvider", () => {
       expect(llm().defaultProvider).toEqual({ provider: "anthropic" });
     });
 
-    test("no key + logged in falls through to the vellum login fallback", async () => {
+    test("no key + logged in falls through to the anu login fallback", async () => {
       proxyState.prereqs = true;
       writeConfig({ llm: { default: { provider: "anthropic" } } });
 

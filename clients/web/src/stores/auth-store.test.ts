@@ -411,7 +411,7 @@ mock.module("@/assistant/lifecycle-service", () => ({
   },
 }));
 
-// `@/assistant/api` transitively pulls in `@vellumai/assistant-api`
+// `@/assistant/api` transitively pulls in `@anu/assistant-api`
 // exports that are currently missing on main. Mock the call sites
 // `auth-store` actually uses; the real module load would crash
 // before any test runs.

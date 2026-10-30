@@ -1,6 +1,6 @@
 import { ExternalLink } from "lucide-react";
 
-import { Button } from "@vellumai/design-library";
+import { Button } from "@anu/design-library";
 
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { getOpenInChannelLabel } from "@/utils/channel-presentation";

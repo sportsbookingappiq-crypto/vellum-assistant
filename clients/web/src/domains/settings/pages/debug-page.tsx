@@ -13,7 +13,7 @@ import { resolveDebugTabParam } from "@/domains/settings/pages/debug-page.helper
 import { usePlatformGate } from "@/hooks/use-platform-gate";
 import { useTranslation } from "@/i18n";
 import { navigateToConversation } from "@/utils/conversation-navigation";
-import { Tabs } from "@vellumai/design-library/components/tabs";
+import { Tabs } from "@anu/design-library/components/tabs";
 
 const ALL_TABS = [
   { id: "general", labelKey: "debugPage.tabs.general", defaultLabel: "General" },

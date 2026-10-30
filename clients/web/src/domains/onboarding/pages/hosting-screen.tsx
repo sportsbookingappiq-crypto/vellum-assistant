@@ -17,7 +17,7 @@ import { useClientFeatureFlagStore } from "@/stores/client-feature-flag-store";
 import { useResolvedAssistantsStore } from "@/stores/resolved-assistants-store";
 import { useTranslation } from "@/i18n";
 import { docsUrl, routes } from "@/utils/routes";
-import { Button } from "@vellumai/design-library/components/button";
+import { Button } from "@anu/design-library/components/button";
 
 type HostingMode = "vellum-cloud" | "local" | "docker";
 
@@ -45,9 +45,9 @@ function useHostingOptions(): HostingOption[] {
   return [
     {
       mode: "vellum-cloud",
-      label: "Vellum Cloud",
+      label: "ANU Cloud",
       subtitle:
-        "Always on, 24/7, even when your computer is off. Runs on Vellum's secure infrastructure.",
+        "Always on, 24/7, even when your computer is off. Runs on ANU's secure infrastructure.",
       icon: <Cloud className={ICON_CLASS} />,
       ...(cloudDisabled
         ? {

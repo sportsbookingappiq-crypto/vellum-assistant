@@ -23,8 +23,8 @@
 
 import type { ReactNode } from "react";
 
-import { AskQuestionInputSchema } from "@vellumai/assistant-api";
-import { Typography } from "@vellumai/design-library";
+import { AskQuestionInputSchema } from "@anu/assistant-api";
+import { Typography } from "@anu/design-library";
 
 import { CodeBlock, SectionLabel } from "@/components/detail-primitives";
 import {

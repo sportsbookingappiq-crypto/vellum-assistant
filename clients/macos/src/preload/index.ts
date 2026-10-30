@@ -1,4 +1,4 @@
-import { createPermissionSetupBridge } from "@vellumai/electron-desktop/preload";
+import { createPermissionSetupBridge } from "@anu/electron-desktop/preload";
 import {
   contextBridge,
   ipcRenderer,
@@ -6,10 +6,10 @@ import {
   type IpcRendererEvent,
 } from "electron";
 
-import { createLocalModeBridge } from "@vellumai/electron-desktop/local-mode-bridge";
-import { createFileOpenPreloadBridge } from "@vellumai/electron-desktop/file-open-preload";
+import { createLocalModeBridge } from "@anu/electron-desktop/local-mode-bridge";
+import { createFileOpenPreloadBridge } from "@anu/electron-desktop/file-open-preload";
 
-import type { Lockfile, LockfileWriteResult } from "@vellumai/local-mode";
+import type { Lockfile, LockfileWriteResult } from "@anu/local-mode";
 import type {
   AppVersionInfo,
   AssistantStatus,
@@ -64,7 +64,7 @@ import type {
   VoiceActivityContent,
   VoiceActivityControl,
   VoiceActivityStart,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 import {
   DIAGNOSTICS_SET_SHARE,
   FEATURE_FLAGS_SET,
@@ -83,7 +83,7 @@ import {
   HELPER_HOTKEY_SET_MODIFIER_HOLD,
   HELPER_INPUT_ACTIVITY_EVENT,
   HELPER_INPUT_SET_ACTIVITY_WATCH,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 import {
   createBundleConfirmBridge,
   createDeepLinksBridge,
@@ -93,7 +93,7 @@ import {
   createLaunchAtLoginBridge,
   createNotificationsBridge,
   createUpdateBridge,
-} from "@vellumai/electron-desktop/preload";
+} from "@anu/electron-desktop/preload";
 
 export type {
   AppVersionInfo,

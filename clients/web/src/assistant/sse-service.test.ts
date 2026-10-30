@@ -9,7 +9,7 @@ import {
   test,
 } from "bun:test";
 
-import type { AssistantEventEnvelope } from "@vellumai/assistant-api";
+import type { AssistantEventEnvelope } from "@anu/assistant-api";
 import { makeEnvelope } from "@/assistant/sse-service.test-helper";
 import * as eventBus from "@/lib/event-bus";
 import { requestSseReconnect } from "@/lib/streaming/sse-reconnect-control";

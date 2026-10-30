@@ -26,7 +26,7 @@ import {
   type BootBlockedReason,
 } from "@/lib/telemetry/boot-telemetry";
 import { useClientFeatureFlagStore } from "@/stores/client-feature-flag-store";
-import { Button } from "@vellumai/design-library";
+import { Button } from "@anu/design-library";
 
 import { ActiveChatView } from "@/domains/chat/active-chat-view";
 import { CleanupScreen } from "@/domains/chat/components/cleanup-screen";

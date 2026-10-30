@@ -1,16 +1,16 @@
 import { Menu, type MenuItemConstructorOptions, app, shell } from "electron";
 import { z } from "zod";
 
-import { companionVisibilityItem } from "@vellumai/electron-desktop/companion-menu";
+import { companionVisibilityItem } from "@anu/electron-desktop/companion-menu";
 import {
   onSettingChange,
   readSetting,
-} from "@vellumai/electron-desktop/settings";
+} from "@anu/electron-desktop/settings";
 import {
   onCompanionHiddenChange,
   readCompanionHidden,
   readOnboardingActive,
-} from "@vellumai/electron-desktop/window-state";
+} from "@anu/electron-desktop/window-state";
 
 import { openAboutWindow } from "./about.client";
 import { checkForUpdates } from "./auto-update.client";
@@ -77,7 +77,7 @@ const cliPathFlowItem = (
 });
 
 const cliPathItems = (): MenuItemConstructorOptions[] => {
-  // Only packaged builds manage the shared ~/.local/bin/vellum wrapper.
+  // Only packaged builds manage the shared ~/.local/bin/anu wrapper.
   if (!app.isPackaged) return [];
   const cliState = cliPathState;
   if (cliState?.kind === "installed" || cliState?.kind === "shadowed") {
@@ -85,7 +85,7 @@ const cliPathItems = (): MenuItemConstructorOptions[] => {
       ...(cliState.kind === "shadowed"
         ? [
             {
-              label: "⚠ vellum is shadowed by another install",
+              label: "⚠ anu is shadowed by another install",
               enabled: false,
             },
           ]
@@ -95,16 +95,16 @@ const cliPathItems = (): MenuItemConstructorOptions[] => {
       ...(!cliState.runtimeReady
         ? [
             cliPathFlowItem(
-              "Repair vellum Command\u2026",
+              "Repair anu Command\u2026",
               runInstallCliCommandFlow,
             ),
           ]
         : []),
-      cliPathFlowItem("Uninstall vellum Command", runUninstallCliCommandFlow),
+      cliPathFlowItem("Uninstall anu Command", runUninstallCliCommandFlow),
     ];
   }
   return [
-    cliPathFlowItem("Install vellum Command\u2026", runInstallCliCommandFlow),
+    cliPathFlowItem("Install anu Command\u2026", runInstallCliCommandFlow),
   ];
 };
 
@@ -306,9 +306,9 @@ const buildTemplate = (): MenuItemConstructorOptions[] => {
         },
         { type: "separator" },
         {
-          label: "Vellum Documentation",
+          label: "ANU Documentation",
           click: () => {
-            void shell.openExternal("https://www.vellum.ai/docs");
+            void shell.openExternal("https://www.anu.ai/docs");
           },
         },
       ],
@@ -370,7 +370,7 @@ export const installApplicationMenu = (): void => {
 
   applyMenu();
 
-  // Detect the vellum CLI install state asynchronously so menu setup never
+  // Detect the anu CLI install state asynchronously so menu setup never
   // waits on (or breaks from) login-shell PATH resolution; packaged-only
   // gating lives inside refreshCliPathMenuState.
   void refreshCliPathMenuState();

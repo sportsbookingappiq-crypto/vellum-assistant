@@ -4,7 +4,7 @@ import { join } from "path";
 import {
   TUNNEL_PROVIDERS,
   type TunnelProviderName,
-} from "@vellumai/service-contracts/ingress";
+} from "@anu/service-contracts/ingress";
 
 import {
   formatAssistantReference,
@@ -65,9 +65,7 @@ function parseArgs(): TunnelArgs {
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg === "--help" || arg === "-h") {
-      console.log(
-        "Usage: vellum tunnel [<name>] --provider <provider> [options]",
-      );
+      console.log("Usage: anu tunnel [<name>] --provider <provider> [options]");
       console.log("");
       console.log("Front a locally running assistant with an HTTPS tunnel.");
       console.log(
@@ -104,7 +102,7 @@ function parseArgs(): TunnelArgs {
         "  --domain <domain>             Reserved ngrok domain to bind (ngrok provider only).",
       );
       console.log(
-        "                                Saved to the workspace config so `vellum wake` restores reuse it.",
+        "                                Saved to the workspace config so `anu wake` restores reuse it.",
       );
       console.log(
         "  --clear-domain                Clear the saved ngrok domain (ngrok provider only) and tunnel",
@@ -130,13 +128,13 @@ function parseArgs(): TunnelArgs {
       console.log("");
       console.log("Providers:");
       console.log(
-        "  vellum       Managed tunnel via Vellum Cloud (not yet available)",
+        "  vellum       Managed tunnel via ANU Cloud (not yet available)",
       );
       console.log(
-        "  ngrok        ngrok tunnel — install: brew install ngrok/ngrok/ngrok",
+        "  ngrok        ngrok tunnel. Install: brew install ngrok/ngrok/ngrok",
       );
       console.log(
-        "  cloudflare   Cloudflare quick tunnel — install: brew install cloudflare/cloudflare/cloudflared",
+        "  cloudflare   Cloudflare quick tunnel. Install: brew install cloudflare/cloudflare/cloudflared",
       );
       console.log(
         "               No Cloudflare account required for quick tunnels.",
@@ -155,14 +153,14 @@ function parseArgs(): TunnelArgs {
       );
       console.log("");
       console.log("Examples:");
-      console.log("  $ vellum tunnel --provider ngrok");
+      console.log("  $ anu tunnel --provider ngrok");
       console.log(
-        "  $ vellum tunnel --provider ngrok --domain my-assistant.ngrok.app",
+        "  $ anu tunnel --provider ngrok --domain my-assistant.ngrok.app",
       );
-      console.log("  $ vellum tunnel --provider ngrok --clear-domain");
-      console.log("  $ vellum tunnel --provider cloudflare");
-      console.log("  $ vellum tunnel my-assistant --provider tailscale");
-      console.log("  $ vellum tunnel --provider ngrok --detach");
+      console.log("  $ anu tunnel --provider ngrok --clear-domain");
+      console.log("  $ anu tunnel --provider cloudflare");
+      console.log("  $ anu tunnel my-assistant --provider tailscale");
+      console.log("  $ anu tunnel --provider ngrok --detach");
       process.exit(0);
     } else if (arg === "--provider") {
       const next = args[i + 1];
@@ -219,7 +217,7 @@ function parseArgs(): TunnelArgs {
     const target = assistantName ? ` ${shellArg(assistantName)}` : "";
     for (const name of TUNNEL_PROVIDERS) {
       console.error(
-        `  vellum tunnel${target} --provider ${name.padEnd(13)}${PROVIDER_REACH[name]}`,
+        `  anu tunnel${target} --provider ${name.padEnd(13)}${PROVIDER_REACH[name]}`,
       );
     }
     process.exit(1);
@@ -284,7 +282,7 @@ function toLocalTunnelTarget(entry: AssistantEntry): LocalTunnelTarget | null {
 function describeUntunnelableEntry(entry: AssistantEntry): string {
   const reference = formatAssistantReference(entry);
   return entry.cloud === "vellum"
-    ? `Assistant '${reference}' runs on Vellum Cloud and needs no tunnel.`
+    ? `Assistant '${reference}' runs on ANU Cloud and needs no tunnel.`
     : `Assistant '${reference}' has no locally managed runtime to tunnel.`;
 }
 
@@ -318,9 +316,7 @@ function resolveLocalTunnelTarget(
 
   console.error(describeUntunnelableEntry(entry));
   if (localTargets.length === 0) {
-    console.error(
-      "No local assistant found to tunnel. Run `vellum hatch` first.",
-    );
+    console.error("No local assistant found to tunnel. Run `anu hatch` first.");
   } else {
     console.error(
       `Pass a local assistant as the name argument: ${localTargets
@@ -365,7 +361,7 @@ const TUNNEL_ESTABLISHED_RE = /Tunnel established: (\S+)/;
 const TUNNEL_ADOPTED_RE = /Found existing ngrok tunnel: (\S+)/;
 
 /**
- * Re-invoke `vellum tunnel` (without `-d`/`--detach`) as a detached background
+ * Re-invoke `anu tunnel` (without `-d`/`--detach`) as a detached background
  * process via `relaunchDetached`, waiting for the child to either print its
  * "Tunnel established"/"Found existing ngrok tunnel" line (readiness) or
  * exit early (failure), so a misconfigured provider still fails loudly in

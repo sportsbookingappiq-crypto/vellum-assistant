@@ -2,7 +2,7 @@
  * Workspace migration 023: Move config/state JSON files from root to workspace.
  *
  * Previously, dictation-profiles.json, email-guardrails.json, and
- * active-call-leases.json lived directly under the Vellum root (~/.vellum/).
+ * active-call-leases.json lived directly under the ANU root (~/.vellum/).
  * This migration moves them into the workspace directory so they follow
  * the workspace convention for organizational consistency.
  */

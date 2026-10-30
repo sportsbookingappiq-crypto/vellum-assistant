@@ -1,7 +1,7 @@
 import {
   type HookFunction,
   type UserPromptSubmitContext,
-} from "@vellumai/plugin-api";
+} from "@anu/plugin-api";
 
 import { applyTaskProgressContext } from "../src/apply-task-progress-context.js";
 

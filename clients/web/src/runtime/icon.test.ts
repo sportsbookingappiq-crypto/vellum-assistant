@@ -35,7 +35,7 @@ describe("setAssistantIcon", () => {
     expect(setAvatar).toHaveBeenCalledWith(png);
   });
 
-  test("forwards null to clear the avatar (Vellum-mark fallback)", () => {
+  test("forwards null to clear the avatar (ANU-mark fallback)", () => {
     runningInElectron = true;
     const setAvatar = mock(() => {});
     (window as { vellum?: unknown }).vellum = { icon: { setAvatar } };

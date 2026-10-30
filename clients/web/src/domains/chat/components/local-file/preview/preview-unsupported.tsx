@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Download, ExternalLink } from "lucide-react";
-import { Button, Typography } from "@vellumai/design-library";
+import { Button, Typography } from "@anu/design-library";
 
 import { formatAttachmentSize } from "@/utils/attachment-utils";
 import {

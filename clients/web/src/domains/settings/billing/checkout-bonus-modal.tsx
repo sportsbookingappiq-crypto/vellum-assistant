@@ -8,10 +8,10 @@ import {
   organizationsBillingSummaryRetrieveOptions,
 } from "@/generated/api/@tanstack/react-query.gen";
 import { useTranslation } from "@/i18n";
-import { Button } from "@vellumai/design-library/components/button";
-import { Modal } from "@vellumai/design-library/components/modal";
-import { toast } from "@vellumai/design-library/components/toast";
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Button } from "@anu/design-library/components/button";
+import { Modal } from "@anu/design-library/components/modal";
+import { toast } from "@anu/design-library/components/toast";
+import { Typography } from "@anu/design-library/components/typography";
 
 import { formatUsdShort } from "@/utils/format-usd";
 

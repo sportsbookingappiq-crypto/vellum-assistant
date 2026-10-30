@@ -78,15 +78,15 @@ step_kill_qdrant_processes() {
 }
 
 step_kill_vellum_processes() {
-    VELLUM_PIDS=$(pgrep -f "Vellum" 2>/dev/null || true)
+    VELLUM_PIDS=$(pgrep -f "ANU" 2>/dev/null || true)
     if [ -n "$VELLUM_PIDS" ]; then
         if ! echo "$VELLUM_PIDS" | xargs kill -9 2>/dev/null; then
-            echo "      ⚠️  Warning: Some Vellum processes could not be killed"
+            echo "      ⚠️  Warning: Some ANU processes could not be killed"
         else
-            echo "      ✅ Killed Vellum processes: $VELLUM_PIDS"
+            echo "      ✅ Killed ANU processes: $VELLUM_PIDS"
         fi
     else
-        echo "      ⏭️  No Vellum processes found, skipping"
+        echo "      ⏭️  No ANU processes found, skipping"
     fi
 }
 
@@ -140,7 +140,7 @@ step_remove_cli_symlinks() {
 
 step_remove_vellum_apps() {
     VELLUM_APP_REMOVED=false
-    for app in "/Applications/Vellum.app" "/Applications/Vellum Staging.app" "/Applications/Vellum (Staging).app"; do
+    for app in "/Applications/ANU.app" "/Applications/ANU Staging.app" "/Applications/ANU (Staging).app"; do
         if [ -d "$app" ]; then
             rm -rf "$app"
             echo "       ✅ Removed $app"
@@ -148,7 +148,7 @@ step_remove_vellum_apps() {
         fi
     done
     if [ "$VELLUM_APP_REMOVED" = false ]; then
-        echo "       ⏭️  No Vellum apps found, skipping"
+        echo "       ⏭️  No ANU apps found, skipping"
     fi
 }
 
@@ -190,16 +190,16 @@ step_clear_vellum_defaults() {
 step_remove_dock_entry() {
     DOCK_PLIST="$HOME/Library/Preferences/com.apple.dock.plist"
     if [ -f "$DOCK_PLIST" ]; then
-        # Find and remove any Vellum entry from persistent-apps in the Dock plist
-        DOCK_APPS=$(/usr/libexec/PlistBuddy -c "Print :persistent-apps" "$DOCK_PLIST" 2>/dev/null | grep -c "Vellum" || true)
+        # Find and remove any ANU entry from persistent-apps in the Dock plist
+        DOCK_APPS=$(/usr/libexec/PlistBuddy -c "Print :persistent-apps" "$DOCK_PLIST" 2>/dev/null | grep -c "ANU" || true)
         if [ "$DOCK_APPS" -gt 0 ]; then
             # Iterate in reverse to safely remove entries by index
             NUM_ENTRIES=$(/usr/libexec/PlistBuddy -c "Print :persistent-apps" "$DOCK_PLIST" 2>/dev/null | grep -c "Dict" || echo "0")
             for ((i=NUM_ENTRIES-1; i>=0; i--)); do
                 LABEL=$(/usr/libexec/PlistBuddy -c "Print :persistent-apps:$i:tile-data:file-label" "$DOCK_PLIST" 2>/dev/null || true)
-                if [[ "$LABEL" == *"Vellum"* ]]; then
+                if [[ "$LABEL" == *"ANU"* ]]; then
                     /usr/libexec/PlistBuddy -c "Delete :persistent-apps:$i" "$DOCK_PLIST"
-                    echo "       ✅ Removed Vellum from Dock persistent apps (index $i)"
+                    echo "       ✅ Removed ANU from Dock persistent apps (index $i)"
                 fi
             done
             if ! killall Dock 2>/dev/null; then
@@ -208,7 +208,7 @@ step_remove_dock_entry() {
                 echo "       ✅ Dock restarted"
             fi
         else
-            echo "       ⏭️  Vellum not found in Dock, skipping"
+            echo "       ⏭️  ANU not found in Dock, skipping"
         fi
     else
         echo "       ⏭️  No Dock plist found, skipping"
@@ -351,15 +351,15 @@ step_uninstall_homebrew() {
 run_step 1  "Killing bun run processes"                step_kill_bun_processes
 run_step 2  "Uninstalling bun"                         step_uninstall_bun
 run_step 3  "Killing qdrant processes"                 step_kill_qdrant_processes
-run_step 4  "Killing Vellum processes"                 step_kill_vellum_processes
+run_step 4  "Killing ANU processes"                 step_kill_vellum_processes
 run_step 5  "Removing ~/.vellum directory"             step_remove_vellum_dir
 run_step 6  "Killing embedding worker processes"       step_kill_embed_workers
 run_step 7  "Removing ~/.vellum.lock.json"             step_remove_vellum_lock
 run_step 8  "Removing CLI symlinks"                    step_remove_cli_symlinks
-run_step 9  "Removing Vellum apps from /Applications"  step_remove_vellum_apps
+run_step 9  "Removing ANU apps from /Applications"  step_remove_vellum_apps
 run_step 10 "Removing ms-playwright browser caches"    step_remove_playwright
-run_step 11 "Clearing Vellum desktop app UserDefaults" step_clear_vellum_defaults
-run_step 12 "Removing Vellum from the Dock"            step_remove_dock_entry
+run_step 11 "Clearing ANU desktop app UserDefaults" step_clear_vellum_defaults
+run_step 12 "Removing ANU from the Dock"            step_remove_dock_entry
 run_step 13 "Uninstalling Colima"                      step_uninstall_colima
 run_step 14 "Uninstalling Docker"                      step_uninstall_docker
 run_step 15 "Uninstalling Homebrew"                    step_uninstall_homebrew

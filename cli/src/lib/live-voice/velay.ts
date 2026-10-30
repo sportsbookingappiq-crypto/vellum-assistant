@@ -28,7 +28,7 @@
  * mint again rather than reuse what resolution returned.
  */
 
-import { velayHostForPlatformHost } from "@vellumai/service-contracts/ingress";
+import { velayHostForPlatformHost } from "@anu/service-contracts/ingress";
 
 import { authHeaders } from "../platform-client.js";
 
@@ -158,7 +158,7 @@ export async function mintVelayWsToken(args: {
   } catch (err) {
     throw new VelayWsTokenError(
       0,
-      `Could not reach the Vellum platform to authorize the voice session: ${
+      `Could not reach the ANU platform to authorize the voice session: ${
         err instanceof Error ? err.message : String(err)
       }`,
     );
@@ -178,7 +178,7 @@ export async function mintVelayWsToken(args: {
   if (!token) {
     throw new VelayWsTokenError(
       response.status,
-      "The Vellum platform returned no voice session token.",
+      "The ANU platform returned no voice session token.",
     );
   }
   return token;
@@ -187,13 +187,13 @@ export async function mintVelayWsToken(args: {
 /** Turn a mint rejection into something the user can act on. */
 function describeMintFailure(status: number): string {
   if (status === 401) {
-    return "Not signed in to the Vellum platform. Run 'vellum login' and try again.";
+    return "Not signed in to the ANU platform. Run 'anu login' and try again.";
   }
   if (status === 403) {
     return "This account cannot open a voice session on that assistant. Check that it belongs to the organization you are signed in to.";
   }
   if (status === 404) {
-    return "The Vellum platform does not offer voice session tokens. It may be running an older release.";
+    return "The ANU platform does not offer voice session tokens. It may be running an older release.";
   }
-  return `The Vellum platform refused to authorize the voice session (HTTP ${status}).`;
+  return `The ANU platform refused to authorize the voice session (HTTP ${status}).`;
 }

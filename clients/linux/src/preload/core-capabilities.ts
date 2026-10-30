@@ -4,7 +4,7 @@ import type {
   AppVersionInfo,
   VellumBridge,
   VellumCommand,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 export const LINUX_CORE_CAPABILITIES = [
   "platform",

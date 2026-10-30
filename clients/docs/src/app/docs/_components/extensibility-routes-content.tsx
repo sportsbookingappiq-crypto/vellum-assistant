@@ -186,7 +186,7 @@ export async function POST(request: Request): Promise<Response> {
           <p className="mb-0 text-zinc-600 dark:text-zinc-400">
             A handler may also reach other Assistant capabilities through its{" "}
             <Link href={PLUGIN_API_URL} className={linkClass}>
-              <code>@vellumai/plugin-api</code>
+              <code>@anu/plugin-api</code>
             </Link>{" "}
             imports, the same as any other surface.
           </p>

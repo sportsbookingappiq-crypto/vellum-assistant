@@ -22,7 +22,7 @@ import {
   resolveNotificationDeliveryKey,
   resetNotificationIdentitiesPayloadSchema,
   showNotificationPayloadSchema,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import type { IpcHandle } from "./ipc";
 import {

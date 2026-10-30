@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, mock, test } from "bun:test";
 
-import type { AssistantEventEnvelope } from "@vellumai/assistant-api";
+import type { AssistantEventEnvelope } from "@anu/assistant-api";
 
 import { eventsDebugApi } from "@/domains/chat/api/debug-api";
 import { __resetForTesting, publish } from "@/lib/event-bus";

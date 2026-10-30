@@ -7,7 +7,7 @@ import {
   FILE_OPEN_EVENT,
   FILE_OPEN_SUBSCRIBE,
   FILE_OPEN_UNSUBSCRIBE,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import type { createIpcRegistrar } from "./ipc";
 

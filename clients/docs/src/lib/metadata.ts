@@ -41,7 +41,7 @@ export function createMetadata({
       title,
       description,
       url,
-      siteName: "Vellum",
+      siteName: "ANU",
       type: "website",
       locale: "en_US",
       images: [

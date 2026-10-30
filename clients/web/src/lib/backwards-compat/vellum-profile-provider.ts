@@ -1,5 +1,5 @@
 /**
- * Backwards-compat gate: the wire payload for Vellum-picker profiles.
+ * Backwards-compat gate: the wire payload for ANU-picker profiles.
  *
  * Daemons at `MIN_VERSION` and later store and dispatch
  * `provider: "vellum"` profiles (the routing identity: the managed

@@ -20,7 +20,7 @@ import { createReadStream } from "node:fs";
 import { hostname } from "node:os";
 import { PassThrough, Readable } from "node:stream";
 
-import { GatewayDebugExportIpcResponseSchema } from "@vellumai/gateway-client/gateway-ipc-contracts";
+import { GatewayDebugExportIpcResponseSchema } from "@anu/gateway-client/gateway-ipc-contracts";
 import { z } from "zod";
 
 import { invalidateConfigCache } from "../../config/loader.js";
@@ -474,7 +474,7 @@ const MigrationExportToGcsBody = z.object({
   upload_url: z.string().url(),
   description: z.string().optional(),
   /**
-   * `debug`: a bundle for Vellum staff to inspect. Adds the gateway's
+   * `debug`: a bundle for ANU staff to inspect. Adds the gateway's
    * database and recent logs under `gateway/`. `migration` is the default.
    */
   profile: z.enum(["migration", "debug"]).default("migration"),
@@ -645,7 +645,7 @@ export async function handleMigrationExportToGcs({ body }: RouteHandlerArgs) {
   // a platform→local import — so redact instead of emitting a bundle the
   // importer is guaranteed to reject.
   //
-  // A debug bundle goes to Vellum staff, so it never carries credentials
+  // A debug bundle goes to ANU staff, so it never carries credentials
   // either, whatever the deployment mode.
   let collected: CollectedCredentials;
   if (manifestInputs.origin.mode === "managed" || isDebugProfile) {
@@ -1988,7 +1988,7 @@ export async function handleMigrationImportFromGcs({ body }: RouteHandlerArgs) {
  * bundle from GCS, validates it, and returns the same preflight report as
  * /v1/migrations/import-preflight — without writing anything to disk.
  *
- * This allows the CLI to run `vellum teleport --dry-run` against local and
+ * This allows the CLI to run `anu teleport --dry-run` against local and
  * docker targets (which do not have a direct-upload preflight path like the
  * platform does) by reusing the same GCS-mediated bundle it would use for
  * a real import.
@@ -2479,7 +2479,7 @@ export const ROUTES: RouteDefinition[] = [
         .enum(["migration", "debug"])
         .optional()
         .describe(
-          "Export profile. 'migration' (default) builds a teleport bundle. 'debug' builds a bundle for Vellum staff to open on a debug clone: no credentials, plus the gateway's database and logs under gateway/.",
+          "Export profile. 'migration' (default) builds a teleport bundle. 'debug' builds a bundle for ANU staff to open on a debug clone: no credentials, plus the gateway's database and logs under gateway/.",
         ),
     }),
     responseStatus: "202",
@@ -2528,7 +2528,7 @@ export const ROUTES: RouteDefinition[] = [
     },
     summary: "Dry-run import analysis from a signed GCS URL",
     description:
-      "Fetch a .vbundle archive from a signed GCS download URL and return a preflight report — what would change if the bundle were imported — without writing anything to disk. Enables `vellum teleport --dry-run` against local and docker targets.",
+      "Fetch a .vbundle archive from a signed GCS download URL and return a preflight report — what would change if the bundle were imported — without writing anything to disk. Enables `anu teleport --dry-run` against local and docker targets.",
     tags: ["migrations"],
     requestBody: z.object({
       bundle_url: z

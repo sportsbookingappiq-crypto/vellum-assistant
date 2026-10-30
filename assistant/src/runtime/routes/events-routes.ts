@@ -20,7 +20,7 @@
 
 import { type IntervalHistogram, monitorEventLoopDelay } from "node:perf_hooks";
 
-import { sanitizeClientMetadataValue } from "@vellumai/service-contracts/client-metadata";
+import { sanitizeClientMetadataValue } from "@anu/service-contracts/client-metadata";
 import { z } from "zod";
 
 import type { HostProxyCapability, InterfaceId } from "../../channels/types.js";

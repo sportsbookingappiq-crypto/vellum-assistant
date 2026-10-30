@@ -24,7 +24,7 @@ export function DeveloperGuideSecurityContent() {
     <>
       <DocsContent title="Security & Permissions" breadcrumb="Docs / Developer Guide / Security">
         <p className="mb-8 text-zinc-600">
-          Vellum uses workspace sandboxing, a keychain-backed credential vault, and a scoped trust rule system to keep
+          ANU uses workspace sandboxing, a keychain-backed credential vault, and a scoped trust rule system to keep
           your data safe while giving the assistant the access it needs.
         </p>
 
@@ -82,7 +82,7 @@ export function DeveloperGuideSecurityContent() {
               </table>
             </div>
             <p className="mt-4 text-sm text-zinc-500">
-              Run <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs dark:bg-zinc-800">vellum doctor</code> for a full diagnostic check.
+              Run <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs dark:bg-zinc-800">anu doctor</code> for a full diagnostic check.
             </p>
           </section>
         </section>

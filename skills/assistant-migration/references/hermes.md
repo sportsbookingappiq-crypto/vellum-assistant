@@ -1,6 +1,6 @@
-# Hermes → Vellum
+# Hermes → ANU
 
-Hermes is NousResearch's open-source self-hosted agent. It uses the same `agentskills.io` skill standard as Vellum, so most of its internals map cleanly.
+Hermes is NousResearch's open-source self-hosted agent. It uses the same `agentskills.io` skill standard as ANU, so most of its internals map cleanly.
 
 ## Data directory locations
 
@@ -17,10 +17,10 @@ Confirm with the creator before bundling — they may have set `HERMES_HOME` to 
 
 ## What's inside (and how it maps)
 
-| Path inside the data directory   | Vellum destination            | Bucket             |
+| Path inside the data directory   | ANU destination               | Bucket             |
 | -------------------------------- | ----------------------------- | ------------------ |
 | `AGENTS.md`                      | Identity / `SOUL.md`          | Port               |
-| `skills/<name>/SKILL.md`         | Vellum skills (same standard) | Port               |
+| `skills/<name>/SKILL.md`         | ANU skills (same standard)    | Port               |
 | `skills/<name>/scripts/*`        | Skill scripts                 | Port               |
 | `memory.db` (SQLite + FTS5)      | Memory                        | Review (see below) |
 | `schedules.json`                 | Schedules                     | Port               |
@@ -110,7 +110,7 @@ For archives that exceed the current channel's attachment limit, split the bundl
 
 ## After import — secrets rebind checklist
 
-The archive carries no secrets. Each of these must be re-established through Vellum before the migrated assistant can act:
+The archive carries no secrets. Each of these must be re-established through ANU before the migrated assistant can act:
 
 - **Inference providers** (one per row in `providers.json`):
   `assistant oauth connect <provider>` for managed providers, or `assistant credentials prompt` for raw API keys

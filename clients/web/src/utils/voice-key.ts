@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import type { KeyboardModifier } from "@vellumai/ipc-contract";
+import type { KeyboardModifier } from "@anu/ipc-contract";
 
 import {
   getLocalSetting,

@@ -6,7 +6,7 @@
  * secure key naming convention.
  */
 
-import { credentialKey } from "@vellumai/credential-storage";
+import { credentialKey } from "@anu/credential-storage";
 
 import { matchHostPattern } from "./host-pattern-match.js";
 import {

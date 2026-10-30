@@ -62,7 +62,7 @@
  */
 
 import * as Dialog from "@radix-ui/react-dialog";
-import { toast } from "@vellumai/design-library";
+import { toast } from "@anu/design-library";
 import { SwitchCamera, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";

@@ -1,7 +1,7 @@
 import { Cable, KeyRound, ShieldCheck, type LucideIcon } from "lucide-react";
 import { useCallback, type ReactNode } from "react";
 
-import { ActionMenu } from "@vellumai/design-library/components/action-menu";
+import { ActionMenu } from "@anu/design-library/components/action-menu";
 
 import { useTranslation } from "@/i18n";
 

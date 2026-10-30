@@ -21,9 +21,9 @@ public static class NotificationServiceTests
         Assert(xml.Contains("arguments=\"kind=action;index=1\"", StringComparison.Ordinal));
 
         using var withSender = JsonDocument.Parse(
-            """{ "token": "t-2", "title": "Aria", "subtitle": "Ti<tle", "body": "B&ody", "actions": [], "avatarPath": "C:\\Users\\test\\Vellum Data\\a&b.png" }""");
+            """{ "token": "t-2", "title": "Aria", "subtitle": "Ti<tle", "body": "B&ody", "actions": [], "avatarPath": "C:\\Users\\test\\ANU Data\\a&b.png" }""");
         Assert(NotificationService.TryParseShowRequest(withSender.RootElement, out var senderRequest, out _));
-        Assert(senderRequest is { Subtitle: "Ti<tle", AvatarPath: "C:\\Users\\test\\Vellum Data\\a&b.png" });
+        Assert(senderRequest is { Subtitle: "Ti<tle", AvatarPath: "C:\\Users\\test\\ANU Data\\a&b.png" });
 
         var senderXml = NotificationService.BuildToastXml(senderRequest);
         // Assistant name, conversation title, body, in that order.
@@ -31,7 +31,7 @@ public static class NotificationServiceTests
             "<text>Aria</text><text>Ti&lt;tle</text><text>B&amp;ody</text>",
             StringComparison.Ordinal));
         Assert(senderXml.Contains(
-            "<image placement=\"appLogoOverride\" hint-crop=\"circle\" src=\"file:///C:/Users/test/Vellum%20Data/",
+            "<image placement=\"appLogoOverride\" hint-crop=\"circle\" src=\"file:///C:/Users/test/ANU%20Data/",
             StringComparison.Ordinal));
         // The image sits inside the binding, and no raw ampersand reaches the XML.
         Assert(senderXml.Contains("/></binding></visual>", StringComparison.Ordinal));
@@ -52,7 +52,7 @@ public static class NotificationServiceTests
         // different file.
         Assert(AvatarImageSrc(@"C:\Users\%20\a.png") == "file:///C:/Users/%2520/a.png");
         // Spaces and reserved characters are percent-encoded, not passed through.
-        Assert(AvatarImageSrc(@"C:\Vellum Data\a&b.png") == "file:///C:/Vellum%20Data/a%26b.png");
+        Assert(AvatarImageSrc(@"C:\ANU Data\a&b.png") == "file:///C:/ANU%20Data/a%26b.png");
         // A path with no drive root is not something a toast can load.
         Assert(AvatarImageSrc(@"notification-avatars\a.png") is null);
 

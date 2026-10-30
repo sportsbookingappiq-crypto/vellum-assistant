@@ -4,7 +4,7 @@ import {
   type ReactNode,
 } from "react";
 
-import { Notice } from "@vellumai/design-library";
+import { Notice } from "@anu/design-library";
 
 const ARROW_ICON = (
   <svg

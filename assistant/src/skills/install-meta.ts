@@ -134,7 +134,7 @@ function inferFromLegacyVersionJson(
     };
   }
 
-  // Vellum (first-party catalog) origin: has `version` but no `origin` field
+  // ANU (first-party catalog) origin: has `version` but no `origin` field
   if (typeof raw.version === "string" && !("origin" in raw)) {
     return {
       origin: "vellum",

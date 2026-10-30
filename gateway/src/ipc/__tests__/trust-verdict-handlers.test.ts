@@ -9,7 +9,7 @@
  */
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 
-import type { AdmissionPolicy } from "@vellumai/gateway-client";
+import type { AdmissionPolicy } from "@anu/gateway-client";
 
 await import("../../__tests__/test-preload.js");
 

@@ -1,19 +1,19 @@
 #!/usr/bin/env bun
 /**
- * Builds the publishable `@vellumai/plugin-api` npm package: a types-first
+ * Builds the publishable `@anu/plugin-api` npm package: a types-first
  * package whose public `index.d.ts` is a single self-contained rollup of the
  * plugin authoring surface (`src/plugin-api/index.ts`), with the workspace
- * `@vellumai/*` contract types inlined and `zod` as the only external dep.
+ * `@anu/*` contract types inlined and `zod` as the only external dep.
  *
  * Why a rollup: the authoring surface re-exports types from internal workspace
  * packages that ship `.ts` source (not published to npm), so a naive emit
- * leaves dangling `@vellumai/*` imports that no external consumer can resolve.
+ * leaves dangling `@anu/*` imports that no external consumer can resolve.
  * Microsoft API Extractor inlines exactly the reachable declarations into one
  * file, so a standalone plugin repo type-checks against the real contract
  * without vendoring a hand-maintained shim.
  *
  * Why a trivial runtime: inside a live assistant workspace the host
- * materializes a `node_modules/@vellumai/plugin-api` shim that re-binds the
+ * materializes a `node_modules/@anu/plugin-api` shim that re-binds the
  * already-loaded namespace off `globalThis` (see `ensure-plugin-api-shim.ts`).
  * The published `index.js` is the same re-bind so the npm package behaves
  * identically when present, and degrades to `undefined` exports when imported
@@ -169,7 +169,7 @@ function main(): void {
   const outDir = join(buildDir, "out");
   const pkgDir = join(buildDir, "package");
   const nodeModulesDir = join(buildDir, "node_modules");
-  const vellumOverlay = join(nodeModulesDir, "@vellumai");
+  const vellumOverlay = join(nodeModulesDir, "@anu");
 
   rmSync(buildDir, { recursive: true, force: true });
   mkdirSync(vellumOverlay, { recursive: true });
@@ -178,12 +178,12 @@ function main(): void {
   console.log("[plugin-api] emitting authoring-surface declarations…");
   run(TSC, ["-p", "tsconfig.plugin-api.json"], ASSISTANT_DIR);
 
-  // 2. Emit each `@vellumai/*` contract the surface reaches into an overlay
+  // 2. Emit each `@anu/*` contract the surface reaches into an overlay
   //    `node_modules`, each with a `package.json` pointing at its `.d.ts`, so
   //    API Extractor inlines them (as `bundledPackages`) instead of leaving
-  //    dangling `@vellumai/*` imports an external consumer can't resolve.
+  //    dangling `@anu/*` imports an external consumer can't resolve.
   console.log("[plugin-api] emitting workspace contract declarations…");
-  const vellumDir = join(NODE_MODULES, "@vellumai");
+  const vellumDir = join(NODE_MODULES, "@anu");
   const bundled: string[] = [];
   for (const name of readdirSync(vellumDir)) {
     const dir = join(vellumDir, name);
@@ -196,7 +196,7 @@ function main(): void {
     const dest = join(vellumOverlay, name);
     if (emitContract(dir, dest)) {
       writeContractManifest(join(dir, "package.json"), dest);
-      bundled.push(`@vellumai/${name}`);
+      bundled.push(`@anu/${name}`);
     }
   }
   bundled.sort();
@@ -264,8 +264,8 @@ function main(): void {
   mkdirSync(pkgDir, { recursive: true });
 
   // Ship the app-side ambient global (`window.vellum`) as `app.d.ts`, exposed
-  // via the `@vellumai/plugin-api/app` subpath. Plugin *apps* reference it
-  // (`/// <reference types="@vellumai/plugin-api/app" />` or a tsconfig
+  // via the `@anu/plugin-api/app` subpath. Plugin *apps* reference it
+  // (`/// <reference types="@anu/plugin-api/app" />` or a tsconfig
   // `types` entry) instead of hand-declaring `window.vellum`. The main rollup
   // triple-slash-references it too, so importing anything from the package
   // also pulls the global in.
@@ -282,10 +282,10 @@ function main(): void {
     join(pkgDir, "package.json"),
     `${JSON.stringify(
       {
-        name: "@vellumai/plugin-api",
+        name: "@anu/plugin-api",
         version,
         description:
-          "Public TypeScript authoring contract for Vellum assistant plugins.",
+          "Public TypeScript authoring contract for ANU assistant plugins.",
         license: "MIT",
         type: "module",
         main: "./index.js",
@@ -318,7 +318,7 @@ function main(): void {
   );
 
   console.log(
-    `[plugin-api] built @vellumai/plugin-api@${version} → ${pkgDir}\n` +
+    `[plugin-api] built @anu/plugin-api@${version} → ${pkgDir}\n` +
       `[plugin-api] inlined contracts: ${bundled.join(", ")}`,
   );
 }
