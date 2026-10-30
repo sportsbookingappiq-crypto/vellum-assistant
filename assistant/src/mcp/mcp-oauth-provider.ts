@@ -18,6 +18,7 @@
 
 import { randomBytes } from "node:crypto";
 
+import { buildMcpOAuthClientMetadata } from "@anu/service-contracts/mcp-oauth";
 import type {
   OAuthClientProvider,
   OAuthDiscoveryState,
@@ -27,7 +28,6 @@ import type {
   OAuthClientMetadata,
   OAuthTokens,
 } from "@modelcontextprotocol/sdk/shared/auth.js";
-import { buildMcpOAuthClientMetadata } from "@anu/service-contracts/mcp-oauth";
 
 import { getPlatformAssistantId } from "../config/env.js";
 import { getAssistantName } from "../daemon/identity-helpers.js";

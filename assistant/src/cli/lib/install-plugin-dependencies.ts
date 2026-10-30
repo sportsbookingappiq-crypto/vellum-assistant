@@ -57,9 +57,9 @@ import {
 import { dirname, join } from "node:path";
 import { promisify } from "node:util";
 
+import { PLUGIN_API_PACKAGE_NAMES } from "../../plugins/plugin-api-package.js";
 import { ensureBun } from "../../util/bun-runtime.js";
 import { getLogger } from "../../util/logger.js";
-import { PLUGIN_API_PACKAGE_NAMES } from "../../plugins/plugin-api-package.js";
 import { addToPathEnv } from "../../util/platform.js";
 
 const execFileAsync = promisify(execFile);

@@ -6,7 +6,6 @@
  * calling the Slack Web API directly via ./api.ts.
  */
 
-import type { Button, KnownBlock } from "@slack/types";
 import type {
   ApprovalUIMetadata,
   ChannelDeliveryResult,
@@ -18,6 +17,7 @@ import {
   type ReactionEmojiIdentity,
 } from "@anu/service-contracts/reactions";
 import { slackEmojiCharacter } from "@anu/slack-text";
+import type { Button, KnownBlock } from "@slack/types";
 
 import type { AssistantActivityPhase } from "../../../api/index.js";
 import { getAttachmentContent } from "../../../persistence/attachments-store.js";

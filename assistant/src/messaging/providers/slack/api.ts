@@ -15,8 +15,8 @@
  *     neutral-bot rule for route-reachable calls.
  */
 
-import type { KnownBlock } from "@slack/types";
 import type { SlackStreamTask } from "@anu/gateway-client";
+import type { KnownBlock } from "@slack/types";
 
 import { resolveSlackAuth, type SlackAuthIdentity } from "./auth.js";
 import { conversationInfo } from "./client.js";

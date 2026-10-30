@@ -38,13 +38,13 @@ import { tmpdir } from "node:os";
 import { delimiter, dirname, join, resolve, sep } from "node:path";
 import { promisify } from "node:util";
 
+import { pluginApiPeerRange } from "../../plugins/plugin-api-package.js";
 import {
   copyPreservedUserState,
   isPluginUserStateEntry,
   PRESERVED_ENTRIES,
   stripPreservedUserState,
 } from "../../plugins/plugin-tree-walk.js";
-import { pluginApiPeerRange } from "../../plugins/plugin-api-package.js";
 import { ensureBun } from "../../util/bun-runtime.js";
 import {
   addToPathEnv,

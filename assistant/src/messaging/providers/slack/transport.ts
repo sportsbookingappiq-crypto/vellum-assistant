@@ -1,5 +1,5 @@
-import type { KnownBlock } from "@slack/types";
 import { ChannelDeliveryError } from "@anu/gateway-client/http-delivery";
+import type { KnownBlock } from "@slack/types";
 
 import { extractThreadTsFromCallbackUrl } from "../../../channels/slack-callback-url.js";
 import { getLogger } from "../../../util/logger.js";
