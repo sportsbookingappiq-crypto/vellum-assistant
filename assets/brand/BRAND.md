@@ -1,5 +1,7 @@
 # ANU brand
 
+Tagline: ANU is your personal AI agent. Tell it what you need and it gets it done.
+
 The ANU mark is a blue six-pointed star that reads as a snowflake: six tapered
 rays, one pair of crystal branches on each ray, and a faceted hexagon core with
 an open center. Every file in this folder is hand-written SVG built from one

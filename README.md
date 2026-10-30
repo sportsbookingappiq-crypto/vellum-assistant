@@ -1,14 +1,27 @@
 <p align="center">
-  <img src="assets/banner.png" alt="ANU: your goals, carried out in the open" width="100%">
+  <img src="assets/banner.png" alt="ANU: your personal AI agent" width="100%">
 </p>
 
 # ANU
 
-Tell ANU a goal from your phone. An agent plans the steps, runs them with approved tools in a sandbox, and shows you every step, so you can check the work before you rely on it.
+ANU is your personal AI agent. Tell it what you need and it gets it done. It can research, write, code, handle email and schedules, and run recurring jobs. Before anything risky, it asks you first.
 
-ANU is early. The API, the sandbox, and the agent harness run end to end in a development container. There is no phone app, no SMS login, and no network isolation yet. [Status](#status) lists what works and what does not.
+ANU is early. The phone app is not built yet, and the platform runs in a development container. [Status](#status) lists what works.
 
-## How a task runs
+## Quick start
+
+Run ANU on your machine and talk to it directly with the `anu` CLI:
+
+```bash
+./setup.sh      # installs Bun if needed, installs dependencies, links the anu CLI
+anu hatch       # create a local assistant and make it active
+anu client      # chat with it in this terminal
+anu sleep       # stop it; data is kept
+```
+
+`anu --help` lists every command, grouped by task. The published npm package and the desktop installers still carry Vellum's names ([ADR 0005](anu/docs/decisions/0005-rebrand-compatibility-identifiers.md)), so install from source for now.
+
+## Developers: how a task runs
 
 1. You send a goal: `POST /v1/tasks {"goal": "..."}`.
 2. The API checks your session and starts a sandbox run: a workspace directory and a worker process of its own.
@@ -18,7 +31,7 @@ ANU is early. The API, the sandbox, and the agent harness run end to end in a de
 
 The full contract is in [`anu/docs/api.md`](anu/docs/api.md) and [`anu/openapi.yaml`](anu/openapi.yaml).
 
-## The four parts
+## Developers: the four parts
 
 | Part | What it does | Where | State |
 | --- | --- | --- | --- |
@@ -29,7 +42,7 @@ The full contract is in [`anu/docs/api.md`](anu/docs/api.md) and [`anu/openapi.y
 
 The sandbox runs one of three drivers, set with `ANU_SANDBOX_DRIVER`: `scripted` (deterministic, for tests and demos), `kilo` (a two-call plan and answer through Kilo Gateway, no tools), and `harness` (the full assistant runtime, about 30 seconds to boot).
 
-## Quick start: the platform
+## Developers: platform quick start
 
 Needs Bun and PostgreSQL 15. Run from `anu/`:
 
@@ -62,22 +75,9 @@ curl -s -X POST localhost:8787/v1/tasks/<task-id>/approvals/<approval-id> \
 
 The approval id is in `approvals` on `GET /v1/tasks/<task-id>`. More commands, the seeded users, and the live tests are in [`anu/README.md`](anu/README.md).
 
-## Quick start: the assistant on its own
+## Developers: what the assistant already does
 
-The harness is also a complete personal assistant you can run and talk to directly, with the `anu` CLI:
-
-```bash
-./setup.sh      # installs Bun if needed, installs dependencies, links the anu CLI
-anu hatch       # create a local assistant and make it active
-anu client      # chat with it in this terminal
-anu sleep       # stop it; data is kept
-```
-
-`anu --help` lists every command, grouped by task. The published npm package and the desktop installers still carry Vellum's names ([ADR 0005](anu/docs/decisions/0005-rebrand-compatibility-identifiers.md)), so install from source for now.
-
-## What the runtime already does
-
-ANU's harness is the open-source Vellum assistant, renamed. It brings these, each documented next to its code:
+ANU's assistant is the open-source Vellum assistant, renamed. It brings these, each documented next to its code:
 
 | Area | What it does | Read more |
 | --- | --- | --- |
