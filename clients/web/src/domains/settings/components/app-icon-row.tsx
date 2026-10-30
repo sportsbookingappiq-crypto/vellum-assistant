@@ -15,7 +15,6 @@ import { useState } from "react";
 import {
   AppIconPreview,
   PrimaryAppIconPreview,
-  type PrimaryMarkTone,
 } from "@/components/avatar/app-icon-preview";
 import { APP_ICON_GROUNDS } from "@/components/ios-widget-previews/vellum-app-icon-mark";
 import { AppIconModal } from "@/domains/settings/components/app-icon-modal";
@@ -48,7 +47,7 @@ interface IconGround {
 
 /**
  * Ground each build draws its primary icon on, the same color on both
- * platforms: Night 800 for ANU, pink for ANU Dev, yellow for ANU Staging.
+ * platforms: white for ANU, pink for ANU Dev, yellow for ANU Staging.
  *
  * Each Icon Composer bundle (`clients/ios/App/App/AppIcon*.icon`) declares its
  * fill as the Display P3 conversion of the sRGB hex {@link APP_ICON_GROUNDS}
@@ -58,7 +57,7 @@ interface IconGround {
  */
 const PRIMARY_ICON_GROUND: Record<ShellEnvironment, IconGround> = {
   production: {
-    displayP3: "color(display-p3 0.08015 0.14303 0.32859)",
+    displayP3: "color(display-p3 1 1 1)",
     srgb: APP_ICON_GROUNDS.production,
   },
   staging: {
@@ -133,23 +132,6 @@ function primaryIconGround(
   return android || !supportsDisplayP3() ? ground.srgb : ground.displayP3;
 }
 
-/**
- * Which two-tone of the mark a build's primary icon carries. Android ships one
- * `ic_launcher_foreground` for every flavor, in the ice tones. On iOS the
- * Night 800 bundle carries the ice tones too, while the Dev and Staging
- * bundles, on their lighter grounds, carry the night tones
- * (`anu-mark-night.svg`).
- */
-function primaryMarkTone(
-  environment: ShellEnvironment,
-  android: boolean,
-): PrimaryMarkTone {
-  if (android || environment === "production") {
-    return "ice";
-  }
-  return "night";
-}
-
 export function AppIconRow() {
   const assistantId = useResolvedAssistantsStore.use.activeAssistantId();
   const sync = useAppIconSync(assistantId);
@@ -209,7 +191,6 @@ function AppIconRowContent({ assistantId, sync }: AppIconRowContentProps) {
           ) : (
             <PrimaryAppIconPreview
               fieldColor={primaryIconGround(environment, isAndroidShell)}
-              tone={primaryMarkTone(environment, isAndroidShell)}
               size={ROW_PREVIEW_SIZE}
             />
           )}

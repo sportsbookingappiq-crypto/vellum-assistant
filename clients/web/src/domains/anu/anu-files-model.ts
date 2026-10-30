@@ -141,3 +141,36 @@ export function parentPath(path: string): string {
   parts.pop();
   return parts.join("/");
 }
+
+/**
+ * Where the agent's browser is now: the URL and action of the newest
+ * browser step or message, whether or not it captured an image.
+ */
+export function browserPlace(
+  items: ReadonlyArray<{ kind: string | null; detail: unknown }>,
+): { url: string | null; action: string | null } | null {
+  for (let index = items.length - 1; index >= 0; index -= 1) {
+    const item = items[index];
+    if (item?.kind !== "browser") {
+      continue;
+    }
+    const detail =
+      typeof item.detail === "object" && item.detail !== null
+        ? (item.detail as Record<string, unknown>)
+        : {};
+    return {
+      url: typeof detail.url === "string" ? detail.url : null,
+      action: typeof detail.action === "string" ? detail.action : null,
+    };
+  }
+  return null;
+}
+
+/** The host of a URL for a compact chip, or the URL itself if it will not parse. */
+export function urlHost(url: string): string {
+  try {
+    return new URL(url).host || url;
+  } catch {
+    return url;
+  }
+}

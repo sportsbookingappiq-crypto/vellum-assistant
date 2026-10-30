@@ -274,8 +274,15 @@ export function activeStep(steps: readonly AnuStep[]): AnuStep | undefined {
  * Normalises what a person typed into the E.164 form the API expects: the
  * digits with a leading `+`. Spaces, dashes, dots and brackets are dropped.
  */
+/** Arabic-Indic and Eastern Arabic-Indic digits read as 0 to 9. */
+export function toLatinDigits(input: string): string {
+  return input
+    .replace(/[\u0660-\u0669]/g, (digit) => String(digit.charCodeAt(0) - 0x0660))
+    .replace(/[\u06F0-\u06F9]/g, (digit) => String(digit.charCodeAt(0) - 0x06f0));
+}
+
 export function normalizePhone(input: string): string {
-  const digits = input.replace(/[^\d]/g, "");
+  const digits = toLatinDigits(input).replace(/[^\d]/g, "");
   return digits ? `+${digits}` : "";
 }
 

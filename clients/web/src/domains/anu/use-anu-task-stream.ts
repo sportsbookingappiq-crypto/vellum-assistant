@@ -50,7 +50,7 @@ export function useAnuTaskStream(taskId: string | undefined): AnuStreamState {
           );
           if (event.step.kind === "browser") {
             void queryClient.invalidateQueries({
-              queryKey: anuQueryKeys.browser(taskId),
+              queryKey: anuQueryKeys.browser({ kind: "tasks", id: taskId }),
             });
           }
         } else if (event.type === "task") {
@@ -73,7 +73,7 @@ export function useAnuTaskStream(taskId: string | undefined): AnuStreamState {
           return;
         }
         if (isAnuUnauthorized(error)) {
-          void useAnuSessionStore.getState().signOut();
+          void useAnuSessionStore.getState().expire();
           return;
         }
         setState("lost");

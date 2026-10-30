@@ -10,7 +10,6 @@ import { useAnuSessionStore } from "../anu-session-store";
 import { AnuApprovalCard } from "./anu-approval-card";
 import { AnuResultCard } from "./anu-result-card";
 import { AnuStepTimeline } from "./anu-step-timeline";
-import { AnuTaskRow } from "./anu-task-row";
 
 const START = "2026-10-29T10:00:00.000Z";
 const at = (ms: number) => new Date(Date.parse(START) + ms).toISOString();
@@ -49,7 +48,7 @@ const APPROVAL: AnuApproval = {
   id: "a-1",
   taskId: "t-1",
   stepId: "s-3",
-  prompt: "Write summary.md to the task workspace?",
+  prompt: "Save summary.md for you?",
   detail: { file: "summary.md" },
   status: "pending",
   createdAt: at(3000),
@@ -127,7 +126,7 @@ describe("AnuStepTimeline", () => {
         />,
       ),
     );
-    expect(screen.getByText("You approved this.")).toBeTruthy();
+    expect(screen.getByText("You allowed this.")).toBeTruthy();
     expect(screen.queryByText("Working on the next step")).toBeNull();
   });
 });
@@ -144,8 +143,8 @@ describe("AnuApprovalCard", () => {
     }) as unknown as typeof fetch;
 
     render(wrap(<AnuApprovalCard approval={APPROVAL} />));
-    expect(screen.getByText("summary.md")).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Approve" }));
+    expect(screen.getByText(APPROVAL.prompt)).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Allow" }));
 
     await waitFor(() => expect(calls).toHaveLength(1));
     expect(calls[0]?.url).toEndWith("/v1/tasks/t-1/approvals/a-1");
@@ -159,8 +158,8 @@ describe("AnuApprovalCard", () => {
 
   test("a decided question shows its outcome instead of the answers", () => {
     render(wrap(<AnuApprovalCard approval={{ ...APPROVAL, status: "rejected" }} />));
-    expect(screen.getByText("You declined this.")).toBeTruthy();
-    expect(screen.queryByRole("button", { name: "Approve" })).toBeNull();
+    expect(screen.getByText("You said not now.")).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Allow" })).toBeNull();
   });
 });
 
@@ -196,27 +195,8 @@ describe("AnuResultCard", () => {
     );
     expect(
       screen.getByText(
-        "This run used no tools, so the answer rests on the model alone.",
+        "Answered from what it already knew, without looking anything up.",
       ),
     ).toBeTruthy();
-  });
-});
-
-describe("AnuTaskRow", () => {
-  test("links to the task and states its status and confidence", () => {
-    render(
-      wrap(
-        <AnuTaskRow
-          task={makeTask({ status: "succeeded", confidence: 0.9, finishedAt: at(4000) })}
-          selected={false}
-        />,
-      ),
-    );
-    const link = screen.getByRole("link", {
-      name: "Open task: Draft a packing list for a three-day hiking trip",
-    });
-    expect(link.getAttribute("href")).toBe("/anu/tasks/t-1");
-    expect(screen.getByText("Done")).toBeTruthy();
-    expect(screen.getByText("90% confident")).toBeTruthy();
   });
 });

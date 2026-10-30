@@ -15,9 +15,13 @@ import { z } from "zod";
 import {
   AnuApiError,
   anuApiBaseUrl,
+  anuMessageSchema,
+  anuSessionSchema,
   anuStepSchema,
   anuTaskDetailSchema,
   TASK_STATUSES,
+  type AnuMessage,
+  type AnuSession,
   type AnuStep,
   type AnuTaskDetail,
   type AnuTaskStatus,
@@ -147,22 +151,20 @@ export function parseAnuTaskEvent(frame: SseFrame): AnuTaskEvent | null {
   return null;
 }
 
-export interface StreamAnuTaskOptions {
-  taskId: string;
+interface FollowStreamOptions<E> {
+  path: string;
   token: string;
-  /** Resume after this step `seq`. */
   after?: number;
   signal: AbortSignal;
-  onEvent: (event: AnuTaskEvent) => void;
-  /** Called with `true` while connected and `false` while reconnecting. */
+  parse: (frame: SseFrame) => E | null;
+  seqOf: (event: E) => number | undefined;
+  isEnd: (event: E) => boolean;
+  onEvent: (event: E) => void;
   onConnectionChange?: (connected: boolean) => void;
   fetchImpl?: typeof fetch;
   baseUrl?: string;
-  /** Abort a connection after this long without a byte. Default 40 s. */
   idleTimeoutMs?: number;
-  /** Wait before reconnecting after a drop. Default 2 s. */
   reconnectDelayMs?: number;
-  /** Give up after this many reconnects in a row without traffic. Default 8. */
   maxReconnects?: number;
 }
 
@@ -184,13 +186,11 @@ const delay = (ms: number, signal: AbortSignal) =>
   });
 
 /**
- * Follows a task's event stream until the server sends `end`, the caller
- * aborts, or the server refuses the stream (401, 404), which rejects with
- * {@link AnuApiError}. Dropped connections are resumed from the last step.
+ * Follows one ANU event stream until it ends, the caller aborts, or the
+ * server refuses it (401, 404), which rejects with {@link AnuApiError}.
+ * Dropped connections resume from the last sequence number seen.
  */
-export async function streamAnuTaskEvents(
-  options: StreamAnuTaskOptions,
-): Promise<void> {
+async function followAnuStream<E>(options: FollowStreamOptions<E>): Promise<void> {
   const fetchImpl = options.fetchImpl ?? fetch;
   const idleTimeoutMs = options.idleTimeoutMs ?? 40_000;
   const reconnectDelayMs = options.reconnectDelayMs ?? 2_000;
@@ -212,7 +212,7 @@ export async function streamAnuTaskEvents(
     try {
       armIdle();
       const response = await fetchImpl(
-        `${options.baseUrl ?? anuApiBaseUrl()}/v1/tasks/${encodeURIComponent(options.taskId)}/events?after=${lastSeq}`,
+        `${options.baseUrl ?? anuApiBaseUrl()}${options.path}?after=${lastSeq}`,
         {
           headers: {
             accept: "text/event-stream",
@@ -233,9 +233,7 @@ export async function streamAnuTaskEvents(
       }
       options.onConnectionChange?.(true);
       const parser = createSseParser(() => armIdle());
-      const reader = response.body
-        .pipeThrough(new TextDecoderStream())
-        .getReader();
+      const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
       for (;;) {
         const { value, done } = await reader.read();
         if (done) {
@@ -244,15 +242,16 @@ export async function streamAnuTaskEvents(
         armIdle();
         failures = 0;
         for (const frame of parser.push(value)) {
-          const event = parseAnuTaskEvent(frame);
-          if (!event) {
+          const event = options.parse(frame);
+          if (event === null) {
             continue;
           }
-          if (event.type === "step") {
-            lastSeq = Math.max(lastSeq, event.step.seq);
+          const seq = options.seqOf(event);
+          if (seq !== undefined) {
+            lastSeq = Math.max(lastSeq, seq);
           }
           options.onEvent(event);
-          if (event.type === "end") {
+          if (options.isEnd(event)) {
             ended = true;
           }
         }
@@ -284,4 +283,81 @@ export async function streamAnuTaskEvents(
     }
     await delay(reconnectDelayMs, options.signal);
   }
+}
+
+type StreamCommon = Omit<
+  FollowStreamOptions<never>,
+  "path" | "parse" | "seqOf" | "isEnd" | "onEvent"
+>;
+
+export interface StreamAnuTaskOptions extends StreamCommon {
+  taskId: string;
+  onEvent: (event: AnuTaskEvent) => void;
+}
+
+/** Live updates for one task: `GET /v1/tasks/:id/events`. */
+export function streamAnuTaskEvents(options: StreamAnuTaskOptions): Promise<void> {
+  return followAnuStream<AnuTaskEvent>({
+    ...options,
+    path: `/v1/tasks/${encodeURIComponent(options.taskId)}/events`,
+    parse: parseAnuTaskEvent,
+    seqOf: (event) => (event.type === "step" ? event.step.seq : undefined),
+    isEnd: (event) => event.type === "end",
+  });
+}
+
+export type AnuSessionEvent =
+  | { type: "message"; message: AnuMessage }
+  | { type: "delta"; messageId: string; text: string }
+  | { type: "session"; session: AnuSession }
+  | { type: "end" };
+
+const deltaSchema = z.object({ messageId: z.string(), text: z.string() });
+
+/** `item` is the server's name for one message; `message` is accepted too. */
+
+/** Turns a raw frame into a typed session event, or `null`. */
+export function parseAnuSessionEvent(frame: SseFrame): AnuSessionEvent | null {
+  if (frame.event === "end") {
+    return { type: "end" };
+  }
+  let json: unknown;
+  try {
+    json = JSON.parse(frame.data);
+  } catch {
+    return null;
+  }
+  if (frame.event === "item" || frame.event === "message") {
+    const parsed = anuMessageSchema.safeParse(json);
+    return parsed.success ? { type: "message", message: parsed.data } : null;
+  }
+  if (frame.event === "delta") {
+    const parsed = deltaSchema.safeParse(json);
+    return parsed.success ? { type: "delta", ...parsed.data } : null;
+  }
+  if (frame.event === "session") {
+    const parsed = anuSessionSchema.safeParse(json);
+    return parsed.success ? { type: "session", session: parsed.data } : null;
+  }
+  return null;
+}
+
+export interface StreamAnuSessionOptions extends StreamCommon {
+  sessionId: string;
+  onEvent: (event: AnuSessionEvent) => void;
+}
+
+/**
+ * Live updates for one chat session: `GET /v1/sessions/:id/events`. The
+ * stream stays open while the session lives; `end` (the session was deleted)
+ * closes it.
+ */
+export function streamAnuSessionEvents(options: StreamAnuSessionOptions): Promise<void> {
+  return followAnuStream<AnuSessionEvent>({
+    ...options,
+    path: `/v1/sessions/${encodeURIComponent(options.sessionId)}/events`,
+    parse: parseAnuSessionEvent,
+    seqOf: (event) => (event.type === "message" ? event.message.seq : undefined),
+    isEnd: (event) => event.type === "end",
+  });
 }

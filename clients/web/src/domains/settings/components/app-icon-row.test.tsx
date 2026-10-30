@@ -20,7 +20,6 @@ import { createElement } from "react";
 
 import {
   APP_ICON_GROUNDS,
-  MARK_FACETS,
   MARK_SILHOUETTE,
 } from "@/components/ios-widget-previews/vellum-app-icon-mark";
 import { appIconNameForTraits } from "@/utils/avatar-app-icon";
@@ -98,9 +97,8 @@ function bundleMarkSpan(bundle: string): number {
  */
 function bundleGroundP3(bundle: string): string {
   const specializations = readBundle(bundle)["fill-specializations"] ?? [];
-  const solid = specializations.find(
-    (entry) => entry.appearance === undefined,
-  )?.value?.solid;
+  const solid = specializations.find((entry) => entry.appearance === undefined)
+    ?.value?.solid;
   if (typeof solid !== "string") {
     throw new Error(`${bundle} declares no default solid fill`);
   }
@@ -312,12 +310,10 @@ function previewMark(): { d: string | null; fill: string | null }[] {
   }));
 }
 
-/** The mark drawn in the given tones, silhouette first. */
+/** The mark's silhouette drawn in the one fill the artwork carries. */
 function markIn(fills: string[]): { d: string; fill: string | null }[] {
-  return [
-    { d: MARK_SILHOUETTE, fill: fills[0] ?? null },
-    { d: MARK_FACETS, fill: fills[1] ?? null },
-  ];
+  expect(fills).toHaveLength(1);
+  return [{ d: MARK_SILHOUETTE, fill: fills[0] ?? null }];
 }
 
 /** Share of the preview the mark's 100-unit canvas spans. */
@@ -480,7 +476,7 @@ describe("AppIconRow", () => {
     await waitFor(() => {
       expect(buttonByText("Change")).toBeDefined();
     });
-    // The ANU mark on Night 800, in the tones the bundle's own artwork uses,
+    // The black ANU mark on white, in the fill the bundle's own artwork uses,
     // and no eye pair: the primary icon carries none.
     expect(previewFill()).toBe(PRODUCTION_GROUND_P3);
     expect(previewMark()).toEqual(markIn(bundleMarkFills("AppIcon.icon")));
@@ -512,7 +508,7 @@ describe("AppIconRow", () => {
       await waitFor(() => {
         expect(previewFill()).toBe(DEV_GROUND_P3);
       });
-      // The lighter ground carries the mark in its night tones.
+      // The pink ground carries the same black mark.
       expect(previewMark()).toEqual(
         markIn(bundleMarkFills("AppIcon-Dev.icon")),
       );
@@ -632,8 +628,7 @@ describe("AppIconRow", () => {
       // resource and the shared constant agree, so this comparison fails
       // whenever either side moves alone.
       expect(flavorLauncherBackground("dev")).toBe(APP_ICON_GROUNDS.dev);
-      // Every flavor shares one foreground, so even the pink field carries
-      // the ice tones.
+      // Every flavor shares one foreground: the black mark.
       expect(previewMark()).toEqual(markIn(androidMarkFills()));
     });
 
@@ -651,7 +646,7 @@ describe("AppIconRow", () => {
       expect(previewMark()).toEqual(markIn(androidMarkFills()));
     });
 
-    test("draws the production flavor's ANU mark on Night 800", async () => {
+    test("draws the production flavor's black ANU mark on white", async () => {
       runOnAndroidShell("ai.anu.assistant");
 
       await renderRow();

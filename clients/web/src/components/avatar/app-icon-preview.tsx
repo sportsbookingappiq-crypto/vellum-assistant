@@ -11,8 +11,8 @@
  * would place the `angry` eyes about 6% of the icon above where the shipped
  * PNG has them.
  *
- * The app's primary icon carries no eyes at all: it is the ANU mark on the
- * build's own ground, which {@link PrimaryAppIconPreview} draws on the same
+ * The app's primary icon carries no eyes at all: it is the black ANU mark on
+ * the build's own ground, which {@link PrimaryAppIconPreview} draws on the same
  * squircle so a row can show either one.
  *
  * Purely presentational: no store, hook, or native bridge. An eye style or
@@ -25,7 +25,7 @@ import { useMemo } from "react";
 
 import {
   ARTWORK_SCALE as MARK_SCALE,
-  MARK_FACETS,
+  MARK_FILL,
   MARK_SILHOUETTE,
 } from "@/components/ios-widget-previews/vellum-app-icon-mark";
 import { tightPathBBox, unionBBox } from "@/utils/eye-bbox";
@@ -168,23 +168,9 @@ export function AppIconPreview({
   );
 }
 
-/**
- * The two tones the mark is drawn in: `ice` (Sky silhouette, Ice facets) on a
- * night ground, `night` (Night 900 silhouette, Deep Blue facets) on a light
- * one, as `assets/brand/BRAND.md` pairs them for flat renders.
- */
-export const PRIMARY_MARK_TONES = {
-  ice: { silhouette: "#7DD3FC", facets: "#E0F2FE" },
-  night: { silhouette: "#0A1633", facets: "#1E40AF" },
-} as const;
-
-export type PrimaryMarkTone = keyof typeof PRIMARY_MARK_TONES;
-
 export interface PrimaryAppIconPreviewProps {
   /** The ground the installed build's icon is drawn on, as any CSS color. */
   fieldColor: string;
-  /** Which of the mark's two-tone renders that build's icon carries. */
-  tone: PrimaryMarkTone;
   /** Rendered width and height in px. */
   size?: number;
   className?: string;
@@ -198,14 +184,12 @@ export interface PrimaryAppIconPreviewProps {
  */
 export function PrimaryAppIconPreview({
   fieldColor,
-  tone,
   size = DEFAULT_SIZE,
   className,
 }: PrimaryAppIconPreviewProps) {
   const radius = size * CORNER_RADIUS_FRACTION;
   const scale = (size * MARK_SCALE) / 100;
   const offset = (size - size * MARK_SCALE) / 2;
-  const colors = PRIMARY_MARK_TONES[tone];
 
   return (
     <svg
@@ -229,8 +213,7 @@ export function PrimaryAppIconPreview({
         data-testid="app-icon-preview-mark"
         transform={`matrix(${scale},0,0,${scale},${offset},${offset})`}
       >
-        <path d={MARK_SILHOUETTE} fill={colors.silhouette} />
-        <path d={MARK_FACETS} fill={colors.facets} />
+        <path d={MARK_SILHOUETTE} fill={MARK_FILL} />
       </g>
     </svg>
   );

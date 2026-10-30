@@ -1,114 +1,106 @@
 /**
- * The task's workspace: what the agent read and wrote, browsable as folders
- * and opened in place. One region at a time, like the rest of the phone app:
- * the folder, or the file with a way back to it.
+ * The Files window's list (spec A.3.12): what the bot made in this chat or
+ * task, one row per file with its type, size and time beneath its name.
+ * Folders open in place; a file opens its full-screen preview.
  */
 
-import { Button, Skeleton } from "@anu/design-library";
-import { ChevronLeft, File, Folder } from "lucide-react";
-import { useState } from "react";
+import { ChevronRight, Folder } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router";
 
 import { useTranslation } from "@/i18n";
+import { routes } from "@/utils/routes";
 
-import { parentPath } from "../anu-files-model";
+import type { AnuFileList, AnuScope } from "../anu-api";
+import { fileExtension, parentPath } from "../anu-files-model";
+import { anuIntlLocale, useAnuFormat } from "../use-anu-format";
 import { useAnuFiles } from "../use-anu-queries";
-import { AnuFilePreview } from "./anu-file-preview";
+import { AnuEmptyBlock, AnuErrorBlock, AnuSkeletonRows, AnuTextButton } from "./anu-ui";
 
-interface AnuFilesViewProps {
-  taskId: string;
+/** Files and folders the person cares about (no dot files). */
+export function visibleEntries(list: AnuFileList | undefined) {
+  return (list?.entries ?? []).filter(
+    (entry) => (entry.type === "file" || entry.type === "directory") && !entry.name.startsWith("."),
+  );
 }
 
-export function AnuFilesView({ taskId }: AnuFilesViewProps) {
+export function AnuFilesView({ scope, onCount }: { scope: AnuScope; onCount?: (count: number) => void }) {
   const { t, i18n } = useTranslation("anu");
+  const format = useAnuFormat();
   const [folder, setFolder] = useState("");
-  const [file, setFile] = useState<string | null>(null);
-  const listing = useAnuFiles(taskId, folder);
-  const bytes = new Intl.NumberFormat(i18n.language, {
+  const listing = useAnuFiles(scope, folder);
+  const entries = visibleEntries(listing.data);
+  const bytes = new Intl.NumberFormat(anuIntlLocale(i18n.language), {
     notation: "compact",
     style: "unit",
     unit: "byte",
     unitDisplay: "narrow",
   });
-
-  const back = (label: string, onClick: () => void) => (
-    <Button
-      variant="ghost"
-      shape="pill"
-      leftIcon={<ChevronLeft size={18} className="rtl:-scale-x-100" />}
-      onClick={onClick}
-      className="-ms-2 mb-3"
-    >
-      {label}
-    </Button>
-  );
-
-  if (file !== null) {
-    return (
-      <div>
-        {back(folder || t("anuFiles.workspace"), () => setFile(null))}
-        <h3 className="mb-4 break-all font-mono text-[14px] text-[var(--content-emphasised)]" dir="ltr">
-          {file}
-        </h3>
-        <AnuFilePreview taskId={taskId} path={file} />
-      </div>
-    );
-  }
+  const fileCount = folder === "" && listing.data ? entries.filter((entry) => entry.type === "file").length : null;
+  useEffect(() => {
+    if (fileCount !== null) {
+      onCount?.(fileCount);
+    }
+  }, [fileCount, onCount]);
 
   return (
     <div>
-      {folder
-        ? back(parentPath(folder) || t("anuFiles.workspace"), () =>
-            setFolder(parentPath(folder)),
-          )
-        : null}
+      {folder ? (
+        <AnuTextButton className="-ms-3 mb-1" onClick={() => setFolder(parentPath(folder))}>
+          {parentPath(folder) || t("anuFiles.title")}
+        </AnuTextButton>
+      ) : null}
       {listing.isPending ? (
-        <div className="flex flex-col gap-4" aria-busy>
-          <Skeleton className="h-5 w-2/3 rounded" />
-          <Skeleton className="h-5 w-1/2 rounded" />
-        </div>
+        <AnuSkeletonRows count={4} avatar={0} height={60} label={t("anuCommon.loading")} />
       ) : listing.isError ? (
-        <p className="text-[15px] text-[var(--content-secondary)]">
-          {t("anuFiles.loadError")}
-        </p>
-      ) : listing.data.entries.length === 0 ? (
-        <p className="text-[15px] text-[var(--content-secondary)]">
-          {t("anuFiles.empty")}
-        </p>
+        <AnuErrorBlock message={t("anuFiles.loadError")} onRetry={() => void listing.refetch()} />
+      ) : entries.length === 0 ? (
+        <AnuEmptyBlock message={t("anuFiles.empty")} />
       ) : (
         <ul>
-          {listing.data.entries
-            .filter(
-              (entry) =>
-                (entry.type === "file" || entry.type === "directory") &&
-                !entry.name.startsWith("."),
-            )
-            .map((entry) => (
-            <li key={entry.path}>
-              <button
-                type="button"
-                onClick={() =>
-                  entry.type === "directory"
-                    ? setFolder(entry.path)
-                    : setFile(entry.path)
-                }
-                className="flex min-h-12 w-full items-center gap-3 border-b border-[var(--border-hover)] text-start outline-none keyboard-focus:ring-2 keyboard-focus:ring-[var(--ring)]"
-              >
+          {entries.map((entry) => {
+            const meta = [
+              entry.type === "directory" ? t("anuFiles.folder") : fileExtension(entry.path).toUpperCase() || t("anuFiles.file"),
+              entry.type !== "directory" && entry.size != null ? bytes.format(entry.size) : null,
+              entry.mtime ? format.relative(entry.mtime) : null,
+            ]
+              .filter(Boolean)
+              .join(", ");
+            const content = (
+              <>
                 {entry.type === "directory" ? (
-                  <Folder aria-hidden size={18} strokeWidth={1.75} className="shrink-0 text-[var(--content-secondary)]" />
-                ) : (
-                  <File aria-hidden size={18} strokeWidth={1.75} className="shrink-0 text-[var(--content-tertiary)]" />
-                )}
-                <span dir="ltr" className="min-w-0 flex-1 truncate text-start text-[15px] text-[var(--content-emphasised)]">
-                  {entry.name}
-                </span>
-                {entry.type !== "directory" && entry.size != null ? (
-                  <span className="text-[13px] tabular-nums text-[var(--content-tertiary)]">
-                    {bytes.format(entry.size)}
-                  </span>
+                  <Folder aria-hidden size={20} strokeWidth={1.75} className="shrink-0 text-[var(--anu-muted)]" />
                 ) : null}
-              </button>
-            </li>
-            ))}
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <span dir="ltr" className="truncate text-start text-[15px]">
+                    {entry.name}
+                  </span>
+                  <span className="truncate text-[13px] text-[var(--anu-muted)]">{meta}</span>
+                </span>
+                <ChevronRight aria-hidden size={18} className="shrink-0 text-[var(--anu-muted)] rtl:-scale-x-100" />
+              </>
+            );
+            return (
+              <li key={entry.path}>
+                {entry.type === "directory" ? (
+                  <button
+                    type="button"
+                    onClick={() => setFolder(entry.path)}
+                    className="flex min-h-[60px] w-full items-center gap-3 text-start"
+                  >
+                    {content}
+                  </button>
+                ) : (
+                  <Link
+                    to={routes.anu.files(scope.kind, scope.id, entry.path)}
+                    className="flex min-h-[60px] w-full items-center gap-3"
+                  >
+                    {content}
+                  </Link>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

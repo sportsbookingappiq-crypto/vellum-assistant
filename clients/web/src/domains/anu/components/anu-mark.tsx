@@ -1,5 +1,5 @@
 /**
- * The ANU snowflake and wordmark, drawn from the brand geometry in
+ * The ANU snowflake, drawn from the brand geometry in
  * `assets/brand/` and filled with `currentColor` so the chrome decides its
  * ink. Below 32px the mark switches to the favicon cut, whose heavier rays
  * and larger branches survive small sizes (assets/brand/BRAND.md).
@@ -11,8 +11,6 @@ const MARK_PATH =
 const SMALL_MARK_PATH =
   "M8.43 26L25.24 31.46L28.35 22.5L32.25 33.74L39.1 35.97L40.5 33.55L43.3 33.55L44.8 26.49L37.01 17.5L46.33 19.29L50 2L53.67 19.29L62.99 17.5L55.2 26.49L56.7 33.55L59.5 33.55L60.9 35.97L67.75 33.74L71.65 22.5L74.76 31.46L91.57 26L78.43 37.83L84.64 45L72.96 42.75L67.6 47.58L69 50L67.6 52.42L72.96 57.25L84.64 55L78.43 62.17L91.57 74L74.76 68.54L71.65 77.5L67.75 66.26L60.9 64.03L59.5 66.45L56.7 66.45L55.2 73.51L62.99 82.5L53.67 80.71L50 98L46.33 80.71L37.01 82.5L44.8 73.51L43.3 66.45L40.5 66.45L39.1 64.03L32.25 66.26L28.35 77.5L25.24 68.54L8.43 74L21.57 62.17L15.36 55L27.04 57.25L32.4 52.42L31 50L32.4 47.58L27.04 42.75L15.36 45L21.57 37.83ZM42.5 50L46.25 56.5L53.75 56.5L57.5 50L53.75 43.5L46.25 43.5Z";
 
-const WORDMARK_PATH =
-  "M107.7 70L128.7 28.8L149.7 70L141.39 70L136.38 60.16L121.02 60.16L116.01 70ZM124.04 54.24L133.36 54.24L128.7 45.1ZM158.2 30L165.6 30L165.6 70L158.2 70ZM184.3 30L191.7 30L191.7 70L184.3 70ZM158.2 30L166.91 30L191.7 70L182.99 70ZM202.2 30H209.6V53.75A8.85 8.85 0 0 0 227.3 53.75V30H234.7V53.75A16.25 16.25 0 0 1 202.2 53.75Z";
 
 interface AnuMarkProps {
   size: number;
@@ -37,31 +35,6 @@ export function AnuMark({ size, className, label }: AnuMarkProps) {
         d={size < 32 ? SMALL_MARK_PATH : MARK_PATH}
         fill="currentColor"
       />
-    </svg>
-  );
-}
-
-interface AnuLockupProps {
-  /** Height of the mark in px; the wordmark keeps the brand proportions. */
-  height: number;
-  className?: string;
-  label: string;
-}
-
-/** The horizontal lockup: mark, then the custom-drawn wordmark. */
-export function AnuLockup({ height, className, label }: AnuLockupProps) {
-  return (
-    <svg
-      viewBox="9.2 2 225.6 96"
-      height={height}
-      width={(height * 225.6) / 96}
-      className={className}
-      role="img"
-      aria-label={label}
-      focusable="false"
-    >
-      <path d={MARK_PATH} fill="currentColor" />
-      <path d={WORDMARK_PATH} fill="currentColor" />
     </svg>
   );
 }

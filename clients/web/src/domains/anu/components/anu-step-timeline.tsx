@@ -21,6 +21,7 @@ import {
 import { type ReactNode } from "react";
 
 import { useTranslation } from "@/i18n";
+import { routes } from "@/utils/routes";
 import { cn } from "@/utils/misc";
 
 import type {
@@ -36,8 +37,20 @@ import {
   stepTone,
   type AnuStatusTone,
 } from "../anu-task-model";
+import { urlHost } from "../anu-files-model";
 import { useAnuFormat } from "../use-anu-format";
-import { AnuAvatar } from "./anu-avatar";
+import { AnuArtifactChip } from "./anu-artifact-chip";
+import { AnuAvatar, type AnuAvatarMood } from "./anu-avatar";
+
+function taskMood(status: AnuTaskDetail["status"]): AnuAvatarMood {
+  if (status === "running" || status === "queued") {
+    return "working";
+  }
+  if (status === "awaiting_approval") {
+    return "waiting";
+  }
+  return status === "succeeded" ? "success" : "still";
+}
 
 const KIND_ICON: Record<AnuStepKind, LucideIcon> = {
   plan: ListChecks,
@@ -84,7 +97,7 @@ interface AnuStepTimelineProps {
   children?: ReactNode;
 }
 
-function StepDetail({ step }: { step: AnuStep }) {
+function StepDetail({ step, taskId }: { step: AnuStep; taskId: string }) {
   const { t } = useTranslation("anu");
   if (step.kind === "plan") {
     const items = planItems([step]);
@@ -103,7 +116,32 @@ function StepDetail({ step }: { step: AnuStep }) {
   if (!line) {
     return null;
   }
-  if (line.kind === "command" || line.kind === "file" || line.kind === "link") {
+  if (step.kind === "browser") {
+    const detail = step.detail as { url?: unknown } | null;
+    const url = typeof detail?.url === "string" ? detail.url : null;
+    return (
+      <div className="mt-2">
+        <AnuArtifactChip
+          kind="browser"
+          label={url ? urlHost(url) : line.value}
+          to={routes.anu.browser("tasks", taskId)}
+        />
+      </div>
+    );
+  }
+
+  if (line.kind === "file") {
+    return (
+      <div className="mt-2">
+        <AnuArtifactChip
+          kind="file"
+          label={line.value}
+          to={routes.anu.files("tasks", taskId, line.value)}
+        />
+      </div>
+    );
+  }
+  if (line.kind === "command" || line.kind === "link") {
     return (
       <p dir="ltr"
         className="mt-1 min-w-0 truncate text-start font-mono text-[13px] leading-5 text-[var(--content-secondary)]">
@@ -227,7 +265,7 @@ export function AnuStepTimeline({
             avatar={
               SPOKEN_KINDS.has(step.kind) ? (
                 <AnuAvatar
-                  status={step.seq === lastSpokenSeq ? task.status : "stopped"}
+                  mood={step.seq === lastSpokenSeq ? taskMood(task.status) : "still"}
                   size={26}
                 />
               ) : undefined
@@ -252,7 +290,7 @@ export function AnuStepTimeline({
                 </span>
               ) : null}
             </p>
-            <StepDetail step={step} />
+            <StepDetail step={step} taskId={task.id} />
             {approval ? (
               <p
                 className={cn(
@@ -271,7 +309,7 @@ export function AnuStepTimeline({
       {children ? (
         <RailRow
           icon={null}
-          avatar={<AnuAvatar status={task.status} size={26} />}
+          avatar={<AnuAvatar mood={taskMood(task.status)} size={26} />}
           tone="neutral"
           last
         >
@@ -279,7 +317,7 @@ export function AnuStepTimeline({
         </RailRow>
       ) : null}
       {working ? (
-        <RailRow icon={null} avatar={<AnuAvatar status={task.status} size={26} />} tone="live" last>
+        <RailRow icon={null} avatar={<AnuAvatar mood={taskMood(task.status)} size={26} />} tone="live" last>
           <p className="text-body-medium-lighter text-[var(--system-info-strong)] [--text-body-medium-lighter-line-height:20px]">
             {task.status === "queued"
               ? t("anuTaskDetail.waitingToStart")

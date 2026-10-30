@@ -171,16 +171,33 @@ export const routes = {
   },
 
   /**
-   * The ANU task screens. A top-level branch like `/account/*`: outside the
+   * The ANU phone app. A top-level branch like `/account/*`: outside the
    * platform auth middleware and `RootLayout`, signed in with the ANU API's
-   * own phone login, and needing no active assistant.
+   * own phone login, and needing no active assistant. The root is always a
+   * chat; `?bot=<id>` opens a new, unsaved chat with that bot.
    */
   anu: {
     root: r("/anu"),
     login: r("/anu/login"),
-    new: r("/anu/new"),
     settings: r("/anu/settings"),
+    tasks: r("/anu/tasks"),
+    chats: r("/anu/chats"),
+    agents: r("/anu/agents"),
     task: (taskId: string) => dyn(r("/anu/tasks"), encodeURIComponent(taskId)),
+    chat: (sessionId: string) =>
+      dyn(r("/anu/chat"), encodeURIComponent(sessionId)),
+    /** A new chat with `botId`, not created on the server until it is used. */
+    newChat: (botId: string) => `/anu?bot=${encodeURIComponent(botId)}`,
+    bot: (botId: string) => dyn(r("/anu/bots"), encodeURIComponent(botId)),
+    chatsOfBot: (botId: string) => `/anu/chats?bot=${encodeURIComponent(botId)}`,
+    /** The full-screen Files window, opened on `path` when given. */
+    files: (kind: "tasks" | "sessions", id: string, path?: string) =>
+      `${kind === "tasks" ? "/anu/tasks" : "/anu/chat"}/${encodeURIComponent(id)}/files${
+        path ? `/${encodeURIComponent(path)}` : ""
+      }`,
+    /** The full-screen Browser window. */
+    browser: (kind: "tasks" | "sessions", id: string) =>
+      `${kind === "tasks" ? "/anu/tasks" : "/anu/chat"}/${encodeURIComponent(id)}/browser`,
   },
 
   welcome: r("/assistant/welcome"),

@@ -1,18 +1,21 @@
 /**
  * One task, answering "what is it doing, and does it need me?" in a single
  * flow: the goal as the title, one line on where the run stands, the question
- * it is holding for, then the run itself. Steps, the workspace files and the
- * live browser are three views of the same run, switched by pill tabs; the
- * result closes the steps rail. While the task is live, its event stream
+ * it is holding for, then the run itself, with the result closing the rail.
+ * Files and the browser open full screen: from the folder icon in the header,
+ * or from the chip on the step that touched them. While the task is live, its event stream
  * feeds the cache this reads.
  */
 
 import { Button, Skeleton } from "@anu/design-library";
+import { FolderOpen } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
+import { Link } from "react-router";
 
 import { MidlineDot } from "@/components/midline-dot";
 import { useTranslation } from "@/i18n";
 import { cn } from "@/utils/misc";
+import { routes } from "@/utils/routes";
 
 import { AnuApiError, isAnuTaskFinal } from "../anu-api";
 import {
@@ -28,11 +31,7 @@ import { AnuApprovalCard } from "./anu-approval-card";
 import { AnuResultCard } from "./anu-result-card";
 import { AnuStatusMark } from "./anu-status-mark";
 import { AnuStepTimeline } from "./anu-step-timeline";
-import { AnuBrowserView } from "./anu-browser-view";
-import { AnuFilesView } from "./anu-files-view";
 import { ANU_STATUS_LABEL_KEY } from "../anu-status-labels";
-
-type AnuDetailTab = "steps" | "files" | "browser";
 
 /** The current time, ticking once a second while `active`. */
 function useNow(active: boolean): number {
@@ -71,7 +70,6 @@ export function AnuTaskDetail({
   const task = taskQuery.data;
   const live = task ? !isAnuTaskFinal(task.status) : false;
   const now = useNow(live);
-  const [tab, setTab] = useState<AnuDetailTab>("steps");
 
   if (taskQuery.isError) {
     const notFound =
@@ -145,15 +143,6 @@ export function AnuTaskDetail({
     }
   })();
 
-  const hasBrowser =
-    steps.some((step) => step.kind === "browser") || tab === "browser";
-  const tabs: Array<{ id: AnuDetailTab; label: string }> = [
-    { id: "steps", label: t("anuTaskDetail.tabSteps") },
-    { id: "files", label: t("anuTaskDetail.tabFiles") },
-    ...(hasBrowser
-      ? [{ id: "browser" as const, label: t("anuTaskDetail.tabBrowser") }]
-      : []),
-  ];
   const final = isAnuTaskFinal(task.status);
 
   return (
@@ -161,6 +150,15 @@ export function AnuTaskDetail({
       <div className="flex min-h-11 items-center gap-3">
         {leading}
         <span className="flex-1" />
+        <Button
+          asChild
+          variant="ghost"
+          shape="pill"
+          iconOnly={<FolderOpen size={20} strokeWidth={1.75} />}
+          aria-label={t("anuFiles.title")}
+        >
+          <Link to={routes.anu.files("tasks", task.id)} />
+        </Button>
         {live ? (
           <Button
             variant="outlined"
@@ -173,7 +171,7 @@ export function AnuTaskDetail({
         ) : null}
       </div>
 
-      <Title dir="auto" className="mt-3 line-clamp-4 text-[26px] font-bold leading-[1.2] tracking-[-0.02em] text-[var(--content-emphasised)]">
+      <Title dir="auto" className="mt-3 line-clamp-4 text-[22px] leading-7 anu-strong text-[var(--anu-ink)]">
         {task.goal}
       </Title>
       <p className="mt-2.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[15px] tabular-nums text-[var(--content-secondary)]">
@@ -206,45 +204,16 @@ export function AnuTaskDetail({
 
       {approval ? <AnuApprovalCard approval={approval} className="mt-7" /> : null}
 
-      <div role="tablist" aria-label={t("anuTaskDetail.tabsLabel")} className="mt-7 flex gap-1.5">
-        {tabs.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            role="tab"
-            aria-selected={tab === item.id}
-            onClick={() => setTab(item.id)}
-            className={cn(
-              "h-9 rounded-full px-4 text-[14px] font-medium outline-none keyboard-focus:ring-2 keyboard-focus:ring-[var(--ring)]",
-              tab === item.id
-                ? "bg-[var(--primary-base)] text-[var(--content-inset)]"
-                : "text-[var(--content-secondary)] hover:bg-[var(--surface-hover)]",
-            )}
-          >
-            {item.label}
-            {item.id === "steps" ? (
-              <span className="ms-1.5 tabular-nums opacity-70">{steps.length}</span>
-            ) : null}
-          </button>
-        ))}
-      </div>
-
-      <div role="tabpanel" className="mt-6">
-        {tab === "steps" ? (
-          stepsQuery.isPending ? (
-            <div className="flex flex-col gap-4" aria-busy>
-              <Skeleton className="h-5 w-2/3 rounded" />
-              <Skeleton className="h-5 w-1/2 rounded" />
-            </div>
-          ) : (
-            <AnuStepTimeline task={task} steps={steps}>
-              {final ? <AnuResultCard task={task} steps={steps} /> : null}
-            </AnuStepTimeline>
-          )
-        ) : tab === "files" ? (
-          <AnuFilesView taskId={task.id} />
+      <div className="mt-9">
+        {stepsQuery.isPending ? (
+          <div className="flex flex-col gap-4" aria-busy>
+            <Skeleton className="h-5 w-2/3 rounded" />
+            <Skeleton className="h-5 w-1/2 rounded" />
+          </div>
         ) : (
-          <AnuBrowserView taskId={task.id} live={live} steps={steps} />
+          <AnuStepTimeline task={task} steps={steps}>
+            {final ? <AnuResultCard task={task} steps={steps} /> : null}
+          </AnuStepTimeline>
         )}
       </div>
     </div>

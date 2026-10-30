@@ -23,6 +23,8 @@ export interface AnuSessionState {
   expiresAt: string | null;
   /** E.164 number a code was last sent to; drives the code step of sign-in. */
   pendingPhone: string | null;
+  /** True after the server ended the session (a 401), until the next sign-in. */
+  expired: boolean;
 }
 
 export interface AnuSessionActions {
@@ -31,6 +33,8 @@ export interface AnuSessionActions {
   signIn: (session: StoredAnuSession) => Promise<void>;
   /** Forgets the token locally. The caller revokes it on the server first. */
   signOut: () => Promise<void>;
+  /** The server no longer accepts the token: sign out and say so on the login screen. */
+  expire: () => Promise<void>;
   setPendingPhone: (phone: string | null) => void;
 }
 
@@ -43,6 +47,7 @@ const useAnuSessionStoreBase = create<AnuSessionStore>()((set, get) => ({
   token: null,
   expiresAt: null,
   pendingPhone: null,
+  expired: false,
   restore: (reason) => {
     if (get().status !== "restoring") {
       return Promise.resolve();
@@ -73,11 +78,19 @@ const useAnuSessionStoreBase = create<AnuSessionStore>()((set, get) => ({
       token: session.token,
       expiresAt: session.expiresAt,
       pendingPhone: null,
+      expired: false,
     });
     await saveAnuSession(session);
   },
   signOut: async () => {
-    set({ status: "signed-out", token: null, expiresAt: null });
+    set({ status: "signed-out", token: null, expiresAt: null, expired: false });
+    await clearAnuSession();
+  },
+  expire: async () => {
+    if (get().status !== "signed-in") {
+      return;
+    }
+    set({ status: "signed-out", token: null, expiresAt: null, expired: true });
     await clearAnuSession();
   },
   setPendingPhone: (pendingPhone) => set({ pendingPhone }),

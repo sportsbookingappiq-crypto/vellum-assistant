@@ -73,30 +73,30 @@ describe("files and browser client", () => {
         truncated: false,
       }),
     );
-    const list = await fetchAnuFiles("t-1", "docs", { token: "t", fetchImpl, baseUrl: "http://anu.test" });
+    const list = await fetchAnuFiles({ kind: "tasks", id: "t-1" }, "docs", { token: "t", fetchImpl, baseUrl: "http://anu.test" });
     expect(list.entries[0]?.type).toBe("file");
     expect(urls[0]).toBe("http://anu.test/v1/tasks/t-1/files?path=docs");
   });
 
   test("file content keeps its content type", async () => {
     const { fetchImpl } = fakeFetch(200, "# Title", "text/markdown; charset=utf-8");
-    const file = await fetchAnuFileContent("t-1", "a.md", { token: "t", fetchImpl, baseUrl: "http://anu.test" });
+    const file = await fetchAnuFileContent({ kind: "tasks", id: "t-1" }, "a.md", { token: "t", fetchImpl, baseUrl: "http://anu.test" });
     expect(file.contentType).toBe("text/markdown");
     expect(await file.blob.text()).toBe("# Title");
   });
 
   test("a 413 on content is an AnuApiError", async () => {
     const { fetchImpl } = fakeFetch(413, null);
-    const error = await fetchAnuFileContent("t-1", "big.bin", { token: "t", fetchImpl, baseUrl: "http://anu.test" }).catch((e: unknown) => e);
+    const error = await fetchAnuFileContent({ kind: "tasks", id: "t-1" }, "big.bin", { token: "t", fetchImpl, baseUrl: "http://anu.test" }).catch((e: unknown) => e);
     expect((error as AnuApiError).status).toBe(413);
   });
 
   test("browser state parses latest and frames; 404 means none", async () => {
     const frame = { frameId: "f3", seq: 5, url: "https://example.com", action: "screenshot", contentType: "image/png", bytes: 10, capturedAt: "2026-10-29T10:00:00.000Z" };
     const ok = fakeFetch(200, JSON.stringify({ latest: frame, frames: [frame] }));
-    const state = await fetchAnuBrowser("t-1", { token: "t", fetchImpl: ok.fetchImpl, baseUrl: "http://anu.test" });
+    const state = await fetchAnuBrowser({ kind: "tasks", id: "t-1" }, { token: "t", fetchImpl: ok.fetchImpl, baseUrl: "http://anu.test" });
     expect(state?.latest?.frameId).toBe("f3");
     const missing = fakeFetch(404, JSON.stringify({ error: { code: "not_found", message: "" } }));
-    expect(await fetchAnuBrowser("t-1", { token: "t", fetchImpl: missing.fetchImpl, baseUrl: "http://anu.test" })).toBeNull();
+    expect(await fetchAnuBrowser({ kind: "tasks", id: "t-1" }, { token: "t", fetchImpl: missing.fetchImpl, baseUrl: "http://anu.test" })).toBeNull();
   });
 });

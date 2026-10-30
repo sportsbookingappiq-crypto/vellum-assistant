@@ -23,7 +23,7 @@ import {
   PrimaryAppIconPreview,
 } from "@/components/avatar/app-icon-preview";
 import {
-  MARK_FACETS,
+  MARK_FILL,
   MARK_SILHOUETTE,
 } from "@/components/ios-widget-previews/vellum-app-icon-mark";
 import { BUNDLED_COMPONENTS } from "@/utils/avatar-bundled-components";
@@ -51,15 +51,15 @@ const NARROW_EYE_STYLE = "bashful";
  * self-consistent.
  */
 const SAMPLED_EYE_BOUNDS: Record<string, BBox> = {
-  grumpy: { x: 95.1201, y: 258, w: 409.7598, h: 86 },
-  angry: { x: 93.9983, y: 250.86, w: 412.0033, h: 165.1477 },
-  curious: { x: 132, y: 212, w: 354, h: 172 },
-  goofy: { x: 108, y: 190, w: 392, h: 208 },
-  surprised: { x: 92, y: 202, w: 416, h: 196 },
-  bashful: { x: 104.6813, y: 251, w: 390.6373, h: 94.4787 },
-  gentle: { x: 141.25, y: 213.47, w: 317.5, h: 173.06 },
-  quirky: { x: 122, y: 214, w: 368.0062, h: 172 },
-  dazed: { x: 90.025, y: 209.93, w: 419.95, h: 180.14 },
+  grumpy: { x: 136.0963, y: 266.4, w: 327.8074, h: 68.8 },
+  angry: { x: 135.1997, y: 260.69, w: 329.6007, h: 132.119 },
+  curious: { x: 165.6, y: 229.6, w: 283.2, h: 137.6 },
+  goofy: { x: 146.4, y: 212, w: 313.6, h: 166.4 },
+  surprised: { x: 133.6, y: 221.6, w: 332.8, h: 156.8 },
+  bashful: { x: 143.7452, y: 260.8, w: 312.5096, h: 75.5848 },
+  gentle: { x: 173, y: 230.7725, w: 254, h: 138.455 },
+  quirky: { x: 157.6, y: 225.9921, w: 298.4, h: 148.0158 },
+  dazed: { x: 132.02, y: 227.94, w: 335.96, h: 144.12 },
 };
 
 /** Fraction of the icon a pair spans when the table below leaves it alone. */
@@ -527,10 +527,10 @@ describe("PrimaryAppIconPreview", () => {
 
   test("centers the mark on the ground at the share the icon gives it", () => {
     const { container } = render(
-      <PrimaryAppIconPreview fieldColor="#0F2557" tone="ice" size={SIZE} />,
+      <PrimaryAppIconPreview fieldColor="#FFFFFF" size={SIZE} />,
     );
 
-    expect(field(container).getAttribute("fill")).toBe("#0F2557");
+    expect(field(container).getAttribute("fill")).toBe("#FFFFFF");
     expect(field(container).getAttribute("rx")).toBe(String(SIZE * 0.224));
     const { scale, offsetX, offsetY } = markPlacement(container);
     // The Icon Composer layer scales the 100-unit canvas by 6.4 on a 1024
@@ -540,25 +540,14 @@ describe("PrimaryAppIconPreview", () => {
     expectWithinTolerance(offsetY, (SIZE - SIZE * 0.625) / 2);
   });
 
-  test("draws the ice two-tone for a night ground", () => {
+  test("draws the mark in solid black", () => {
     const { container } = render(
-      <PrimaryAppIconPreview fieldColor="#0F2557" tone="ice" size={SIZE} />,
+      <PrimaryAppIconPreview fieldColor="#FFFFFF" size={SIZE} />,
     );
 
     expect(markPlacement(container).paths).toEqual([
-      { d: MARK_SILHOUETTE, fill: "#7DD3FC" },
-      { d: MARK_FACETS, fill: "#E0F2FE" },
+      { d: MARK_SILHOUETTE, fill: MARK_FILL },
     ]);
-  });
-
-  test("draws the night two-tone for a light ground", () => {
-    const { container } = render(
-      <PrimaryAppIconPreview fieldColor="#FF88C9" tone="night" size={SIZE} />,
-    );
-
-    expect(markPlacement(container).paths).toEqual([
-      { d: MARK_SILHOUETTE, fill: "#0A1633" },
-      { d: MARK_FACETS, fill: "#1E40AF" },
-    ]);
+    expect(MARK_FILL).toBe("#000000");
   });
 });

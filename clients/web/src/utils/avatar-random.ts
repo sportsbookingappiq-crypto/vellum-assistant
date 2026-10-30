@@ -9,9 +9,13 @@ export function randomCharacterTraits(
   components: CharacterComponents,
 ): CharacterTraits {
   const pick = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
+  const bodyShape = pick(components.bodyShapes).id;
+  const eyeStyle = pick(components.eyeStyles).id;
   return {
-    bodyShape: pick(components.bodyShapes).id,
-    eyeStyle: pick(components.eyeStyles).id,
+    bodyShape,
+    // Stellar is the brand's own character and never hatches looking shocked.
+    eyeStyle:
+      bodyShape === "stellar" && eyeStyle === "surprised" ? "quirky" : eyeStyle,
     color: pick(components.colors).id,
   };
 }

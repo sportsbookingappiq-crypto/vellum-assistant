@@ -6,7 +6,7 @@
 
 ANU is your personal AI agent. Tell it what you need and it gets it done. It can research, write, code, handle email and schedules, and run recurring jobs. Before anything risky, it asks you first.
 
-ANU is early. The phone app is not built yet, and the platform runs in a development container. [Status](#status) lists what works.
+ANU is early. The phone app is in progress, and the platform runs in a development container. [Status](#status) lists what works.
 
 ## Quick start
 
@@ -35,7 +35,7 @@ The full contract is in [`anu/docs/api.md`](anu/docs/api.md) and [`anu/openapi.y
 
 | Part | What it does | Where | State |
 | --- | --- | --- | --- |
-| Phone app | Goal input, step timeline, approve and reject, stop, result | `clients/web`, through its Capacitor iOS and Android shells | Not started |
+| Phone app | Goal input, step timeline, approve and reject, stop, result | `clients/web`, through its Capacitor iOS and Android shells | In progress |
 | API | Phone login, tasks, steps, live stream, approvals, export, delete. Row-level security on every table | [`anu/src/api`](anu/src/api), port 8787 | Works in development |
 | Sandbox | One workspace and process group per task, an allowlisted environment with no platform secrets, a timeout, stop | [`anu/src/sandbox`](anu/src/sandbox), port 8788 | Works. Process isolation only |
 | Harness | The agent itself: plans, calls tools, asks for consent | [`assistant/`](assistant), booted per task by the `harness` driver | Completes a turn against a live model. Dev only |
@@ -99,10 +99,9 @@ Works, in one development container:
 
 Not built yet:
 
-- The phone app's task screen.
+- A finished phone app. The screens are in progress in `clients/web/src/domains/anu`.
 - An SMS provider. Only the development sender exists, and it refuses to run outside `dev` and `test`.
 - Network isolation, and a container or VM per task. Today's sandbox is a directory, a process group, and an allowlisted environment: not a boundary against hostile code.
-- Tool calls inside the harness (they need the gateway), and mapping the assistant's consent prompts onto ANU approvals.
 - Any deployment.
 
 The phases are in [`anu/docs/PLAN.md`](anu/docs/PLAN.md) and the decisions behind them in [`anu/docs/decisions/`](anu/docs/decisions).

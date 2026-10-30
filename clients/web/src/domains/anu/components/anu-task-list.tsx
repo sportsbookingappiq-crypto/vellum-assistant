@@ -1,146 +1,138 @@
 /**
- * The list of goals, answering "does anything need me, and what is ANU doing
- * right now?". The questions ANU is holding come first, each answerable right
- * on the list; then the runs in progress; then what finished. It is one
- * continuous page under a large title, with groups set apart by space and a
- * small heading, never by boxes.
+ * The Tasks list (spec A.3.10): filter chips (All, Running, Waiting, Done)
+ * over two-line rows, the task's title, then its agent's face, one status
+ * pill and how long it ran. Tasks stay separate from chats; this list is
+ * the only way into them.
  */
 
-import { Button, Skeleton } from "@anu/design-library";
-import { Plus } from "lucide-react";
-import { type ReactNode } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
 
-import { MidlineDot } from "@/components/midline-dot";
 import { useTranslation } from "@/i18n";
 import { cn } from "@/utils/misc";
 import { routes } from "@/utils/routes";
 
-import type { AnuTask } from "../anu-api";
-import { groupTasks, pendingApproval } from "../anu-task-model";
-import { useAnuTaskDetails, useAnuTasks } from "../use-anu-queries";
-import { AnuApprovalCard } from "./anu-approval-card";
-import { AnuTaskRow } from "./anu-task-row";
+import { isAnuTaskFinal, type AnuTask } from "../anu-api";
+import { ANU_STATUS_LABEL_KEY } from "../anu-status-labels";
+import { taskGroup } from "../anu-task-model";
+import { useAnuFormat } from "../use-anu-format";
+import { useAnuAgents, useAnuTasks } from "../use-anu-queries";
+import { AnuAvatar } from "./anu-avatar";
+import { AnuEmptyBlock, AnuErrorBlock, AnuPill, AnuSkeletonRows, type AnuPillTone } from "./anu-ui";
+
+type Filter = "all" | "running" | "waiting" | "done";
+
+function matches(task: AnuTask, filter: Filter): boolean {
+  const group = taskGroup(task.status);
+  switch (filter) {
+    case "running":
+      return group === "working";
+    case "waiting":
+      return group === "needsYou";
+    case "done":
+      return group === "finished";
+    default:
+      return true;
+  }
+}
+
+function tone(task: AnuTask): AnuPillTone {
+  if (task.status === "awaiting_approval") {
+    return "waiting";
+  }
+  if (task.status === "running" || task.status === "queued") {
+    return "working";
+  }
+  if (task.status === "failed") {
+    return "failed";
+  }
+  return "neutral";
+}
 
 interface AnuTaskListProps {
   selectedTaskId: string | undefined;
   className?: string;
 }
 
-function Group({
-  id,
-  label,
-  count,
-  children,
-}: {
-  id: string;
-  label: string;
-  count: number;
-  children: ReactNode;
-}) {
-  return (
-    <section aria-labelledby={id}>
-      <h2 id={id} className="flex items-baseline gap-2 text-[14px] font-semibold text-[var(--content-secondary)]">
-        {label}
-        <span className="font-normal tabular-nums text-[var(--content-tertiary)]">{count}</span>
-      </h2>
-      <ul className="mt-1">{children}</ul>
-    </section>
-  );
-}
-
-function WaitingTask({ task, selected }: { task: AnuTask; selected: boolean }) {
-  const [detail] = useAnuTaskDetails([task.id]);
-  const approval = pendingApproval(detail?.data);
-  return (
-    <AnuTaskRow
-      task={task}
-      selected={selected}
-      footer={approval ? <AnuApprovalCard approval={approval} density="answers" /> : null}
-    />
-  );
-}
-
 export function AnuTaskList({ selectedTaskId, className }: AnuTaskListProps) {
   const { t } = useTranslation("anu");
+  const format = useAnuFormat();
   const tasks = useAnuTasks();
-  const groups = groupTasks(tasks.data ?? []);
-  const needsYou = groups.needsYou.length;
-  const working = groups.working.length;
+  const agents = useAnuAgents();
+  const [filter, setFilter] = useState<Filter>("all");
+  const filters: Array<{ key: Filter; label: string }> = [
+    { key: "all", label: t("anuTasks.all") },
+    { key: "running", label: t("anuTasks.running") },
+    { key: "waiting", label: t("anuTasks.waiting") },
+    { key: "done", label: t("anuTasks.done") },
+  ];
+  const shown = (tasks.data ?? []).filter((task) => matches(task, filter));
+  const agentOf = (taskId: string) => agents.data?.find((agent) => agent.taskId === taskId);
 
   return (
     <div className={cn("flex flex-col", className)}>
-      <h1 className="text-[34px] font-bold leading-[1.1] tracking-[-0.025em] text-[var(--content-emphasised)]">
-        {t("anuTaskList.title")}
-      </h1>
-      <p className="mt-2 flex min-h-6 flex-wrap items-center gap-1.5 text-[16px] tabular-nums text-[var(--content-secondary)]">
-        {tasks.isPending ? null : needsYou === 0 && working === 0 ? (
-          t("anuTaskList.summaryQuiet")
-        ) : (
-          <>
-            {needsYou > 0 ? (
-              <span className="font-medium text-[var(--content-emphasised)]">
-                {t("anuTaskList.summaryNeedsYou", { count: needsYou })}
-              </span>
-            ) : null}
-            {needsYou > 0 && working > 0 ? <MidlineDot /> : null}
-            {working > 0 ? <span>{t("anuTaskList.summaryWorking", { count: working })}</span> : null}
-          </>
-        )}
-      </p>
-
-      {tasks.isError ? (
-        <div className="mt-8 flex flex-col items-start gap-3">
-          <p className="text-[16px] text-[var(--content-default)]">{t("anuTaskList.loadError")}</p>
-          <Button variant="outlined" shape="pill" onClick={() => void tasks.refetch()}>
-            {t("anuTaskList.retry")}
-          </Button>
-        </div>
-      ) : tasks.isPending ? (
-        <div className="mt-8 flex flex-col gap-5" aria-busy>
-          {[0, 1, 2].map((index) => (
-            <div key={index} className="flex flex-col gap-2">
-              <Skeleton className="h-4 w-4/5 rounded" />
-              <Skeleton className="h-3 w-1/3 rounded" />
-            </div>
-          ))}
-        </div>
-      ) : (tasks.data ?? []).length === 0 ? (
-        <div className="mt-10 flex flex-col items-start gap-4">
-          <h2 className="text-[20px] font-semibold text-[var(--content-emphasised)]">
-            {t("anuTaskList.emptyTitle")}
-          </h2>
-          <p className="max-w-[34ch] text-[16px] leading-6 text-[var(--content-secondary)]">
-            {t("anuTaskList.emptyBody")}
-          </p>
-          <Button asChild variant="primary" shape="pill" size="large" leftIcon={<Plus size={18} />}>
-            <Link to={routes.anu.new}>{t("anuShell.newGoal")}</Link>
-          </Button>
-        </div>
+      <div role="group" aria-label={t("anuTasks.filter")} className="-mx-4 mb-2 flex gap-2 overflow-x-auto px-4 pb-1">
+        {filters.map((entry) => (
+          <button
+            key={entry.key}
+            type="button"
+            aria-pressed={filter === entry.key}
+            onClick={() => setFilter(entry.key)}
+            className={cn(
+              "inline-flex h-10 shrink-0 items-center rounded-full px-4 text-[15px]",
+              filter === entry.key ? "bg-[var(--anu-primary)] text-[var(--anu-primary-ink)]" : "bg-[var(--anu-surface)]",
+            )}
+          >
+            {entry.label}
+          </button>
+        ))}
+      </div>
+      {tasks.isPending ? (
+        <AnuSkeletonRows count={5} avatar={0} height={64} label={t("anuCommon.loading")} />
+      ) : tasks.isError ? (
+        <AnuErrorBlock message={t("anuTasks.loadError")} onRetry={() => void tasks.refetch()} />
+      ) : shown.length === 0 ? (
+        <AnuEmptyBlock message={t("anuTasks.empty")} />
       ) : (
-        <div className="mt-8 flex flex-col gap-9">
-          {needsYou > 0 ? (
-            <Group id="anu-group-needs-you" label={t("anuTaskList.groupNeedsYou")} count={needsYou}>
-              {groups.needsYou.map((task) => (
-                <WaitingTask key={task.id} task={task} selected={task.id === selectedTaskId} />
-              ))}
-            </Group>
-          ) : null}
-          {working > 0 ? (
-            <Group id="anu-group-working" label={t("anuTaskList.groupWorking")} count={working}>
-              {groups.working.map((task) => (
-                <AnuTaskRow key={task.id} task={task} selected={task.id === selectedTaskId} />
-              ))}
-            </Group>
-          ) : null}
-          {groups.finished.length > 0 ? (
-            <Group id="anu-group-finished" label={t("anuTaskList.groupFinished")} count={groups.finished.length}>
-              {groups.finished.map((task) => (
-                <AnuTaskRow key={task.id} task={task} selected={task.id === selectedTaskId} />
-              ))}
-            </Group>
-          ) : null}
-        </div>
+        <ul>
+          {shown.map((task) => {
+            const agent = agentOf(task.id);
+            const end = task.finishedAt ?? (isAnuTaskFinal(task.status) ? task.updatedAt : new Date().toISOString());
+            const startedAt = task.startedAt ?? task.createdAt;
+            return (
+              <li key={task.id}>
+                <Link
+                  to={routes.anu.task(task.id)}
+                  aria-current={task.id === selectedTaskId ? "page" : undefined}
+                  className="flex min-h-16 flex-col justify-center gap-1 py-2.5"
+                >
+                  <span dir="auto" className="line-clamp-2 text-[15px] leading-6">
+                    {task.goal}
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <AnuAvatar
+                      face={
+                        task.status === "running"
+                          ? "thinking"
+                          : task.status === "awaiting_approval"
+                            ? "waiting"
+                            : task.status === "failed"
+                              ? "failed"
+                              : "rest"
+                      }
+                      traits={agent?.avatar}
+                      size={24}
+                    />
+                    <AnuPill tone={tone(task)}>{t(ANU_STATUS_LABEL_KEY[task.status])}</AnuPill>
+                    <span className="text-[13px] tabular-nums text-[var(--anu-muted)]">
+                      {format.duration(Math.max(0, Date.parse(end) - Date.parse(startedAt)))}
+                    </span>
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       )}
     </div>
   );

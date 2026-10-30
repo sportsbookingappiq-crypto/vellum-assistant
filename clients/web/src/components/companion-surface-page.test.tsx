@@ -1830,7 +1830,7 @@ describe("the companion's accent colour", () => {
     STATE.character = { ...CHARACTER };
     const { container } = render(<CompanionSurfacePage />);
 
-    await expectAccent(container, "#e9642f");
+    await expectAccent(container, "#e96d38");
   });
 
   test("lets a running call's accent win", async () => {
@@ -1851,7 +1851,7 @@ describe("the companion's accent colour", () => {
     STATE.call = listening("");
     const { container } = render(<CompanionSurfacePage />);
 
-    await expectAccent(container, "#e9642f");
+    await expectAccent(container, "#e96d38");
   });
 
   /**

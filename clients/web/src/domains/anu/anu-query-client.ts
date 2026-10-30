@@ -6,7 +6,7 @@
 
 import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
 
-import { AnuApiError, isAnuUnauthorized } from "./anu-api";
+import { AnuApiError, isAnuUnauthorized, type AnuScope } from "./anu-api";
 import { useAnuSessionStore } from "./anu-session-store";
 
 export const anuQueryKeys = {
@@ -15,14 +15,22 @@ export const anuQueryKeys = {
   tasks: () => ["anu", "tasks"] as const,
   task: (taskId: string) => ["anu", "task", taskId] as const,
   steps: (taskId: string) => ["anu", "steps", taskId] as const,
-  files: (taskId: string) => ["anu", "files", taskId] as const,
-  browser: (taskId: string) => ["anu", "browser", taskId] as const,
+  files: (scope: AnuScope) => ["anu", "files", scope.kind, scope.id] as const,
+  browser: (scope: AnuScope) => ["anu", "browser", scope.kind, scope.id] as const,
+  agents: () => ["anu", "agents"] as const,
+  sessions: () => ["anu", "sessions"] as const,
+  sessionsOfBot: (botId: string) => ["anu", "sessions", "bot", botId] as const,
+  bots: () => ["anu", "bots"] as const,
+  bot: (botId: string) => ["anu", "bot", botId] as const,
+  botOptions: () => ["anu", "bot-options"] as const,
+  session: (id: string) => ["anu", "session", id] as const,
+  messages: (id: string) => ["anu", "messages", id] as const,
 };
 
 /** A `401` anywhere means the token is gone: drop it and return to sign-in. */
 function handleError(error: unknown): void {
   if (isAnuUnauthorized(error)) {
-    void useAnuSessionStore.getState().signOut();
+    void useAnuSessionStore.getState().expire();
   }
 }
 

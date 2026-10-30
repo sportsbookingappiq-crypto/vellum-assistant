@@ -5,6 +5,9 @@
 @import "@fontsource/ibm-plex-sans-arabic/arabic-500.css";
 @import "@fontsource/ibm-plex-sans-arabic/arabic-600.css";
 @import "@fontsource/ibm-plex-sans-arabic/arabic-700.css";
+@import "@fontsource/ibm-plex-sans-arabic/latin-400.css";
+@import "@fontsource/ibm-plex-sans-arabic/latin-500.css";
+@import "@fontsource/ibm-plex-sans-arabic/latin-600.css";
 
 /* Capacitor mobile shell variant. Keys off the data-native-platform marker
  * set by initNativePlatformAttributes() at boot. Deliberately :is(), not
@@ -2050,11 +2053,125 @@ html[data-page-transition="pop"]::view-transition-new(root) {
   cursor: pointer !important;
 }
 
-/* ANU screens. Arabic text is set in IBM Plex Sans Arabic, bundled locally,
- * with DM Sans behind it for Latin runs; code keeps its monospace. */
+/* ANU screens (anu/docs/design/phone-app.md, A.2). One family, IBM Plex
+ * Sans Arabic, for Arabic and Latin alike; code keeps its monospace. The
+ * tokens sit on :root so sheets portalled out of the ANU subtree still read
+ * them. Light is designed on its own; dark is a true neutral, never navy. */
 
-:lang(ar) [data-anu-root] :where(*:not(code, pre, .font-mono, .font-mono *)) {
-  font-family: "IBM Plex Sans Arabic", "DM Sans", system-ui, sans-serif !important;
+:root {
+  --anu-bg: #FFFFFF;
+  --anu-surface: #F2F4F7;
+  --anu-surface-2: #E8EBF0;
+  --anu-ink: #0A1633;
+  --anu-muted: #5B6475;
+  --anu-accent: #2563EB;
+  --anu-accent-ink: #FFFFFF;
+  --anu-primary: #0A1633;
+  --anu-primary-ink: #FFFFFF;
+  --anu-waiting-tint: #FEF3C7;
+  --anu-waiting: #92400E;
+  --anu-done-tint: #DCFCE7;
+  --anu-done: #166534;
+  --anu-failed: #B91C1C;
+  --anu-scrim: rgb(10 22 51 / 0.32);
+  --anu-shadow: 0 8px 28px rgb(10 22 51 / 0.12), 0 1px 3px rgb(10 22 51 / 0.08);
+  --anu-weight-strong: 600;
+  --anu-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root[data-theme="dark"],
+:root.dark {
+  --anu-bg: #0B0D10;
+  --anu-surface: #17191D;
+  --anu-surface-2: #212329;
+  --anu-ink: #ECEEF1;
+  --anu-muted: #A3A8B3;
+  --anu-accent: #38BDF8;
+  --anu-accent-ink: #0A1633;
+  --anu-primary: #ECEEF1;
+  --anu-primary-ink: #0B0D10;
+  --anu-waiting-tint: #3A2E12;
+  --anu-waiting: #F2B544;
+  --anu-done-tint: #12301E;
+  --anu-done: #6EE7A0;
+  --anu-failed: #F87171;
+  --anu-scrim: rgb(0 0 0 / 0.56);
+  --anu-shadow: 0 8px 28px rgb(0 0 0 / 0.5), 0 1px 3px rgb(0 0 0 / 0.4);
+  --anu-weight-strong: 500;
+}
+
+[data-anu-root],
+[data-anu-sheet] {
+  background: var(--anu-bg);
+  color: var(--anu-ink);
+  font-family: "IBM Plex Sans Arabic", system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+[data-anu-root] :where(*:not(code, pre, .font-mono, .font-mono *)),
+[data-anu-sheet] :where(*:not(code, pre, .font-mono, .font-mono *)) {
+  font-family: "IBM Plex Sans Arabic", system-ui, sans-serif !important;
+}
+
+[data-anu-sheet] {
+  background: var(--anu-bg);
+}
+
+.anu-strong {
+  font-weight: var(--anu-weight-strong);
+}
+
+/* Grey placeholder blocks at real sizes: flat, no shimmer. */
+.anu-skeleton {
+  background: var(--anu-surface);
+  border-radius: 8px;
+}
+
+/* Focus rings are the one place the accent shows besides send and links. */
+[data-anu-root] :focus-visible,
+[data-anu-sheet] :focus-visible {
+  outline: 2px solid var(--anu-accent);
+  outline-offset: 2px;
+}
+
+@keyframes anu-sheet-in {
+  from { transform: translateY(100%); }
+  to { transform: none; }
+}
+
+@keyframes anu-drawer-in-ltr {
+  from { transform: translateX(-100%); }
+  to { transform: none; }
+}
+
+@keyframes anu-drawer-in-rtl {
+  from { transform: translateX(100%); }
+  to { transform: none; }
+}
+
+@keyframes anu-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.anu-drawer {
+  animation: anu-drawer-in-ltr 320ms var(--anu-ease);
+}
+
+[dir="rtl"] .anu-drawer,
+.anu-drawer:dir(rtl) {
+  animation-name: anu-drawer-in-rtl;
+}
+
+.anu-window {
+  animation: anu-fade-in 200ms var(--anu-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anu-drawer,
+  .anu-window {
+    animation: none;
+  }
 }
 
 /* Syntax colours for the ANU file viewer: ink for most tokens, the theme's

@@ -123,7 +123,7 @@ export type AnuApproval = z.infer<typeof anuApprovalSchema>;
 export type AnuStep = z.infer<typeof anuStepSchema>;
 export type AnuUser = z.infer<typeof anuUserSchema>;
 export type AnuCodeRequest = z.infer<typeof codeRequestSchema>;
-export type AnuSession = z.infer<typeof sessionSchema>;
+export type AnuAuthSession = z.infer<typeof sessionSchema>;
 export type AnuDecision = "approve" | "reject";
 
 /**
@@ -191,7 +191,7 @@ async function readJson(response: Response): Promise<unknown> {
  * {@link AnuApiError}.
  */
 export async function anuRequest<T>(
-  method: "GET" | "POST" | "DELETE",
+  method: "GET" | "POST" | "PATCH" | "PUT" | "DELETE",
   path: string,
   schema: z.ZodType<T> | null,
   options: AnuRequestOptions & { body?: unknown } = {},
@@ -274,7 +274,7 @@ export function verifyAnuCode(
   phone: string,
   code: string,
   options?: AnuRequestOptions,
-): Promise<AnuSession> {
+): Promise<AnuAuthSession> {
   return anuRequest("POST", "/v1/auth/code/verify", sessionSchema, {
     ...options,
     body: { phone, code },
@@ -283,6 +283,16 @@ export function verifyAnuCode(
 
 export function logoutAnu(options: AnuRequestOptions): Promise<void> {
   return anuRequest("POST", "/v1/auth/logout", null, options);
+}
+
+/** Everything the person has with ANU, as one JSON document to save. */
+export function fetchAnuExport(options: AnuRequestOptions): Promise<unknown> {
+  return anuRequest("GET", "/v1/me/export", z.unknown(), options);
+}
+
+/** Deletes the account and every bot, chat, task and file in it. */
+export function deleteAnuAccount(options: AnuRequestOptions): Promise<void> {
+  return anuRequest("DELETE", "/v1/me", null, options);
 }
 
 export function fetchAnuMe(options: AnuRequestOptions): Promise<AnuUser> {
@@ -393,14 +403,24 @@ const fileListSchema = z.object({
 export type AnuFileEntry = z.infer<typeof anuFileEntrySchema>;
 export type AnuFileList = z.infer<typeof fileListSchema>;
 
+/** Whose workspace and browser a call is about: a task or a chat session. */
+export interface AnuScope {
+  kind: "tasks" | "sessions";
+  id: string;
+}
+
+export function anuScopePath(scope: AnuScope): string {
+  return `/v1/${scope.kind}/${encodeURIComponent(scope.id)}`;
+}
+
 export function fetchAnuFiles(
-  taskId: string,
+  scope: AnuScope,
   path: string,
   options: AnuRequestOptions,
 ): Promise<AnuFileList> {
   return anuRequest(
     "GET",
-    `/v1/tasks/${encodeURIComponent(taskId)}/files?path=${encodeURIComponent(path)}`,
+    `${anuScopePath(scope)}/files?path=${encodeURIComponent(path)}`,
     fileListSchema,
     options,
   );
@@ -451,12 +471,12 @@ async function fetchAnuBlob(
 }
 
 export function fetchAnuFileContent(
-  taskId: string,
+  scope: AnuScope,
   path: string,
   options: AnuRequestOptions,
 ): Promise<AnuBlob> {
   return fetchAnuBlob(
-    `/v1/tasks/${encodeURIComponent(taskId)}/files/content?path=${encodeURIComponent(path)}`,
+    `${anuScopePath(scope)}/files/content?path=${encodeURIComponent(path)}`,
     options,
   );
 }
@@ -480,13 +500,13 @@ export type AnuBrowserState = z.infer<typeof anuBrowserStateSchema>;
 
 /** The live browser's latest frame metadata, or `null` when it never opened. */
 export async function fetchAnuBrowser(
-  taskId: string,
+  scope: AnuScope,
   options: AnuRequestOptions,
 ): Promise<AnuBrowserState | null> {
   try {
     return await anuRequest(
       "GET",
-      `/v1/tasks/${encodeURIComponent(taskId)}/browser`,
+      `${anuScopePath(scope)}/browser`,
       anuBrowserStateSchema,
       options,
     );
@@ -499,13 +519,381 @@ export async function fetchAnuBrowser(
 }
 
 export function fetchAnuBrowserFrame(
-  taskId: string,
+  scope: AnuScope,
   frameId: string | null | undefined,
   options: AnuRequestOptions,
 ): Promise<AnuBlob> {
   const query = frameId ? `?frameId=${encodeURIComponent(frameId)}` : "";
   return fetchAnuBlob(
-    `/v1/tasks/${encodeURIComponent(taskId)}/browser/frame${query}`,
+    `${anuScopePath(scope)}/browser/frame${query}`,
     options,
   );
+}
+
+// ---------------------------------------------------------------------------
+// Agents and chat sessions (anu/docs/api.md, "Agents" and "Chat sessions").
+// The wire shapes are mapped once here onto what the screens draw.
+// ---------------------------------------------------------------------------
+
+export const AGENT_STATUSES = [
+  "working",
+  "waiting",
+  "idle",
+  "finished",
+  "failed",
+] as const;
+
+export type AnuAgentStatus = (typeof AGENT_STATUSES)[number];
+
+/** The server's `waiting_for_you` is the screens' `waiting`. */
+const agentStatusSchema = z
+  .string()
+  .transform((value): AnuAgentStatus =>
+    value === "waiting_for_you"
+      ? "waiting"
+      : (AGENT_STATUSES as readonly string[]).includes(value)
+        ? (value as AnuAgentStatus)
+        : "idle",
+  );
+
+export const anuAvatarTraitsSchema = z.object({
+  bodyShape: z.string(),
+  eyeStyle: z.string(),
+  color: z.string(),
+});
+
+export type AnuAvatarTraits = z.infer<typeof anuAvatarTraitsSchema>;
+
+export const anuAgentSchema = z
+  .object({
+    id: z.string(),
+    name: z.string(),
+    status: agentStatusSchema,
+    doing: z.string().nullable().optional(),
+    title: z.string().nullable().optional(),
+    avatar: anuAvatarTraitsSchema.nullable().optional(),
+    kind: z.string().nullable().optional(),
+    sessionId: z.string().nullable().optional(),
+    taskId: z.string().nullable().optional(),
+    botId: z.string().nullable().optional(),
+    createdAt: z.string().nullable().optional(),
+    updatedAt: z.string().nullable().optional(),
+  })
+  .transform(({ doing, ...agent }) => ({ ...agent, activity: doing ?? null }));
+
+export type AnuAgent = z.infer<typeof anuAgentSchema>;
+
+export async function fetchAnuAgents(options: AnuRequestOptions): Promise<AnuAgent[]> {
+  const body = await anuRequest(
+    "GET",
+    "/v1/agents",
+    z.object({ agents: z.array(anuAgentSchema) }),
+    options,
+  );
+  return body.agents;
+}
+
+export const MESSAGE_ROLES = ["user", "assistant", "tool", "approval", "system"] as const;
+
+function itemRole(kind: string): (typeof MESSAGE_ROLES)[number] {
+  switch (kind) {
+    case "user_message":
+      return "user";
+    case "assistant_message":
+      return "assistant";
+    case "approval_request":
+      return "approval";
+    case "turn_complete":
+      return "system";
+    default:
+      return "tool";
+  }
+}
+
+/** One session item, read as a chat message: who said it, and its text. */
+export const anuMessageSchema = z
+  .object({
+    id: z.string(),
+    seq: z.number().int().optional(),
+    kind: z.string(),
+    title: z.string().nullable().optional(),
+    text: z.string().nullable().optional(),
+    detail: z.unknown().optional(),
+    status: z.string().nullable().optional(),
+    turnId: z.string().nullable().optional(),
+    createdAt: z.string(),
+  })
+  .transform((item) => ({
+    id: item.id,
+    seq: item.seq,
+    kind: item.kind,
+    role: itemRole(item.kind),
+    content: item.text ?? item.title ?? null,
+    detail: item.detail,
+    status: item.status ?? null,
+    createdAt: item.createdAt,
+  }));
+
+export type AnuMessage = z.infer<typeof anuMessageSchema>;
+
+export const anuSessionSchema = z
+  .object({
+    id: z.string(),
+    title: z.string().nullable().optional(),
+    status: z.string().nullable().optional(),
+    botId: z.string().nullable().optional(),
+    bot: z
+      .object({ id: z.string(), name: z.string(), avatar: anuAvatarTraitsSchema.nullable().optional() })
+      .nullable()
+      .optional(),
+    agent: z
+      .object({ id: z.string(), name: z.string(), avatar: anuAvatarTraitsSchema.nullable().optional() })
+      .nullable()
+      .optional(),
+    lastItem: z
+      .object({ text: z.string().nullable().optional(), title: z.string().nullable().optional() })
+      .passthrough()
+      .nullable()
+      .optional(),
+    approvals: z
+      .array(anuApprovalSchema.extend({ taskId: z.string().nullable().optional() }))
+      .default([]),
+    createdAt: z.string(),
+    updatedAt: z.string().nullable().optional(),
+  })
+  .transform((session) => ({
+    ...session,
+    status: session.status === "waiting_for_you" ? "waiting" : (session.status ?? "idle"),
+    botId: session.botId ?? session.bot?.id ?? null,
+    /** The bot's face when it still exists, else the agent's stored one. */
+    avatar: session.bot?.avatar ?? session.agent?.avatar ?? null,
+    agentName: session.bot?.name ?? session.agent?.name ?? null,
+    lastMessage: session.lastItem?.text ?? session.lastItem?.title ?? null,
+  }));
+
+export type AnuSession = z.infer<typeof anuSessionSchema>;
+
+export async function fetchAnuSessions(
+  options: AnuRequestOptions & { botId?: string },
+): Promise<AnuSession[]> {
+  const query = options.botId ? `&botId=${encodeURIComponent(options.botId)}` : "";
+  const body = await anuRequest(
+    "GET",
+    `/v1/sessions?limit=50${query}`,
+    z.object({ sessions: z.array(anuSessionSchema) }),
+    options,
+  );
+  return body.sessions;
+}
+
+export function fetchAnuSession(id: string, options: AnuRequestOptions): Promise<AnuSession> {
+  return anuRequest("GET", `/v1/sessions/${encodeURIComponent(id)}`, anuSessionSchema, options);
+}
+
+export function createAnuSession(
+  input: { title?: string; botId?: string },
+  options: AnuRequestOptions,
+): Promise<AnuSession> {
+  const body: { title?: string; botId?: string } = {};
+  if (input.title) {
+    body.title = input.title;
+  }
+  if (input.botId) {
+    body.botId = input.botId;
+  }
+  return anuRequest("POST", "/v1/sessions", anuSessionSchema, { ...options, body });
+}
+
+export function deleteAnuSession(id: string, options: AnuRequestOptions): Promise<void> {
+  return anuRequest("DELETE", `/v1/sessions/${encodeURIComponent(id)}`, null, options);
+}
+
+export async function fetchAnuMessages(
+  sessionId: string,
+  options: AnuRequestOptions,
+): Promise<AnuMessage[]> {
+  const body = await anuRequest(
+    "GET",
+    `/v1/sessions/${encodeURIComponent(sessionId)}/messages`,
+    z.object({ items: z.array(anuMessageSchema) }),
+    options,
+  );
+  return body.items;
+}
+
+export async function sendAnuMessage(
+  sessionId: string,
+  text: string,
+  options: AnuRequestOptions,
+): Promise<AnuMessage> {
+  const body = await anuRequest(
+    "POST",
+    `/v1/sessions/${encodeURIComponent(sessionId)}/messages`,
+    z.object({ turnId: z.string().optional(), item: anuMessageSchema }),
+    { ...options, body: { text } },
+  );
+  return body.item;
+}
+
+export function stopAnuSession(sessionId: string, options: AnuRequestOptions): Promise<void> {
+  return anuRequest("POST", `/v1/sessions/${encodeURIComponent(sessionId)}/stop`, null, options);
+}
+
+export function decideAnuSessionApproval(
+  sessionId: string,
+  approvalId: string,
+  decision: AnuDecision,
+  options: AnuRequestOptions,
+): Promise<void> {
+  return anuRequest(
+    "POST",
+    `/v1/sessions/${encodeURIComponent(sessionId)}/approvals/${encodeURIComponent(approvalId)}`,
+    null,
+    { ...options, body: { decision } },
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Bots (anu/docs/design/phone-app.md, section D). A bot is a profile the
+// person made or was given: a name, a face, how it greets and what it is
+// told. Chats and tasks run with one.
+// ---------------------------------------------------------------------------
+
+export const BOT_STATUSES = ["waiting_for_you", "working", "failed", "idle"] as const;
+export type AnuBotStatus = (typeof BOT_STATUSES)[number];
+
+export const anuStarterSchema = z.object({
+  label: z.string(),
+  prompt: z.string(),
+});
+
+export type AnuStarter = z.infer<typeof anuStarterSchema>;
+
+export const anuBotSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  role: z.string().default(""),
+  personality: z.string().default(""),
+  greeting: z.string().default(""),
+  instructions: z.string().default(""),
+  starters: z.array(anuStarterSchema).default([]),
+  avatar: anuAvatarTraitsSchema,
+  modelProfile: z.string().nullable().default(null),
+  skills: z.array(z.string()).default([]),
+  locale: z.string().default("en"),
+  isDefault: z.boolean().default(false),
+  defaultKey: z.string().nullable().default(null),
+  deletable: z.boolean().default(true),
+  status: z
+    .string()
+    .transform((value): AnuBotStatus =>
+      (BOT_STATUSES as readonly string[]).includes(value) ? (value as AnuBotStatus) : "idle",
+    )
+    .default("idle"),
+  lastUsedAt: z.string().nullable().default(null),
+  createdAt: z.string().nullable().default(null),
+  updatedAt: z.string().nullable().default(null),
+});
+
+export type AnuBot = z.infer<typeof anuBotSchema>;
+
+/** What a bot is made from: everything the person can set. */
+export interface AnuBotInput {
+  name: string;
+  role?: string;
+  personality?: string;
+  greeting?: string;
+  instructions?: string;
+  starters?: AnuStarter[];
+  avatar?: AnuAvatarTraits;
+  modelProfile?: string | null;
+  skills?: string[];
+  locale?: "ar" | "en";
+}
+
+const botListSchema = z.object({
+  bots: z.array(anuBotSchema),
+  defaultBotId: z.string().nullable().default(null),
+});
+
+export type AnuBotList = z.infer<typeof botListSchema>;
+
+export const anuBotOptionsSchema = z.object({
+  modelProfiles: z.array(z.string()).default([]),
+  skills: z.array(z.object({ id: z.string(), label: z.string() })).default([]),
+  templates: z
+    .array(z.object({ key: z.string(), label: z.string(), description: z.string() }))
+    .default([]),
+});
+
+export type AnuBotOptions = z.infer<typeof anuBotOptionsSchema>;
+
+export const anuBotDraftSchema = z.object({
+  draft: z.object({
+    name: z.string(),
+    role: z.string().default(""),
+    personality: z.string().default(""),
+    greeting: z.string().default(""),
+    instructions: z.string().default(""),
+    starters: z.array(anuStarterSchema).default([]),
+    avatar: anuAvatarTraitsSchema.optional(),
+    modelProfile: z.string().nullable().optional(),
+    skills: z.array(z.string()).optional(),
+    locale: z.enum(["ar", "en"]).optional(),
+  }),
+  source: z.enum(["model", "fallback"]),
+  fallbackReason: z.string().nullable().optional(),
+});
+
+export type AnuBotDraft = z.infer<typeof anuBotDraftSchema>;
+
+export function fetchAnuBots(options: AnuRequestOptions): Promise<AnuBotList> {
+  return anuRequest("GET", "/v1/bots", botListSchema, options);
+}
+
+export function fetchAnuBot(botId: string, options: AnuRequestOptions): Promise<AnuBot> {
+  return anuRequest("GET", `/v1/bots/${encodeURIComponent(botId)}`, anuBotSchema, options);
+}
+
+export function fetchAnuBotOptions(options: AnuRequestOptions): Promise<AnuBotOptions> {
+  return anuRequest("GET", "/v1/bots/options", anuBotOptionsSchema, options);
+}
+
+export function draftAnuBot(
+  input: { description: string; locale?: "ar" | "en" },
+  options: AnuRequestOptions,
+): Promise<AnuBotDraft> {
+  return anuRequest("POST", "/v1/bots/draft", anuBotDraftSchema, { ...options, body: input });
+}
+
+export function createAnuBot(input: AnuBotInput, options: AnuRequestOptions): Promise<AnuBot> {
+  return anuRequest("POST", "/v1/bots", anuBotSchema, { ...options, body: input });
+}
+
+export function updateAnuBot(
+  botId: string,
+  patch: Partial<AnuBotInput>,
+  options: AnuRequestOptions,
+): Promise<AnuBot> {
+  return anuRequest("PATCH", `/v1/bots/${encodeURIComponent(botId)}`, anuBotSchema, {
+    ...options,
+    body: patch,
+  });
+}
+
+export function deleteAnuBot(botId: string, options: AnuRequestOptions): Promise<void> {
+  return anuRequest("DELETE", `/v1/bots/${encodeURIComponent(botId)}`, null, options);
+}
+
+export function duplicateAnuBot(botId: string, options: AnuRequestOptions): Promise<AnuBot> {
+  return anuRequest(
+    "POST",
+    `/v1/bots/${encodeURIComponent(botId)}/duplicate`,
+    anuBotSchema,
+    options,
+  );
+}
+
+export function setAnuDefaultBot(botId: string, options: AnuRequestOptions): Promise<void> {
+  return anuRequest("PUT", "/v1/me/default-bot", null, { ...options, body: { botId } });
 }

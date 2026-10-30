@@ -19,6 +19,13 @@ export interface AnuFormat {
   offset: (ms: number) => string;
   /** "14:05" or "2:05 PM", with the date when it is not today. */
   clock: (iso: string) => string;
+  /** A plain count, in Arabic-Indic digits when the app speaks Arabic. */
+  number: (value: number) => string;
+}
+
+/** Arabic is written with Arabic-Indic digits (spec A.2); `Intl` needs asking. */
+export function anuIntlLocale(locale: string): string {
+  return locale.startsWith("ar") ? "ar-u-nu-arab" : locale;
 }
 
 export function formatAnuDuration(ms: number, locale: string): string {
@@ -53,7 +60,7 @@ export function formatAnuDuration(ms: number, locale: string): string {
 
 export function useAnuFormat(): AnuFormat {
   const { i18n } = useTranslation("anu");
-  const locale = i18n.language;
+  const locale = anuIntlLocale(i18n.language);
   return useMemo(() => {
     const percent = new Intl.NumberFormat(locale, {
       style: "percent",
@@ -69,7 +76,9 @@ export function useAnuFormat(): AnuFormat {
       hour: "numeric",
       minute: "2-digit",
     });
+    const count = new Intl.NumberFormat(locale);
     return {
+      number: (value) => count.format(value),
       relative: (iso) =>
         formatRelativeTime(Date.parse(iso), { locale, minimumUnit: "minute" }),
       duration: (ms) => formatAnuDuration(ms, locale),

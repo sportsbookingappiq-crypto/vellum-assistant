@@ -257,9 +257,11 @@ export const routeTree = [
     ],
   },
 
-  // ANU task screens: a top-level branch like `/account`, outside the
-  // platform auth middleware and `RootLayout`. They sign in with the ANU
-  // API's own phone login and need no active assistant.
+  // The ANU phone app: a top-level branch like `/account`, outside the
+  // platform auth middleware and `RootLayout`. It signs in with the ANU
+  // API's own phone login and needs no active assistant. The Browser and
+  // Files windows are children of the chat or task they open from, so the
+  // screen beneath stays mounted and keeps its scroll position.
   {
     path: "/anu",
     ErrorBoundary: RouteErrorBoundary,
@@ -276,45 +278,109 @@ export const routeTree = [
             index: true,
             lazy: {
               Component: () =>
-                import("@/domains/anu/anu-tasks-page").then(
-                  (m) => m.AnuTasksPage,
-                ),
+                import("@/domains/anu/anu-chat-page").then((m) => m.AnuChatPage),
+            },
+          },
+          {
+            path: "chat/:sessionId",
+            lazy: {
+              Component: () =>
+                import("@/domains/anu/anu-chat-page").then((m) => m.AnuChatPage),
+            },
+            children: [
+              {
+                path: "browser",
+                lazy: {
+              Component: () =>
+                import("@/domains/anu/anu-browser-page").then((m) => m.AnuSessionBrowserPage),
+            },
+              },
+              {
+                path: "files",
+                lazy: {
+              Component: () =>
+                import("@/domains/anu/anu-files-page").then((m) => m.AnuSessionFilesPage),
+            },
+              },
+              {
+                path: "files/:path",
+                lazy: {
+              Component: () =>
+                import("@/domains/anu/anu-files-page").then((m) => m.AnuSessionFilesPage),
+            },
+              },
+            ],
+          },
+          {
+            path: "bots/:botId",
+            lazy: {
+              Component: () =>
+                import("@/domains/anu/anu-bot-page").then((m) => m.AnuBotPage),
+            },
+          },
+          {
+            path: "chats",
+            lazy: {
+              Component: () =>
+                import("@/domains/anu/anu-chats-page").then((m) => m.AnuChatsPage),
+            },
+          },
+          {
+            path: "agents",
+            lazy: {
+              Component: () =>
+                import("@/domains/anu/anu-agents-page").then((m) => m.AnuAgentsPage),
+            },
+          },
+          {
+            path: "tasks",
+            lazy: {
+              Component: () =>
+                import("@/domains/anu/anu-tasks-page").then((m) => m.AnuTasksPage),
             },
           },
           {
             path: "tasks/:taskId",
             lazy: {
               Component: () =>
-                import("@/domains/anu/anu-tasks-page").then(
-                  (m) => m.AnuTasksPage,
-                ),
+                import("@/domains/anu/anu-tasks-page").then((m) => m.AnuTasksPage),
             },
-          },
-          {
-            path: "new",
-            lazy: {
+            children: [
+              {
+                path: "browser",
+                lazy: {
               Component: () =>
-                import("@/domains/anu/anu-new-goal-page").then(
-                  (m) => m.AnuNewGoalPage,
-                ),
+                import("@/domains/anu/anu-browser-page").then((m) => m.AnuTaskBrowserPage),
             },
+              },
+              {
+                path: "files",
+                lazy: {
+              Component: () =>
+                import("@/domains/anu/anu-files-page").then((m) => m.AnuTaskFilesPage),
+            },
+              },
+              {
+                path: "files/:path",
+                lazy: {
+              Component: () =>
+                import("@/domains/anu/anu-files-page").then((m) => m.AnuTaskFilesPage),
+            },
+              },
+            ],
           },
           {
             path: "settings",
             lazy: {
               Component: () =>
-                import("@/domains/anu/anu-settings-page").then(
-                  (m) => m.AnuSettingsPage,
-                ),
+                import("@/domains/anu/anu-settings-page").then((m) => m.AnuSettingsPage),
             },
           },
           {
             path: "login",
             lazy: {
               Component: () =>
-                import("@/domains/anu/anu-login-page").then(
-                  (m) => m.AnuLoginPage,
-                ),
+                import("@/domains/anu/anu-login-page").then((m) => m.AnuLoginPage),
             },
           },
         ],

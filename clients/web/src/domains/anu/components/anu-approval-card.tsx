@@ -1,128 +1,79 @@
 /**
- * The question ANU is holding a run for, in the agent's words, what it would
- * touch, and the two answers. It sits in the flow of the page rather than in
- * a box: a 3px edge in the attention hue on the reading side is the only
- * frame, because this is the one thing that cannot move without the person.
+ * The bot asking before it acts (spec A.3.3, "Approval card"): one sentence
+ * in the bot's voice with the concrete thing it wants to do, and two
+ * answers, Allow and Not now. No risk levels, tool names or policy words.
+ * Answers go through the existing approval endpoints unchanged.
  */
 
-import { Button } from "@anu/design-library";
-
 import { useTranslation } from "@/i18n";
+import { haptic } from "@/utils/haptics";
 import { cn } from "@/utils/misc";
 
-import type { AnuApproval, AnuDecision } from "../anu-api";
-import { useDecideAnuApproval } from "../use-anu-queries";
+import type { AnuApproval, AnuAvatarTraits, AnuDecision } from "../anu-api";
+import { useDecideAnuApproval, useDecideAnuSessionApproval } from "../use-anu-queries";
+import { AnuAvatar } from "./anu-avatar";
 
 interface AnuApprovalCardProps {
   approval: AnuApproval;
-  /** `answers` is the compact pair under a list row; `full` is the task's own. */
+  /** Kept for the task screens; both densities draw the same card now. */
   density?: "answers" | "full";
+  /** Set when the question belongs to a chat session rather than a task. */
+  sessionId?: string;
+  traits?: AnuAvatarTraits | null;
   className?: string;
 }
 
-function detailEntries(detail: unknown): Array<[string, string]> {
-  if (typeof detail !== "object" || detail === null || Array.isArray(detail)) {
-    return [];
-  }
-  return Object.entries(detail)
-    .filter((entry): entry is [string, string | number] =>
-      typeof entry[1] === "string" || typeof entry[1] === "number",
-    )
-    .map(([key, value]) => [key, String(value)]);
-}
-
-export function AnuApprovalCard({
-  approval,
-  density = "full",
-  className,
-}: AnuApprovalCardProps) {
+export function AnuApprovalCard({ approval, sessionId, traits, className }: AnuApprovalCardProps) {
   const { t } = useTranslation("anu");
-  const decide = useDecideAnuApproval();
+  const decideTask = useDecideAnuApproval();
+  const decideSession = useDecideAnuSessionApproval(sessionId ?? "");
+  const decide = sessionId ? decideSession : decideTask;
   const pending = approval.status === "pending";
-  const answer = (decision: AnuDecision) =>
-    decide.mutate({ taskId: approval.taskId, approvalId: approval.id, decision });
+  const answer = (decision: AnuDecision) => {
+    void haptic.light();
+    if (sessionId) {
+      decideSession.mutate({ approvalId: approval.id, decision });
+    } else {
+      decideTask.mutate({ taskId: approval.taskId, approvalId: approval.id, decision });
+    }
+  };
   const deciding = decide.isPending ? decide.variables?.decision : undefined;
-  const full = density === "full";
 
-  const answers = pending ? (
-    <div className={cn("flex items-center gap-2", full && "mt-5")}>
-      <Button
-        variant="primary"
-        shape="pill"
-        size={full ? "large" : "regular"}
-        loading={deciding === "approve"}
-        disabled={decide.isPending}
-        onClick={() => answer("approve")}
-        className={full ? "px-6" : "px-4"}
-      >
-        {t("anuApprovalCard.approve")}
-      </Button>
-      <Button
-        variant="ghost"
-        shape="pill"
-        size={full ? "large" : "regular"}
-        loading={deciding === "reject"}
-        disabled={decide.isPending}
-        onClick={() => answer("reject")}
-        className={full ? "px-6" : "px-4"}
-      >
-        {t("anuApprovalCard.decline")}
-      </Button>
-    </div>
-  ) : null;
-
-  const error = decide.isError ? (
-    <p role="alert" className="mt-2 text-[14px] text-[var(--system-negative-strong)]">
-      {t("anuApprovalCard.error")}
-    </p>
-  ) : null;
-
-  if (!full) {
-    return (
-      <div className={className}>
-        <p dir="auto" className="mb-2.5 text-[15px] leading-6 text-[var(--content-default)]">
-          {approval.prompt}
-        </p>
-        {answers}
-        {error}
-      </div>
-    );
-  }
-
-  const entries = detailEntries(approval.detail);
   return (
     <section
       aria-label={t("anuApprovalCard.heading")}
-      className={cn(
-        "border-s-[3px] ps-5",
-        pending ? "border-[var(--system-mid-strong)]" : "border-[var(--border-element)]",
-        className,
-      )}
+      data-testid="anu-approval-card"
+      className={cn("rounded-[20px] bg-[var(--anu-surface)] p-4", className)}
     >
-      <p className="text-[14px] font-medium text-[var(--content-secondary)]">
-        {t("anuApprovalCard.heading")}
-      </p>
-      <p dir="auto" className="mt-1.5 text-[20px] font-medium leading-7 text-[var(--content-emphasised)]">
-        {approval.prompt}
-      </p>
-      {entries.length > 0 ? (
-        <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-[15px]">
-          {entries.map(([key, value]) => (
-            <div key={key} className="contents">
-              <dt className="text-[var(--content-secondary)]">
-                {key === "file" ? t("anuApprovalCard.detailFile") : t("anuApprovalCard.detailOther")}
-              </dt>
-              <dd dir="ltr" className="min-w-0 truncate text-start font-mono text-[14px] text-[var(--content-default)]">
-                {value}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      ) : null}
+      <div className="flex items-start gap-3">
+        <AnuAvatar face={pending ? "waiting" : "rest"} traits={traits} size={24} className="mt-0.5" />
+        <p dir="auto" className="min-w-0 flex-1 text-[17px] leading-6 text-[var(--anu-ink)]">
+          {approval.prompt}
+        </p>
+      </div>
       {pending ? (
-        answers
+        <div className="mt-4 flex items-center gap-2 ps-9">
+          <button
+            type="button"
+            disabled={decide.isPending}
+            aria-busy={deciding === "approve" || undefined}
+            onClick={() => answer("approve")}
+            className="inline-flex h-11 min-w-24 items-center justify-center rounded-full bg-[var(--anu-primary)] px-5 text-[15px] text-[var(--anu-primary-ink)] anu-strong disabled:opacity-50"
+          >
+            {t("anuApprovalCard.approve")}
+          </button>
+          <button
+            type="button"
+            disabled={decide.isPending}
+            aria-busy={deciding === "reject" || undefined}
+            onClick={() => answer("reject")}
+            className="inline-flex h-11 items-center justify-center rounded-full px-4 text-[15px] text-[var(--anu-ink)] disabled:opacity-50"
+          >
+            {t("anuApprovalCard.decline")}
+          </button>
+        </div>
       ) : (
-        <p className="mt-3 text-[15px] text-[var(--content-secondary)]">
+        <p className="mt-2 ps-9 text-[13px] text-[var(--anu-muted)]">
           {approval.status === "approved"
             ? t("anuApprovalCard.approved")
             : approval.status === "rejected"
@@ -130,7 +81,11 @@ export function AnuApprovalCard({
               : t("anuApprovalCard.expired")}
         </p>
       )}
-      {error}
+      {decide.isError ? (
+        <p role="alert" className="mt-2 ps-9 text-[13px] text-[var(--anu-failed)]">
+          {t("anuApprovalCard.error")}
+        </p>
+      ) : null}
     </section>
   );
 }

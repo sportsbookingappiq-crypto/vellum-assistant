@@ -13,6 +13,29 @@ import {
 
 import {
   anuTaskSchema,
+  createAnuBot,
+  createAnuSession,
+  deleteAnuBot,
+  deleteAnuSession,
+  draftAnuBot,
+  duplicateAnuBot,
+  fetchAnuBot,
+  fetchAnuBotOptions,
+  fetchAnuBots,
+  setAnuDefaultBot,
+  updateAnuBot,
+  type AnuBot,
+  type AnuBotInput,
+  type AnuBotList,
+  decideAnuSessionApproval,
+  fetchAnuAgents,
+  fetchAnuMessages,
+  fetchAnuSession,
+  fetchAnuSessions,
+  sendAnuMessage,
+  stopAnuSession,
+  type AnuMessage,
+  type AnuScope,
   createAnuTask,
   decideAnuApproval,
   fetchAnuBrowser,
@@ -30,10 +53,13 @@ import {
   type AnuDecision,
   type AnuTask,
   type AnuTaskDetail,
+  deleteAnuAccount,
+  fetchAnuExport,
 } from "./anu-api";
 import { anuQueryKeys } from "./anu-query-client";
 import { useAnuSessionStore } from "./anu-session-store";
 import { mergeSteps } from "./anu-task-model";
+import { upsertMessage } from "./anu-chat-model";
 
 function useToken(): string | null {
   return useAnuSessionStore.use.token();
@@ -139,46 +165,297 @@ export function useAnuTaskDetails(taskIds: readonly string[]) {
   });
 }
 
-export function useAnuFiles(taskId: string, path: string) {
+export function useAnuFiles(scope: AnuScope, path: string) {
   const token = useToken();
   return useQuery({
-    queryKey: [...anuQueryKeys.files(taskId), path],
-    queryFn: ({ signal }) => fetchAnuFiles(taskId, path, { token, signal }),
+    queryKey: [...anuQueryKeys.files(scope), path],
+    queryFn: ({ signal }) => fetchAnuFiles(scope, path, { token, signal }),
     enabled: token !== null,
   });
 }
 
-export function useAnuFileContent(taskId: string, path: string | null) {
+export function useAnuFileContent(scope: AnuScope, path: string | null) {
   const token = useToken();
   return useQuery({
-    queryKey: [...anuQueryKeys.files(taskId), "content", path],
+    queryKey: [...anuQueryKeys.files(scope), "content", path],
     queryFn: ({ signal }) =>
-      fetchAnuFileContent(taskId, path ?? "", { token, signal }),
+      fetchAnuFileContent(scope, path ?? "", { token, signal }),
     enabled: token !== null && path !== null,
     staleTime: 30_000,
   });
 }
 
-/** The live browser's latest frame metadata, refreshed while the run is live. */
-export function useAnuBrowser(taskId: string, live: boolean) {
+/** The browser's latest frame metadata, refreshed while the work is live. */
+export function useAnuBrowser(scope: AnuScope, live: boolean) {
   const token = useToken();
   return useQuery({
-    queryKey: anuQueryKeys.browser(taskId),
-    queryFn: ({ signal }) => fetchAnuBrowser(taskId, { token, signal }),
+    queryKey: anuQueryKeys.browser(scope),
+    queryFn: ({ signal }) => fetchAnuBrowser(scope, { token, signal }),
     enabled: token !== null,
     refetchInterval: live ? 2_000 : false,
   });
 }
 
-export function useAnuBrowserFrame(taskId: string, frameId: string | null) {
+export function useAnuBrowserFrame(scope: AnuScope, frameId: string | null) {
   const token = useToken();
   return useQuery({
-    queryKey: [...anuQueryKeys.browser(taskId), "frame", frameId],
-    queryFn: ({ signal }) =>
-      fetchAnuBrowserFrame(taskId, frameId, { token, signal }),
+    queryKey: [...anuQueryKeys.browser(scope), "frame", frameId],
+    queryFn: ({ signal }) => fetchAnuBrowserFrame(scope, frameId, { token, signal }),
     enabled: token !== null && frameId !== null,
     staleTime: Number.POSITIVE_INFINITY,
     placeholderData: (previous) => previous,
+  });
+}
+
+/** Every agent and what it is doing, refreshed while any of them works. */
+export function useAnuAgents() {
+  const token = useToken();
+  return useQuery({
+    queryKey: anuQueryKeys.agents(),
+    queryFn: ({ signal }) => fetchAnuAgents({ token, signal }),
+    enabled: token !== null,
+    // Spec A.3.9: every 5 seconds while the screen is visible.
+    refetchInterval: 5_000,
+  });
+}
+
+/** The person's chats, newest first; only one bot's when `botId` is set. */
+export function useAnuSessions(botId?: string | null) {
+  const token = useToken();
+  return useQuery({
+    queryKey: botId ? anuQueryKeys.sessionsOfBot(botId) : anuQueryKeys.sessions(),
+    queryFn: ({ signal }) =>
+      fetchAnuSessions({ token, signal, botId: botId ?? undefined }),
+    enabled: token !== null,
+    // Kept fresh in the background too, so a question asked while the app
+    // is away can still raise a banner (anu-notify.ts).
+    refetchInterval: (query) =>
+      query.state.data?.some((session) => session.status === "working" || session.status === "waiting")
+        ? 5_000
+        : 20_000,
+    refetchIntervalInBackground: true,
+  });
+}
+
+export function useAnuSession(id: string) {
+  const token = useToken();
+  return useQuery({
+    queryKey: anuQueryKeys.session(id),
+    queryFn: ({ signal }) => fetchAnuSession(id, { token, signal }),
+    enabled: token !== null && id !== "",
+  });
+}
+
+export function useAnuMessages(id: string) {
+  const token = useToken();
+  return useQuery({
+    queryKey: anuQueryKeys.messages(id),
+    queryFn: ({ signal }) => fetchAnuMessages(id, { token, signal }),
+    enabled: token !== null && id !== "",
+  });
+}
+
+export function useCreateAnuSession() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: { title?: string; botId?: string }) =>
+      createAnuSession(input, { token: requireToken() }),
+    onSuccess: (session) => {
+      queryClient.setQueryData(anuQueryKeys.session(session.id), session);
+      queryClient.setQueryData<AnuMessage[]>(anuQueryKeys.messages(session.id), []);
+      void queryClient.invalidateQueries({ queryKey: anuQueryKeys.sessions() });
+      void queryClient.invalidateQueries({ queryKey: anuQueryKeys.bots() });
+    },
+  });
+}
+
+/**
+ * The first message of a new chat: the session is made with its bot, then
+ * the text is sent into it. Nothing exists on the server until this runs, so
+ * an opened and abandoned new chat leaves no empty row behind.
+ */
+export function useStartAnuChat() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ botId, text }: { botId?: string; text: string }) => {
+      const token = requireToken();
+      const session = await createAnuSession({ botId }, { token });
+      queryClient.setQueryData(anuQueryKeys.session(session.id), session);
+      const message = await sendAnuMessage(session.id, text, { token });
+      queryClient.setQueryData<AnuMessage[]>(anuQueryKeys.messages(session.id), [message]);
+      return session;
+    },
+    onSettled: () => {
+      void queryClient.invalidateQueries({ queryKey: anuQueryKeys.sessions() });
+      void queryClient.invalidateQueries({ queryKey: anuQueryKeys.bots() });
+    },
+  });
+}
+
+export function useDeleteAnuSession() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (sessionId: string) => deleteAnuSession(sessionId, { token: requireToken() }),
+    onSuccess: (_data, sessionId) => {
+      queryClient.removeQueries({ queryKey: anuQueryKeys.session(sessionId) });
+      queryClient.removeQueries({ queryKey: anuQueryKeys.messages(sessionId) });
+      void queryClient.invalidateQueries({ queryKey: anuQueryKeys.sessions() });
+      void queryClient.invalidateQueries({ queryKey: anuQueryKeys.agents() });
+    },
+  });
+}
+
+/** The person's bots, most urgent first, refreshed while any of them works. */
+export function useAnuBots() {
+  const token = useToken();
+  return useQuery({
+    queryKey: anuQueryKeys.bots(),
+    queryFn: ({ signal }) => fetchAnuBots({ token, signal }),
+    enabled: token !== null,
+    refetchInterval: (query) =>
+      query.state.data?.bots.some(
+        (bot) => bot.status === "working" || bot.status === "waiting_for_you",
+      )
+        ? 5_000
+        : 30_000,
+  });
+}
+
+export function useAnuBot(botId: string | null | undefined) {
+  const token = useToken();
+  const queryClient = useQueryClient();
+  return useQuery({
+    queryKey: anuQueryKeys.bot(botId ?? ""),
+    queryFn: ({ signal }) => fetchAnuBot(botId ?? "", { token, signal }),
+    enabled: token !== null && Boolean(botId),
+    initialData: () =>
+      queryClient
+        .getQueryData<AnuBotList>(anuQueryKeys.bots())
+        ?.bots.find((bot) => bot.id === botId),
+  });
+}
+
+export function useAnuBotOptions() {
+  const token = useToken();
+  return useQuery({
+    queryKey: anuQueryKeys.botOptions(),
+    queryFn: ({ signal }) => fetchAnuBotOptions({ token, signal }),
+    enabled: token !== null,
+    staleTime: 10 * 60_000,
+  });
+}
+
+export function useDraftAnuBot() {
+  return useMutation({
+    mutationFn: ({ description, locale }: { description: string; locale: "ar" | "en" }) =>
+      draftAnuBot({ description, locale }, { token: requireToken() }),
+  });
+}
+
+function writeBotToCache(queryClient: ReturnType<typeof useQueryClient>, bot: AnuBot): void {
+  queryClient.setQueryData(anuQueryKeys.bot(bot.id), bot);
+  queryClient.setQueryData<AnuBotList>(anuQueryKeys.bots(), (list) => {
+    if (!list) {
+      return list;
+    }
+    const exists = list.bots.some((existing) => existing.id === bot.id);
+    return {
+      ...list,
+      bots: exists
+        ? list.bots.map((existing) => (existing.id === bot.id ? bot : existing))
+        : [...list.bots, bot],
+    };
+  });
+}
+
+export function useCreateAnuBot() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: AnuBotInput) => createAnuBot(input, { token: requireToken() }),
+    onSuccess: (bot) => writeBotToCache(queryClient, bot),
+  });
+}
+
+export function useUpdateAnuBot(botId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (patch: Partial<AnuBotInput>) =>
+      updateAnuBot(botId, patch, { token: requireToken() }),
+    onSuccess: (bot) => {
+      writeBotToCache(queryClient, bot);
+      void queryClient.invalidateQueries({ queryKey: anuQueryKeys.sessions() });
+    },
+  });
+}
+
+export function useDuplicateAnuBot() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (botId: string) => duplicateAnuBot(botId, { token: requireToken() }),
+    onSuccess: (bot) => writeBotToCache(queryClient, bot),
+  });
+}
+
+export function useDeleteAnuBot() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (botId: string) => deleteAnuBot(botId, { token: requireToken() }),
+    onSuccess: (_data, botId) => {
+      queryClient.removeQueries({ queryKey: anuQueryKeys.bot(botId) });
+      queryClient.setQueryData<AnuBotList>(anuQueryKeys.bots(), (list) =>
+        list ? { ...list, bots: list.bots.filter((bot) => bot.id !== botId) } : list,
+      );
+      void queryClient.invalidateQueries({ queryKey: anuQueryKeys.sessions() });
+    },
+  });
+}
+
+export function useSetAnuDefaultBot() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (botId: string) => setAnuDefaultBot(botId, { token: requireToken() }),
+    onSuccess: (_data, botId) => {
+      queryClient.setQueryData<AnuBotList>(anuQueryKeys.bots(), (list) =>
+        list ? { ...list, defaultBotId: botId } : list,
+      );
+    },
+  });
+}
+
+/** Sends a turn; the user's message shows at once and the stream fills the reply. */
+export function useSendAnuMessage(sessionId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (content: string) =>
+      sendAnuMessage(sessionId, content, { token: requireToken() }),
+    onSuccess: (message) => {
+      queryClient.setQueryData<AnuMessage[]>(
+        anuQueryKeys.messages(sessionId),
+        (current) => upsertMessage(current, message),
+      );
+    },
+  });
+}
+
+export function useStopAnuSession(sessionId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => stopAnuSession(sessionId, { token: requireToken() }),
+    onSettled: () => {
+      void queryClient.invalidateQueries({ queryKey: anuQueryKeys.session(sessionId) });
+    },
+  });
+}
+
+export function useDecideAnuSessionApproval(sessionId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ approvalId, decision }: { approvalId: string; decision: AnuDecision }) =>
+      decideAnuSessionApproval(sessionId, approvalId, decision, { token: requireToken() }),
+    onSettled: () => {
+      void queryClient.invalidateQueries({ queryKey: anuQueryKeys.messages(sessionId) });
+      void queryClient.invalidateQueries({ queryKey: anuQueryKeys.session(sessionId) });
+    },
   });
 }
 
@@ -272,6 +549,35 @@ export function useAnuSignOut() {
       }
     },
     onSettled: async () => {
+      await signOut();
+      queryClient.clear();
+    },
+  });
+}
+
+/** Downloads the person's data as a JSON file. */
+export function useExportAnuData() {
+  return useMutation({
+    mutationFn: async () => {
+      const data = await fetchAnuExport({ token: requireToken() });
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "anu-data.json";
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1_000);
+    },
+  });
+}
+
+/** Deletes the account on the server, then signs out here. */
+export function useDeleteAnuAccount() {
+  const queryClient = useQueryClient();
+  const signOut = useAnuSessionStore.use.signOut();
+  return useMutation({
+    mutationFn: () => deleteAnuAccount({ token: requireToken() }),
+    onSuccess: async () => {
       await signOut();
       queryClient.clear();
     },

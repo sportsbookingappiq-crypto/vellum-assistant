@@ -28,7 +28,7 @@ Characters and logo:
 
 ## Where the work stopped
 
-Everything below is committed. "Unfinished" means started and not completed or not reviewed.
+Everything below is committed and pushed. "Unfinished" means started and not completed or not reviewed.
 
 | Area | State |
 | --- | --- |

@@ -37,8 +37,8 @@ const HUMP = "M0 0C0 100 100 100 100 0Z";
  * has to get right. Regenerate rather than adjust if the bundled art changes.
  */
 const SAMPLED_BOUNDS = {
-  angry: { x: 93.9983, y: 250.86, w: 412.0033, h: 165.1477 },
-  grumpy: { x: 95.1201, y: 258, w: 409.7598, h: 86 },
+  angry: { x: 135.1997, y: 260.69, w: 329.6007, h: 132.119 },
+  grumpy: { x: 136.0963, y: 266.4, w: 327.8074, h: 68.8 },
 } as const;
 
 /** Slack for the sampled numbers above, in path units. */

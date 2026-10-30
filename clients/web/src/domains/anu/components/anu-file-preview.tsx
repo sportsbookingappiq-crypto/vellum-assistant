@@ -11,6 +11,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { useTranslation } from "@/i18n";
 
+import type { AnuScope } from "../anu-api";
 import {
   CODE_LANGUAGES,
   fileExtension,
@@ -109,13 +110,13 @@ function CsvTable({ text }: { text: string }) {
 }
 
 interface AnuFilePreviewProps {
-  taskId: string;
+  scope: AnuScope;
   path: string;
 }
 
-export function AnuFilePreview({ taskId, path }: AnuFilePreviewProps) {
+export function AnuFilePreview({ scope, path }: AnuFilePreviewProps) {
   const { t } = useTranslation("anu");
-  const content = useAnuFileContent(taskId, path);
+  const content = useAnuFileContent(scope, path);
   const kind = content.data ? previewKind(path, content.data.contentType) : null;
   const isText =
     kind === "markdown" ||
