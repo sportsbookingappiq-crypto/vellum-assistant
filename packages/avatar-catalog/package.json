@@ -1,12 +1,13 @@
 {
-  "name": "@vellumai/avatar-catalog",
+  "name": "@anu/avatar-catalog",
   "version": "0.0.1",
   "private": true,
   "license": "MIT",
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./colors": "./src/colors.ts"
+    "./colors": "./src/colors.ts",
+    "./labels": "./src/labels.ts"
   },
   "scripts": {
     "typecheck": "bunx tsc --noEmit",
