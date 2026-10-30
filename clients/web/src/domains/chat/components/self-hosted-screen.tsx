@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { useTranslation } from "@/i18n";
 
 import { routes } from "@/utils/routes";
-import { Button } from "@vellumai/design-library";
+import { Button } from "@anu/design-library";
 
 export function SelfHostedScreen() {
   const { t } = useTranslation("chat");

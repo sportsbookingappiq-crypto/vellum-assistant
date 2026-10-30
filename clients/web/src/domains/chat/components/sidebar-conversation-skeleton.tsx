@@ -14,7 +14,7 @@
  * reflow between renders.
  */
 
-import { Skeleton } from "@vellumai/design-library/components/skeleton";
+import { Skeleton } from "@anu/design-library/components/skeleton";
 
 import { useTranslation } from "@/i18n";
 

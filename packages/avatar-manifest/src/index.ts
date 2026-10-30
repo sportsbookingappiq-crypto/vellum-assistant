@@ -1,5 +1,5 @@
 /**
- * @vellumai/avatar-manifest: the single source of truth for the on-disk
+ * @anu/avatar-manifest: the single source of truth for the on-disk
  * avatar layout of an assistant workspace (`<workspace>/data/avatar`) and
  * how its files resolve to an avatar.
  *

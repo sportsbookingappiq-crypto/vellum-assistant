@@ -1,5 +1,5 @@
 /**
- * Tests for `vellum client --token <jwt> --url <gateway>`: an ephemeral session
+ * Tests for `anu client --token <jwt> --url <gateway>`: an ephemeral session
  * that authenticates with a handed-over token and needs no lockfile entry.
  */
 import {

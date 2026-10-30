@@ -97,8 +97,8 @@ mock.module("react-router", () => ({
   useNavigate: () => navigateMock,
 }));
 
-const realDesignLibrary = await import("@vellumai/design-library");
-mock.module("@vellumai/design-library", () => ({
+const realDesignLibrary = await import("@anu/design-library");
+mock.module("@anu/design-library", () => ({
   ...realDesignLibrary,
   toast: { error: () => {} },
 }));

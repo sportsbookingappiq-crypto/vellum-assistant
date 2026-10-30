@@ -19,7 +19,7 @@
  */
 
 import type { ClientOs } from "@/runtime/platform-detection";
-import type { ShareTargetSnapshot } from "@vellumai/ipc-contract";
+import type { ShareTargetSnapshot } from "@anu/ipc-contract";
 
 // ---------------------------------------------------------------------------
 // Client frames (text/JSON control frames; audio goes over binary frames)

@@ -100,7 +100,7 @@ const CONNECTION: SpeechRelayConnection = {
 
 const tick = () => new Promise<void>((r) => setTimeout(r, 0));
 
-describe("Vellum managed realtime transcribers", () => {
+describe("ANU managed realtime transcribers", () => {
   let sockets: MockWebSocket[];
   let originalWebSocket: unknown;
   let originalFetch: unknown;

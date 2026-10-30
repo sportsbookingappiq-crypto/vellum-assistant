@@ -256,7 +256,7 @@ import type {
   ClassifyRiskIpcResponse,
   ClassifyRiskSkillMetadata,
   RiskLevelValue,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 
 function buildFileContext(): ClassifyRiskFileContext {
   const config = getConfig();

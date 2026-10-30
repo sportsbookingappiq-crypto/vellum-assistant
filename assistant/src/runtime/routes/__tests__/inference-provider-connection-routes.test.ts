@@ -1522,11 +1522,11 @@ describe("Managed connection write protection", () => {
           pathParams: { name: "vellum" },
           body: {
             auth: { type: "platform" },
-            label: "Vellum-managed Anthropic",
+            label: "ANU-managed Anthropic",
           },
         },
       )) as { label: string | null };
-      expect(result.label).toBe("Vellum-managed Anthropic");
+      expect(result.label).toBe("ANU-managed Anthropic");
     });
   });
 
@@ -1709,7 +1709,7 @@ describe("isManaged flag on connection responses", () => {
         findHandler("inference_provider_connections_update"),
         {
           pathParams: { name: "vellum" },
-          body: { auth: { type: "platform" }, label: "Vellum Anthropic" },
+          body: { auth: { type: "platform" }, label: "ANU Anthropic" },
         },
       )) as { name: string; isManaged: boolean };
 

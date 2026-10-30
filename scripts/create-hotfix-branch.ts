@@ -84,10 +84,10 @@ for (const pkg of packages) {
 const metaPkgPath = "meta/package.json";
 const metaPkg = readJson(metaPkgPath);
 const deps = metaPkg.dependencies as Record<string, string>;
-deps["@vellumai/assistant"] = versionStr;
-deps["@vellumai/cli"] = versionStr;
-deps["@vellumai/credential-executor"] = versionStr;
-deps["@vellumai/vellum-gateway"] = versionStr;
+deps["@anu/assistant"] = versionStr;
+deps["@anu/cli"] = versionStr;
+deps["@anu/credential-executor"] = versionStr;
+deps["@anu/gateway"] = versionStr;
 writeJson(metaPkgPath, metaPkg);
 console.log(`  Bumped meta dependencies to ${versionStr}`);
 

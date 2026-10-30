@@ -1,4 +1,4 @@
-import { isComputerUseToolCall } from "@vellumai/assistant-api";
+import { isComputerUseToolCall } from "@anu/assistant-api";
 
 import type { ChatMessageToolCall } from "@/domains/chat/api/event-types";
 import {

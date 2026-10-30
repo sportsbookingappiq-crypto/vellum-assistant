@@ -7,10 +7,7 @@
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 
-import type {
-  ConversationDeletedContext,
-  HookFunction,
-} from "@vellumai/plugin-api";
+import type { ConversationDeletedContext, HookFunction } from "@anu/plugin-api";
 
 import type { DrizzleDb } from "../../../../persistence/db-connection.js";
 import { getMemorySqlite } from "../../../../persistence/db-connection.js";

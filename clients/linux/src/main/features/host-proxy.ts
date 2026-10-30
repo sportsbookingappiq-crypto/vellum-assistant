@@ -8,23 +8,23 @@ import { app } from "electron";
 import type {
   CapabilityModule,
   DesktopCapabilityRegistry,
-} from "@vellumai/electron-desktop/capability-registry";
-import { getDeviceId } from "@vellumai/electron-desktop/device-id";
-import { installHostProxyBridge } from "@vellumai/electron-desktop/host-proxy/router";
-import { LOCAL_MODE_CLI } from "@vellumai/electron-desktop/local-mode";
+} from "@anu/electron-desktop/capability-registry";
+import { getDeviceId } from "@anu/electron-desktop/device-id";
+import { installHostProxyBridge } from "@anu/electron-desktop/host-proxy/router";
+import { LOCAL_MODE_CLI } from "@anu/electron-desktop/local-mode";
 import {
   getWatchedLockfile,
   onLockfileChange,
-} from "@vellumai/electron-desktop/lockfile-watcher";
+} from "@anu/electron-desktop/lockfile-watcher";
 import {
   getSessionToken,
   onSessionTokenChange,
-} from "@vellumai/electron-desktop/session-token-store";
+} from "@anu/electron-desktop/session-token-store";
 import {
   getGuardianAccessToken,
   resolveConfigDir,
   resolveEnvironmentName,
-} from "@vellumai/local-mode";
+} from "@anu/local-mode";
 
 import { createLinuxHostProxyRuntime } from "../host-proxy-adapter";
 import log from "../logger";

@@ -76,7 +76,7 @@ const fakePopup = () => {
 };
 
 describe("isFirstPartyAuthHost", () => {
-  test("covers Vellum hosts and the loopback callback listener", () => {
+  test("covers ANU hosts and the loopback callback listener", () => {
     expect(isFirstPartyAuthHost("vellum.ai")).toBe(true);
     expect(isFirstPartyAuthHost("www.vellum.ai")).toBe(true);
     expect(isFirstPartyAuthHost("staging-platform.vellum.ai")).toBe(true);
@@ -145,7 +145,7 @@ describe("selectSignInCookies", () => {
     expect(selected.map((c) => c.name).sort()).toEqual(["ESTSAUTH", "SID"]);
   });
 
-  test("never selects a Vellum or loopback cookie", () => {
+  test("never selects an ANU or loopback cookie", () => {
     const selected = selectSignInCookies(
       [
         { name: "vellum_session", domain: ".vellum.ai", path: "/" },
@@ -289,7 +289,7 @@ describe("trackAuthPopupSignInState", () => {
     });
 
     // The connect URL starts first-party, redirects into Microsoft, and lands
-    // back on the Vellum completion page.
+    // back on the ANU completion page.
     popup.navigate({}, "https://www.vellum.ai/connect/abc");
     popup.navigate(
       {},

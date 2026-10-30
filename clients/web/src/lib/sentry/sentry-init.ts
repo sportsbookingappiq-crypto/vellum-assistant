@@ -148,7 +148,7 @@ const options: BrowserOptions = {
     /Failed to execute 'removeChild' on 'Node'/,
     /Failed to execute 'insertBefore' on 'Node'/,
     /The object can not be found here/,
-    // Wallet/crypto extensions inject content scripts. Vellum never calls
+    // Wallet/crypto extensions inject content scripts. ANU never calls
     // MetaMask, Tron, or `window.ethereum`.
     /Failed to connect to MetaMask/,
     /Cannot set property tron of/,

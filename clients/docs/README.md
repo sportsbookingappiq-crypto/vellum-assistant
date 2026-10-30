@@ -1,7 +1,7 @@
-# @vellumai/docs
+# @anu/docs
 
-Public docs site for the Vellum assistant: an SSR Next.js app serving
-https://www.vellum.ai/docs. Production ingress routes only `/docs/*` to this
+Public docs site for the ANU assistant: an SSR Next.js app serving
+https://www.anu.ai/docs. Production ingress routes only `/docs/*` to this
 app, so every public URL and asset lives under the `/docs` prefix.
 
 ## Development

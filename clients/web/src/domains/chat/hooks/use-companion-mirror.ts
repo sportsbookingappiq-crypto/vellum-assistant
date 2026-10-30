@@ -54,12 +54,12 @@ import {
   useCompanionPopoverStore,
 } from "@/domains/chat/companion-popover";
 import { useInteractionStore } from "@/domains/chat/interaction-store";
-import { COMPANION_DICTATION_TAIL } from "@vellumai/ipc-contract";
+import { COMPANION_DICTATION_TAIL } from "@anu/ipc-contract";
 import type {
   CompanionContext,
   CompanionDictating,
   CompanionDictationOffer,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 /**
  * Whether a turn is in flight, from the press until the response is done.
@@ -150,7 +150,7 @@ function currentContext(): CompanionContext {
     // surface is the only thing on screen to say so.
     dictating: dictatingPhase(),
     dictationText: dictationTail(),
-    // Vellum's version of a dictation another app pasted, while offered.
+    // ANU's version of a dictation another app pasted, while offered.
     // Published from here for the reason `watchRetro` is: the words and the
     // way into the application they would go to are both this window's.
     dictationOffer: currentOffer(),

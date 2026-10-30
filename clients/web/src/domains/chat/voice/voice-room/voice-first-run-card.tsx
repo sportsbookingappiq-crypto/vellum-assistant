@@ -9,8 +9,8 @@ import {
   Settings,
 } from "lucide-react";
 
-import { Button } from "@vellumai/design-library/components/button";
-import { Modal } from "@vellumai/design-library/components/modal";
+import { Button } from "@anu/design-library/components/button";
+import { Modal } from "@anu/design-library/components/modal";
 
 import { ChatAvatar } from "@/components/avatar/chat-avatar";
 import { SelectTriggerRow } from "@/components/speech/select-trigger-row";
@@ -424,7 +424,7 @@ function VoiceSettingsView({
   // in-flight state can gate Start: the picker reports a pick via `onChange`, and
   // `selecting` stays true until the config patch and refetch settle. Managed
   // assistants also get the credits subtitle; BYO ones see no catalog (the footer
-  // note is their path), so the Vellum-credits line wouldn't apply.
+  // note is their path), so the ANU-credits line wouldn't apply.
   const { available, currentModel, selectModel, selecting } =
     useManagedVoiceSelection(assistantId);
 

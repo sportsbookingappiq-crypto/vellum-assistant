@@ -182,7 +182,7 @@ export function completeA2AInvite(params: {
   };
 }): CompleteA2AInviteResult {
   // Resolve sender identity before any mutations so we fail cleanly
-  const displayName = getAssistantName() ?? "Vellum Assistant";
+  const displayName = getAssistantName() ?? "ANU";
   let gatewayUrl: string;
   try {
     gatewayUrl = getPublicBaseUrl(getConfig());
@@ -398,7 +398,7 @@ export async function acceptA2AInvite(params: {
   const senderGatewayUrl = safety.origin;
 
   // 1. Validate local config
-  const displayName = getAssistantName() ?? "Vellum Assistant";
+  const displayName = getAssistantName() ?? "ANU";
   let localGatewayUrl: string;
   try {
     localGatewayUrl = getPublicBaseUrl(getConfig());

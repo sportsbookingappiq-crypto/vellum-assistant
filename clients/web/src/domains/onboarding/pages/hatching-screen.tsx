@@ -68,8 +68,8 @@ import { BUNDLED_COMPONENTS } from "@/utils/avatar-bundled-components";
 import { randomCharacterTraits } from "@/utils/avatar-random";
 import { composeSvg } from "@/utils/avatar-svg-compositor";
 import { routes } from "@/utils/routes";
-import { Button } from "@vellumai/design-library/components/button";
-import { ProgressBar } from "@vellumai/design-library/components/progress-bar";
+import { Button } from "@anu/design-library/components/button";
+import { ProgressBar } from "@anu/design-library/components/progress-bar";
 import { useTranslation } from "@/i18n";
 
 const COMPLETION_NAVIGATE_DELAY_MS = 800;
@@ -256,7 +256,7 @@ export function HatchingScreen() {
     // lockfile entry while a gateway token is held, and daemon SDK calls (the
     // healthz probes below) rewrite to the local gateway while a self-hosted
     // connection is primed. Dropping both is the same handoff the hosting
-    // screen performs for its Vellum Cloud choice.
+    // screen performs for its ANU Cloud choice.
     if (managedHatch && isLocalClient()) {
       clearGatewayToken();
       setSelfHostedConnection(null);

@@ -1,6 +1,6 @@
 import AppIntents
 
-/// "Open Vellum": bring the app to the foreground, nothing more.
+/// "Open ANU": bring the app to the foreground, nothing more.
 ///
 /// The action behind `OpenVellumControl`, the one-tap app launcher in Control
 /// Center and the Lock Screen. It deliberately carries no deep link: opening
@@ -14,9 +14,9 @@ import AppIntents
 /// appex. The launch-mode declarations below make the system perform the
 /// intent in the app process, so the appex's copy of `perform()` never runs.
 struct OpenVellumIntent: AppIntent {
-    static var title: LocalizedStringResource = "Open Vellum"
+    static var title: LocalizedStringResource = "Open ANU"
     static var description = IntentDescription(
-        "Open Vellum and pick up where you left off."
+        "Open ANU and pick up where you left off."
     )
 
     /// Both launch-mode declarations are load-bearing; do not "clean this up".

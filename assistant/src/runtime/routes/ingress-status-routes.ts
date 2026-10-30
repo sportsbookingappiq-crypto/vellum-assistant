@@ -12,13 +12,13 @@
  * a healthy one.
  *
  * Platform-hosted assistants receive webhooks through platform callback
- * routing and never run `vellum tunnel`, so they report `unconfigured`
+ * routing and never run `anu tunnel`, so they report `unconfigured`
  * rather than a tunnel state they cannot act on. A self-hosted gateway whose
  * Velay tunnel owns the URL is the same story one layer down: that URL
  * carries webhooks alone, so it is `unconfigured` for pairing too, and the
  * gateway publishes and restores it without a tunnel command either way.
  */
-import { normalizePublicBaseUrl } from "@vellumai/service-contracts/ingress";
+import { normalizePublicBaseUrl } from "@anu/service-contracts/ingress";
 import { z } from "zod";
 
 import {

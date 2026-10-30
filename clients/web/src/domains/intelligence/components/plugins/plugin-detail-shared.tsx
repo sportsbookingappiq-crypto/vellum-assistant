@@ -24,7 +24,7 @@ import type { PluginsByNameGetResponse } from "@/generated/daemon/types.gen";
 import { useTranslation } from "@/i18n";
 import { saveFile } from "@/runtime/native-file";
 import { cn } from "@/utils/misc";
-import { Button, ConfirmDialog, Toggle } from "@vellumai/design-library";
+import { Button, ConfirmDialog, Toggle } from "@anu/design-library";
 
 /**
  * The on-disk name for a plugin artifact: the URL path's basename.

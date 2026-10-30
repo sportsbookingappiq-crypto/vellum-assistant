@@ -1,5 +1,5 @@
 /**
- * The selectable list of managed (Vellum) voices, shared by every surface that
+ * The selectable list of managed (ANU) voices, shared by every surface that
  * offers a voice: the live-voice first-run card (which renders it as one of its
  * own views), the voice-room settings popover (via `VoicePickerModal`), and the
  * Voice settings page (which renders it inline, having the room for it).
@@ -24,9 +24,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Check, Square, Volume2 } from "lucide-react";
 
-import { cn, CrossfadeStack } from "@vellumai/design-library";
-import { Button } from "@vellumai/design-library/components/button";
-import { Select } from "@vellumai/design-library/components/select";
+import { cn, CrossfadeStack } from "@anu/design-library";
+import { Button } from "@anu/design-library/components/button";
+import { Select } from "@anu/design-library/components/select";
 
 import { useManagedVoiceSelection } from "@/components/speech/use-managed-voice-selection";
 import { useVoiceSamplePreview } from "@/components/speech/use-voice-sample-preview";
@@ -197,7 +197,7 @@ export function VoiceList({
   // with it. Uncontrolled surfaces also require the assistant to be managed
   // (`available`); a controlled parent (the Text-to-Speech card) owns that
   // decision via its own draft provider, so gate only on having voices —
-  // otherwise switching the draft provider to Vellum would show an empty picker
+  // otherwise switching the draft provider to ANU would show an empty picker
   // until the first Save persists the provider.
   const hasCatalog = voices.length > 0;
   if (controlled ? !hasCatalog : !available) {

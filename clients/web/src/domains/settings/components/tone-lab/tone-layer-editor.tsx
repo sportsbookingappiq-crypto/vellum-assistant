@@ -13,9 +13,9 @@ import {
   type ToneLayer,
   type ToneWaveform,
 } from "@/lib/sounds/tone-synth";
-import { Button } from "@vellumai/design-library/components/button";
-import { SegmentControl } from "@vellumai/design-library/components/segment-control";
-import { Slider } from "@vellumai/design-library/components/slider";
+import { Button } from "@anu/design-library/components/button";
+import { SegmentControl } from "@anu/design-library/components/segment-control";
+import { Slider } from "@anu/design-library/components/slider";
 
 const WAVEFORM_LABEL_KEYS = {
   sine: "toneLab.waveforms.sine",

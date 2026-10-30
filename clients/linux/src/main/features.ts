@@ -2,7 +2,7 @@ import {
   DesktopCapabilityRegistry,
   installCapabilityModules,
   type CapabilityModuleExport,
-} from "@vellumai/electron-desktop/capability-registry";
+} from "@anu/electron-desktop/capability-registry";
 
 const modules = import.meta.glob<
   CapabilityModuleExport<DesktopCapabilityRegistry>

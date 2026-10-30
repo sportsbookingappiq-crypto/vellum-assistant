@@ -44,7 +44,7 @@ export interface ThreadSuggestion {
 /** A titled group of suggestions in the scrollable library. */
 export interface SuggestionGroup {
   id: string;
-  /** Section heading, e.g. "Your plugins" or "Vellum picks". */
+  /** Section heading, e.g. "Your plugins" or "ANU picks". */
   title: string;
   /** Provenance — drives future real-data sourcing; informational for now. */
   source: "plugin" | "vellum-curated";

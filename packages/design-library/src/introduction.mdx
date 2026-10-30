@@ -2,28 +2,28 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 <Meta title="Introduction" />
 
-# Vellum Design Library
+# ANU Design Library
 
-A shared component library for the [Vellum](https://github.com/vellum-ai/vellum-assistant) ecosystem, built with React 19, Tailwind CSS v4, and Radix UI primitives.
+A shared component library for the [ANU](https://github.com/vellum-ai/vellum-assistant) ecosystem, built with React 19, Tailwind CSS v4, and Radix UI primitives.
 
 ## Getting Started
 
 Install the package in your app:
 
 ```bash
-bun add @vellumai/design-library
+bun add @anu/design-library
 ```
 
 Import components directly:
 
 ```tsx
-import { Button, Card, Typography } from "@vellumai/design-library";
+import { Button, Card, Typography } from "@anu/design-library";
 ```
 
 Or use subpath imports for targeted access:
 
 ```tsx
-import { Button } from "@vellumai/design-library/components/button";
+import { Button } from "@anu/design-library/components/button";
 ```
 
 ## Design Tokens
@@ -31,7 +31,7 @@ import { Button } from "@vellumai/design-library/components/button";
 The library ships CSS custom properties via `tokens.css`. Import it in your app's CSS entry point:
 
 ```css
-@import "@vellumai/design-library/tokens.css";
+@import "@anu/design-library/tokens.css";
 ```
 
 Tokens adapt to light, dark, and velvet themes via the `data-theme` attribute on a parent element.

@@ -98,7 +98,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { getMessages } from "@vellumai/plugin-api";
+import { getMessages } from "@anu/plugin-api";
 
 import {
   isMemoryV3Live,

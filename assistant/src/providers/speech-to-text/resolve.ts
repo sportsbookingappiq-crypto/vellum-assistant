@@ -783,7 +783,7 @@ async function createStreamingTranscriber(
  */
 export function sttCredentialGapReason(credentialProviderName: string): string {
   if (credentialProviderName === "vellum") {
-    return "No Vellum platform connection for managed speech — run 'assistant platform connect'";
+    return "No ANU platform connection for managed speech — run 'assistant platform connect'";
   }
   return `No API key configured for credential provider "${credentialProviderName}"`;
 }

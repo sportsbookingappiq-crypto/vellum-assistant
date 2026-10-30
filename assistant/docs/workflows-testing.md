@@ -21,17 +21,17 @@ Work through the steps in order, on throwaway instances first.
 Hatch a disposable Docker instance built from local source:
 
 ```
-vellum hatch --remote docker --source .
+anu hatch --remote docker --source .
 ```
 
 Note the instance name it prints (e.g. `vellum-<adjective>-<animal>`). Use it as
 `--assistant <name>` for everything below, or set it active. Confirm it is up:
 
 ```
-vellum ps
+anu ps
 ```
 
-Sanity-check that the workflow surface is live: `vellum workflows runs --assistant <name>`
+Sanity-check that the workflow surface is live: `anu workflows runs --assistant <name>`
 should return an (empty) table.
 
 ---
@@ -39,16 +39,16 @@ should return an (empty) table.
 ## 2. Synthetic-corpus run (no Gmail/Slack dependency)
 
 Drive a `run_workflow` over a **fixture item list passed as `args`** — no external
-integration. Ask the assistant (via `vellum events`-visible conversation, the app,
+integration. Ask the assistant (via `anu events`-visible conversation, the app,
 or a CLI message) to run a small workflow such as the triage example from
 [`workflows.md`](./workflows.md), passing a dozen synthetic items in `args.items`.
 
 Watch the run:
 
 ```
-vellum workflows runs  --assistant <name>          # find the runId
-vellum workflows show  <run-id> --assistant <name>  # status + agent/token counts
-vellum events          --assistant <name>           # workflow_progress / workflow_completed
+anu workflows runs  --assistant <name>          # find the runId
+anu workflows show  <run-id> --assistant <name>  # status + agent/token counts
+anu events          --assistant <name>           # workflow_progress / workflow_completed
 ```
 
 Confirm:
@@ -103,7 +103,7 @@ seconds). While it is running, restart the assistant with **SIGTERM**:
 
 > **Never SIGKILL the assistant.** SIGKILL leaves WAL pages unmerged and forces a
 > costly recovery on the next start (and can corrupt an in-flight run). Use a
-> graceful stop / `vellum sleep` / SIGTERM with grace.
+> graceful stop / `anu sleep` / SIGTERM with grace.
 
 After restart, the run that was in flight when the process stopped is no longer
 `running` — at startup the assistant reconciles every orphaned `running` row to
@@ -113,10 +113,10 @@ explicit resume:
 
 ```bash
 # The crashed run is now interrupted, not running.
-vellum workflows runs --status interrupted
+anu workflows runs --status interrupted
 
 # Trigger the resume (or: manage_workflows with action="resume" from chat).
-vellum workflows resume <run-id>
+anu workflows resume <run-id>
 ```
 
 Resuming re-invokes the engine with the **same `runId`**, so the completed prefix

@@ -10,7 +10,7 @@ import {
   type PrepareNotificationIdentityPayload,
   type ResetNotificationIdentitiesPayload,
   type VerifiedNotificationNameProvenance,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 export const NOTIFICATION_IDENTITY_MEMORY_LIMIT = 32;
 

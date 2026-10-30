@@ -2,7 +2,7 @@
 
 Applies to all code under `clients/docs/`. Subordinate to [`clients/AGENTS.md`](../AGENTS.md) and the root [`AGENTS.md`](../../AGENTS.md).
 
-`@vellumai/docs` is the public docs site: an SSR Next.js app (standalone output) serving www.vellum.ai/docs. It is a member of the root bun workspace.
+`@anu/docs` is the public docs site: an SSR Next.js app (standalone output) serving www.anu.ai/docs. It is a member of the root bun workspace.
 
 ## URL rules: everything public lives under `/docs`
 
@@ -13,7 +13,7 @@ Ingress only routes `/docs/*` to this app. Every URL the app emits publicly MUST
 - Next's build assets are served under the prefix too: `assetPrefix: "/docs"` in `next.config.ts` plus the first `beforeFiles` rewrite (`/docs/_next/*` → `/_next/*`). Without both halves, stylesheets and scripts resolve to `/_next/*`, which ingress routes to a different backend. `verify-parity.ts` asserts asset subresources load.
 - The only exception is `/api/health`: GKE BackendConfig health checks hit the pod directly and bypass ingress path rules.
 - Canonical URLs are absolute `https://www.vellum.ai<path>` via `createMetadata` (`src/lib/metadata.ts`). Never change a page's `path:` value; URLs did not change in the migration, and native clients link the legal paths (`/docs/privacy-policy`, `/docs/vellum-terms-of-use`, `/docs/prohibited-use`) directly.
-- Links to non-docs Vellum surfaces (signup, login, the assistant app) are cross-app now: absolute URLs from `src/lib/routes.ts`.
+- Links to non-docs ANU surfaces (signup, login, the assistant app) are cross-app now: absolute URLs from `src/lib/routes.ts`.
 
 ## The `%5Fmd` folder encoding trick
 

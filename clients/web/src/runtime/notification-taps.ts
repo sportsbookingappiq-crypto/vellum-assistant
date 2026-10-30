@@ -2,7 +2,7 @@ import type {
   NotificationIdentity,
   NotificationNameProvenance,
   NotificationPresentation,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 /** Routing metadata carried by native, Electron, and browser notifications. */
 export interface NotificationTapPayload {

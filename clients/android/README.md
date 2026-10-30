@@ -43,15 +43,15 @@ hosts.
 
 | Flavor | Application ID | Display Name | Auth Scheme | Auth Host |
 |--------|----------------|--------------|-------------|-----------|
-| `production` | `ai.vellum.assistant` | Vellum | `vellum-assistant` | `www.vellum.ai` |
-| `staging` | `ai.vellum.assistant.staging` | Vellum Staging | `vellum-assistant-staging` | `staging-assistant.vellum.ai` |
-| `dev` | `ai.vellum.assistant.dev` | Vellum Dev | `vellum-assistant-dev` | `dev-assistant.vellum.ai` |
+| `production` | `ai.anu.assistant` | ANU | `vellum-assistant` | `www.vellum.ai` |
+| `staging` | `ai.anu.assistant.staging` | ANU Staging | `vellum-assistant-staging` | `staging-assistant.vellum.ai` |
+| `dev` | `ai.anu.assistant.dev` | ANU Dev | `vellum-assistant-dev` | `dev-assistant.vellum.ai` |
 
 For local development, pick the `devDebug` variant in Android Studio. If you
 sync a different `VELLUM_ENVIRONMENT`, build the matching flavor so the WebView
 origin and native auth host agree.
 
-The launch screen uses a centered white Vellum wordmark on black. The Android
+The launch screen uses a centered white ANU wordmark on black. The Android
 12 system splash stays visible until the native loading overlay is attached.
 Both surfaces share the same drawable and colors. Android 11 and older skip the
 OS preview window so the native overlay is the first app frame.
@@ -81,16 +81,17 @@ updated hosted web UI. See the [camera QA guide](../web/docs/CAMERA_MODE_QA.md).
 
 ## Launcher Icons
 
-The default launcher icon is the `quirky` eye pair from the avatar library in
-`packages/avatar-catalog`, the same design the iOS app icon uses. The six paths
-in `app/src/main/res/drawable/ic_launcher_foreground.xml` and in the
-pre-adaptive `app/src/main/res/mipmap-anydpi/ic_launcher*.xml` fallbacks are
-copied verbatim from that table and only repositioned by a VectorDrawable
-`<group>`, so the icon stays in sync with the in-app avatars.
+The default launcher icon is the ANU snowflake from `assets/brand/`, the same
+mark the iOS app icon uses. The two paths (Sky silhouette, Ice facets) in
+`app/src/main/res/drawable/ic_launcher_foreground.xml` and in the pre-adaptive
+`app/src/main/res/mipmap-anydpi/ic_launcher*.xml` fallbacks are copied verbatim
+from `assets/brand/anu-mark.svg` and only repositioned by a VectorDrawable
+`<group>`; `clients/ios/scripts/__tests__/android-launcher-geometry.test.ts`
+pins them.
 
 Each flavor's `launcher_background` in
 `app/src/<flavor>/res/values/colors.xml` distinguishes the installs: production
-`#4C9B50` (the avatar palette green), staging `#E9C91A`, and dev `#FF88C9`.
+`#0F2557` (the ANU brand Night 800), staging `#E9C91A`, and dev `#FF88C9`.
 Those three are the shared cross-platform standard: a flavor and the iOS
 `AppIcon-*.icon` bundle for the same environment sit on the same color, which
 the web app names once as `APP_ICON_GROUNDS`. Change one and change the rest
@@ -112,7 +113,7 @@ a local run down to a 12-set slice while iterating, and verify with
 `cd clients/ios && bun test scripts/__tests__/android-avatar-icons.test.ts`.
 Measuring where an eye pair's artwork reaches goes through the native
 `@resvg/resvg-js` binding, so install the assistant package's dependencies
-first: `bun install --filter=@vellumai/assistant`. `pr-native-drift.yaml` and
+first: `bun install --filter=@anu/assistant`. `pr-native-drift.yaml` and
 `ci-main-native-drift.yaml` run that same test and watch both
 `app/src/main/res/**` and `app/src/main/AndroidManifest.xml`, so an edit without
 a regeneration fails CI.
@@ -228,7 +229,7 @@ Launcher behavior is physical-device territory; an emulator does not cover it.
 - Turn on themed icons on Android 13 or newer and confirm every alternate draws
   its sclera silhouette rather than a blank tile or a filled square.
 - Set an icon, force-stop the app before it reaches the background
-  (`adb shell am force-stop ai.vellum.assistant.dev`), and relaunch. `load()`
+  (`adb shell am force-stop ai.anu.assistant.dev`), and relaunch. `load()`
   applies the recorded target.
 - Install on an API 24 or 25 device and confirm the App icon row does not
   render.
@@ -245,8 +246,8 @@ Other paths stay in the browser. Incoming links navigate the existing WebView
 with their query string and fragment intact.
 
 A shell paired to a self-hosted assistant keeps its current server when a
-Vellum Cloud App Link arrives. App Links do not interrupt pairing or switch a
-self-hosted WebView to Vellum Cloud.
+ANU Cloud App Link arrives. App Links do not interrupt pairing or switch a
+self-hosted WebView to ANU Cloud.
 
 Android verifies a claim only after the matching host serves
 `/.well-known/assetlinks.json` with HTTP 200, `application/json`, and no
@@ -262,7 +263,7 @@ After the Digital Asset Links file is deployed, install the matching build on
 a physical device and check verification with:
 
 ```bash
-adb shell pm get-app-links ai.vellum.assistant
+adb shell pm get-app-links ai.anu.assistant
 adb shell am start -a android.intent.action.VIEW \
   -c android.intent.category.BROWSABLE \
   -d 'https://www.vellum.ai/assistant/conversations/conv-xyz?message=message-123#reply'
@@ -341,7 +342,7 @@ Capacitor plugin exposes the list to it and handles switch and forget
 activity so Capacitor starts on a configuration rebuilt around the new
 `server.url`; that configuration loads `<base>/assistant`, so a hosting path
 prefix survives the ingress redirect that would otherwise drop it. Forgetting
-the active server returns the shell to Vellum Cloud the same way.
+the active server returns the shell to ANU Cloud the same way.
 
 If Android terminates the app before the pairing page loads, scan the connect
 link again. The shell intentionally does not save the one-time code for process
@@ -350,7 +351,7 @@ restoration.
 If a saved or newly scanned server cannot load, whether the connection is
 refused outright or a tunnel provider answers on the server's behalf with its
 own error page, the native recovery dialog offers Retry or Choose Assistant.
-Choose Assistant clears the active slot and recreates onto the Vellum Cloud
+Choose Assistant clears the active slot and recreates onto the ANU Cloud
 chooser, which lists every remembered server including the one that just
 failed. A failed new server is never promoted over the last server that loaded
 successfully.
@@ -406,7 +407,7 @@ flavor, so side-by-side installations cannot receive one another's shortcuts.
 The only registered Google Assistant App Action is the official
 `OPEN_APP_FEATURE` built-in intent, with New chat and Voice mode as its inline
 inventory. Android has no supported built-in intent whose semantics match
-asking Vellum a free-form question or managing a live voice session, so those
+asking ANU a free-form question or managing a live voice session, so those
 Assistant surfaces are intentionally not advertised.
 
 Physical-device validation is still required for Android 16 promotion,
@@ -558,7 +559,7 @@ clients/
     │   ├── build.gradle          # Product flavors and Capacitor app module
     │   └── src/main/
     │       ├── AndroidManifest.xml
-    │       ├── java/ai/vellum/assistant/
+    │       ├── java/ai/anu/assistant/
     │       │   ├── Attribution.java
     │       │   ├── ConnectDeepLink.java
     │       │   ├── InstallReferrerPlugin.java
@@ -575,7 +576,7 @@ clients/
     │       │   ├── VoiceModeService.java
     │       │   ├── VoiceQuickSettingsTileService.java
     │       │   └── WorkOSAuth.java
-    │       └── res/              # Vellum icon, splash, colors, file paths
+    │       └── res/              # ANU icon, splash, colors, file paths
     ├── build.gradle
     ├── settings.gradle
     └── variables.gradle
@@ -688,16 +689,16 @@ Complete the following setup before enabling Google Play publishing:
 
 1. Apply the platform Terraform stacks that enable the Android Publisher API
    in the dev, staging, and production GCP projects.
-2. Create Play Console apps for `ai.vellum.assistant`,
-   `ai.vellum.assistant.staging`, and
-   `ai.vellum.assistant.dev`.
+2. Create Play Console apps for `ai.anu.assistant`,
+   `ai.anu.assistant.staging`, and
+   `ai.anu.assistant.dev`.
 3. Enable Play App Signing for each app and create one controlled upload key.
 4. Upload and roll out one signed AAB to each app's internal track manually.
    Google Play requires this initial release before the Publisher API can
    upload a completed release.
 5. In Play Console, grant each environment's `GCP_SERVICE_ACCOUNT` access only
    to its matching app, with **View app information (read-only)** and
-   **Release apps to testing tracks**. For `ai.vellum.assistant`, also grant the
+   **Release apps to testing tracks**. For `ai.anu.assistant`, also grant the
    production environment's service account **Release to production, exclude
    devices, and use Play App Signing**.
 6. Configure the repository and environment secrets above.
@@ -714,9 +715,9 @@ Create a separate Firebase Android app in each matching Firebase project:
 
 | GitHub environment | Android package ID |
 |--------------------|--------------------|
-| `production` | `ai.vellum.assistant` |
-| `staging` | `ai.vellum.assistant.staging` |
-| `dev` | `ai.vellum.assistant.dev` |
+| `production` | `ai.anu.assistant` |
+| `staging` | `ai.anu.assistant.staging` |
+| `dev` | `ai.anu.assistant.dev` |
 
 For each app, download its `google-services.json`, encode it without line
 breaks, and save the result as the `ANDROID_FIREBASE_CONFIG_B64` secret on the

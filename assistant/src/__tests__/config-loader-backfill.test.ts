@@ -2019,7 +2019,7 @@ describe("seedInferenceProfiles BYOK-mode default profiles", () => {
 
     // User's "active" decision survives the boot upsert.
     expect(config.llm.profiles.balanced?.status).toBe("active");
-    // Label is still suffixed (Vellum can push label updates).
+    // Label is still suffixed (ANU can push label updates).
     expect(config.llm.profiles.balanced?.label).toBe("Balanced (Managed)");
   });
 });

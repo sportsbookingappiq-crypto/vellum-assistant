@@ -5,22 +5,23 @@
  */
 
 /**
- * Hand-tuned base (unscaled) sprite width per eye style — the catalog is a
- * handful of shapes whose aspect ratios vary too wildly (gentle ≈ 1.1 wide
- * per tall, grumpy ≈ 4.6) for one derived formula to size them all well.
+ * Hand-tuned base (unscaled) sprite width per eye style. Every pair in the
+ * catalog is drawn at one scale, but their aspect ratios still range from
+ * gentle (≈ 1.8 wide per tall) to grumpy (≈ 4.8), so the flat pairs get a
+ * little extra width to keep their height from shrinking to a sliver.
  * Height follows each style's own aspect ratio at its width; the resting
  * eyes render at {@link REST_SCALE} times these. Styles missing from the
  * map (a future catalog addition) fall back to {@link DEFAULT_EYES_WIDTH}.
  */
 export const EYE_STYLE_WIDTHS: Record<string, number> = {
-  grumpy: 22,
-  angry: 14,
+  grumpy: 20,
+  angry: 16,
   curious: 14,
-  goofy: 12,
+  goofy: 14,
   surprised: 15,
-  bashful: 15,
-  gentle: 11,
-  quirky: 12,
+  bashful: 17,
+  gentle: 12,
+  quirky: 14,
   dazed: 16,
 };
 export const DEFAULT_EYES_WIDTH = 14;

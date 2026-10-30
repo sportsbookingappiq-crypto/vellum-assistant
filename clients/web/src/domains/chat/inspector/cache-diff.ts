@@ -18,7 +18,7 @@
  * data fetching and presentation.
  */
 
-import type { LLMContextSection } from "@vellumai/assistant-api";
+import type { LLMContextSection } from "@anu/assistant-api";
 
 /**
  * Which block changed first, in cache-prefix priority order. `none`

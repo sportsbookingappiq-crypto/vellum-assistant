@@ -27,7 +27,7 @@ export const WINDOWS_RELEASE_INFO = {
   appUserModelId:
     typeof __VELLUM_APP_USER_MODEL_ID__ === "string"
       ? __VELLUM_APP_USER_MODEL_ID__
-      : "com.vellum.vellum-assistant-electron",
+      : "ai.anu.assistant-electron",
   commitSha:
     typeof __VELLUM_BUILD_SHA__ === "string" ? __VELLUM_BUILD_SHA__ : "unknown",
   releaseChannel:

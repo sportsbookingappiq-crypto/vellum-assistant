@@ -29,12 +29,12 @@ import {
   Popover,
   Textarea,
   Typography,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 import {
   quoteBlockquoteAccentClassName,
   quoteBlockquoteClassName,
   quoteBlockquoteContentClassName,
-} from "@vellumai/design-library/components/markdown-message";
+} from "@anu/design-library/components/markdown-message";
 
 import { useTouchMobile } from "@/hooks/use-touch-mobile";
 import { useQuoteReplyStore } from "@/domains/chat/quote-reply-store";

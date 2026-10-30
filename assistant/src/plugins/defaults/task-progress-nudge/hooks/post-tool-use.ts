@@ -51,7 +51,7 @@ import type {
   HookFunction,
   Message,
   PostToolUseContext,
-} from "@vellumai/plugin-api";
+} from "@anu/plugin-api";
 
 /**
  * Canonical nudge notice. Module-level constant so tests and wrapping plugins

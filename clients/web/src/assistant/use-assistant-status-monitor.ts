@@ -19,7 +19,7 @@ import {
   useState,
 } from "react";
 
-import type { AssistantEventEnvelope } from "@vellumai/assistant-api";
+import type { AssistantEventEnvelope } from "@anu/assistant-api";
 
 import { useBusSubscription } from "@/hooks/use-bus-subscription";
 

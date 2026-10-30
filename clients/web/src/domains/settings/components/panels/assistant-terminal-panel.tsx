@@ -11,8 +11,8 @@ import {
 } from "@/hooks/use-platform-gate";
 import { useTranslation } from "@/i18n";
 import { captureError } from "@/lib/sentry/capture-error";
-import { toast } from "@vellumai/design-library";
-import { Select } from "@vellumai/design-library/components/select";
+import { toast } from "@anu/design-library";
+import { Select } from "@anu/design-library/components/select";
 
 type TerminalService = "assistant" | "gateway" | "credential-executor";
 

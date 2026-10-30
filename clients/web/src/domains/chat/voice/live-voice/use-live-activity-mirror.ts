@@ -81,7 +81,7 @@ import {
   startVoiceActivity,
   updateVoiceActivity,
 } from "@/runtime/desktop-voice-activity";
-import type { VoiceActivityWork } from "@vellumai/ipc-contract";
+import type { VoiceActivityWork } from "@anu/ipc-contract";
 import {
   buildCallWork,
   createCallWorkTracker,

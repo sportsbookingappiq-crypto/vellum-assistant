@@ -17,10 +17,10 @@ import {
   usePlatformGate,
 } from "@/hooks/use-platform-gate";
 import { routes } from "@/utils/routes";
-import { Button } from "@vellumai/design-library/components/button";
-import { Card } from "@vellumai/design-library/components/card";
-import { Notice } from "@vellumai/design-library/components/notice";
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Button } from "@anu/design-library/components/button";
+import { Card } from "@anu/design-library/components/card";
+import { Notice } from "@anu/design-library/components/notice";
+import { Typography } from "@anu/design-library/components/typography";
 
 /**
  * Stripe-redirect-vs-webhook-delivery race window.

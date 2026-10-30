@@ -59,7 +59,7 @@ export async function POST(request: Request, context): Promise<Response> {
 }
 ```
 
-A handler may also reach other Assistant capabilities through its `@vellumai/plugin-api` imports, the same as any other surface.
+A handler may also reach other Assistant capabilities through its `@anu/plugin-api` imports, the same as any other surface.
 
 ## Calling a route from an app frontend
 

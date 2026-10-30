@@ -40,7 +40,7 @@ jobs:
 
       - name: Install web dependencies
         working-directory: clients/web
-        run: bun install --frozen-lockfile --filter=@vellumai/web
+        run: bun install --frozen-lockfile --filter=@anu/web
 
       - name: Sync Android project
         working-directory: clients/web

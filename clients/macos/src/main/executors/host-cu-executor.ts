@@ -9,11 +9,11 @@
  * one path to this machine the path it already has.
  */
 
-import { createCuHelperProxyExecutor } from "@vellumai/electron-desktop/host-proxy/cu-executor";
-import type { CuHelperClient } from "@vellumai/electron-desktop/host-proxy/helper-proxy-executor";
-import type { HostProxyPoster } from "@vellumai/electron-desktop/host-proxy/poster";
-import type { HostProxyExecutor } from "@vellumai/electron-desktop/host-proxy/router";
-import type { HostProxySseMessage } from "@vellumai/electron-desktop/host-proxy/sse";
+import { createCuHelperProxyExecutor } from "@anu/electron-desktop/host-proxy/cu-executor";
+import type { CuHelperClient } from "@anu/electron-desktop/host-proxy/helper-proxy-executor";
+import type { HostProxyPoster } from "@anu/electron-desktop/host-proxy/poster";
+import type { HostProxyExecutor } from "@anu/electron-desktop/host-proxy/router";
+import type { HostProxySseMessage } from "@anu/electron-desktop/host-proxy/sse";
 import {
   COMPANION_COACHMARK_CAPTION_MAX,
   COMPANION_COACHMARK_MAX,
@@ -21,7 +21,7 @@ import {
   type CoachmarkRequest,
   type CoachmarkResult,
   type CoachmarkUnresolved,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 import { z } from "zod";
 
 import log from "../logger";

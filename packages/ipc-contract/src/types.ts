@@ -16,7 +16,7 @@
  *     etc.); those are retired by this package.
  */
 
-import { NOTIFICATION_AVATAR_MAX_LOCAL_BYTES } from "@vellumai/avatar-manifest/notification-avatar";
+import { NOTIFICATION_AVATAR_MAX_LOCAL_BYTES } from "@anu/avatar-manifest/notification-avatar";
 
 // ---------------------------------------------------------------------------
 // Commands
@@ -130,7 +130,7 @@ export type VellumCommand =
    * the call was shown.
    *
    * Like `toggleWatch`, this does not raise the app: what is shared is the
-   * user's own work, and raising Vellum would cover it.
+   * user's own work, and raising ANU would cover it.
    */
   | { kind: "setScreenShare"; target?: WatchCaptureTarget }
   /**
@@ -143,12 +143,12 @@ export type VellumCommand =
    * something, and it carries every stroke still on the overlay.
    *
    * Strokes rather than a picture, because the overlay is never in the
-   * pixels: a capture excludes Vellum's own windows (`ScreenCapture.swift`),
+   * pixels: a capture excludes ANU's own windows (`ScreenCapture.swift`),
    * so the window that takes the frame is the one that has to draw them onto
    * it. See {@link CompanionAnnotationStroke} for the coordinates.
    *
    * Like `setScreenShare`, this does not raise the app: the user is drawing
-   * on their own work, and raising Vellum would cover the thing they are
+   * on their own work, and raising ANU would cover the thing they are
    * pointing at.
    */
   | {
@@ -173,7 +173,7 @@ export type VellumCommand =
    *
    * `open: true` is the one press on this surface that deliberately raises the
    * app, and it is the exception `toggleWatch` above explains: the session is
-   * over, so there is no longer any work of the user's for Vellum to cover, and
+   * over, so there is no longer any work of the user's for ANU to cover, and
    * a "show me" that left the report where it was would be a promise the
    * surface cannot keep.
    *
@@ -190,7 +190,7 @@ export type VellumCommand =
     }
   /**
    * Answer the offer the surface makes when a dictation ends with its words
-   * still in hand: put Vellum's version in place of what another app pasted,
+   * still in hand: put ANU's version in place of what another app pasted,
    * get that app off the key, take the words to the clipboard, or leave
    * things as they are. `offerId` names the offer the card was drawn
    * against, and an answer to one that no longer stands is dropped. See
@@ -558,8 +558,8 @@ export type DeepLink =
       flow?: "subscription" | "top_up";
     }
   /**
-   * `<scheme>://connect`: the pair-page "Open in the Vellum app" hand-off
-   * and `vellum pair --app` QR codes. `url` is a validated https server
+   * `<scheme>://connect`: the pair-page "Open in the ANU app" hand-off
+   * and `anu pair --app` QR codes. `url` is a validated https server
    * base and `code` the device code it carries, which the local-mode host
    * exchanges for pairing credentials. `code` is credential material and
    * must never be logged or breadcrumbed; it rides only alongside a usable
@@ -1091,16 +1091,16 @@ export interface AppVersionInfo {
 }
 
 // ---------------------------------------------------------------------------
-// Lockfile (bridge-facing subset of @vellumai/local-mode/contract)
+// Lockfile (bridge-facing subset of @anu/local-mode/contract)
 // ---------------------------------------------------------------------------
 
 /**
  * Shape of the lockfile as returned across the Electron bridge.
  *
  * Matches the canonical `Lockfile` / `LockfileWriteResult` types in
- * `@vellumai/local-mode/contract`. Declared here so the contract package
+ * `@anu/local-mode/contract`. Declared here so the contract package
  * has no `file:` dependency on local-mode (which carries a transitive
- * `file:` chain to `@vellumai/environments` that breaks lockfile
+ * `file:` chain to `@anu/environments` that breaks lockfile
  * resolution in consumer packages).
  */
 
@@ -1642,7 +1642,7 @@ export type CompanionWatchRetro = "pending" | "ready";
  * Three things end a hold with the words still in hand, and the surface draws
  * the same card for each. `claimed`: another dictation app heard the key
  * too, since nothing on macOS owns one, and has already pasted its own
- * version, so Vellum offers to put its own in place instead, to get that app
+ * version, so ANU offers to put its own in place instead, to get that app
  * off the key, or to leave it. `no-text-field`: nothing in the application
  * in front takes text, so no paste was sent at all and the only place left
  * to put the words is the clipboard. `paste-failed`: there was somewhere to
@@ -2432,7 +2432,7 @@ export interface CompanionContext {
    */
   dictationText?: string;
   /**
-   * Vellum's version of a dictation another app pasted, while the offer to
+   * ANU's version of a dictation another app pasted, while the offer to
    * use it stands. Absent when there is none. See
    * {@link CompanionDictationOffer}.
    */
@@ -2919,7 +2919,7 @@ export interface CompanionSurfaceState {
    * Optional, and absence means there is nothing to draw.
    */
   watchRetro?: CompanionWatchRetro;
-  /** Vellum's version of a dictation another app pasted, while offered. */
+  /** ANU's version of a dictation another app pasted, while offered. */
   dictationOffer?: CompanionDictationOffer;
   /**
    * What the assistant is putting in front of the user beside the surface,

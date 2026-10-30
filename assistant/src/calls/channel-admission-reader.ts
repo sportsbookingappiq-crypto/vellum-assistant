@@ -22,10 +22,7 @@
  * rather than denying calls for the rest of the TTL.
  */
 
-import {
-  type AdmissionPolicy,
-  isAdmissionPolicy,
-} from "@vellumai/gateway-client";
+import { type AdmissionPolicy, isAdmissionPolicy } from "@anu/gateway-client";
 import { z } from "zod";
 
 import type { ChannelId } from "../channels/types.js";

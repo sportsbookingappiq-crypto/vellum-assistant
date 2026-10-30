@@ -202,7 +202,7 @@ describe("notification broadcaster", () => {
 
     const results = await broadcaster.broadcastDecision(signal, decision);
 
-    // Vellum should succeed, telegram should be skipped (no adapter registered)
+    // ANU should succeed, telegram should be skipped (no adapter registered)
     expect(results).toHaveLength(2);
     const vellumResult = results.find((r) => r.channel === "vellum");
     const telegramResult = results.find((r) => r.channel === "telegram");

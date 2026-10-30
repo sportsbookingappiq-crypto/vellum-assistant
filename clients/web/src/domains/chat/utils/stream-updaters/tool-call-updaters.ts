@@ -14,14 +14,14 @@ import type {
   AnsweredQuestion,
   ConversationContentBlock,
   ModeSession,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 import type {
   AllowlistOption,
   DirectoryScopeOption,
   RiskScopeOption,
 } from "@/types/interaction-ui-types";
 import type { ChatMessageToolCall } from "@/domains/chat/api/event-types";
-import type { ToolActivityMetadata } from "@vellumai/assistant-api";
+import type { ToolActivityMetadata } from "@anu/assistant-api";
 import {
   tailIsAssistant,
   findAssistantRowIndexByMessageId,

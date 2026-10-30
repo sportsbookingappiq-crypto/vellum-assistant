@@ -11,11 +11,8 @@ import { useEffect } from "react";
 
 import { SubagentAvatarBadge } from "@/components/avatar/subagent-avatar-badge";
 import { useSubagentStore } from "@/domains/chat/subagent-store";
-import {
-  SubagentStatusSchema,
-  type SubagentStatus,
-} from "@vellumai/assistant-api";
-import { Typography } from "@vellumai/design-library";
+import { SubagentStatusSchema, type SubagentStatus } from "@anu/assistant-api";
+import { Typography } from "@anu/design-library";
 
 const SPAWNED_AT = 1_717_000_000_000;
 

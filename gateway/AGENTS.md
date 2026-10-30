@@ -34,7 +34,7 @@ All assistant API requests from clients, CLI, skills, and user-facing tooling **
 
 **Ban on hardcoded runtime hosts/ports:** Do not embed `localhost:7821`, `127.0.0.1:7821`, or runtime-port-derived URLs in docs, skills, or user-facing guidance. Always reference gateway URLs instead. A CI guard test (`gateway-only-guard.test.ts`) enforces this — any new direct runtime URL reference in production code or skills will fail CI.
 
-**SKILL.md retrieval contract:** For config/status retrieval in bundled skills, use `bash` + canonical CLI surfaces. Start with `assistant config get` for generic config keys and secure credential surfaces (`assistant credentials`, `assistant keys`) for secrets. Do not use direct gateway `curl` for read-only retrieval paths. Do not use credential store lookup commands (`security find-generic-password`, `secret-tool`) in SKILL.md. `host_bash` is not allowed for Vellum CLI retrieval commands unless a documented exception is intentionally allowlisted.
+**SKILL.md retrieval contract:** For config/status retrieval in bundled skills, use `bash` + canonical CLI surfaces. Start with `assistant config get` for generic config keys and secure credential surfaces (`assistant credentials`, `assistant keys`) for secrets. Do not use direct gateway `curl` for read-only retrieval paths. Do not use credential store lookup commands (`security find-generic-password`, `secret-tool`) in SKILL.md. `host_bash` is not allowed for ANU CLI retrieval commands unless a documented exception is intentionally allowlisted.
 
 **SKILL.md proxied outbound pattern:** For outbound third-party API calls from skills that require stored credentials, default to `bash` with `network_mode: "proxied"` and `credential_ids` instead of manual token/credential store plumbing. This keeps credentials out of chat and enforces credential policies consistently.
 
@@ -258,7 +258,7 @@ gateway contacts set-risk-threshold <contactId> --threshold none|low|medium|high
 
 The CLI talks to the running gateway over its IPC socket (`set_contact_threshold`, `contacts_list_rich`, `contacts_get_rich`). It does not open `gateway.sqlite` itself.
 
-From the host: `vellum exec --service gateway -- gateway contacts ...`. Do not add a `vellum gateway contacts` verb.
+From the host: `anu exec --service gateway -- gateway contacts ...`. Do not add a `anu gateway contacts` verb.
 
 ## Guardian Requests (gateway-owned)
 

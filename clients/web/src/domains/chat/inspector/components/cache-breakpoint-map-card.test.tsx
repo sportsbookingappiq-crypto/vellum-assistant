@@ -11,10 +11,7 @@ import { describe, expect, test } from "bun:test";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import { CacheBreakpointMapCard } from "./cache-breakpoint-map-card";
-import type {
-  LLMCallSummary,
-  LLMRequestLogEntry,
-} from "@vellumai/assistant-api";
+import type { LLMCallSummary, LLMRequestLogEntry } from "@anu/assistant-api";
 
 const ASSISTANT_ID = "assistant-1";
 

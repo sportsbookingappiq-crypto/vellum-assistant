@@ -1,6 +1,6 @@
 # Trusted Contact Access Flow
 
-Design doc defining how unknown users gain access to a Vellum assistant via channel-mediated trusted contact onboarding.
+Design doc defining how unknown users gain access to an ANU assistant via channel-mediated trusted contact onboarding.
 
 ## Roles
 
@@ -9,7 +9,7 @@ Design doc defining how unknown users gain access to a Vellum assistant via chan
 | `guardian`        | The verified owner/administrator of the assistant on a given channel. Has a record in the gateway DB `contacts` table with `role: 'guardian'` and an active `contact_channels` entry. Approves or denies access requests.                                                                                                                    |
 | `trusted_contact` | An external user who has completed the verification flow and holds a gateway `contact_channels` record with `status: 'active'` and `policy: 'allow'`.                                                                                                                                                                                        |
 | `gateway`         | The ACL and verification engine. Owns the contact ACL, guardian requests + their delivery records, verification sessions, rate limits, secret minting, code interception, and the validate+consume decision. Commits every guardian decision (status CAS + ACL outcome) in one transaction. Stamps a trust verdict on every inbound message. |
-| `assistant`       | The Vellum assistant daemon. Orchestrates the approval workflow around the gateway-owned requests: guardian notification, message composition, channel delivery, and post-decision side effects (cards, notices, grant minting). It never mints or validates verification secrets.                                                           |
+| `assistant`       | The ANU assistant daemon. Orchestrates the approval workflow around the gateway-owned requests: guardian notification, message composition, channel delivery, and post-decision side effects (cards, notices, grant minting). It never mints or validates verification secrets.                                                              |
 
 ## Data Ownership
 
@@ -232,7 +232,7 @@ sequenceDiagram
 
 ### Verification code expires
 
-- Verification sessions have a 10-minute TTL (`CHALLENGE_TTL_MS`, shared via `@vellumai/gateway-client`).
+- Verification sessions have a 10-minute TTL (`CHALLENGE_TTL_MS`, shared via `@anu/gateway-client`).
 - After expiry, the gateway's `findPendingSessionByHash()` filters by `expiresAt > now`, so the code silently becomes invalid.
 - The requester receives the generic "code is invalid or has expired" message.
 - The guardian can re-initiate the flow by approving again, which creates a new session (auto-revoking any prior live sessions on the channel).

@@ -20,11 +20,11 @@ import type {
 } from "@/generated/daemon/types.gen";
 import { useTranslation } from "@/i18n";
 import { copyToClipboard } from "@/lib/copy-to-clipboard";
-import { Button } from "@vellumai/design-library/components/button";
-import { Card } from "@vellumai/design-library/components/card";
-import { ConfirmDialog } from "@vellumai/design-library/components/confirm-dialog";
-import { Input } from "@vellumai/design-library/components/input";
-import { toast } from "@vellumai/design-library/components/toast";
+import { Button } from "@anu/design-library/components/button";
+import { Card } from "@anu/design-library/components/card";
+import { ConfirmDialog } from "@anu/design-library/components/confirm-dialog";
+import { Input } from "@anu/design-library/components/input";
+import { toast } from "@anu/design-library/components/toast";
 
 type OAuthApp = OauthAppsGetResponses[200]["apps"][number];
 type OAuthAppConnection =

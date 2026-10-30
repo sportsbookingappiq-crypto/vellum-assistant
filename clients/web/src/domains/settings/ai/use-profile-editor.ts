@@ -8,7 +8,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { validateInferenceProfileConfig } from "@vellumai/assistant-api";
+import { validateInferenceProfileConfig } from "@anu/assistant-api";
 
 import { t } from "@/i18n";
 
@@ -237,10 +237,10 @@ export function useProfileEditor({
     initialValues?.description ?? "",
   );
   const [key, setKey] = useState(mode === "create" ? "" : (profileName ?? ""));
-  // "vellum" is a picker-level value: profiles bound to the Vellum-managed
-  // connection present (and edit) as provider "Vellum"; the wire-shape
+  // "vellum" is a picker-level value: profiles bound to the ANU-managed
+  // connection present (and edit) as provider "ANU"; the wire-shape
   // upstream is derived from the model at save time. The form opens on the
-  // stored upstream and only promotes to Vellum once the loaded connections
+  // stored upstream and only promotes to ANU once the loaded connections
   // prove the bound row is the managed sentinel (see the effect below).
   // A stored "chatgpt" provider (migration 144 output, the picker, or the
   // API) opens as the ChatGPT selection.
@@ -332,7 +332,7 @@ export function useProfileEditor({
       : THINKING_LEVEL_INHERIT,
   );
 
-  // Derived: selected model from catalog. A saved Vellum model may be a
+  // Derived: selected model from catalog. A saved ANU model may be a
   // routed `<provider>/<model>` string; parse it once - the native id feeds
   // every catalog lookup and the save path, the prefix feeds upstream
   // derivation.
@@ -446,7 +446,7 @@ export function useProfileEditor({
   // One-time helper note shown after an inline provider create succeeds.
   const [newProviderNote, setNewProviderNote] = useState(false);
 
-  // Promote a vellum-bound profile into Vellum picker mode once the loaded
+  // Promote a vellum-bound profile into ANU picker mode once the loaded
   // connections prove the bound row is the managed sentinel. Skipped once the
   // user changes the provider themselves.
   useEffect(() => {
@@ -746,7 +746,7 @@ export function useProfileEditor({
           ? availableConnectionsForProvider[0].name
           : providerConnection;
       const effectiveBinding = connectionNotFound ? "" : resolvedBinding;
-      // The Vellum picker entry's wire shape is version-gated. Daemons at the
+      // The ANU picker entry's wire shape is version-gated. Daemons at the
       // gate's MIN_VERSION store the routing identity directly
       // (`provider: "vellum"` + native model, no binding); older daemons get
       // the legacy shape: the model's managed upstream as `provider`, bound

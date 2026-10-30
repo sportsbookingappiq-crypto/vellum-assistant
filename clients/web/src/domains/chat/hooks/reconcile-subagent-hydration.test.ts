@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test } from "bun:test";
-import type { SubagentStatus } from "@vellumai/assistant-api";
+import type { SubagentStatus } from "@anu/assistant-api";
 
 import { reconcileSubagentStoreFromNotifications } from "@/domains/chat/hooks/reconcile-subagent-hydration";
 import { useSubagentStore } from "@/domains/chat/subagent-store";

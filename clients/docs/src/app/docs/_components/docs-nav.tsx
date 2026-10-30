@@ -132,7 +132,7 @@ const NAV_ITEMS: DocsNavItem[] = [
     icon: icon(Rocket),
     children: [
       {
-        label: "What is Vellum?",
+        label: "What is ANU?",
         href: "/docs/getting-started/what-is-vellum",
         icon: icon(Sparkles),
       },

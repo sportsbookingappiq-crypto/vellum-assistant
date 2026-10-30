@@ -33,14 +33,12 @@ describe("normalizeOpenAIAPIError", () => {
     const n = normalizeOpenAIAPIError(
       apiError(400),
       JSON.stringify({
-        detail: "Model 'MiniMax-M3' is not yet supported on Vellum.",
+        detail: "Model 'MiniMax-M3' is not yet supported on ANU.",
       }),
     );
-    expect(n.message).toBe(
-      "Model 'MiniMax-M3' is not yet supported on Vellum.",
-    );
+    expect(n.message).toBe("Model 'MiniMax-M3' is not yet supported on ANU.");
     expect(formatNormalizedOpenAIAPIError("Together AI", 400, n)).toBe(
-      "Together AI API error (400): Model 'MiniMax-M3' is not yet supported on Vellum.",
+      "Together AI API error (400): Model 'MiniMax-M3' is not yet supported on ANU.",
     );
   });
 

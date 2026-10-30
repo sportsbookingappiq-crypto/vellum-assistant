@@ -12,7 +12,7 @@ import {
   companionScaleFor,
   companionIntroCallControlFor,
   type CompanionIntroBeat,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import { INTRO_CALL_CHORD_KEYS } from "@/domains/chat/voice/live-voice/intro-call-chords";
 

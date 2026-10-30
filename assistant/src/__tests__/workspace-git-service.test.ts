@@ -95,7 +95,7 @@ describe("WorkspaceGitService", () => {
         encoding: "utf-8",
       }).trim();
 
-      expect(userName).toBe("Vellum Assistant");
+      expect(userName).toBe("ANU");
       expect(userEmail).toBe("assistant@vellum.ai");
     });
 
@@ -903,7 +903,7 @@ describe("WorkspaceGitService", () => {
       execFileSync("git", ["config", "user.email", "user@example.com"], {
         cwd: testDir,
       });
-      // main: committed runtime junk and a .gitignore without Vellum rules
+      // main: committed runtime junk and a .gitignore without ANU rules
       writeFileSync(join(testDir, ".gitignore"), "main-rule\n");
       mkdirSync(join(testDir, "embedding-models"), { recursive: true });
       writeFileSync(join(testDir, "embedding-models", "model.bin"), "weights");
@@ -919,7 +919,7 @@ describe("WorkspaceGitService", () => {
       const service = new WorkspaceGitService(testDir);
       await service.ensureInitialized();
 
-      // Landed on main with the Vellum rules applied to MAIN's .gitignore
+      // Landed on main with the ANU rules applied to MAIN's .gitignore
       const branch = execFileSync("git", ["symbolic-ref", "--short", "HEAD"], {
         cwd: testDir,
         encoding: "utf-8",
@@ -1028,7 +1028,7 @@ describe("WorkspaceGitService", () => {
       expect(headFiles).toContain("notes.md");
     });
 
-    test("untracking is limited to Vellum rules and keeps avatar/sounds state", async () => {
+    test("untracking is limited to ANU rules and keeps avatar/sounds state", async () => {
       execFileSync("git", ["init", "-b", "main"], { cwd: testDir });
       execFileSync("git", ["config", "user.name", "Test"], { cwd: testDir });
       execFileSync("git", ["config", "user.email", "user@example.com"], {
@@ -1064,7 +1064,7 @@ describe("WorkspaceGitService", () => {
         "fixture-keep.md\n",
       );
       // Force-added despite a user-authored .gitignore rule — the untrack
-      // step matches Vellum-managed rules only, so it must stay tracked.
+      // step matches ANU-managed rules only, so it must stay tracked.
       writeFileSync(join(testDir, ".gitignore"), "user-secret.md\n");
       writeFileSync(join(testDir, "user-secret.md"), "keep");
       execFileSync("git", ["add", "-A", "-f"], { cwd: testDir });
@@ -1189,7 +1189,7 @@ describe("WorkspaceGitService", () => {
         encoding: "utf-8",
       }).trim();
 
-      expect(userName).toBe("Vellum Assistant");
+      expect(userName).toBe("ANU");
       expect(userEmail).toBe("assistant@vellum.ai");
     });
 
@@ -1226,7 +1226,7 @@ describe("WorkspaceGitService", () => {
     test("existing repo with correct config is idempotent", async () => {
       // Set up a repo that already has everything configured correctly
       execFileSync("git", ["init", "-b", "main"], { cwd: testDir });
-      execFileSync("git", ["config", "user.name", "Vellum Assistant"], {
+      execFileSync("git", ["config", "user.name", "ANU"], {
         cwd: testDir,
       });
       execFileSync("git", ["config", "user.email", "assistant@vellum.ai"], {
@@ -1256,7 +1256,7 @@ describe("WorkspaceGitService", () => {
         cwd: testDir,
         encoding: "utf-8",
       }).trim();
-      expect(userName).toBe("Vellum Assistant");
+      expect(userName).toBe("ANU");
 
       const branch = execFileSync("git", ["symbolic-ref", "--short", "HEAD"], {
         cwd: testDir,

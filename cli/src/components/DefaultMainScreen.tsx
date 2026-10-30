@@ -87,12 +87,12 @@ const RETRY_TIMEOUT_MS = 30_000;
 // ── Layout constants ──────────────────────────────────────
 const MAX_TOTAL_WIDTH = 72;
 const DEFAULT_TERMINAL_ROWS = 24;
-const HEADER_PREFIX_UNICODE = "── Vellum ";
-const HEADER_PREFIX_ASCII = "-- Vellum ";
+const HEADER_PREFIX_UNICODE = "── ANU ";
+const HEADER_PREFIX_ASCII = "-- ANU ";
 
 // Left panel structure: HEADER lines + art + FOOTER lines
 // Header chrome (borders around panel content)
-const HEADER_TOP_BORDER_LINES = 1; // "── Vellum ───..." line
+const HEADER_TOP_BORDER_LINES = 1; // "── ANU ───..." line
 
 // Selection / Secret windows
 const DIALOG_WINDOW_WIDTH = 60;
@@ -175,7 +175,7 @@ function friendlyErrorMessage(status: number, body: string): string {
  * reconnect — no callback threading needed.
  *
  * SECURITY: the refresh is bound to the paired entry's persisted runtime URL.
- * `vellum client` lets `--url`/`-u` override the runtime URL while still using
+ * `anu client` lets `--url`/`-u` override the runtime URL while still using
  * the selected paired entry's stored guardian token, so a victim pointed at an
  * attacker-controlled (or poisoned/redirected) URL that returns 401 must NOT
  * cause us to POST the long-lived refreshToken + deviceId to that origin. We
@@ -644,7 +644,10 @@ function ConnectionScreen({
   });
 
   const config = SPECIES_CONFIG[species];
-  const title = `Vellum ${config.hatchedEmoji} ${species}`;
+  const title =
+    species === "vellum"
+      ? `${config.hatchedEmoji} ANU`
+      : `ANU ${config.hatchedEmoji} ${config.label}`;
   const width = Math.min(terminalColumns, MAX_TOTAL_WIDTH);
 
   return (
@@ -667,7 +670,11 @@ function ConnectionScreen({
         <>
           <Text color="red">Failed to connect: {errorMessage}</Text>
           <Text> </Text>
-          <Text dimColor>Press r to retry or Ctrl+C to quit</Text>
+          <Text dimColor>
+            {
+              "Press r to retry or Ctrl+C to quit. If it is stopped, start it with 'anu wake'."
+            }
+          </Text>
         </>
       )}
     </Box>
@@ -677,7 +684,7 @@ function ConnectionScreen({
 export function renderErrorMainScreen(error: unknown): number {
   const msg = error instanceof Error ? error.message : String(error);
   console.log(
-    `${ANSI.red}${ANSI.bold}Failed to render MainWindow${ANSI.reset}`,
+    `${ANSI.red}${ANSI.bold}Could not draw the chat screen${ANSI.reset}`,
   );
   console.log(`${ANSI.dim}${msg}${ANSI.reset}`);
   console.log(`${ANSI.dim}Run /clear to retry${ANSI.reset}`);
@@ -708,13 +715,13 @@ function CompactHeader({
   healthStatus?: string;
   totalWidth: number;
 }): ReactElement {
-  const accentColor = species === "openclaw" ? "red" : "magenta";
+  const accentColor = species === "openclaw" ? "red" : "blueBright";
   const status = healthStatus ?? "checking...";
   const identity = assistantName?.trim() || species;
   const compactIdentity =
     identity.length > 18 ? `${identity.slice(0, 15)}...` : identity;
   const label = ` ${compactIdentity} ${statusEmoji(status)} `;
-  const prefix = "── Vellum";
+  const prefix = "── ANU";
   const suffix = "──";
   const fillLen = Math.max(
     0,
@@ -742,7 +749,7 @@ function DefaultMainScreen({
   const cwd = process.cwd();
   const dirName = basename(cwd);
   const config = SPECIES_CONFIG[species];
-  const accentColor = species === "openclaw" ? "red" : "magenta";
+  const accentColor = species === "openclaw" ? "red" : "blueBright";
   const caps = getTerminalCapabilities();
   const headerPrefix = caps.unicodeSupported
     ? HEADER_PREFIX_UNICODE
@@ -784,14 +791,14 @@ function DefaultMainScreen({
 
   const rightLines: StyledLine[] = [
     { text: " ", style: "normal" },
-    { text: "Tips for getting started", style: "heading" },
+    { text: "Getting started", style: "heading" },
     ...TIPS.map((t) => ({ text: t, style: "normal" as const })),
     { text: " ", style: "normal" },
     { text: "Assistant ID", style: "heading" },
     { text: assistantId, style: "dim" },
     { text: "Species", style: "heading" },
     {
-      text: `${unicodeOrFallback(config.hatchedEmoji, `[${species}]`)} ${species}`,
+      text: `${unicodeOrFallback(config.hatchedEmoji, `[${species}]`)} ${config.label}`,
       style: "dim",
     },
     { text: "Status", style: "heading" },
@@ -1618,7 +1625,7 @@ function ChatApp({
               error: String(sseErr),
             });
             handleRef_.current?.addStatus(
-              "SSE stream disconnected — will reconnect on next message",
+              "Lost the live connection. It reconnects when you send the next message.",
               "yellow",
             );
             handleRef_.current?.setBusy(false);
@@ -1677,10 +1684,7 @@ function ChatApp({
 
       // If a connection attempt is already in progress, don't silently drop input
       if (connectingRef.current) {
-        h.addStatus(
-          "Still connecting — please wait a moment and try again.",
-          "yellow",
-        );
+        h.addStatus("Still connecting. Send again in a few seconds.", "yellow");
         return;
       }
 
@@ -1779,7 +1783,9 @@ function ChatApp({
         }
         const isConnected = await ensureConnected();
         if (!isConnected) {
-          h.showError("Cannot send — not connected to the assistant.");
+          h.showError(
+            "Not connected to the assistant, so nothing was sent. Check it with 'anu ps' in another terminal.",
+          );
           setInputFocused(true);
           return;
         }
@@ -1799,7 +1805,7 @@ function ChatApp({
           clearTimeout(timeoutId);
           if (sendResult.accepted) {
             h.addStatus(
-              "Message queued — will be processed after current response",
+              "Queued. It runs after the current reply finishes.",
               "gray",
             );
           } else {

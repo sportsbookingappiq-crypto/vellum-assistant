@@ -102,7 +102,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Desktop system packages persist through container replacement as image layers.
-COPY assistant/docker/mousepad/90-vellum.gschema.override /usr/share/glib-2.0/schemas/90-vellum.gschema.override
+COPY assistant/docker/mousepad/90-anu.gschema.override /usr/share/glib-2.0/schemas/90-anu.gschema.override
 RUN set -eu; \
     wezterm_version=20240203-110809-5046fc22; \
     case "$(dpkg --print-architecture)" in \

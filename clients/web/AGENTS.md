@@ -20,7 +20,7 @@ Read these before making changes:
 ## Common pitfalls
 
 - **Design system first for UI changes.** Always start from
-  `@vellumai/design-library` when adding or changing controls, surfaces,
+  `@anu/design-library` when adding or changing controls, surfaces,
   typography, popovers, inputs, cards, or button/icon affordances. Use existing
   design-library primitives when they are available; only build custom
   components when the design library does not provide an
@@ -38,7 +38,7 @@ Read these before making changes:
 - **Org-readiness gating for daemon queries**: Platform-mode requests need the `Vellum-Organization-Id` header, which the interceptor reads from the org store. The store hydrates asynchronously after auth, so TanStack Query hooks that mount eagerly must gate on `useIsOrgReady()` via the [`enabled` option](https://tanstack.com/query/latest/docs/framework/react/guides/dependent-queries). See [`docs/STATE_MANAGEMENT.md` — Org-readiness gating](./docs/STATE_MANAGEMENT.md#org-readiness-gating-for-daemon-queries).
 - **Don't throw from render or user-data lookups.** Missing, stale, or unknown persisted data (legacy avatar trait ids, a 404 the UI already handles, an empty catalog) is a fallback, not an exception. Return `null`, skip the surface, or degrade. A throw during render is the full-page "Something went wrong" boundary. Reserve `throw` for true programmer invariants that cannot be reached with real user data, and keep those out of React render. See [`docs/CONVENTIONS.md` — Don't throw from render or user data](./docs/CONVENTIONS.md#dont-throw-from-render-or-user-data).
 - **Don't use bare `Sentry.captureException`** — use `captureError()` from `lib/sentry/capture-error.ts`. It filters transient network errors, logs to console, and captures to Sentry with structured tags. Raw Sentry API is reserved for framework integration points (`RouteErrorBoundary`, `RouterProvider.onError`, `LazyBoundary`). See [`docs/CONVENTIONS.md` — Manual error reporting](./docs/CONVENTIONS.md#manual-error-reporting-from-imperative-code).
-- **Local packages are workspace members served as source.** `@vellumai/design-library`, `@vellumai/ipc-contract`, `@vellumai/local-mode`, and `@vellumai/assistant-api` are `workspace:*` deps resolved to their real source paths, so Vite serves them as source (not prebundled): edits hot-update live and branch switches are picked up with no cache to go stale. React is installed once at the workspace root and shared by every member; do **not** reintroduce `preserveSymlinks`, per-package React installs, or `file:` deps for local packages, since that combination caused the two-Reacts white-screen (the `#34771`→`#34773` revert). An edit to `assistant/src/api` reaches the web's imported types immediately, but the generated client still comes from `assistant/openapi.yaml`: after a schema change, run `cd assistant && bun run generate:openapi` and then `bun run openapi-ts` here.
+- **Local packages are workspace members served as source.** `@anu/design-library`, `@anu/ipc-contract`, `@anu/local-mode`, and `@anu/assistant-api` are `workspace:*` deps resolved to their real source paths, so Vite serves them as source (not prebundled): edits hot-update live and branch switches are picked up with no cache to go stale. React is installed once at the workspace root and shared by every member; do **not** reintroduce `preserveSymlinks`, per-package React installs, or `file:` deps for local packages, since that combination caused the two-Reacts white-screen (the `#34771`→`#34773` revert). An edit to `assistant/src/api` reaches the web's imported types immediately, but the generated client still comes from `assistant/openapi.yaml`: after a schema change, run `cd assistant && bun run generate:openapi` and then `bun run openapi-ts` here.
 
 When a topic in `docs/CONVENTIONS.md` grows past ~100 lines and has a
 coherent boundary, extract it into a `docs/TOPIC.md` sibling with a
@@ -52,7 +52,7 @@ pattern (`assistant/docs/`, `docs/` at the repo root).
 - **Client state**: [Zustand](https://zustand.docs.pmnd.rs/) — all shared state uses Zustand stores (see [`docs/STATE_MANAGEMENT.md`](./docs/STATE_MANAGEMENT.md))
 - **Server state**: [TanStack Query](https://tanstack.com/query/latest) with [HeyAPI plugin](https://heyapi.dev/openapi-ts/plugins/tanstack-query)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) via `@tailwindcss/vite`
-- **Design system**: `@vellumai/design-library` at [`packages/design-library/`](../../packages/design-library/)
+- **Design system**: `@anu/design-library` at [`packages/design-library/`](../../packages/design-library/)
 - **Platform**: Web + iOS via [Capacitor](https://capacitorjs.com/) — native code paths must be preserved
 
 ## Routing

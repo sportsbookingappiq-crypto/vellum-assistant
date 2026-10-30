@@ -83,7 +83,7 @@ const {
   resolveAuthCallbackScheme,
   resolveRegisteredSchemes,
 } = await import("./deep-links");
-const { resolveEnvironmentName } = await import("@vellumai/local-mode");
+const { resolveEnvironmentName } = await import("@anu/local-mode");
 
 const allowedEvent = {};
 
@@ -529,13 +529,13 @@ describe("extractDeepLinkFromArgv", () => {
     "vellum://thread/thread-123",
     "vellum://billing/checkout-complete?status=cancel",
   ])("extracts supported Windows launch URL %s", (url) => {
-    expect(extractDeepLinkFromArgv(["Vellum.exe", url])).toBe(url);
+    expect(extractDeepLinkFromArgv(["ANU.exe", url])).toBe(url);
   });
 });
 
 describe("installDeepLinks", () => {
   test("delivers a cold-start argv link exactly once", () => {
-    configureTestRuntime(["Vellum.exe", "vellum://send?message=cold"]);
+    configureTestRuntime(["ANU.exe", "vellum://send?message=cold"]);
     installDeepLinks();
 
     const drain = ipcHandleMock.mock.calls.find(
@@ -548,7 +548,7 @@ describe("installDeepLinks", () => {
   test("delivers a second-instance argv link exactly once", () => {
     installDeepLinks();
     appListeners.get("second-instance")?.({}, [
-      "Vellum.exe",
+      "ANU.exe",
       "vellum://thread/warm",
       "vellum://thread/ignored",
     ]);

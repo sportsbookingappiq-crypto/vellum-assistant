@@ -14,7 +14,7 @@ import {
   COMPANION_POPOVER_INSET,
   COMPANION_POPOVER_MAX_HEIGHT,
   type CompanionSurfaceState,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import { CompanionPopover } from "@/components/companion-popover";
 import {

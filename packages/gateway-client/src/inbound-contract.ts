@@ -13,7 +13,7 @@
 import { INBOUND_EVENT_KINDS } from "./inbound-event-kind.js";
 import { z } from "zod";
 
-import { ReactionEmojiFieldsSchema } from "@vellumai/service-contracts/reactions";
+import { ReactionEmojiFieldsSchema } from "@anu/service-contracts/reactions";
 
 import { ChannelConversationTypeSchema } from "./channel-permission-contract.js";
 
@@ -162,7 +162,7 @@ export const SourceMetadataSchema = z
     // Email-specific fields
     /**
      * Ingress provider that delivered the email to the gateway
-     * (e.g. "mailgun", "resend", or "platform" for the Vellum relay).
+     * (e.g. "mailgun", "resend", or "platform" for the ANU relay).
      */
     emailProvider: z.string().optional(),
     /** Email subject line. */

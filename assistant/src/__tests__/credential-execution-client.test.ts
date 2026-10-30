@@ -20,8 +20,8 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { describe, expect, test } from "bun:test";
 
-import { resolveIpcEndpoint } from "@vellumai/ipc-server-utils";
-import { CES_PROTOCOL_VERSION } from "@vellumai/service-contracts/credential-rpc";
+import { resolveIpcEndpoint } from "@anu/ipc-server-utils";
+import { CES_PROTOCOL_VERSION } from "@anu/service-contracts/credential-rpc";
 
 import {
   CesClientError,
@@ -401,7 +401,7 @@ describe("CES boundary guard", () => {
         /from\s+['"]credential-executor/,
         /require\s*\(\s*['"]\.\.\/.*credential-executor/,
         /require\s*\(\s*['"]credential-executor/,
-        /from\s+['"]@vellumai\/credential-executor/,
+        /from\s+['"]@anu\/credential-executor/,
       ];
 
       for (const pattern of patterns) {

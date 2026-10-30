@@ -1,7 +1,7 @@
 /**
- * Public Vellum roadmap, acted on as the assistant itself.
+ * Public ANU roadmap, acted on as the assistant itself.
  *
- * Mirrors the surface of the user-facing `vellum roadmap` CLI
+ * Mirrors the surface of the user-facing `anu roadmap` CLI
  * (`cli/src/commands/roadmap.ts`), but authenticates with the assistant's own
  * platform API key instead of the owner's session token, so items, upvotes and
  * comments are attributed to the assistant (`creator_kind: assistant`).
@@ -19,7 +19,7 @@
  *   DELETE /v1/roadmap/:slug/upvote : remove the upvote
  */
 
-import { type EnvironmentDefinition, SEEDS } from "@vellumai/environments";
+import { type EnvironmentDefinition, SEEDS } from "@anu/environments";
 import { z } from "zod";
 
 import { getPlatformBaseUrl } from "../../config/env.js";
@@ -129,7 +129,7 @@ function resolveEndpoints(): RoadmapEndpoints {
 
   if (!apiOverride && deployment?.name !== "production") {
     throw new UnprocessableEntityError(
-      `The Vellum roadmap has no deployment for a ${getPlatformBaseUrl()} assistant. Set VELLUM_MARKETING_URL to the roadmap service for this environment.`,
+      `The ANU roadmap has no deployment for a ${getPlatformBaseUrl()} assistant. Set VELLUM_MARKETING_URL to the roadmap service for this environment.`,
     );
   }
 
@@ -170,7 +170,7 @@ async function requireAssistantApiKey(): Promise<string> {
   const key = await assistantApiKey();
   if (!key) {
     throw new UnprocessableEntityError(
-      "Not connected to the Vellum Platform, so there is no assistant identity to post as. " +
+      "Not connected to the ANU Platform, so there is no assistant identity to post as. " +
         "Run `assistant platform connect` first.",
     );
   }
@@ -225,11 +225,11 @@ async function roadmapFetch(
   } catch (err) {
     if (deadline.aborted) {
       throw new GatewayTimeoutError(
-        `The Vellum roadmap service did not answer within ${ROADMAP_REQUEST_TIMEOUT_MS / 1000}s.`,
+        `The ANU roadmap service did not answer within ${ROADMAP_REQUEST_TIMEOUT_MS / 1000}s.`,
       );
     }
     throw new BadGatewayError(
-      `Could not reach the Vellum roadmap service: ${err instanceof Error ? err.message : String(err)}`,
+      `Could not reach the ANU roadmap service: ${err instanceof Error ? err.message : String(err)}`,
     );
   }
 }
@@ -396,7 +396,7 @@ function unsupportedUpdateFieldsMessage(keys: string[]): string {
   const unknown = keys.filter((k) => !STAFF_ONLY_UPDATE_FIELDS.has(k));
   const reasons = [
     ...(staffOnly.length > 0
-      ? [`${listFields(staffOnly)} set by Vellum staff`]
+      ? [`${listFields(staffOnly)} set by ANU staff`]
       : []),
     ...(unknown.length > 0
       ? [`${listFields(unknown)} not a roadmap update field`]
@@ -651,7 +651,7 @@ export const ROUTES: RouteDefinition[] = [
     },
     summary: "List public roadmap items",
     description:
-      "Lists items from the public Vellum roadmap. Authenticated as the assistant when a platform API key is stored, which fills in viewerUpvoted; anonymous otherwise.",
+      "Lists items from the public ANU roadmap. Authenticated as the assistant when a platform API key is stored, which fills in viewerUpvoted; anonymous otherwise.",
     tags: ["roadmap"],
     queryParams: [
       { name: "q", required: false, description: "Search query" },
@@ -723,7 +723,7 @@ export const ROUTES: RouteDefinition[] = [
     },
     summary: "Update a roadmap item",
     description:
-      "Updates the title or description of a roadmap item this assistant filed, while the item is still open. Status and tags are set by Vellum staff.",
+      "Updates the title or description of a roadmap item this assistant filed, while the item is still open. Status and tags are set by ANU staff.",
     tags: ["roadmap"],
     pathParams: SLUG_PARAM,
     requestBody: updateRequestSchema,

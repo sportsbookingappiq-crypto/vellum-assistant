@@ -2,7 +2,7 @@ import {
   CHANNEL_IDS,
   type ChannelId,
   isChannelId,
-} from "@vellumai/service-contracts/channels";
+} from "@anu/service-contracts/channels";
 
 import {
   HOST_PROXY_CAPABILITIES,
@@ -186,7 +186,7 @@ export const CHANNEL_METADATA: Partial<Record<ChannelId, ChannelInfo>> = {
     icon: "bot",
     supportsVerification: false,
     setupMessages: {
-      guardian: "Connect with other Vellum assistants via the A2A protocol.",
+      guardian: "Connect with other ANU assistants via the A2A protocol.",
       contact:
         "I'd like to connect with another assistant via A2A. Can you help me set that up?",
     },

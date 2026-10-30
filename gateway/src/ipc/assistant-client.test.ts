@@ -21,7 +21,7 @@ import {
   writeMessage,
   writeStreamChunk,
   writeStreamEnd,
-} from "@vellumai/ipc-server-utils";
+} from "@anu/ipc-server-utils";
 
 import {
   IpcHandlerError,

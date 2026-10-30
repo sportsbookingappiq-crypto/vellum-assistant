@@ -7,7 +7,7 @@ const popups: Array<{
 }> = [];
 
 mock.module("electron", () => ({
-  app: { isPackaged: true, name: "Vellum" },
+  app: { isPackaged: true, name: "ANU" },
   BrowserWindow: {
     getFocusedWindow: () => ({
       webContents: { send: (...args: unknown[]) => sent.push(args) },
@@ -36,14 +36,14 @@ mock.module("electron", () => ({
 let featureFlags: Record<string, boolean> = {};
 let onboardingActive = false;
 let chromeDevTools = false;
-mock.module("@vellumai/electron-desktop/settings", () => ({
+mock.module("@anu/electron-desktop/settings", () => ({
   readSetting: () => featureFlags,
   onSettingChange: () => () => undefined,
 }));
-mock.module("@vellumai/electron-desktop/window-state", () => ({
+mock.module("@anu/electron-desktop/window-state", () => ({
   readOnboardingActive: () => onboardingActive,
 }));
-mock.module("@vellumai/electron-desktop/devtools", () => ({
+mock.module("@anu/electron-desktop/devtools", () => ({
   areChromeDevToolsEnabled: () => chromeDevTools,
 }));
 mock.module("./main-window", () => ({
@@ -69,7 +69,7 @@ describe("buildLinuxMenu", () => {
   test("uses Linux roles and disables unavailable providers", () => {
     expect(submenu("Window").some((item) => item.role === "close")).toBe(true);
     expect(enabled("Help", "Check for Updates...")).toBe(false);
-    expect(enabled("File", "Install vellum Command...")).toBe(false);
+    expect(enabled("File", "Install anu Command...")).toBe(false);
     expect(enabled("Window", "Pop Out Conversation")).toBeUndefined();
   });
 
@@ -105,7 +105,7 @@ describe("buildLinuxMenu", () => {
       installCli: () => undefined,
     };
     expect(enabled("Help", "Check for Updates...", options)).toBe(true);
-    expect(enabled("File", "Install vellum Command...", options)).toBe(true);
+    expect(enabled("File", "Install anu Command...", options)).toBe(true);
   });
 
   test("dispatches committed commands to the focused window", () => {

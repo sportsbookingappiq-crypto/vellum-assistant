@@ -3,12 +3,12 @@ import { app } from "electron";
 import type {
   CapabilityModule,
   DesktopCapabilityRegistry,
-} from "@vellumai/electron-desktop/capability-registry";
-import { installWindowAttention } from "@vellumai/electron-desktop/window-attention";
+} from "@anu/electron-desktop/capability-registry";
+import { installWindowAttention } from "@anu/electron-desktop/window-attention";
 
 /**
  * Publishes each window's visible / focused / minimized state to the renderer
- * that owns it. Vellum windows disable background throttling, which disables
+ * that owns it. ANU windows disable background throttling, which disables
  * the Page Visibility API with it, so main is the only side that can answer
  * where a window is.
  *

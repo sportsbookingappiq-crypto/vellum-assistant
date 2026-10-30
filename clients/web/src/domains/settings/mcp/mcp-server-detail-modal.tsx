@@ -2,9 +2,9 @@ import { Cable } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
 import type { McpServerEntry, McpToolsSummaryServer } from "./mcp-api";
-import { Button } from "@vellumai/design-library/components/button";
-import { Input } from "@vellumai/design-library/components/input";
-import { Modal } from "@vellumai/design-library/components/modal";
+import { Button } from "@anu/design-library/components/button";
+import { Input } from "@anu/design-library/components/input";
+import { Modal } from "@anu/design-library/components/modal";
 
 import { useTranslation } from "@/i18n";
 

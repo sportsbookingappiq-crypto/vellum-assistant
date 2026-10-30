@@ -4,7 +4,7 @@ import {
   resolvePairedGatewayProxyTarget,
   sanitizePairedForwardHeaders,
   type PairedGuardianTokenProvider,
-} from "@vellumai/local-mode";
+} from "@anu/local-mode";
 
 import {
   fetchForwardPlanWithRetry,

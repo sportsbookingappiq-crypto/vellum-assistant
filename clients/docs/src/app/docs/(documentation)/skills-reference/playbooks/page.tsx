@@ -2,9 +2,9 @@ import { SkillsReferencePlaybooksContent } from "@/app/docs/_components/skills-r
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({
-  title: "Playbooks - Vellum Docs",
+  title: "Playbooks - ANU Docs",
   description:
-    "Playbooks skill for Vellum — trigger-action automation rules for handling incoming messages.",
+    "Playbooks skill for ANU — trigger-action automation rules for handling incoming messages.",
   path: "/docs/skills-reference/playbooks",
 });
 

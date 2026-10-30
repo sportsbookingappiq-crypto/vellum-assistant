@@ -127,8 +127,8 @@ export function SkillsReferenceScheduleContent() {
             </li>
             <li>Timezone-aware</li>
             <li>
-              Notify mode can prefer the Vellum app used to create the schedule
-              on macOS, Windows, or iOS when no source channel is available
+              Notify mode can prefer the ANU app used to create the schedule on
+              macOS, Windows, or iOS when no source channel is available
             </li>
             <li>
               Each schedule is pinned to a model profile when it is created, so
@@ -187,10 +187,10 @@ export function SkillsReferenceScheduleContent() {
               don&apos;t have open.
             </li>
             <li>
-              <strong>In-app links in Vellum chat.</strong> In Vellum chat,
-              schedule and conversation names the assistant mentions are links
-              to their details. Those links work in the Vellum app only, not in
-              Slack, Telegram, Discord, email, or notifications.
+              <strong>In-app links in ANU chat.</strong> In ANU chat, schedule
+              and conversation names the assistant mentions are links to their
+              details. Those links work in the ANU app only, not in Slack,
+              Telegram, Discord, email, or notifications.
             </li>
           </ul>
         </section>

@@ -24,10 +24,7 @@ import {
 import { homedir } from "node:os";
 import { basename, dirname, join, sep } from "node:path";
 
-import {
-  findAssistantCommand,
-  isRepoCheckoutPath,
-} from "@vellumai/environments";
+import { findAssistantCommand, isRepoCheckoutPath } from "@anu/environments";
 
 import { getLogger } from "../util/logger.js";
 
@@ -119,7 +116,7 @@ function wrapperScript(bun: string, entry: string): string {
   return [
     "#!/bin/sh",
     WRAPPER_MARKER,
-    "# Installed by the Vellum assistant daemon. Safe to delete.",
+    "# Installed by the ANU assistant daemon. Safe to delete.",
     `exec ${shQuote(bun)} ${shQuote(entry)} "$@"`,
     "",
   ].join("\n");

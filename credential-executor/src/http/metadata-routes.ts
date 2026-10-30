@@ -12,7 +12,7 @@
 
 import { timingSafeEqual } from "node:crypto";
 
-import { CredentialRecordSchema } from "@vellumai/service-contracts/credential-rpc";
+import { CredentialRecordSchema } from "@anu/service-contracts/credential-rpc";
 
 import { getMetadataStore } from "../records/metadata-store.js";
 

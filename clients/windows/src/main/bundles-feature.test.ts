@@ -18,7 +18,7 @@ const getGuardianAccessTokenMock = mock(async () => ({
 
 mock.module("electron", () => ({
   app: {
-    getPath: () => "C:\\Vellum",
+    getPath: () => "C:\\ANU",
     isPackaged: true,
     once: appOnceMock,
   },
@@ -27,22 +27,22 @@ mock.module("electron", () => ({
   shell: {},
 }));
 
-mock.module("@vellumai/electron-desktop/bundle-flow", () => ({
+mock.module("@anu/electron-desktop/bundle-flow", () => ({
   installBundleFlow: installBundleFlowMock,
   handleBundleFile: handleBundleFileMock,
 }));
 
-mock.module("@vellumai/electron-desktop/file-open", () => ({
+mock.module("@anu/electron-desktop/file-open", () => ({
   onFileOpen: onFileOpenMock,
 }));
 
-const localMode = await import("@vellumai/local-mode");
-mock.module("@vellumai/local-mode", () => ({
+const localMode = await import("@anu/local-mode");
+mock.module("@anu/local-mode", () => ({
   ...localMode,
   getGuardianAccessToken: getGuardianAccessTokenMock,
   getLockfileData: () => ({ ok: false, error: "missing" }),
-  resolveConfigDir: () => "C:\\Vellum\\config",
-  resolveLockfilePaths: () => ["C:\\Vellum\\lockfile.json"],
+  resolveConfigDir: () => "C:\\ANU\\config",
+  resolveLockfilePaths: () => ["C:\\ANU\\lockfile.json"],
 }));
 
 mock.module("./ipc.client", () => ({
@@ -54,11 +54,10 @@ const {
   bundleFileHandlerToken,
   getBundlePlatform,
   resetBundlePlatformForTest,
-} = await import("@vellumai/electron-desktop/bundle-platform");
+} = await import("@anu/electron-desktop/bundle-platform");
 const { DesktopCapabilityRegistry } =
-  await import("@vellumai/electron-desktop/capability-registry");
-const { LOCAL_MODE_CLI } =
-  await import("@vellumai/electron-desktop/local-mode");
+  await import("@anu/electron-desktop/capability-registry");
+const { LOCAL_MODE_CLI } = await import("@anu/electron-desktop/local-mode");
 const { default: bundles } = await import("./features/bundles");
 
 beforeEach(() => {
@@ -83,7 +82,7 @@ describe("Windows bundle workflow", () => {
     onFileOpenMock.mock.calls[0]![0]("C:\\bundle.vellum");
     expect(handleBundleFileMock).toHaveBeenCalledWith("C:\\bundle.vellum");
     expect(appOnceMock).toHaveBeenCalledWith("before-quit", stopFileOpenMock);
-    expect(getBundlePlatform().bundlesRoot()).toBe("C:\\Vellum/bundles");
+    expect(getBundlePlatform().bundlesRoot()).toBe("C:\\ANU/bundles");
   });
 
   test("mints gateway tokens through the CLI provider installed later", async () => {
@@ -104,7 +103,7 @@ describe("Windows bundle workflow", () => {
     await expect(pending).resolves.toBe("guardian-token");
     expect(getGuardianAccessTokenMock).toHaveBeenCalledWith(
       "assistant-1",
-      "C:\\Vellum\\config",
+      "C:\\ANU\\config",
       { command: "vellum.exe", baseArgs: [] },
       true,
     );

@@ -2,9 +2,9 @@
  * Tests for the catalog filter that decides which plugins onboarding surfaces,
  * plus the runner's subject-key dedupe and the `reset` that releases it.
  *
- * The hard rule: only Vellum-hosted (first-party, reviewed) plugins are ever
+ * The hard rule: only ANU-hosted (first-party, reviewed) plugins are ever
  * offered or installed during onboarding — never third-party/external
- * marketplace repos — minus a couple of Vellum-owned infra/meta plugins.
+ * marketplace repos — minus a couple of ANU-owned infra/meta plugins.
  */
 
 import { createElement, type ReactNode } from "react";

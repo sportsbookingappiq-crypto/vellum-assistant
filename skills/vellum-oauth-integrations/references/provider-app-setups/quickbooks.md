@@ -85,7 +85,7 @@ Open: `https://developer.intuit.com/app/developer/dashboard`
 
 ### Step 2: Create an App
 
-> Click **Create an app**, choose **QuickBooks Online and Payments**, and give it a name such as **Vellum Assistant**. When asked which scopes the app needs, pick **Accounting** (`com.intuit.quickbooks.accounting`). Then click **Create app**.
+> Click **Create an app**, choose **QuickBooks Online and Payments**, and give it a name such as **ANU**. When asked which scopes the app needs, pick **Accounting** (`com.intuit.quickbooks.accounting`). Then click **Create app**.
 
 **Milestone (2 of 6):** "App created - now let's pick the keys and set the redirect URI."
 
@@ -121,7 +121,7 @@ asks a short compliance questionnaire before it reveals them.
 
 Follow the `vellum-oauth-integrations` workflow to collect credentials, register the OAuth app, connect, and verify.
 
-> I'll start the QuickBooks authorization flow now. Intuit will ask you to sign in, then to **pick the company** to connect and to allow **Vellum Assistant** to access it.
+> I'll start the QuickBooks authorization flow now. Intuit will ask you to sign in, then to **pick the company** to connect and to allow **ANU** to access it.
 >
 > Choose the company and click **Connect**.
 

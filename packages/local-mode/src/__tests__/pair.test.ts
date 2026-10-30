@@ -3,7 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-import { pairingSessionSurvives } from "@vellumai/service-contracts/remote-web-pairing";
+import { pairingSessionSurvives } from "@anu/service-contracts/remote-web-pairing";
 
 import { guardianTokenPath } from "../config";
 import {
@@ -203,7 +203,7 @@ describe("pairAssistant", () => {
     expect(result.updated).toBe(false);
     expect(result.accessOnly).toBe(true);
 
-    // The on-disk entry matches what `vellum connect import` writes, field for
+    // The on-disk entry matches what `anu connect import` writes, field for
     // field and in the same key order.
     const onDisk = readLockfileFromDisk();
     const entry = (onDisk.assistants as Array<Record<string, unknown>>)[0]!;

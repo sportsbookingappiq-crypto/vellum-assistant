@@ -19,7 +19,7 @@ import type {
   RiskLevelValue,
   RiskMatchType,
   RiskPatternScopeOption,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 
 export enum RiskLevel {
   Low = "low",

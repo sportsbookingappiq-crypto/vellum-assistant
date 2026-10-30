@@ -2,12 +2,12 @@ import { randomUUID } from "node:crypto";
 import { mkdirSync, renameSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { getCharacterComponents } from "@vellumai/avatar-catalog";
+import { getCharacterComponents } from "@anu/avatar-catalog";
 import {
   AVATAR_IMAGE_FILENAME,
   AVATAR_TRAITS_FILENAME,
   type CharacterTraits,
-} from "@vellumai/avatar-manifest";
+} from "@anu/avatar-manifest";
 
 import { getLogger } from "../util/logger.js";
 import { getAvatarDir } from "../util/platform.js";
@@ -20,7 +20,7 @@ const log = getLogger("traits-png-sync");
 /** Sidecar filename for the rendered ASCII art. */
 export const ASCII_FILENAME = "character-ascii.txt";
 
-export type { CharacterTraits } from "@vellumai/avatar-manifest";
+export type { CharacterTraits } from "@anu/avatar-manifest";
 
 export type TraitsSyncResult =
   | { ok: true; asciiWritten: boolean }

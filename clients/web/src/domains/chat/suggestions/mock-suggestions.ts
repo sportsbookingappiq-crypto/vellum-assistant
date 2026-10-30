@@ -153,11 +153,11 @@ export const MOCK_SUGGESTION_GROUPS: SuggestionGroup[] = [
       },
     ],
   },
-  // Vellum-curated picks: placeholder/mock suggestions rendered behind the
+  // ANU-curated picks: placeholder/mock suggestions rendered behind the
   // new-thread-suggestions feature flag.
   {
     id: "vellum-picks",
-    title: "Vellum picks",
+    title: "ANU picks",
     source: "vellum-curated",
     suggestions: [
       {
@@ -175,7 +175,7 @@ export const MOCK_SUGGESTION_GROUPS: SuggestionGroup[] = [
           requirements: [
             {
               id: "vellum-picks:build-website:vellum",
-              label: "Vellum assistant",
+              label: "ANU assistant",
               status: "ready",
             },
           ],
@@ -204,7 +204,7 @@ export const MOCK_SUGGESTION_GROUPS: SuggestionGroup[] = [
           requirements: [
             {
               id: "vellum-picks:summarize-week:vellum",
-              label: "Vellum assistant",
+              label: "ANU assistant",
               status: "ready",
             },
           ],
@@ -230,7 +230,7 @@ export const MOCK_SUGGESTION_GROUPS: SuggestionGroup[] = [
           requirements: [
             {
               id: "vellum-picks:draft-email:vellum",
-              label: "Vellum assistant",
+              label: "ANU assistant",
               status: "ready",
             },
           ],
@@ -258,7 +258,7 @@ export const MOCK_SUGGESTION_GROUPS: SuggestionGroup[] = [
           requirements: [
             {
               id: "vellum-picks:plan-trip:vellum",
-              label: "Vellum assistant",
+              label: "ANU assistant",
               status: "ready",
             },
           ],
@@ -286,7 +286,7 @@ export const MOCK_SUGGESTION_GROUPS: SuggestionGroup[] = [
           requirements: [
             {
               id: "vellum-picks:research-topic:vellum",
-              label: "Vellum assistant",
+              label: "ANU assistant",
               status: "ready",
             },
           ],

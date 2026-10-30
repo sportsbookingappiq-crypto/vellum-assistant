@@ -406,7 +406,7 @@ async function showAssistantProcesses(entry: AssistantEntry): Promise<void> {
         {
           name: "assistant",
           status: withStatusEmoji("unreachable"),
-          info: "could not reach platform API — run `vellum login`",
+          info: "could not reach platform API: run `anu login`",
         },
       ];
       printTable(rows);
@@ -472,7 +472,7 @@ async function showAssistantProcesses(entry: AssistantEntry): Promise<void> {
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
     if (msg.includes("timed out")) {
-      console.warn(`Warning: remote process listing timed out — ${msg}`);
+      console.warn(`Warning: remote process listing timed out: ${msg}`);
       return;
     }
     console.error(`Failed to list processes: ${msg}`);
@@ -586,7 +586,7 @@ export async function listAllAssistants(verbose: boolean): Promise<void> {
   // "Platform: not logged in" line.
   const platformToken = readPlatformToken();
   if (!platformToken) {
-    log?.("No platform token found — skipping cloud sync");
+    log?.("No platform token found. Skipping cloud sync");
     console.log("Platform: not logged in");
   } else {
     const syncResult = await syncCloudAssistants(platformToken, { log });
@@ -628,9 +628,7 @@ export async function listAllAssistants(verbose: boolean): Promise<void> {
         info: `PID ${o.pid} (from ${o.source})`,
       }));
       printTable(rows);
-      console.log(
-        `\nHint: Run \`vellum clean\` to clean up orphaned processes.`,
-      );
+      console.log(`\nHint: Run \`anu clean\` to clean up orphaned processes.`);
     }
 
     return;
@@ -654,7 +652,7 @@ export async function listAllAssistants(verbose: boolean): Promise<void> {
 export async function ps(): Promise<void> {
   const args = process.argv.slice(3);
   if (args.includes("--help") || args.includes("-h")) {
-    console.log("Usage: vellum ps [<name-or-id>] [--verbose]");
+    console.log("Usage: anu ps [<name-or-id>] [--verbose]");
     console.log("");
     console.log(
       "List all assistants, or show processes for a specific assistant.",

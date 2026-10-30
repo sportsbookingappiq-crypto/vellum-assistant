@@ -69,50 +69,76 @@ function parseArgs(): HatchArgs {
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg === "--help" || arg === "-h") {
-      console.log("Usage: vellum hatch [species] [options]");
+      console.log("Usage: anu hatch [species] [options]");
       console.log("");
-      console.log("Create a new assistant instance.");
+      console.log(
+        "Create an assistant, start it, and make it the active assistant.",
+      );
+      console.log(
+        "Assistants are recorded in ~/.vellum.lock.json (or the env-scoped lockfile).",
+      );
       console.log("");
       console.log("Species:");
-      console.log("  vellum       Default assistant (default)");
-      console.log("  openclaw     OpenClaw adapter");
+      console.log("  vellum       The ANU assistant runtime (default)");
+      console.log("  openclaw     OpenClaw runtime behind the ANU gateway");
       console.log("");
       console.log("Options:");
-      console.log("  -d                        Run in detached mode");
-      console.log("  --name <name>             Custom instance name");
       console.log(
-        "  --remote <host>           Remote host (local, docker, custom, vellum)",
+        "  --remote <host>           Where to run it: local (default), docker, vellum (ANU platform), custom (not implemented)",
+      );
+      console.log(
+        "  --name <name>             Instance name. Default: a generated name",
+      );
+      console.log(
+        "  -d                        Docker only: return once containers start instead of watching startup",
+      );
+      console.log(
+        "  --keep-alive              Local only: stay in the foreground after hatch; exit when the gateway stops",
       );
       console.log(
         "  --watch                   Run assistant and gateway in watch mode (hot reload on source changes)",
       );
       console.log(
-        "  --source <path>           Build images from a local source tree at <path> (no watcher). Useful for callers (e.g. evals) that want each run to pick up local CLI changes.",
-        "  --preview                 When pulling published images (no local source), resolve from the preview channel (latest preview release) instead of latest-stable. Also settable via VELLUM_HATCH_CHANNEL=preview.",
+        "  --source <path>           Docker only: build images from the source tree at <path> (no watcher)",
       );
       console.log(
-        "  --keep-alive              Stay alive after hatch, exit when gateway stops",
+        "  --preview                 Docker only: pull the latest preview release instead of latest stable. Same as VELLUM_HATCH_CHANNEL=preview",
       );
       console.log(
         "  --config <key=value>      Set a workspace config value (repeatable)",
       );
       console.log(
-        "  --flag <key=value>        Set a feature flag override as VELLUM_FLAG_<KEY> env var (repeatable)",
+        "  --flag <key=value>        Set a feature flag override as VELLUM_FLAG_<KEY> (repeatable)",
       );
       console.log(
-        "  --analyze                 Emit a structured hatch-timing log line on stdout",
+        "  --analyze                 Print a structured hatch-timing log line on stdout",
       );
       console.log(
-        "  --disable-platform        Suppress all outbound platform API calls",
+        "  --disable-platform        Make no outbound ANU platform API calls",
       );
       console.log(
-        "  --netns-container <name>  Join an existing container's network namespace (docker target only) instead of creating a per-instance network. The namespace owner publishes host ports, so --gateway-port is required.",
+        "  --netns-container <name>  Docker only: join an existing container's network namespace instead of creating a network. Requires --gateway-port",
       );
       console.log(
-        "  --gateway-port <port>     Use an explicit host port for the gateway runtime URL instead of auto-allocating. Required with --netns-container.",
+        "  --gateway-port <port>     Docker only: use this host port for the gateway instead of picking a free one",
       );
       console.log(
-        "  --assistant-ca-cert <path>  Trust an extra PEM CA bundle in the assistant container (NODE_EXTRA_CA_CERTS) from process start. Useful behind a TLS-terminating egress proxy.",
+        "  --assistant-ca-cert <path>  Docker only: trust an extra PEM CA bundle in the assistant container (NODE_EXTRA_CA_CERTS), for TLS-terminating egress proxies",
+      );
+      console.log("");
+      console.log("Examples:");
+      console.log(
+        "  anu hatch                                  # local assistant",
+      );
+      console.log(
+        "  anu hatch --remote docker --name research  # Docker containers named 'research'",
+      );
+      console.log(
+        "  anu hatch --remote vellum                  # on the ANU platform (run 'anu login' first)",
+      );
+      console.log("");
+      console.log(
+        "After hatching: 'anu client' to chat, 'anu sleep' to stop, 'anu retire <name>' to delete.",
       );
       process.exit(0);
     } else if (arg === "-d") {
@@ -143,7 +169,7 @@ function parseArgs(): HatchArgs {
         validateAssistantName(next);
       } catch {
         console.error(
-          `Error: --name contains invalid characters (path separators or traversal segments are not allowed)`,
+          `Error: --name '${next}' is not allowed. Names cannot contain '/' or '\\', or be '.' or '..'.`,
         );
         process.exit(1);
       }
@@ -209,7 +235,7 @@ function parseArgs(): HatchArgs {
       species = arg as Species;
     } else {
       console.error(
-        `Error: Unknown argument '${arg}'. Valid options: ${VALID_SPECIES.join(", ")}, -d, --watch, --source <path>, --preview, --keep-alive, --name <name>, --remote <${VALID_REMOTE_HOSTS.join("|")}>, --config <key=value>, --flag <key=value>, --analyze, --disable-platform, --netns-container <name>, --gateway-port <port>, --assistant-ca-cert <path>`,
+        `Error: Unknown argument '${arg}'. Species: ${VALID_SPECIES.join(", ")}. Run 'anu hatch --help' for all options.`,
       );
       process.exit(1);
     }
@@ -242,7 +268,7 @@ function getCliVersion(): string {
 
 export async function hatch(): Promise<void> {
   const cliVersion = getCliVersion();
-  console.log(`@vellumai/cli v${cliVersion}`);
+  console.log(`@anu/cli v${cliVersion}`);
 
   const {
     species,
@@ -342,7 +368,9 @@ export async function hatch(): Promise<void> {
 async function hatchVellumPlatform(): Promise<void> {
   const token = readPlatformToken();
   if (!token) {
-    console.error("Not logged in. Run `vellum login --token <token>` first.");
+    console.error(
+      "Not logged in to the ANU platform. Run 'anu login', then 'anu hatch --remote vellum' again.",
+    );
     process.exit(1);
   }
 
@@ -352,7 +380,7 @@ async function hatchVellumPlatform(): Promise<void> {
     console.log(`   ${line}`);
   }
   console.log("");
-  console.log("   Hatching assistant on Vellum platform...");
+  console.log("   Hatching assistant on ANU platform...");
   console.log("");
 
   const { assistant: result } = await hatchAssistant(token);
@@ -368,10 +396,14 @@ async function hatchVellumPlatform(): Promise<void> {
   });
   setActiveAssistant(result.id);
 
-  console.log(`   ${config.hatchedEmoji}  Your assistant has hatched!`);
+  console.log(
+    `   ${config.hatchedEmoji}  Assistant hatched on the ANU platform.`,
+  );
   console.log("");
   console.log(`   ID:     ${result.id}`);
   console.log(`   Name:   ${result.name}`);
   console.log(`   Status: ${result.status}`);
+  console.log("");
+  console.log("   It is now the active assistant. Chat with it: anu client");
   console.log("");
 }

@@ -9,7 +9,7 @@
 
 import { randomUUID } from "node:crypto";
 
-import { proxyForward } from "@vellumai/assistant-client";
+import { proxyForward } from "@anu/assistant-client";
 import {
   generateInviteCode,
   generateInviteToken,
@@ -18,7 +18,7 @@ import {
   isRiskThreshold,
   isValidE164,
   type RiskThreshold,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 import { eq } from "drizzle-orm";
 
 import { mintServiceToken } from "../../auth/token-exchange.js";
@@ -1272,10 +1272,10 @@ function validateSpeciesMetadata(
 
   if (species === "vellum") {
     if (typeof metadata.assistantId !== "string" || !metadata.assistantId) {
-      return 'Vellum assistant metadata requires a non-empty "assistantId" string';
+      return 'ANU assistant metadata requires a non-empty "assistantId" string';
     }
     if (typeof metadata.gatewayUrl !== "string" || !metadata.gatewayUrl) {
-      return 'Vellum assistant metadata requires a non-empty "gatewayUrl" string';
+      return 'ANU assistant metadata requires a non-empty "gatewayUrl" string';
     }
   }
 

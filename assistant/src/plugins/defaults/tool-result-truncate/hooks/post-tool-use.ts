@@ -8,7 +8,7 @@
  * The hook mutates `toolResponse.content` in place.
  */
 
-import type { HookFunction, PostToolUseContext } from "@vellumai/plugin-api";
+import type { HookFunction, PostToolUseContext } from "@anu/plugin-api";
 
 import { truncateToolResult } from "../terminal.js";
 

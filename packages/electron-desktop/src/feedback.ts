@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { FEEDBACK_DIAGNOSTICS, FEEDBACK_LOGS } from "@vellumai/ipc-contract";
+import { FEEDBACK_DIAGNOSTICS, FEEDBACK_LOGS } from "@anu/ipc-contract";
 
 import type { FeedbackDependencies, FeedbackIpc } from "./diagnostics-contract";
 import { redactText, REDACTION_VERSION } from "./redact";

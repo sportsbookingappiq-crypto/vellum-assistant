@@ -6,7 +6,7 @@
  * the standard runtime auth middleware.
  */
 
-import { INTEGRATION_CATEGORIES } from "@vellumai/service-contracts/integration-categories";
+import { INTEGRATION_CATEGORIES } from "@anu/service-contracts/integration-categories";
 import { z } from "zod";
 
 import { loadConfig } from "../../config/loader.js";

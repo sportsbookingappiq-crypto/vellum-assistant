@@ -8,8 +8,8 @@ import {
 import { isElectron } from "@/runtime/is-electron";
 import { useDesktopAppPlatform } from "@/runtime/desktop-app-platform";
 import { useTranslation } from "@/i18n";
-import { cn } from "@vellumai/design-library/utils/cn";
-import { textLinkVariants } from "@vellumai/design-library/components/text-link";
+import { cn } from "@anu/design-library/utils/cn";
+import { textLinkVariants } from "@anu/design-library/components/text-link";
 
 /**
  * Branded About page rendered inside the Electron About BrowserWindow
@@ -83,9 +83,9 @@ export function AboutPage() {
 }
 
 const FALLBACK: AppVersionInfo = {
-  appName: "Vellum",
+  appName: "ANU",
   version: "—",
   commitSha: "—",
-  copyright: `© ${new Date().getFullYear()} Vellum`,
+  copyright: `© ${new Date().getFullYear()} ANU`,
   website: "https://vellum.ai",
 };

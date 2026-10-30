@@ -4,7 +4,7 @@ import { useTranslation } from "@/i18n";
 
 import type { Conversation } from "@/types/conversation-types";
 import { useDisplayConversationTitle } from "@/utils/conversation-title";
-import { Checkbox, ConfirmDialog } from "@vellumai/design-library";
+import { Checkbox, ConfirmDialog } from "@anu/design-library";
 
 /**
  * Confirmation gate for the per-conversation Delete action. One click

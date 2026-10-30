@@ -54,7 +54,7 @@ import {
   PortalContainerProvider,
   cn,
   useTouchSurface,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 
 import { useTranslation } from "@/i18n";
 

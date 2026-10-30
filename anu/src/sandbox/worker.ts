@@ -1,0 +1,70 @@
+/**
+ * Per-task worker process. The sandbox server starts one per run with a
+ * sanitized environment, in its own process group, with the task workspace as
+ * the working directory. It reads a start message on stdin, runs the driver,
+ * and writes protocol lines on stdout. It never sees platform secrets.
+ */
+import { createInterface } from "node:readline";
+
+import { DRIVERS } from "./drivers/index.js";
+import { DriverUnavailableError, type DriverContext } from "./drivers/types.js";
+import { LINE_PREFIX, type ParentMessage, type WorkerMessage } from "./protocol.js";
+
+function emit(message: WorkerMessage): void {
+  process.stdout.write(LINE_PREFIX + JSON.stringify(message) + "\n");
+}
+
+const pending = new Map<string, (decision: "approved" | "rejected") => void>();
+let started = false;
+let counter = 0;
+const abort = new AbortController();
+process.on("SIGTERM", () => abort.abort());
+
+const lines = createInterface({ input: process.stdin });
+lines.on("line", (line) => {
+  let message: ParentMessage;
+  try {
+    message = JSON.parse(line);
+  } catch {
+    return;
+  }
+  if (message.t === "decision") {
+    pending.get(message.ref)?.(message.decision);
+    pending.delete(message.ref);
+  } else if (message.t === "start" && !started) {
+    started = true;
+    void run(message);
+  }
+});
+
+async function run(start: Extract<ParentMessage, { t: "start" }>) {
+  const driver = DRIVERS[start.driver];
+  const env: Record<string, string> = {};
+  for (const [key, value] of Object.entries(process.env)) if (value !== undefined) env[key] = value;
+  const ctx: DriverContext = {
+    taskId: start.taskId,
+    goal: start.goal,
+    workspaceDir: start.workspaceDir,
+    env,
+    settings: start.settings,
+    signal: abort.signal,
+    step: (step) => emit({ t: "step", ...step }),
+    requestApproval: (prompt, detail) =>
+      new Promise((resolve) => {
+        const ref = `a${++counter}`;
+        pending.set(ref, resolve);
+        emit({ t: "approval", ref, prompt, detail });
+      }),
+    log: (message) => process.stderr.write(`[worker] ${message}\n`),
+  };
+  try {
+    if (!driver) throw new DriverUnavailableError(`unknown driver ${start.driver}`);
+    const outcome = await driver.run(ctx);
+    emit({ t: "done", status: outcome.status, result: outcome.result, confidence: outcome.confidence ?? null });
+  } catch (error) {
+    const prefix = error instanceof DriverUnavailableError ? "Driver unavailable: " : "";
+    emit({ t: "done", status: "failed", result: prefix + (error instanceof Error ? error.message : String(error)) });
+  }
+  // Let stdout drain before exiting so the final line is not lost.
+  process.stdout.write("", () => process.exit(0));
+}

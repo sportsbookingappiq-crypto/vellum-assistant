@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 
-import { ResizablePanel } from "@vellumai/design-library";
+import { ResizablePanel } from "@anu/design-library";
 
 import type { PanePresentation } from "@/stores/pane-state";
 

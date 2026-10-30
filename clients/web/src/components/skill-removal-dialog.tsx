@@ -1,4 +1,4 @@
-import { ConfirmDialog } from "@vellumai/design-library";
+import { ConfirmDialog } from "@anu/design-library";
 
 import { useTranslation } from "@/i18n";
 

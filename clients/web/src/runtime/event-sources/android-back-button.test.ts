@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, mock, spyOn, test } from "bun:test";
 import { act, cleanup, render, screen } from "@testing-library/react";
 import { createElement, useState } from "react";
-import { BottomSheet } from "@vellumai/design-library";
+import { BottomSheet } from "@anu/design-library";
 
 import { conversationNavigationMock } from "@/utils/conversation-navigation.test-helper";
 

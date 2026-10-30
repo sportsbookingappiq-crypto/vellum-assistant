@@ -44,7 +44,7 @@ export function resolveManagedAssistant(
     if (nameArg) {
       console.error(`No assistant instance found with name '${nameArg}'.`);
     } else {
-      console.error("No assistant instance found. Run `vellum hatch` first.");
+      console.error("No assistant instance found. Run `anu hatch` first.");
     }
     process.exit(1);
   }
@@ -57,11 +57,11 @@ export function resolveManagedAssistant(
       );
     } else if (cloud === "docker") {
       console.error(
-        `Use 'vellum exec -it -- /bin/bash' or 'vellum ssh' for ${cloud} instances.`,
+        `Use 'anu exec -it -- /bin/bash' or 'anu ssh' for ${cloud} instances.`,
       );
     } else {
       console.error(
-        `'vellum terminal' is for managed (cloud-hosted) assistants. This assistant uses '${cloud}'.`,
+        `'anu terminal' is for managed (cloud-hosted) assistants. This assistant uses '${cloud}'.`,
       );
     }
     process.exit(1);
@@ -70,7 +70,7 @@ export function resolveManagedAssistant(
   const token = readPlatformToken();
   if (!token) {
     console.error(
-      "Not logged in. Run `vellum login` first to authenticate with the platform.",
+      "Not logged in. Run `anu login` first to authenticate with the platform.",
     );
     process.exit(1);
   }

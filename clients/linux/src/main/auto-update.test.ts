@@ -4,8 +4,8 @@ import {
   UPDATE_CHECK,
   UPDATE_GET_STATE,
   UPDATE_INSTALL,
-} from "@vellumai/ipc-contract";
-import { resolveUpdateFeedUrl } from "@vellumai/electron-desktop/auto-update";
+} from "@anu/ipc-contract";
+import { resolveUpdateFeedUrl } from "@anu/electron-desktop/auto-update";
 
 const registeredChannels: string[] = [];
 const feedUrls: string[] = [];

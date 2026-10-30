@@ -2,9 +2,9 @@ import { TrustSecurityPermissionsModelContent } from "@/app/docs/_components/tru
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({
-  title: "The Permissions Model - Vellum Docs",
+  title: "The Permissions Model - ANU Docs",
   description:
-    "Vellum's permissions model — risk tolerance tiers, sandbox boundary, trust rules, and the Allow/Deny permission prompt.",
+    "ANU's permissions model — risk tolerance tiers, sandbox boundary, trust rules, and the Allow/Deny permission prompt.",
   path: "/docs/trust-security/the-permissions-model",
 });
 

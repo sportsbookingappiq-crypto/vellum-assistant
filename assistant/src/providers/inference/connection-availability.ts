@@ -70,7 +70,7 @@ export interface ConnectionAvailability {
 const SETTINGS_HINT = "in Settings → Models & Services";
 
 /**
- * Availability of the Vellum-managed platform proxy: signed in and reachable.
+ * Availability of the ANU-managed platform proxy: signed in and reachable.
  */
 export async function vellumConnectionAvailability(): Promise<ConnectionAvailability> {
   const ctx = await resolveManagedProxyContext();
@@ -80,7 +80,7 @@ export async function vellumConnectionAvailability(): Promise<ConnectionAvailabi
   if (!ctx.platformBaseUrl) {
     return {
       status: "vellum_unauthenticated",
-      message: "Not signed in to Vellum — the platform URL is not configured.",
+      message: "Not signed in to ANU — the platform URL is not configured.",
     };
   }
   // The context collapses an unreachable credential read into "no key";
@@ -95,13 +95,13 @@ export async function vellumConnectionAvailability(): Promise<ConnectionAvailabi
     return {
       status: "unknown",
       message:
-        "The credential store is unreachable, so Vellum sign-in could not be verified. Try again shortly.",
+        "The credential store is unreachable, so ANU sign-in could not be verified. Try again shortly.",
     };
   }
   return {
     status: "vellum_unauthenticated",
     message:
-      "Not signed in to Vellum — no assistant API key is stored. Log in to use Vellum-managed inference.",
+      "Not signed in to ANU — no assistant API key is stored. Log in to use ANU-managed inference.",
   };
 }
 
@@ -111,7 +111,7 @@ function vellumManagedMismatch(
 ): ConnectionAvailability {
   return {
     status: "provider_mismatch",
-    message: `Connection "${resolvedConnectionName}" is the Vellum-managed connection, which cannot serve provider "${provider}". Pick a connection for "${provider}" ${SETTINGS_HINT}.`,
+    message: `Connection "${resolvedConnectionName}" is the ANU-managed connection, which cannot serve provider "${provider}". Pick a connection for "${provider}" ${SETTINGS_HINT}.`,
   };
 }
 
@@ -146,7 +146,7 @@ export async function computeConnectionAvailability(
   }
 
   // Mirror the dispatch-time provider check (`tryResolveProviderForConnectionName`):
-  // the provider-agnostic Vellum-managed connection routes managed-routable
+  // the provider-agnostic ANU-managed connection routes managed-routable
   // providers via platform auth; any other provider mismatch fails there, so
   // usable credentials must not read as ok.
   if (isVellumManagedConnection(connection)) {
@@ -236,7 +236,7 @@ export async function computeConnectionAvailability(
       }
       return {
         status: "unsupported_auth",
-        message: `Connection "${resolvedConnectionName}" uses Vellum platform auth, which cannot serve provider "${provider}". Add an API-key connection for "${provider}" ${SETTINGS_HINT}.`,
+        message: `Connection "${resolvedConnectionName}" uses ANU platform auth, which cannot serve provider "${provider}". Add an API-key connection for "${provider}" ${SETTINGS_HINT}.`,
       };
     case "none": {
       // Keyless providers (catalog setupMode "keyless", e.g. ollama) and

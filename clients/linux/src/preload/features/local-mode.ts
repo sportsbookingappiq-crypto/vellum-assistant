@@ -3,9 +3,9 @@ import { ipcRenderer } from "electron";
 import type {
   BridgeCapabilityRegistry,
   CapabilityModule,
-} from "@vellumai/electron-desktop/capability-registry";
-import { createLocalModeBridge } from "@vellumai/electron-desktop/local-mode-bridge";
-import type { VellumBridge } from "@vellumai/ipc-contract";
+} from "@anu/electron-desktop/capability-registry";
+import { createLocalModeBridge } from "@anu/electron-desktop/local-mode-bridge";
+import type { VellumBridge } from "@anu/ipc-contract";
 
 const localModeFeature: CapabilityModule<
   BridgeCapabilityRegistry<VellumBridge>

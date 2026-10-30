@@ -16,7 +16,7 @@
  * when to spend the refresh token lives in `claude-token-refresh.ts`.
  */
 
-import { computeExpiresAt, isTokenExpired } from "@vellumai/credential-storage";
+import { computeExpiresAt, isTokenExpired } from "@anu/credential-storage";
 
 import { credentialKey } from "../security/credential-key.js";
 import type { OAuth2Config } from "../security/oauth2.js";

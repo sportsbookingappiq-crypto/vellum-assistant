@@ -3,13 +3,13 @@ import { ipcRenderer } from "electron";
 import type {
   BridgeCapabilityRegistry,
   CapabilityModule,
-} from "@vellumai/electron-desktop/capability-registry";
+} from "@anu/electron-desktop/capability-registry";
 import {
   DIAGNOSTICS_SET_SHARE,
   FEEDBACK_DIAGNOSTICS,
   FEEDBACK_LOGS,
   type VellumBridge,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 const diagnosticsFeature: CapabilityModule<
   BridgeCapabilityRegistry<VellumBridge>

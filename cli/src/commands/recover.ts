@@ -1,4 +1,4 @@
-import { resolveExistingLocalSigningKey } from "@vellumai/local-mode";
+import { resolveExistingLocalSigningKey } from "@anu/local-mode";
 import {
   existsSync,
   mkdirSync,
@@ -23,7 +23,7 @@ import { exec } from "../lib/step-runner";
 export async function recover(): Promise<void> {
   const args = process.argv.slice(3);
   if (args.includes("--help") || args.includes("-h")) {
-    console.log("Usage: vellum recover <name>");
+    console.log("Usage: anu recover <name>");
     console.log("");
     console.log(
       "Restore a previously retired local assistant from its archive.",
@@ -43,14 +43,14 @@ export async function recover(): Promise<void> {
     console.log("  <name>    Name of the retired assistant to recover");
     console.log("");
     console.log("Examples:");
-    console.log("  $ vellum recover my-assistant");
-    console.log("  $ vellum recover aria-7f3a");
+    console.log("  $ anu recover my-assistant");
+    console.log("  $ anu recover aria-7f3a");
     process.exit(0);
   }
 
   const name = process.argv[3];
   if (!name) {
-    console.error("Usage: vellum recover <name>");
+    console.error("Usage: anu recover <name>");
     process.exit(1);
   }
 
@@ -69,7 +69,7 @@ export async function recover(): Promise<void> {
     throw new Error(
       `Retired assistant '${name}' is missing resource configuration. ` +
         `Fix the archive metadata at ${metadataPath} and retry, ` +
-        `or run 'vellum hatch' to re-provision with proper resource allocation.`,
+        `or run 'anu hatch' to re-provision with proper resource allocation.`,
     );
   }
 

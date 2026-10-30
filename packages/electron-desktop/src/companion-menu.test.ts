@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import type { CompanionSize, CompanionSizeAxis } from "@vellumai/ipc-contract";
+import type { CompanionSize, CompanionSizeAxis } from "@anu/ipc-contract";
 
 import {
   companionSizeSubmenus,

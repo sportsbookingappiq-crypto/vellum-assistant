@@ -1,6 +1,6 @@
 import { readdirSync } from "fs";
 
-import { SEEDS, type EnvironmentDefinition } from "@vellumai/environments";
+import { SEEDS, type EnvironmentDefinition } from "@anu/environments";
 
 import { getMultiInstanceDir } from "./paths.js";
 import { getCurrentEnvironment } from "./resolve.js";
@@ -73,7 +73,7 @@ export function crossEnvironmentAssistantHint(): string | null {
   return (
     `\n\nFound assistants in the ${quoted} ${noun} (managed by a dev/staging ` +
     `desktop app). This CLI targets '${currentEnv.name}'. Use the desktop ` +
-    `app's 'Install vellum Command…' menu item to get a matching CLI, or ` +
+    `app's 'Install anu Command…' menu item to get a matching CLI, or ` +
     `set VELLUM_ENVIRONMENT=${others[0]}.`
   );
 }

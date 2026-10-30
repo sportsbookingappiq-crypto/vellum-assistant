@@ -55,7 +55,7 @@ function writeLockfile(
   );
 }
 
-describe("vellum use", () => {
+describe("anu use", () => {
   beforeEach(() => {
     process.env.VELLUM_LOCKFILE_DIR = testDir;
     rmSync(join(testDir, ".vellum.lock.json"), { force: true });

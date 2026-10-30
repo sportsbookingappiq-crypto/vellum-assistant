@@ -11,21 +11,21 @@ import {
 
 import { companionLayoutFor } from "@/components/companion-layout";
 import { useTranslation } from "@/i18n";
-import { Button } from "@vellumai/design-library/components/button";
-import { ScrollShadow } from "@vellumai/design-library/components/scroll-shadow";
-import { SegmentControl } from "@vellumai/design-library/components/segment-control";
+import { Button } from "@anu/design-library/components/button";
+import { ScrollShadow } from "@anu/design-library/components/scroll-shadow";
+import { SegmentControl } from "@anu/design-library/components/segment-control";
 import {
   COMPANION_BASE_AVATAR_BOX,
   COMPANION_BASE_CAPTURE_PICKER_WIDTH,
   companionLowerReachFor,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 import type {
   CompanionCapturePick,
   CompanionCaptureSources,
   CompanionCardGrowth,
   CompanionGrowth,
   WatchCaptureTarget,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 /**
  * The picker Teach and Share open: what a session could read, or be shown, as

@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 
-import { acceleratorToAriaKeyShortcuts } from "@vellumai/design-library";
-import { ACCELERATOR_NAMED_KEYS } from "@vellumai/ipc-contract";
+import { acceleratorToAriaKeyShortcuts } from "@anu/design-library";
+import { ACCELERATOR_NAMED_KEYS } from "@anu/ipc-contract";
 
 /**
  * The shell accepts a vocabulary of named keys; the renderer has to turn every

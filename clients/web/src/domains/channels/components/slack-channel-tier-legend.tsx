@@ -1,4 +1,4 @@
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Typography } from "@anu/design-library/components/typography";
 
 import {
   CAPABILITY_TIER_META,

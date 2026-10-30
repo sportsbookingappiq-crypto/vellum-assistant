@@ -100,7 +100,7 @@ mock.module("lucide-react", () => ({
   EyeOff: () => null,
   ExternalLink: () => null,
 }));
-mock.module("@vellumai/design-library/components/button", () => ({
+mock.module("@anu/design-library/components/button", () => ({
   Button: ({
     children,
     onClick,
@@ -115,13 +115,13 @@ mock.module("@vellumai/design-library/components/button", () => ({
     </button>
   ),
 }));
-mock.module("@vellumai/design-library/components/card", () => ({
+mock.module("@anu/design-library/components/card", () => ({
   Card: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
-mock.module("@vellumai/design-library/components/checkbox", () => ({
+mock.module("@anu/design-library/components/checkbox", () => ({
   Checkbox: () => null,
 }));
-mock.module("@vellumai/design-library/components/toggle", () => ({
+mock.module("@anu/design-library/components/toggle", () => ({
   Toggle: () => null,
 }));
 

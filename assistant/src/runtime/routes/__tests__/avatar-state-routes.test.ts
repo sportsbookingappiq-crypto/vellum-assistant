@@ -213,7 +213,7 @@ describe("GET /avatar/state", () => {
     writeManifest(state, avatarDir);
 
     const result = await getStateHandler()({});
-    expect(result.accent).toEqual({ hex: "#E9642F", source: "palette" });
+    expect(result.accent).toEqual({ hex: "#E96D38", source: "palette" });
   });
 
   test("leaves the accent null for an image that cannot be decoded, without failing the read", async () => {

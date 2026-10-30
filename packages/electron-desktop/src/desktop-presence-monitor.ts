@@ -1,6 +1,6 @@
 import { powerMonitor } from "electron";
 
-import type { DesktopPresenceState } from "@vellumai/service-contracts/desktop-presence";
+import type { DesktopPresenceState } from "@anu/service-contracts/desktop-presence";
 
 export type PresenceState = DesktopPresenceState;
 

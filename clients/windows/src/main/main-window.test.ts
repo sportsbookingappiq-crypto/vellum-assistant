@@ -5,7 +5,7 @@ import {
   MAIN_WINDOW_SET_ONBOARDING,
   MAIN_WINDOW_SET_TITLE_BAR_OVERLAY,
   type TitleBarOverlayTheme,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 interface WindowState {
   destroyed: boolean;
@@ -182,7 +182,7 @@ const writeTitleBarOverlayThemeMock = mock(
   (_theme: TitleBarOverlayTheme) => undefined,
 );
 
-mock.module("@vellumai/electron-desktop/window-state", () => ({
+mock.module("@anu/electron-desktop/window-state", () => ({
   restoreBounds: () => restoredBounds,
   track: trackMock,
   readOnboardingActive: () => false,
@@ -358,8 +358,8 @@ describe("Windows main window", () => {
      */
     // GIVEN a renderer published the velvet theme on a past launch
     persistedOverlayTheme = {
-      color: "#121214",
-      symbolColor: "#F6F5F4",
+      color: "#01040D",
+      symbolColor: "#E0F2FE",
       colorScheme: "dark",
     };
 
@@ -369,8 +369,8 @@ describe("Windows main window", () => {
     // THEN the caption buttons are built in those colors, at the title bar's
     // own height
     expect(constructed[0]?.options.titleBarOverlay).toEqual({
-      color: "#121214",
-      symbolColor: "#F6F5F4",
+      color: "#01040D",
+      symbolColor: "#E0F2FE",
       height: 44,
     });
   });
@@ -385,20 +385,20 @@ describe("Windows main window", () => {
 
     // WHEN its renderer publishes the dark theme
     invokeHandlers.get(MAIN_WINDOW_SET_TITLE_BAR_OVERLAY)?.(
-      [{ color: "#17191C", symbolColor: "#F6F5F4", colorScheme: "dark" }],
+      [{ color: "#050B1F", symbolColor: "#E6EEF7", colorScheme: "dark" }],
       { sender: constructed[0]?.webContents },
     );
 
     // THEN the live window is repainted, keeping the title bar's height
     expect(constructed[0]?.setTitleBarOverlay).toHaveBeenCalledWith({
-      color: "#17191C",
-      symbolColor: "#F6F5F4",
+      color: "#050B1F",
+      symbolColor: "#E6EEF7",
       height: 44,
     });
     // AND the theme is persisted for the next launch's constructor
     expect(writeTitleBarOverlayThemeMock).toHaveBeenCalledWith({
-      color: "#17191C",
-      symbolColor: "#F6F5F4",
+      color: "#050B1F",
+      symbolColor: "#E6EEF7",
       colorScheme: "dark",
     });
   });
@@ -416,7 +416,7 @@ describe("Windows main window", () => {
 
     // WHEN its renderer publishes a dark theme
     invokeHandlers.get(MAIN_WINDOW_SET_TITLE_BAR_OVERLAY)?.(
-      [{ color: "#17191C", symbolColor: "#F6F5F4", colorScheme: "dark" }],
+      [{ color: "#050B1F", symbolColor: "#E6EEF7", colorScheme: "dark" }],
       { sender: constructed[0]?.webContents },
     );
 
@@ -436,7 +436,7 @@ describe("Windows main window", () => {
 
     // WHEN its renderer publishes a dark theme
     invokeHandlers.get(MAIN_WINDOW_SET_TITLE_BAR_OVERLAY)?.(
-      [{ color: "#17191C", symbolColor: "#F6F5F4", colorScheme: "dark" }],
+      [{ color: "#050B1F", symbolColor: "#E6EEF7", colorScheme: "dark" }],
       { sender: constructed[0]?.webContents },
     );
 
@@ -457,7 +457,7 @@ describe("Windows main window", () => {
 
     // WHEN its renderer publishes a light theme
     invokeHandlers.get(MAIN_WINDOW_SET_TITLE_BAR_OVERLAY)?.(
-      [{ color: "#F6F5F4", symbolColor: "#24292E", colorScheme: "light" }],
+      [{ color: "#F0F9FF", symbolColor: "#0A1633", colorScheme: "light" }],
       { sender: constructed[0]?.webContents },
     );
 
@@ -473,8 +473,8 @@ describe("Windows main window", () => {
     // GIVEN a light-mode machine and a persisted dark theme
     nativeThemeStub.shouldUseDarkColorsForSystemIntegratedUI = false;
     persistedOverlayTheme = {
-      color: "#121214",
-      symbolColor: "#F6F5F4",
+      color: "#01040D",
+      symbolColor: "#E0F2FE",
       colorScheme: "dark",
     };
 
@@ -497,7 +497,7 @@ describe("Windows main window", () => {
 
     // WHEN some other window's renderer publishes a theme
     invokeHandlers.get(MAIN_WINDOW_SET_TITLE_BAR_OVERLAY)?.(
-      [{ color: "#e8a04c", symbolColor: "#17191C", colorScheme: "light" }],
+      [{ color: "#e8a04c", symbolColor: "#050B1F", colorScheme: "light" }],
       { sender: { staged: true } },
     );
 

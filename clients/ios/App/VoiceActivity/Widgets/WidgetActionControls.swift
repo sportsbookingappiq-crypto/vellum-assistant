@@ -3,7 +3,7 @@ import SwiftUI
 import UIKit
 import WidgetKit
 
-// The pieces every Vellum Home Screen widget builds itself out of: a tile, a
+// The pieces every ANU Home Screen widget builds itself out of: a tile, a
 // circle, a pill, the unread mark, and the secondary line of text that stands
 // in when there is nothing to list. They live here rather than beside whichever
 // widget reached for them first, because a control that lives in one widget's
@@ -41,31 +41,26 @@ enum WidgetFlattenedFill {
 }
 
 /// The app's own mark, at the size a control wears it: this build's icon
-/// ground with the icon's own eyes on it.
+/// ground with the ANU snowflake on it.
 ///
-/// The eyes are `VellumAppIconEyes`, the same `eyes.svg` the three Icon
-/// Composer bundles embed, pinned to the avatar component library's quirky
-/// style by `clients/ios/scripts/__tests__/ios-default-icon-geometry.test.ts`.
-/// Drawing the widget's own ``WidgetAvatarEyes`` here would be a different
-/// face: that pair is a 61x33 egg arrangement, while the icon's is 233x176 in
-/// its own canvas, and the two do not read as the same mark.
+/// The snowflake is `VellumAppIconEyes`, the small-size cut of the mark in
+/// `assets/brand/favicon.svg`, pinned there by
+/// `clients/ios/scripts/__tests__/ios-default-icon-geometry.test.ts`.
 ///
 /// The ground comes from the running bundle (``AppIconGround``), because
-/// Staging and Dev do not ship the production green.
+/// Staging and Dev do not ship the production night blue.
 ///
 /// Both go away once the system flattens the widget. A solid ground survives
-/// flattening as a solid block, which would swallow the eyes on it, and the
+/// flattening as a solid block, which would swallow the mark on it, and the
 /// control underneath already supplies a ground of its own.
 struct VellumAppIconMark: View {
     let size: CGFloat
 
-    /// The artwork's canvas is mostly empty: the pair occupies the middle
-    /// third, the way it does in the icon, which scales and offsets it rather
-    /// than drawing it edge to edge. These mirror that framing so the mark
-    /// reads at a control's size. The byte pin above is what catches artwork
-    /// that moves out from under them.
-    private static let artworkScale: CGFloat = 1.94
-    private static let artworkOffsetXRatio: CGFloat = 0.074
+    /// The artwork's 100x100 canvas holds the mark edge to edge; the icon
+    /// draws it at 62.5% of its tile (Icon Composer scale 6.4 on 1024pt), and
+    /// this mirrors that framing so the mark reads at a control's size.
+    private static let artworkScale: CGFloat = 0.625
+    private static let artworkOffsetXRatio: CGFloat = 0
 
     /// A corner in the family the icon's own squircle is drawn with.
     private static let cornerRadiusRatio: CGFloat = 0.28

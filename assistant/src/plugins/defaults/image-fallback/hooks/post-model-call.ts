@@ -37,7 +37,7 @@ import {
   type HookFunction,
   isVisionNotSupportedError,
   type PostModelCallContext,
-} from "@vellumai/plugin-api";
+} from "@anu/plugin-api";
 
 import { captionOutboundImagesInMessages } from "../src/caption-blocks.js";
 import {

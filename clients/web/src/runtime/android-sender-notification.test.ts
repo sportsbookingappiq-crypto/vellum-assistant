@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, mock, test } from "bun:test";
 import type {
   NotificationDeliveryResult,
   PrepareNotificationIdentityPayload,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 let nativePlatform = true;
 let platform = "android";

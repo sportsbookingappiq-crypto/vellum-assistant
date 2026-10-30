@@ -1,7 +1,7 @@
 /**
- * `vellum debug-bundle [name]`
+ * `anu debug-bundle [name]`
  *
- * Send Vellum staff a debug bundle of a self-hosted assistant: the
+ * Send ANU staff a debug bundle of a self-hosted assistant: the
  * workspace, its logs, and the gateway's own database, with no credentials.
  * Staff open it on a throwaway debug clone. The platform only hands out the
  * upload URL while "Allow Staff Access" is on, and the bundle is deleted
@@ -46,34 +46,34 @@ export const DEBUG_PROFILE_MIN_VERSION = "0.12.3";
 const TOKEN_EXPIRY_MARGIN_MS = 60 * 1000;
 
 function printHelp(): void {
-  console.log(`Usage: vellum debug-bundle [name]
+  console.log(`Usage: anu debug-bundle [name]
 
-Send Vellum staff a debug bundle of a self-hosted assistant so they can
+Send ANU staff a debug bundle of a self-hosted assistant so they can
 inspect a copy of it. The bundle holds the assistant's workspace, its
 logs, and the gateway's own database. It never holds credentials.
 
 Arguments:
   name    Assistant ID or unique display name. Defaults to the active
-          assistant (see 'vellum use'). Multi-word names need no quotes.
+          assistant (see 'anu use'). Multi-word names need no quotes.
 
 Requirements:
   - 'Allow Staff Access' is on for the assistant (Settings > Privacy).
-  - You are logged in ('vellum login'), which also registers the
+  - You are logged in ('anu login'), which also registers the
     assistant with the platform.
   - The assistant runs version ${DEBUG_PROFILE_MIN_VERSION} or newer.
-  - The assistant is self-hosted. Vellum-hosted assistants need no bundle;
+  - The assistant is self-hosted. ANU-hosted assistants need no bundle;
     staff clone them directly.
 
 Side effects:
-  - Uploads the bundle to Vellum's debug-bundle storage, where it is
+  - Uploads the bundle to ANU's debug-bundle storage, where it is
     deleted after 7 days. Nothing on this machine changes.
   - Records a 'debug bundle exported' entry in your account's audit history.
   - Waits for the upload to finish (up to 60 minutes for a large workspace).
 
 Examples:
-  vellum debug-bundle
-  vellum debug-bundle my-assistant
-  vellum debug-bundle Support Bot
+  anu debug-bundle
+  anu debug-bundle my-assistant
+  anu debug-bundle Support Bot
 `);
 }
 
@@ -88,20 +88,20 @@ export async function debugBundle(): Promise<void> {
   const reference = formatAssistantReference(entry);
   if (entry.cloud === "vellum") {
     console.error(
-      `${reference} is hosted by Vellum, so staff can clone it directly. No bundle is needed.`,
+      `${reference} is hosted by ANU, so staff can clone it directly. No bundle is needed.`,
     );
     process.exit(1);
   }
 
   const platformToken = readPlatformToken();
   if (!platformToken) {
-    console.error("Not logged in. Run 'vellum login' first.");
+    console.error("Not logged in. Run 'anu login' first.");
     process.exit(1);
   }
   const platformAssistantId = entry.platformAssistantId?.trim();
   if (!platformAssistantId) {
     console.error(
-      `${reference} is not registered with the platform yet. Run 'vellum login' and retry.`,
+      `${reference} is not registered with the platform yet. Run 'anu login' and retry.`,
     );
     process.exit(1);
   }
@@ -116,7 +116,7 @@ export async function debugBundle(): Promise<void> {
   const comparison = compareVersions(version, DEBUG_PROFILE_MIN_VERSION);
   if (comparison === null || comparison < 0) {
     console.error(
-      `${reference} runs version ${version || "unknown"}, which cannot build a debug bundle. Update it to ${DEBUG_PROFILE_MIN_VERSION} or newer ('vellum upgrade') and retry.`,
+      `${reference} runs version ${version || "unknown"}, which cannot build a debug bundle. Update it to ${DEBUG_PROFILE_MIN_VERSION} or newer ('anu upgrade') and retry.`,
     );
     process.exit(1);
   }
@@ -150,7 +150,7 @@ export async function debugBundle(): Promise<void> {
   try {
     ({ jobId } = await localRuntimeExportToGcs(entry, accessToken, {
       uploadUrl,
-      description: "debug bundle for Vellum staff",
+      description: "debug bundle for ANU staff",
       profile: "debug",
     }));
   } catch (err) {
@@ -179,7 +179,7 @@ export async function debugBundle(): Promise<void> {
     process.exit(1);
   }
   console.log(
-    "Debug bundle sent to Vellum. Staff can open it for the next 7 days.",
+    "Debug bundle sent to ANU. Staff can open it for the next 7 days.",
   );
 }
 

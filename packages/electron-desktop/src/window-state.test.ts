@@ -644,13 +644,13 @@ describe("companion introduction seen flag", () => {
 
 describe("windows title-bar overlay theme", () => {
   const DARK_OVERLAY = {
-    color: "#17191C",
-    symbolColor: "#F6F5F4",
+    color: "#050B1F",
+    symbolColor: "#E6EEF7",
     colorScheme: "dark",
   } as const;
   const VELVET_OVERLAY = {
-    color: "#121214",
-    symbolColor: "#F6F5F4",
+    color: "#01040D",
+    symbolColor: "#E0F2FE",
     colorScheme: "dark",
   } as const;
 
@@ -693,7 +693,7 @@ describe("windows title-bar overlay theme", () => {
 
   test("a theme written by a build that predates the scheme is discarded", () => {
     // GIVEN colors an older build persisted without the scheme they came from
-    savedTitleBarOverlay = { color: "#17191C", symbolColor: "#F6F5F4" };
+    savedTitleBarOverlay = { color: "#050B1F", symbolColor: "#E6EEF7" };
 
     // WHEN the theme is read
     const theme = readTitleBarOverlayTheme();

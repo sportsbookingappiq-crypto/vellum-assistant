@@ -13,7 +13,7 @@
  * keeping injection idempotency a property of the injection machinery rather
  * than of the agent loop that drives compaction.
  */
-import type { Message } from "@vellumai/plugin-api";
+import type { Message } from "@anu/plugin-api";
 
 import {
   type InjectionMatcher,

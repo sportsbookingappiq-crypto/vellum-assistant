@@ -1,6 +1,6 @@
-# @vellumai/design-library
+# @anu/design-library
 
-Shared UI component library for Vellum web applications. Built with React 19 and Tailwind CSS v4.
+Shared UI component library for ANU web applications. Built with React 19 and Tailwind CSS v4.
 
 ## Component authoring conventions
 
@@ -58,14 +58,14 @@ Components are single flat files in `src/components/`. See
 Import from the package root:
 
 ```ts
-import { Button, Typography, Tag, tagVariants, cn } from "@vellumai/design-library";
+import { Button, Typography, Tag, tagVariants, cn } from "@anu/design-library";
 ```
 
 Subpath imports are also available for targeted imports:
 
 ```ts
-import { Button } from "@vellumai/design-library/components/button";
-import { cn } from "@vellumai/design-library/utils/cn";
+import { Button } from "@anu/design-library/components/button";
+import { cn } from "@anu/design-library/utils/cn";
 ```
 
 ### Just-in-Time compilation
@@ -97,8 +97,8 @@ package's source in its Tailwind source scan:
 
 ```css
 /* In your app's global CSS (e.g. globals.css) */
-@import "@vellumai/design-library/tokens.css";
-@source "../node_modules/@vellumai/design-library/src";
+@import "@anu/design-library/tokens.css";
+@source "../node_modules/@anu/design-library/src";
 ```
 
 The token stylesheet provides:
@@ -154,7 +154,7 @@ domain-specific behavior. The library provides sensible defaults;
 consumers override only what they need.
 
 ```tsx
-import { MarkdownMessage } from "@vellumai/design-library";
+import { MarkdownMessage } from "@anu/design-library";
 
 // Default behavior — links open in a new tab with noopener noreferrer
 <MarkdownMessage content={text} />

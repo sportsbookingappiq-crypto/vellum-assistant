@@ -916,7 +916,7 @@ function xServerCommand(executable: string): string[] {
     "-depth",
     "24",
     "-desktop",
-    "Vellum",
+    "ANU",
   ];
 }
 

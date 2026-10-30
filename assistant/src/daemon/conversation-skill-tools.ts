@@ -161,7 +161,7 @@ function loadManifestForSkill(skill: SkillSummary): SkillToolManifest | null {
 }
 
 /**
- * Whether a skill is Vellum-produced for `skill_loaded` telemetry purposes:
+ * Whether a skill is ANU-produced for `skill_loaded` telemetry purposes:
  * bundled skills always are; managed skills only when their install metadata
  * records a `vellum` origin (legacy version.json installs are inferred as
  * vellum by `readInstallMeta`). All other sources (workspace, extra, plugin)
@@ -178,7 +178,7 @@ function isVellumProducedSkill(skill: SkillSummary): boolean {
 }
 
 /**
- * Record a `skill_loaded` telemetry event for a newly-activated Vellum-produced
+ * Record a `skill_loaded` telemetry event for a newly-activated ANU-produced
  * skill. Metadata only — never skill output or conversation content.
  * `skill_updated_at` comes from the cached merged catalog (sync accessor —
  * this runs on the hot tool-projection path). Failures are swallowed at

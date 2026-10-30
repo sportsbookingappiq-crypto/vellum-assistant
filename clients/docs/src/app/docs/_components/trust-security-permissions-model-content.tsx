@@ -401,7 +401,7 @@ export function TrustSecurityPermissionsModelContent() {
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
             Tools provided by third-party skills (ones you&apos;ve installed, not the ones
-            bundled with Vellum) are always prompted by default, regardless of risk level.
+            bundled with ANU) are always prompted by default, regardless of risk level.
             This prevents a malicious or buggy skill from executing actions without your
             knowledge.
           </p>
@@ -489,8 +489,8 @@ export function TrustSecurityPermissionsModelContent() {
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
             Windows does not have macOS Accessibility, Input Monitoring, or Automation
-            permission prompts. Those rows are hidden in Vellum on Windows. Open
-            Settings &gt; Permissions &amp; Privacy in Vellum to check microphone, screen
+            permission prompts. Those rows are hidden in ANU on Windows. Open
+            Settings &gt; Permissions &amp; Privacy in ANU to check microphone, screen
             capture, speech, and notification access; the settings links open the
             corresponding Windows settings pages.
           </p>

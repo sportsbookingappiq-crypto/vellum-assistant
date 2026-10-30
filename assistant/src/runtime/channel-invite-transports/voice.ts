@@ -40,9 +40,9 @@ export const voiceInviteAdapter: ChannelInviteAdapter = {
   },
 
   extractInboundToken(_params: {
-    commandIntent?: import("@vellumai/gateway-client").CommandIntent;
+    commandIntent?: import("@anu/gateway-client").CommandIntent;
     content: string;
-    sourceMetadata?: import("@vellumai/gateway-client").SourceMetadata;
+    sourceMetadata?: import("@anu/gateway-client").SourceMetadata;
   }): string | undefined {
     // Voice invite redemption bypasses generic token extraction — it uses
     // the gateway's identity-bound voice-code redemption engine.

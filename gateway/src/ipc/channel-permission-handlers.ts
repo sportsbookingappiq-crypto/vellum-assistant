@@ -11,7 +11,7 @@ import {
   ChannelPermissionCellKeySchema,
   ChannelPermissionCellSchema,
   ResolveChannelPermissionRequestSchema,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 import { ChannelPermissionStore } from "../db/channel-permission-store.js";
 import { isChannelId } from "../channels/types.js";
 import type { IpcRoute } from "./server.js";

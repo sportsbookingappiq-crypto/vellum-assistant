@@ -4,7 +4,7 @@ import type { IpcRenderer } from "electron";
 import type {
   DownloadDoneEvent,
   WindowAttentionPayload,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 import {
   COMPANION_SET_UNPLACED_DICTATION_OFFER,
   NOTIFICATIONS_ACTION,
@@ -13,7 +13,7 @@ import {
   NOTIFICATIONS_RESET_IDENTITIES,
   NOTIFICATIONS_SHOW,
   WINDOW_ATTENTION,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import {
   createBundleConfirmBridge,

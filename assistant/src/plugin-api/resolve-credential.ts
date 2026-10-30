@@ -26,7 +26,7 @@
  * credential catalog so an empty cache is not reported as "not found".
  */
 
-import { credentialKey } from "@vellumai/credential-storage";
+import { credentialKey } from "@anu/credential-storage";
 
 import { getSecureKeyResultAsync } from "../security/secure-keys.js";
 import {

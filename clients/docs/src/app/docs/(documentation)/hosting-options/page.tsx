@@ -2,9 +2,9 @@ import { HostingOptionsContent } from "@/app/docs/_components/hosting-options-co
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({
-  title: "Hosting options - Vellum Docs",
+  title: "Hosting options - ANU Docs",
   description:
-    "Choose where your assistant runs: Vellum Cloud (recommended), local on your Mac or Windows PC, or self-hosted on your own infrastructure.",
+    "Choose where your assistant runs: ANU Cloud (recommended), local on your Mac or Windows PC, or self-hosted on your own infrastructure.",
   path: "/docs/hosting-options",
 });
 

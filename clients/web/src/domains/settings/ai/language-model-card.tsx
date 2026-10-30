@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { Button } from "@vellumai/design-library/components/button";
-import { Notice } from "@vellumai/design-library/components/notice";
+import { Button } from "@anu/design-library/components/button";
+import { Notice } from "@anu/design-library/components/notice";
 
 import { useActiveAssistantId } from "@/assistant/use-active-assistant-id";
 import { ByoServiceCard } from "@/components/byo-service-card";

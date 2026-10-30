@@ -27,7 +27,7 @@ export function DeveloperGuideFeaturesContent() {
             Integrations
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
-            Vellum integrates with third-party services via OAuth2, each exposed as a bundled skill with its own set of tools.
+            ANU integrates with third-party services via OAuth2, each exposed as a bundled skill with its own set of tools.
           </p>
           <p className="mb-4 text-zinc-600">
             The unified messaging layer provides platform-agnostic tools (<code className="text-sm">messaging_send</code>,{" "}

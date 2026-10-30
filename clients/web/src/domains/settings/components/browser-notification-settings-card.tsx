@@ -6,8 +6,8 @@ import {
   refreshNotificationPermission,
   requestBrowserNotificationPermission,
 } from "@/runtime/notifications";
-import { Button } from "@vellumai/design-library/components/button";
-import { Card } from "@vellumai/design-library/components/card";
+import { Button } from "@anu/design-library/components/button";
+import { Card } from "@anu/design-library/components/card";
 
 type PermissionState = Awaited<ReturnType<typeof refreshNotificationPermission>>;
 

@@ -2,7 +2,7 @@ import { describe, expect, mock, test } from "bun:test";
 import { type ButtonHTMLAttributes, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-mock.module("@vellumai/design-library", () => ({
+mock.module("@anu/design-library", () => ({
   Button: ({
     children,
     iconOnly,
@@ -69,11 +69,11 @@ describe("NudgeChatBanner", () => {
     const html = renderToStaticMarkup(
       <NudgeChatBanner
         icon={<span>icon</span>}
-        title="Vellum is open source"
+        title="ANU is open source"
         subtitle="Star us on GitHub or contribute"
         ctaLabel="Star us"
-        ctaAriaLabel="Star Vellum on GitHub"
-        ariaLabel="Vellum is open source on GitHub"
+        ctaAriaLabel="Star ANU on GitHub"
+        ariaLabel="ANU is open source on GitHub"
         onAction={() => {}}
         onDismiss={() => {}}
       />,
@@ -89,11 +89,11 @@ describe("NudgeChatBanner", () => {
     const html = renderToStaticMarkup(
       <NudgeChatBanner
         icon={<span>icon</span>}
-        title="Vellum is open source"
+        title="ANU is open source"
         subtitle="Star us on GitHub or contribute"
         ctaLabel="Star us"
-        ctaAriaLabel="Star Vellum on GitHub"
-        ariaLabel="Vellum is open source on GitHub"
+        ctaAriaLabel="Star ANU on GitHub"
+        ariaLabel="ANU is open source on GitHub"
         onAction={() => {}}
         onDismiss={() => {}}
       />,

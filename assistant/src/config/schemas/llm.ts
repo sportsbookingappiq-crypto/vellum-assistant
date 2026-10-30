@@ -79,7 +79,7 @@ export const KNOWN_LLM_PROVIDERS = [
   "typesafe",
   // Routing identities: "vellum" = the platform-managed route (upstream
   // derived from the model at dispatch) and the catalog owner of
-  // Vellum-hosted GPU models; "chatgpt" = the subscription route to OpenAI.
+  // ANU-hosted GPU models; "chatgpt" = the subscription route to OpenAI.
   // Dispatch substitutes a concrete upstream before adapter lookup.
   "vellum",
   "chatgpt",
@@ -179,7 +179,7 @@ export function routingIdentityModelIssue(
       return `Model "${model}" is an encoded routing string; store the native model id "${routed.model}".`;
     }
     return getManagedUpstream(model) === null
-      ? `Model "${model}" is not served by the Vellum managed route.`
+      ? `Model "${model}" is not served by the ANU managed route.`
       : null;
   }
   if (provider === "chatgpt") {
@@ -280,7 +280,7 @@ export function dropUnknownCallSiteKeys(value: unknown): unknown {
 // ---------------------------------------------------------------------------
 
 /**
- * Reasoning/thinking effort tier. `"none"` is a Vellum-specific value meaning
+ * Reasoning/thinking effort tier. `"none"` is an ANU-specific value meaning
  * "the user has opted out of provider-side reasoning". Each provider
  * translates it however actually disables reasoning on that wire format:
  * OpenAI Responses sends `reasoning.effort: "none"` and Chat Completions
@@ -699,7 +699,7 @@ export const ProfileEntry = LLMConfigFragment.extend({
    */
   mix: MixSchema.optional(),
   /**
-   * Code-owned backup profile for a Vellum-managed default profile. This is
+   * Code-owned backup profile for an ANU-managed default profile. This is
    * read-only metadata from the default-profile catalog. Config write paths
    * reject user-authored values because custom and BYOK fallback routes are
    * not supported.
@@ -913,7 +913,7 @@ export function collectFallbackProfileIssues(
     if (entry?.source !== "managed" || fallback !== expectedFallback) {
       issues.push({
         profileName: name,
-        message: `Profile "${name}" cannot configure fallbackProfile. Automatic fallbacks are code-owned for Vellum-managed default profiles.`,
+        message: `Profile "${name}" cannot configure fallbackProfile. Automatic fallbacks are code-owned for ANU-managed default profiles.`,
       });
       continue;
     }

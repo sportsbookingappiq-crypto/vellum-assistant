@@ -28,7 +28,7 @@ import { loopbackSafeFetch } from "../lib/loopback-fetch.js";
 
 function printUsage(): void {
   console.log(
-    "Usage: vellum restore <name> --from <path> [--version <version>] [--dry-run]",
+    "Usage: anu restore <name> --from <path> [--version <version>] [--dry-run]",
   );
   console.log("");
   console.log("Restore data from a .vbundle backup into an assistant.");
@@ -49,11 +49,11 @@ function printUsage(): void {
   );
   console.log("");
   console.log("Examples:");
-  console.log("  vellum restore my-assistant --from backup.vbundle");
+  console.log("  anu restore my-assistant --from backup.vbundle");
   console.log(
-    "  vellum restore my-assistant --from backup.vbundle --version v1.2.3",
+    "  anu restore my-assistant --from backup.vbundle --version v1.2.3",
   );
-  console.log("  vellum restore my-assistant --from backup.vbundle --dry-run");
+  console.log("  anu restore my-assistant --from backup.vbundle --dry-run");
 }
 
 function parseArgs(argv: string[]): {
@@ -127,7 +127,7 @@ async function getAccessToken(
       console.error(
         `Error: Could not connect to assistant '${displayName}'. Is it running?`,
       );
-      console.error(`Try: vellum wake ${displayName}`);
+      console.error(`Try: anu wake ${displayName}`);
       process.exit(1);
     }
     throw err;
@@ -177,7 +177,7 @@ interface ImportResponse {
 }
 
 // ---------------------------------------------------------------------------
-// Platform (Vellum-hosted) restore via Django migration import
+// Platform (ANU-hosted) restore via Django migration import
 // ---------------------------------------------------------------------------
 
 async function restorePlatform(
@@ -189,7 +189,7 @@ async function restorePlatform(
   // Step 1 — Authenticate
   const token = readPlatformToken();
   if (!token) {
-    console.error("Not logged in. Run 'vellum login' first.");
+    console.error("Not logged in. Run 'anu login' first.");
     process.exit(1);
   }
 
@@ -212,7 +212,7 @@ async function restorePlatform(
   if (opts.dryRun) {
     if (opts.version) {
       console.error(
-        "Dry-run is not supported with --version. Use `vellum restore --from <path> --dry-run` for data-only preflight.",
+        "Dry-run is not supported with --version. Use `anu restore --from <path> --dry-run` for data-only preflight.",
       );
       process.exit(1);
     }
@@ -238,7 +238,7 @@ async function restorePlatform(
       preflightResult.statusCode === 401 ||
       preflightResult.statusCode === 403
     ) {
-      console.error("Authentication failed. Run 'vellum login' to refresh.");
+      console.error("Authentication failed. Run 'anu login' to refresh.");
       process.exit(1);
     }
 
@@ -261,9 +261,7 @@ async function restorePlatform(
       preflightResult.statusCode === 503 ||
       preflightResult.statusCode === 504
     ) {
-      console.error(
-        `Assistant is unreachable. Try 'vellum wake ${name}' first.`,
-      );
+      console.error(`Assistant is unreachable. Try 'anu wake ${name}' first.`);
       process.exit(1);
     }
 
@@ -343,10 +341,10 @@ async function restorePlatform(
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       if (msg.includes("401") || msg.includes("403")) {
-        console.error("Authentication failed. Run 'vellum login' to refresh.");
+        console.error("Authentication failed. Run 'anu login' to refresh.");
         process.exit(1);
       }
-      console.error(`Error: Rollback failed — ${msg}`);
+      console.error(`Error: Rollback failed: ${msg}`);
       process.exit(1);
     }
 
@@ -374,7 +372,7 @@ async function restorePlatform(
   }
 
   if (importResult.statusCode === 401 || importResult.statusCode === 403) {
-    console.error("Authentication failed. Run 'vellum login' to refresh.");
+    console.error("Authentication failed. Run 'anu login' to refresh.");
     process.exit(1);
   }
 
@@ -397,7 +395,7 @@ async function restorePlatform(
     importResult.statusCode === 503 ||
     importResult.statusCode === 504
   ) {
-    console.error(`Assistant is unreachable. Try 'vellum wake ${name}' first.`);
+    console.error(`Assistant is unreachable. Try 'anu wake ${name}' first.`);
     process.exit(1);
   }
 
@@ -481,7 +479,7 @@ async function restorePlatform(
 
   if (!result.success) {
     console.error(
-      `Error: Import failed — ${result.message ?? result.reason ?? "unknown reason"}`,
+      `Error: Import failed: ${result.message ?? result.reason ?? "unknown reason"}`,
     );
     for (const err of result.errors ?? []) {
       console.error(`  - ${err.message}${err.path ? ` (${err.path})` : ""}`);
@@ -533,7 +531,7 @@ export async function restore(): Promise<void> {
   // --dry-run is not supported with --version
   if (version && dryRun) {
     console.error(
-      "Dry-run is not supported with --version. Use `vellum restore --from <path> --dry-run` for data-only preflight.",
+      "Dry-run is not supported with --version. Use `anu restore --from <path> --dry-run` for data-only preflight.",
     );
     process.exit(1);
   }
@@ -549,7 +547,7 @@ export async function restore(): Promise<void> {
   const entry = findAssistantByName(name);
   if (!entry) {
     console.error(`Error: No assistant found with name '${name}'.`);
-    console.error("Run 'vellum ps' to see available assistants.");
+    console.error("Run 'anu ps' to see available assistants.");
     process.exit(1);
   }
 
@@ -670,7 +668,7 @@ async function runLocalRestore(opts: {
         console.error(
           `Error: Could not connect to assistant '${name}'. Is it running?`,
         );
-        console.error(`Try: vellum wake ${name}`);
+        console.error(`Try: anu wake ${name}`);
         process.exit(1);
       }
       throw err;
@@ -785,7 +783,7 @@ async function runLocalRestore(opts: {
         console.error(
           `Error: Could not connect to assistant '${name}'. Is it running?`,
         );
-        console.error(`Try: vellum wake ${name}`);
+        console.error(`Try: anu wake ${name}`);
         process.exit(1);
       }
       throw err;
@@ -793,7 +791,7 @@ async function runLocalRestore(opts: {
 
     if (!result.success) {
       console.error(
-        `Error: Import failed — ${result.message ?? result.reason ?? "unknown reason"}`,
+        `Error: Import failed: ${result.message ?? result.reason ?? "unknown reason"}`,
       );
       for (const err of result.errors ?? []) {
         console.error(`  - ${err.message}${err.path ? ` (${err.path})` : ""}`);
@@ -829,7 +827,7 @@ async function runLocalRestore(opts: {
         console.warn(
           "\n⚠️  The assistant is in a failed-migrations state; the restored data takes effect after a restart:",
         );
-        console.warn(`   vellum sleep ${name} && vellum wake ${name}`);
+        console.warn(`   anu sleep ${name} && anu wake ${name}`);
       }
     } catch {
       // Best-effort advisory — never fail a completed restore over it.

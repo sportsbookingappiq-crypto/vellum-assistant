@@ -484,7 +484,7 @@ export const ASSISTANT_INITIATED_SOURCE = "assistant_initiated";
 export const ASSISTANT_INITIATED_GROUP_ID = "system:assistant";
 
 /**
- * The `origin_channel` value for a conversation started in Vellum itself
+ * The `origin_channel` value for a conversation started in ANU itself
  * rather than arriving from an external channel.
  *
  * Named because reads have to treat it as "vellum or not yet attributed":

@@ -1,5 +1,5 @@
-import { Button, Typography } from "@vellumai/design-library";
-import { toast } from "@vellumai/design-library/components/toast";
+import { Button, Typography } from "@anu/design-library";
+import { toast } from "@anu/design-library/components/toast";
 import { Loader2 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";

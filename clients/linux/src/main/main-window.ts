@@ -8,7 +8,7 @@ import {
   type ColorScheme,
   type TitleBarOverlayTheme,
   type VellumCommand,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 import {
   readOnboardingActive,
   readTitleBarOverlayTheme,
@@ -16,9 +16,9 @@ import {
   track as trackWindowState,
   writeOnboardingActive,
   writeTitleBarOverlayTheme,
-} from "@vellumai/electron-desktop/window-state";
-import { reloadOnRendererCrash } from "@vellumai/electron-desktop/renderer-crash-reload";
-import { createWindowReadiness } from "@vellumai/electron-desktop/window-readiness";
+} from "@anu/electron-desktop/window-state";
+import { reloadOnRendererCrash } from "@anu/electron-desktop/renderer-crash-reload";
+import { createWindowReadiness } from "@anu/electron-desktop/window-readiness";
 import { z } from "zod";
 
 import { getRendererRootUrl } from "./app-config";
@@ -29,7 +29,7 @@ import { createWindow } from "./windows.client";
 
 const MAIN_DEFAULT_BOUNDS = { width: 1280, height: 800 } as const;
 const MAIN_MIN_SIZE = { width: 800, height: 600 } as const;
-const DEFAULT_WINDOW_TITLE = "Vellum";
+const DEFAULT_WINDOW_TITLE = "ANU";
 let mainWindow: BrowserWindow | null = null;
 let isQuitting = false;
 let currentTitle = DEFAULT_WINDOW_TITLE;

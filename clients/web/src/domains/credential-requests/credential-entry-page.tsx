@@ -6,9 +6,9 @@ import {
 } from "lucide-react";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 
-import { Button } from "@vellumai/design-library/components/button";
-import { Card } from "@vellumai/design-library/components/card";
-import { Input } from "@vellumai/design-library/components/input";
+import { Button } from "@anu/design-library/components/button";
+import { Card } from "@anu/design-library/components/card";
+import { Input } from "@anu/design-library/components/input";
 
 import {
   credentialExpiryToEpochMs,
@@ -23,7 +23,7 @@ import { useTranslation } from "@/i18n";
  * Public one-time credential entry page (`/assistant/credentials/enter`).
  *
  * Opened from a single-use credential-request link. The person opening it
- * may have no Vellum session at all, so — like the remote-web pairing page —
+ * may have no ANU session at all, so — like the remote-web pairing page —
  * this page must not import anything that assumes auth state (no assistant
  * stores, no gateway session helpers beyond the path-prefix util). The
  * single-use token travels in the URL FRAGMENT (`#token=`) so the browser

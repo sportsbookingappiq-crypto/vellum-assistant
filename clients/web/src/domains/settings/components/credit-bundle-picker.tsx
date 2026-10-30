@@ -6,8 +6,8 @@ import { t, useTranslation } from "@/i18n";
 import {
   Select,
   type SelectOption,
-} from "@vellumai/design-library/components/select";
-import { Typography } from "@vellumai/design-library/components/typography";
+} from "@anu/design-library/components/select";
+import { Typography } from "@anu/design-library/components/typography";
 
 import { formatMonthly } from "./tier-pricing";
 

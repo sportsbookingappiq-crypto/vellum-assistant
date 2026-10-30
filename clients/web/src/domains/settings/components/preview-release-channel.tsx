@@ -24,14 +24,14 @@ import type {
 import { useTranslation } from "@/i18n";
 import { useClientFeatureFlagStore } from "@/stores/client-feature-flag-store";
 import { extractErrorMessage } from "@/utils/api-errors";
-import { Button } from "@vellumai/design-library/components/button";
-import { Collapsible } from "@vellumai/design-library/components/collapsible";
-import { Select } from "@vellumai/design-library/components/select";
-import { Modal } from "@vellumai/design-library/components/modal";
-import { Notice } from "@vellumai/design-library/components/notice";
-import { Radio, RadioGroup } from "@vellumai/design-library/components/radio";
-import { Tag } from "@vellumai/design-library/components/tag";
-import { toast } from "@vellumai/design-library/components/toast";
+import { Button } from "@anu/design-library/components/button";
+import { Collapsible } from "@anu/design-library/components/collapsible";
+import { Select } from "@anu/design-library/components/select";
+import { Modal } from "@anu/design-library/components/modal";
+import { Notice } from "@anu/design-library/components/notice";
+import { Radio, RadioGroup } from "@anu/design-library/components/radio";
+import { Tag } from "@anu/design-library/components/tag";
+import { toast } from "@anu/design-library/components/toast";
 
 interface PreviewReleaseChannelProps {
   assistantId: string;

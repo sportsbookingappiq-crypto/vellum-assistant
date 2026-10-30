@@ -23,7 +23,7 @@ import {
   isRetryablePairingReason,
   type PairingFailureReason,
   type PublicBaseUrlRejection,
-} from "@vellumai/service-contracts/remote-web-pairing";
+} from "@anu/service-contracts/remote-web-pairing";
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 import type { ComponentProps, ReactNode } from "react";
 
@@ -85,7 +85,7 @@ mock.module("@/lib/local-mode", () => ({
     isRetryablePairingReason(failure.reason),
 }));
 
-mock.module("@vellumai/design-library/components/button", () => ({
+mock.module("@anu/design-library/components/button", () => ({
   Button: ({
     children,
     onClick,
@@ -101,14 +101,14 @@ mock.module("@vellumai/design-library/components/button", () => ({
   ),
 }));
 
-mock.module("@vellumai/design-library/components/input", () => ({
+mock.module("@anu/design-library/components/input", () => ({
   Input: ({
     fullWidth: _fullWidth,
     ...props
   }: ComponentProps<"input"> & { fullWidth?: boolean }) => <input {...props} />,
 }));
 
-mock.module("@vellumai/design-library/components/modal", () => ({
+mock.module("@anu/design-library/components/modal", () => ({
   Modal: {
     Root: ({ open, children }: { open: boolean; children: ReactNode }) =>
       open ? <div>{children}</div> : null,
@@ -121,7 +121,7 @@ mock.module("@vellumai/design-library/components/modal", () => ({
   },
 }));
 
-mock.module("@vellumai/design-library/components/notice", () => ({
+mock.module("@anu/design-library/components/notice", () => ({
   Notice: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 }));
 
@@ -325,7 +325,7 @@ describe("ConnectAssistantDialog", () => {
     [
       "service-website" as const,
       "https://login.tailscale.com/admin",
-      "This is Tailscale's website, not your assistant's address. Start a tunnel on the host to get one; `vellum tunnel --help` lists the providers.",
+      "This is Tailscale's website, not your assistant's address. Start a tunnel on the host to get one; `anu tunnel --help` lists the providers.",
     ],
   ])(
     "a refused address renders the catalog copy, not the host's English: %s",

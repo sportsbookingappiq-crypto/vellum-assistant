@@ -284,16 +284,16 @@ the native side is
 [`SelfHostedServersPlugin.swift`](../../../clients/ios/App/App/SelfHostedServersPlugin.swift)
 over [`SelfHostedServer.swift`](../../../clients/ios/App/App/SelfHostedServer.swift)
 on iOS, and
-[`SelfHostedServersPlugin.java`](../../../clients/android/app/src/main/java/ai/vellum/assistant/SelfHostedServersPlugin.java)
+[`SelfHostedServersPlugin.java`](../../../clients/android/app/src/main/java/ai/anu/assistant/SelfHostedServersPlugin.java)
 over
-[`SelfHostedServer.java`](../../../clients/android/app/src/main/java/ai/vellum/assistant/SelfHostedServer.java)
+[`SelfHostedServer.java`](../../../clients/android/app/src/main/java/ai/anu/assistant/SelfHostedServer.java)
 on Android.
 
 The bridge contract:
 
 | Method | Resolves | Notes |
 | --- | --- | --- |
-| `list()` | `{ servers: [{name?, url}], activeUrl, bakedUrl }` | `activeUrl` is the configured self-hosted slot (`null` means the shell serves its baked origin); `bakedUrl` is the Vellum Cloud origin the build ships with |
+| `list()` | `{ servers: [{name?, url}], activeUrl, bakedUrl }` | `activeUrl` is the configured self-hosted slot (`null` means the shell serves its baked origin); `bakedUrl` is the ANU Cloud origin the build ships with |
 | `add({url, name?})` | `{ ok }` | Deduped by canonical url. A nameless re-add keeps the stored label |
 | `remove({url})` | `{ ok }` | Forgetting the active url also clears the active slot, so the shell returns to the baked origin |
 | `switchTo({url?})` | `{ ok }` | Swaps the active slot and reloads the shell onto it (see the per-surface list below). An absent or empty `url` returns to the baked origin |
@@ -325,7 +325,7 @@ entries live in the native list but never surface as chooser cards.
 - Native mobile with the plugin: `nativeSwitchToOrigin` hands the url to the
   shell. iOS reloads the `WKWebView` in place; Android recreates the activity
   onto a rebuilt Capacitor config, so a brief relaunch flash is expected.
-  Either way the user never leaves the app, and a "Vellum Cloud" card sourced
+  Either way the user never leaves the app, and a "ANU Cloud" card sourced
   from `list().bakedUrl` is the way back.
 - Native mobile without the plugin: the same navigation the browser takes. That
   leaves the app for the system browser, which is degraded but is exactly what
@@ -369,7 +369,7 @@ Proxy.
 A user who taps a campaign link, lands in Play, and installs arrives with no
 URL params, so the Play install referrer is the only attribution that install
 carries. The Android shell exposes it as the `InstallReferrer` plugin
-([`InstallReferrerPlugin.java`](../../../clients/android/app/src/main/java/ai/vellum/assistant/InstallReferrerPlugin.java));
+([`InstallReferrerPlugin.java`](../../../clients/android/app/src/main/java/ai/anu/assistant/InstallReferrerPlugin.java));
 the web side is
 [`src/runtime/install-referrer.ts`](../src/runtime/install-referrer.ts). There
 is no iOS counterpart.
@@ -564,3 +564,17 @@ References:
 - [`STYLE_GUIDE.md`](./STYLE_GUIDE.md) — naming, imports, TypeScript, component authoring.
 - [`clients/ios/README.md`](../../../clients/ios/README.md) — Capacitor iOS shell setup, Xcode targets, release pipeline.
 - [`clients/ios/docs/NATIVE_VOICE.md`](../../../clients/ios/docs/NATIVE_VOICE.md) — the native voice surfaces: Live Activity, App Intents, the deep-link contract, and the v1 scope decisions.
+
+## ANU thin-client shells (`ANU_SERVER_URL`)
+
+Setting `ANU_SERVER_URL` at `cap sync` or `cap copy` time makes the shell an ANU thin client. It takes precedence over `VELLUM_SERVER_URL` and `VELLUM_ENVIRONMENT`:
+
+- `server.url` becomes that origin.
+- `server.appStartPath` becomes `/anu`.
+- The URL must be `https:`. Loopback hosts (`localhost`, `127.0.0.1`, `10.0.2.2`) may use `http:`, which also turns on `server.cleartext`.
+
+The host must serve a web build made with `VITE_ANU_API_URL` set to the ANU API origin.
+
+When the app launches on a path under `/anu`, `main.tsx` skips the platform session boot, so the screens talk only to the ANU API. The ANU session token is kept in `NativeBiometric` under `anu-session:<API origin>`.
+
+See `anu/docs/mobile-thin-client.md` for the audit and test results, and `anu && bun run mobile:e2e` for the simulated phone run.

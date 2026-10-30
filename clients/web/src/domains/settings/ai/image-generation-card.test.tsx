@@ -1,13 +1,13 @@
 /**
  * Tests for `ImageGenerationCard`'s provider-only configuration (the
- * Managed / Your Own mode toggle is gone — Vellum is a provider):
+ * Managed / Your Own mode toggle is gone — ANU is a provider):
  *
- *   1. No mode segmented-control renders; the picker offers Vellum,
+ *   1. No mode segmented-control renders; the picker offers ANU,
  *      Gemini, OpenAI, and OpenRouter.
- *   2. Vellum needs no API key, lists every model, and saves as a
+ *   2. ANU needs no API key, lists every model, and saves as a
  *      provider+mode pair for old-daemon compatibility.
  *   3. Gemini gates on a key and lists only gemini models.
- *   4. Legacy managed-mode daemon configs render as Vellum; an openai
+ *   4. Legacy managed-mode daemon configs render as ANU; an openai
  *      daemon config renders honestly without being clobbered.
  *
  * The design-library Select is real, driven via its combobox trigger like
@@ -27,7 +27,7 @@ const ASSISTANT_ID = "asst-test";
 mock.module("@/assistant/use-active-assistant-id", () => ({
   useActiveAssistantId: () => ASSISTANT_ID,
 }));
-mock.module("@vellumai/design-library/components/toast", () => ({
+mock.module("@anu/design-library/components/toast", () => ({
   toast: { success: () => {}, error: () => {} },
   Toaster: () => null,
   ToastContent: () => null,
@@ -181,27 +181,27 @@ describe("ImageGenerationCard — provider-only configuration", () => {
     expect(trigger("Image generation provider")).toBeTruthy();
   });
 
-  test("the provider picker offers Vellum, Gemini, OpenAI and OpenRouter", () => {
+  test("the provider picker offers ANU, Gemini, OpenAI and OpenRouter", () => {
     renderCard();
 
     fireEvent.click(trigger("Image generation provider"));
     expect(visibleOptions()).toEqual([
-      "Vellum",
+      "ANU",
       "Gemini",
       "OpenAI",
       "OpenRouter",
     ]);
   });
 
-  test("Vellum hides the key field, lists every model, and saves the pair", async () => {
+  test("ANU hides the key field, lists every model, and saves the pair", async () => {
     renderCard();
 
     fireEvent.click(trigger("Image generation provider"));
-    selectOption("Vellum");
+    selectOption("ANU");
 
     expect(screen.queryByText("API Key")).toBeNull();
     expect(
-      screen.getByText(/Image generation runs through your Vellum account/),
+      screen.getByText(/Image generation runs through your ANU account/),
     ).toBeTruthy();
 
     fireEvent.click(trigger("Image generation model"));
@@ -268,14 +268,14 @@ describe("ImageGenerationCard — provider-only configuration", () => {
   });
 
   // A config written by the legacy mode toggle marks managed via `mode`.
-  test("a legacy managed-mode daemon renders as Vellum", () => {
+  test("a legacy managed-mode daemon renders as ANU", () => {
     daemonConfigData = {
       services: { "image-generation": { mode: "managed", provider: "gemini" } },
     };
     renderCard();
 
     expect(trigger("Image generation provider").textContent).toContain(
-      "Vellum",
+      "ANU",
     );
     expect(screen.queryByText("API Key")).toBeNull();
   });
@@ -484,14 +484,14 @@ describe("ImageGenerationCard — provider-only configuration", () => {
   });
 
   test("a daemon predating the vellum provider gets the legacy managed write", async () => {
-    // Old daemon schemas reject provider "vellum" outright; the Vellum
+    // Old daemon schemas reject provider "vellum" outright; the ANU
     // selection degrades to the legacy mode-only representation the read
-    // bridge renders as Vellum again.
+    // bridge renders as ANU again.
     daemonSupportsVellumProvider = false;
     renderCard();
 
     fireEvent.click(trigger("Image generation provider"));
-    selectOption("Vellum");
+    selectOption("ANU");
     fireEvent.click(screen.getByRole("button", { name: "Save" }));
 
     await waitFor(() => expect(configPatchCalls.length).toBe(1));

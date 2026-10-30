@@ -41,7 +41,39 @@ import { initNativePlatformAttributes } from "@/runtime/native-platform-attribut
 import { initSafeAreaBridge } from "@/runtime/native-safe-area";
 import { restorePendingNativeLogin } from "@/runtime/native-auth";
 import { markNativeLaunchScreenReady } from "@/runtime/native-launch-screen";
-import { initInputModality } from "@vellumai/design-library";
+import { initInputModality } from "@anu/design-library";
+
+function isAnuPath(pathname: string): boolean {
+  return pathname === "/anu" || pathname.startsWith("/anu/");
+}
+
+/** The platform (allauth) session, org, flags and assistants list. */
+async function bootPlatformSession(): Promise<void> {
+  initSessionReplay();
+  installConsentRefreshListeners();
+
+  setupOrganizationStore();
+  // Register before initSession so no identity transition is missed: client
+  // flags are evaluated per (user, org) and must be re-fetched, not re-read,
+  // when either moves.
+  setupClientFlagScopeSync();
+  // Register before initSession so the boot `unknown → present` transition it
+  // drives is caught and the platform assistants list is loaded.
+  setupPlatformAssistantsSync();
+  // The camera gates are built outside React, so what a restored tuning
+  // session applies to them is decided here rather than by a mounted panel.
+  setupCameraGateHudAccessSync();
+  if (isLocalClient()) {
+    await loadLockfile();
+    await useAuthStore.getState().initSession();
+  } else {
+    useAuthStore.getState().initSession();
+  }
+  setupAuthListeners();
+  // Local mode awaits the lockfile read and `initSession()` above, so this
+  // separates "session was the boot cost" from "the app tree was".
+  markBoot("session_ready");
+}
 
 async function boot() {
   // Install before React first commits so the reconciler survives DOM
@@ -69,37 +101,21 @@ async function boot() {
   } catch (error) {
     captureError(error, { context: "init_i18n" });
   }
+  // The ANU task screens (`/anu/*`) are a thin client of the ANU API with
+  // their own phone login. A launch that starts there (the ANU mobile shells
+  // open at `/anu`) skips the platform session boot entirely, so the phone
+  // talks to no host but the ANU API. See `docs/CAPACITOR.md`.
+  const anuLaunch = isAnuPath(window.location.pathname);
   try {
-    await restorePendingNativeLogin();
+    if (!anuLaunch) await restorePendingNativeLogin();
   } catch (error) {
     Sentry.captureException(error, {
       tags: { context: "restore_pending_native_login" },
     });
   }
-  initSessionReplay();
-  installConsentRefreshListeners();
-
-  setupOrganizationStore();
-  // Register before initSession so no identity transition is missed: client
-  // flags are evaluated per (user, org) and must be re-fetched, not re-read,
-  // when either moves.
-  setupClientFlagScopeSync();
-  // Register before initSession so the boot `unknown → present` transition it
-  // drives is caught and the platform assistants list is loaded.
-  setupPlatformAssistantsSync();
-  // The camera gates are built outside React, so what a restored tuning
-  // session applies to them is decided here rather than by a mounted panel.
-  setupCameraGateHudAccessSync();
-  if (isLocalClient()) {
-    await loadLockfile();
-    await useAuthStore.getState().initSession();
-  } else {
-    useAuthStore.getState().initSession();
+  if (!anuLaunch) {
+    await bootPlatformSession();
   }
-  setupAuthListeners();
-  // Local mode awaits the lockfile read and `initSession()` above, so this
-  // separates "session was the boot cost" from "the app tree was".
-  markBoot("session_ready");
 
   const rootEl = document.getElementById("root");
   if (!rootEl) {

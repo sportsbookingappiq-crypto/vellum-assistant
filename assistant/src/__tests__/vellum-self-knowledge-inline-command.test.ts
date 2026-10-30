@@ -116,7 +116,7 @@ describe("vellum-self-knowledge skill", () => {
 
   test("references the docs site for conceptual questions", async () => {
     const result = await executeSkillLoad({ skill: "vellum-self-knowledge" });
-    expect(result.content).toContain("https://www.vellum.ai/docs");
+    expect(result.content).toContain("https://www.anu.ai/docs");
     expect(result.content).toContain("/getting-started/what-is-vellum");
     expect(result.content).toContain("/developer-guide/architecture");
     expect(result.content).toContain("/trust-security/the-permissions-model");
@@ -136,9 +136,9 @@ describe("vellum-self-knowledge skill", () => {
     const result = await executeSkillLoad({ skill: "vellum-self-knowledge" });
     expect(result.content).toContain("## Critical Rule");
     expect(result.content).toContain("Never answer from memory");
-    expect(result.content).toContain("distinct, legacy Vellum product");
+    expect(result.content).toContain("distinct, legacy ANU product");
     expect(result.content).toContain(
-      "Never use it to answer questions about this Vellum",
+      "Never use it to answer questions about this ANU",
     );
   });
 

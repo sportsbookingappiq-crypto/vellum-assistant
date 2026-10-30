@@ -1,4 +1,4 @@
-import { ConfirmDialog } from "@vellumai/design-library/components/confirm-dialog";
+import { ConfirmDialog } from "@anu/design-library/components/confirm-dialog";
 
 import { useTranslation } from "@/i18n";
 

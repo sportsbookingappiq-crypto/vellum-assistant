@@ -17,13 +17,27 @@ describe("renderWorkspaceTopLevelContext", () => {
     expect(result).toBe(
       [
         "<workspace>",
-        "Root: /sandbox",
+        "Root: /sandbox (working directory of bash and file tools)",
         "Directories: lib, src, tests",
         "Files: README.md, package.json",
         `Host home directory: ${homedir()}`,
         `Host username: ${userInfo().username}`,
         "</workspace>",
       ].join("\n"),
+    );
+  });
+
+  test("labels the root as the working directory bash and file tools share", () => {
+    // Models otherwise guess a container path such as /workspace for bash,
+    // which only the file tools remap.
+    const result = renderWorkspaceTopLevelContext({
+      rootPath: "/home/user/.anu/workspace",
+      directories: [],
+      files: [],
+      truncated: false,
+    });
+    expect(result.split("\n")[1]).toBe(
+      "Root: /home/user/.anu/workspace (working directory of bash and file tools)",
     );
   });
 
@@ -65,7 +79,7 @@ describe("renderWorkspaceTopLevelContext", () => {
     expect(result).toBe(
       [
         "<workspace>",
-        "Root: /empty",
+        "Root: /empty (working directory of bash and file tools)",
         "Directories: ",
         "Files: ",
         `Host home directory: ${homedir()}`,
@@ -246,7 +260,7 @@ describe("renderWorkspaceTopLevelContext", () => {
       // Name the way to find the real value rather than leaving a dead end.
       expect(result.split("\n")).toEqual([
         "<workspace>",
-        "Root: /workspace",
+        "Root: /workspace (working directory of bash and file tools)",
         "Directories: src",
         "Files: package.json",
         "Host home directory: unknown (ask the host shell: `host_bash` with `echo $HOME`)",

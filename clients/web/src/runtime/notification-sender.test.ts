@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, test } from "bun:test";
 import {
   NOTIFICATION_SENDER_NAME_MAX_CHARS,
   type NotificationIdentity,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import {
   __clearNotificationIdentitySnapshotsForTests,

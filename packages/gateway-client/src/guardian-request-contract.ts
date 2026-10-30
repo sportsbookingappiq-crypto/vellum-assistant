@@ -17,7 +17,7 @@
  * which do not change.
  */
 
-import { GuardianRequestStatusSchema } from "@vellumai/service-contracts/guardian-requests";
+import { GuardianRequestStatusSchema } from "@anu/service-contracts/guardian-requests";
 import { z } from "zod";
 
 import {
@@ -33,7 +33,7 @@ export {
   GUARDIAN_REQUEST_STATUS_VALUES,
   type GuardianRequestStatus,
   GuardianRequestStatusSchema,
-} from "@vellumai/service-contracts/guardian-requests";
+} from "@anu/service-contracts/guardian-requests";
 
 const GUARDIAN_REQUEST_KIND_VALUES = [
   "access_request",

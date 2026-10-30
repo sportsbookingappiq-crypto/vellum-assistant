@@ -7,7 +7,7 @@
  * 1. **Storage polyfill** — in-memory shim for `localStorage` / `sessionStorage`,
  *    which throw `SecurityError` in sandboxed contexts without `allow-same-origin`.
  * The app-side type of the `window.vellum` object injected here is declared in
- * `@vellumai/plugin-api`'s `app-globals.d.ts` (shipped as the package's
+ * `@anu/plugin-api`'s `app-globals.d.ts` (shipped as the package's
  * `/app` subpath). It currently types only `fetch`; keep it in sync if that
  * member's signature changes or another member is added to the declaration.
  *
@@ -96,7 +96,7 @@ export function isRelayableExternalHref(href: unknown): href is string {
 
 const APP_ROUTE_ORIGIN = "https://app-route.invalid";
 
-/** Normalize a root-relative Vellum route received from a sandboxed frame. */
+/** Normalize a root-relative ANU route received from a sandboxed frame. */
 export function getRelayableAppRoute(href: unknown): string | null {
   if (typeof href !== "string") {
     return null;

@@ -74,12 +74,8 @@ describe("path characterization", () => {
       ),
     ).toBe("~\\.vellum\\workspace");
     expect(
-      formatHomeRelativePath(
-        "D:\\Vellum\\workspace",
-        "C:\\Users\\Alice",
-        win32,
-      ),
-    ).toBe("D:\\Vellum\\workspace");
+      formatHomeRelativePath("D:\\ANU\\workspace", "C:\\Users\\Alice", win32),
+    ).toBe("D:\\ANU\\workspace");
   });
 
   test("all path helpers resolve to expected locations", () => {

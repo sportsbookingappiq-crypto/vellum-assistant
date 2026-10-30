@@ -95,7 +95,7 @@ export const routes = {
    * credential-request link (`?token=` carries the secret-request token).
    * Same standalone pattern as `remotePair`: lives under `/assistant/*` for
    * the Vite SPA fallback but is declared OUTSIDE the auth-protected tree in
-   * `routes.tsx` — the person opening the link may have no Vellum session.
+   * `routes.tsx` — the person opening the link may have no ANU session.
    */
   credentialEntry: r("/assistant/credentials/enter"),
   quickInput: r("/assistant/quick-input"),
@@ -168,6 +168,19 @@ export const routes = {
       complete: r("/account/oauth/complete"),
       desktopComplete: r("/account/oauth/desktop-complete"),
     },
+  },
+
+  /**
+   * The ANU task screens. A top-level branch like `/account/*`: outside the
+   * platform auth middleware and `RootLayout`, signed in with the ANU API's
+   * own phone login, and needing no active assistant.
+   */
+  anu: {
+    root: r("/anu"),
+    login: r("/anu/login"),
+    new: r("/anu/new"),
+    settings: r("/anu/settings"),
+    task: (taskId: string) => dyn(r("/anu/tasks"), encodeURIComponent(taskId)),
   },
 
   welcome: r("/assistant/welcome"),
@@ -316,7 +329,7 @@ export const routes = {
     bookmarks: r("/assistant/settings/bookmarks"),
     usage: SETTINGS_USAGE_PATH,
     // Deep-link straight to the Billing sub-tab (only shown when signed in to
-    // the Vellum platform).
+    // the ANU platform).
     usageBilling: `${SETTINGS_USAGE_PATH}?tab=billing`,
     // Lands on the daily credit limit card inside the Billing tab. The hash
     // must match `DAILY_CREDIT_LIMIT_ANCHOR_ID` in `daily-credit-limit-card.tsx`

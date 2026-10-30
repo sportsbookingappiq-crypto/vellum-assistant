@@ -157,7 +157,7 @@ function isSizeGuardExempt(relPath: string): boolean {
 }
 
 /** Default identity for automated workspace commits. */
-const DEFAULT_GIT_NAME = "Vellum Assistant";
+const DEFAULT_GIT_NAME = "ANU";
 // generic-examples:ignore-next-line — reason: real daemon commit identity, not an example
 const DEFAULT_GIT_EMAIL = "assistant@vellum.ai";
 
@@ -1708,7 +1708,7 @@ export class WorkspaceGitService {
       if (hadLegacyDataRule || missingRules.length > 0) {
         let updated = content;
         if (missingRules.length > 0) {
-          // Negation rules must trail every Vellum rule (last matching
+          // Negation rules must trail every ANU rule (last matching
           // pattern wins), so pull existing ones out and re-append them
           // after the additions instead of leaving them mid-file.
           const negationRules = WORKSPACE_GITIGNORE_RULES.filter((rule) =>
@@ -1727,9 +1727,7 @@ export class WorkspaceGitService {
             ...negationRules,
           ];
           updated +=
-            "# Vellum runtime state (auto-added)\n" +
-            additions.join("\n") +
-            "\n";
+            "# ANU runtime state (auto-added)\n" + additions.join("\n") + "\n";
         }
         writeFileSync(gitignorePath, updated, "utf-8");
       }
@@ -1743,14 +1741,14 @@ export class WorkspaceGitService {
   }
 
   /**
-   * Drop tracked files matched by the Vellum-managed ignore rules from the
+   * Drop tracked files matched by the ANU-managed ignore rules from the
    * index (working tree untouched). Ignore rules only affect untracked
    * paths, so committed runtime state (e.g. embedding-models/) stays in the
    * index — and churns every commit — until explicitly removed here. The
    * staged deletions ride along with the next commit. Best-effort: failures
    * are logged, never block init. Must be called with the mutex lock held.
    *
-   * Deliberately matches against the Vellum-managed rules only — not the
+   * Deliberately matches against the ANU-managed rules only — not the
    * workspace .gitignore (which may carry user-authored rules whose matches
    * are force-added on purpose) and not --exclude-standard (the user's
    * global/local exclude files). The rules are passed via a temp file under

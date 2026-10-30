@@ -34,7 +34,7 @@ import {
   resolve,
 } from "node:path";
 
-import { bridgeEmojiAppIcon } from "@vellumai/app-icons";
+import { bridgeEmojiAppIcon } from "@anu/app-icons";
 
 import { resolveConversationLineage } from "../daemon/conversation-lineage.js";
 import { rawAll } from "../persistence/raw-query.js";

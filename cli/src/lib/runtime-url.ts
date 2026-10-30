@@ -97,7 +97,7 @@ function maybeSwapToLocalhost(url: string): string {
 /**
  * Canonical form of a runtime/base URL used throughout the CLI: trailing
  * slashes stripped, then localhost-swapped. This is exactly the transform
- * `vellum client` applies to the runtime URL it hands the TUI, so comparing two
+ * `anu client` applies to the runtime URL it hands the TUI, so comparing two
  * URLs after passing both through this function is a like-for-like comparison.
  */
 export function normalizeRuntimeUrl(url: string): string {
@@ -108,7 +108,7 @@ export function normalizeRuntimeUrl(url: string): string {
  * SECURITY: decide whether a guardian-token refresh may be sent to
  * `candidateUrl`, and to which URL it should actually go.
  *
- * `vellum client` lets `--url`/`-u` override the runtime URL while still reusing
+ * `anu client` lets `--url`/`-u` override the runtime URL while still reusing
  * the selected entry's stored guardian token, so a victim pointed at an
  * attacker-controlled (or poisoned/redirected) URL must NOT cause us to POST the
  * long-lived refreshToken + deviceId there. Refresh is permitted only when
@@ -120,7 +120,7 @@ export function normalizeRuntimeUrl(url: string): string {
  * trusted origin even if a caller forgets to use this return value. The matched
  * URL is preferred over always returning `runtimeUrl` so the refresh stays on
  * the same interface the session is using: e.g. a local entry may persist both a
- * loopback `localUrl` (which `vellum client` defaults to) and an externally
+ * loopback `localUrl` (which `anu client` defaults to) and an externally
  * discovered `runtimeUrl`, and refreshing the loopback session against the
  * external address could be unreachable or needlessly cross the public
  * interface. Returns `null` when the candidate is untrusted (caller must skip

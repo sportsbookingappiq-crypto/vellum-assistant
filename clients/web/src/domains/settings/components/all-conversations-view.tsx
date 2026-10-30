@@ -28,13 +28,13 @@ import { captureError } from "@/lib/sentry/capture-error";
 import type { Conversation } from "@/types/conversation-types";
 import { invalidateConversationQueries } from "@/utils/conversation-cache";
 import { useDisplayConversationTitle } from "@/utils/conversation-title";
-import { toast } from "@vellumai/design-library";
-import { Button } from "@vellumai/design-library/components/button";
+import { toast } from "@anu/design-library";
+import { Button } from "@anu/design-library/components/button";
 import {
   Select,
   type SelectOption,
-} from "@vellumai/design-library/components/select";
-import { Input } from "@vellumai/design-library/components/input";
+} from "@anu/design-library/components/select";
+import { Input } from "@anu/design-library/components/input";
 
 export interface AllConversationsViewProps {
   assistantId: string;

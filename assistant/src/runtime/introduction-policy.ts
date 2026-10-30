@@ -20,18 +20,18 @@
  *   - the signal-driven action list every card surface renders.
  *
  * The binding-strength ladder and `verified_via` constants are re-exported from
- * `@vellumai/gateway-client` (their canonical home, shared with the gateway ACL
+ * `@anu/gateway-client` (their canonical home, shared with the gateway ACL
  * write path that enforces demotion refusal — LUM-2505). Binding strength never
  * enters the capability layer — `trusted_contact` ≡ `unverified_contact` on
  * capabilities.
  */
 
-import type { BindingStrength } from "@vellumai/gateway-client";
+import type { BindingStrength } from "@anu/gateway-client";
 import {
   VERIFIED_VIA_CHANNEL_CLAIM,
   VERIFIED_VIA_MANUAL,
-} from "@vellumai/gateway-client";
-import type { GuardianActionEmphasis } from "@vellumai/service-contracts/guardian-requests";
+} from "@anu/gateway-client";
+import type { GuardianActionEmphasis } from "@anu/service-contracts/guardian-requests";
 
 import type { ApprovalAction } from "./channel-approval-types.js";
 
@@ -123,14 +123,14 @@ export function parseRequesterSignals(
 // ---------------------------------------------------------------------------
 
 // The binding-strength ladder and `verified_via` provenance constants are the
-// canonical vocabulary in `@vellumai/gateway-client`
+// canonical vocabulary in `@anu/gateway-client`
 // (`binding-strength-contract.ts`); the gateway ACL write path enforces
 // demotion refusal on the same values (LUM-2505). Re-exported here so
 // introduction-card call sites keep importing them from this module.
 export {
   bindingStrengthForVerifiedVia,
   VERIFIED_VIA_CHALLENGE,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 export { VERIFIED_VIA_CHANNEL_CLAIM, VERIFIED_VIA_MANUAL };
 export type { BindingStrength };
 

@@ -185,7 +185,7 @@ describe("conversation candidate validation", () => {
         telegram: telegramCandidates,
       };
 
-      // Vellum candidate should not be valid for telegram and vice versa
+      // ANU candidate should not be valid for telegram and vice versa
       const validChannels: NotificationChannel[] = ["vellum", "telegram"];
 
       const result1 = validateConversationActions(

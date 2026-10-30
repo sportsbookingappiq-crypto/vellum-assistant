@@ -31,14 +31,11 @@
  * fresh selector or router call, and that call is what this hook awaits.
  */
 
-import type {
-  HookFunction,
-  UserPromptSubmitContext,
-} from "@vellumai/plugin-api";
+import type { HookFunction, UserPromptSubmitContext } from "@anu/plugin-api";
 import {
   updateMessageMetadata,
   VOICE_ESCALATION_CONTINUATION_MESSAGE_KIND,
-} from "@vellumai/plugin-api";
+} from "@anu/plugin-api";
 
 import type { MemoryRecalledEvent } from "../../../../api/events/memory-recalled.js";
 import { getConfig } from "../../../../config/loader.js";

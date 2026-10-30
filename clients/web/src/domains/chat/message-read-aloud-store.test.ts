@@ -20,7 +20,7 @@ mock.module("@/domains/chat/message-read-aloud-tts", () => ({
 }));
 
 const toastError = mock(() => {});
-mock.module("@vellumai/design-library/components/toast", () => ({
+mock.module("@anu/design-library/components/toast", () => ({
   toast: { error: toastError, success: () => {} },
   Toaster: () => null,
   ToastContent: () => null,

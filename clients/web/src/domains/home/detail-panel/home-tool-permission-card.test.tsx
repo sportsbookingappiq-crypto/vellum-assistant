@@ -14,7 +14,7 @@ import { describe, expect, test } from "bun:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import type { FeedItem } from "@vellumai/assistant-api";
+import type { FeedItem } from "@anu/assistant-api";
 
 import { feedItem } from "../feed-test-fixtures";
 

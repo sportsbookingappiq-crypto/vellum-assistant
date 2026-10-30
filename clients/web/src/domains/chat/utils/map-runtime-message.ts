@@ -1,7 +1,7 @@
 import type {
   ConversationMessage,
   ConversationMessageSurface,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 import { readAssistantTextVisibility } from "@/domains/chat/utils/assistant-text-visibility";
 import { runtimeAttachmentsToDisplay } from "@/domains/chat/utils/attachment-mapping";
 import { parseAttachmentSummariesFromContent } from "@/domains/chat/utils/parse-attachment-summaries";

@@ -244,7 +244,7 @@ internal sealed partial class GlobalKeyboardHook : IDisposable
         _thread = new Thread(() => Run(started))
         {
             IsBackground = true,
-            Name = "Vellum voice mode chord hook",
+            Name = "ANU voice mode chord hook",
         };
         _thread.Start();
         started.Wait();

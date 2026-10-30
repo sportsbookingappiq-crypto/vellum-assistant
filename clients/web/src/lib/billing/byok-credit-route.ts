@@ -56,7 +56,7 @@ interface CreditRouteEntry {
 }
 
 /**
- * Whether an entry's turns spend managed Vellum credits, mirroring the
+ * Whether an entry's turns spend managed ANU credits, mirroring the
  * daemon's dispatch rules (`effectiveConnectionAuth` in
  * assistant/src/providers/inference/auth.ts): the `vellum` provider IS the
  * managed route, a bound connection bills by its own auth type, and an
@@ -209,7 +209,7 @@ function composedMainAgentRoute(
 }
 
 /**
- * Whether the assistant's default chat route spends managed Vellum credits.
+ * Whether the assistant's default chat route spends managed ANU credits.
  *
  * Mirrors the daemon's `mainAgent` single-winner selection
  * (`selectWinningProfile` in assistant/src/config/llm-resolver.ts): the

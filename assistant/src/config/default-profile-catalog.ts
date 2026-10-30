@@ -77,13 +77,13 @@ type ProfileImpls = Record<DefaultProfileKey, DefaultProfileTemplate>;
  * `provider: "vellum"` — dispatch derives the upstream from the model.
  * Models are pinned (never intents): the intent tables are keyed by
  * concrete dispatch providers, and the model is what selects the upstream.
- * Overwritten in workspace config on every daemon boot so Vellum can push
+ * Overwritten in workspace config on every daemon boot so ANU can push
  * model/config updates to customers in new releases.
  *
  * Each implementation points at its managed backup profile via
  * `fallbackProfile` (`BACKUP_PROFILE_IMPLS` below): a backup pins a model at
  * a different upstream provider, so an outage-type failure at the primary's
- * provider can be served by re-sending on the backup. Vellum column only:
+ * provider can be served by re-sending on the backup. ANU column only:
  * the BYOK and chatgpt columns carry no pointers, since those installs may
  * hold no credential for the backup's provider.
  */
@@ -171,7 +171,7 @@ const VELLUM_PROFILE_IMPLS: ProfileImpls = {
 
 /**
  * The managed backup profiles, one per default profile: the route a primary's
- * `fallbackProfile` pointer names. Vellum column only: backups never
+ * `fallbackProfile` pointer names. ANU column only: backups never
  * materialize for BYOK or chatgpt installs. Like the primaries, models are
  * pinned (never intents) and stamped `provider: "vellum"`, so dispatch
  * derives the upstream from the model. Every backup pins its model at a

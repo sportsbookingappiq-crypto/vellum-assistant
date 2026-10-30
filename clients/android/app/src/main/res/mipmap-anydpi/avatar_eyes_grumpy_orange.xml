@@ -9,26 +9,26 @@
         Do not edit by hand.
     -->
     <path
-        android:fillColor="#E9642F"
+        android:fillColor="#E96D38"
         android:pathData="M0,0h108v108h-108z" />
     <group
         android:pivotX="300"
-        android:pivotY="273"
-        android:scaleX="0.12915"
-        android:scaleY="0.12915"
+        android:pivotY="300"
+        android:scaleX="0.1317"
+        android:scaleY="0.1317"
         android:translateX="-246"
-        android:translateY="-219">
+        android:translateY="-246">
         <path
-            android:fillColor="#F2F2F2"
-            android:pathData="M408.462 318.767C309.849 318.767 308.699 226.908 308.699 226.908H508.224C508.224 226.908 512.033 318.767 408.462 318.767Z" />
+            android:fillColor="#F4F8FD"
+            android:pathData="M112.12 315.67L95.95 269.33C93.5 262.31 96.56 258 104 258L274 258C281.44 258 284.5 262.31 282.05 269.33L265.88 315.67C259.75 333.24 244.6 344 226 344L152 344C133.4 344 118.25 333.24 112.12 315.67Z" />
         <path
-            android:fillColor="#1A1A1A"
-            android:pathData="M491.195 226.908C489.95 244.612 480.356 297.536 410.187 297.536C343.374 297.536 331.544 244.612 329.459 226.908H491.195Z" />
+            android:fillColor="#0F1C38"
+            android:pathData="M151.36 300.61L140 258L238 258L226.64 300.61C223.76 311.39 215.16 318 204 318L174 318C162.84 318 154.24 311.39 151.36 300.61Z" />
         <path
-            android:fillColor="#F2F2F2"
-            android:pathData="M190.364 318.767C288.977 318.767 290.126 226.908 290.126 226.908H90.602C90.602 226.908 86.7932 318.767 190.364 318.767Z" />
+            android:fillColor="#F4F8FD"
+            android:pathData="M487.88 315.67L504.05 269.33C506.5 262.31 503.44 258 496 258L326 258C318.56 258 315.5 262.31 317.95 269.33L334.12 315.67C340.25 333.24 355.4 344 374 344L448 344C466.6 344 481.75 333.24 487.88 315.67Z" />
         <path
-            android:fillColor="#1A1A1A"
-            android:pathData="M107.631 226.908C108.876 244.612 118.47 297.536 188.64 297.536C255.452 297.536 267.282 244.612 269.367 226.908H107.631Z" />
+            android:fillColor="#0F1C38"
+            android:pathData="M448.64 300.61L460 258L362 258L373.36 300.61C376.24 311.39 384.84 318 396 318L426 318C437.16 318 445.76 311.39 448.64 300.61Z" />
     </group>
 </vector>

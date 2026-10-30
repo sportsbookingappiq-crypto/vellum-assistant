@@ -27,7 +27,7 @@ import {
   OptionCard,
   OptionCardGroup,
   Textarea,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 
 export interface OnboardingChoiceCardProps {
   onSelectSpecific: () => void;

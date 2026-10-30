@@ -9,7 +9,7 @@ import {
   type WorkResultSurfaceData,
   WorkResultSurfaceDataSchema,
   type WorkResultTone,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 import {
   ArrowLeftRight,
   ArrowRight,

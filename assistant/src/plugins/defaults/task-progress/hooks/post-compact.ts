@@ -1,7 +1,4 @@
-import {
-  type HookFunction,
-  type PostCompactContext,
-} from "@vellumai/plugin-api";
+import { type HookFunction, type PostCompactContext } from "@anu/plugin-api";
 
 import { applyTaskProgressContext } from "../src/apply-task-progress-context.js";
 

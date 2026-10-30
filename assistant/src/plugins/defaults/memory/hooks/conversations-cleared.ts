@@ -12,7 +12,7 @@
 import type {
   ConversationsClearedContext,
   HookFunction,
-} from "@vellumai/plugin-api";
+} from "@anu/plugin-api";
 
 import { clearAllConversationMemoryTables } from "../conversation-memory-purge.js";
 

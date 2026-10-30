@@ -136,7 +136,7 @@ function installCLISymlink(): void {
   }
 
   console.log(
-    `   ⚠ Could not create symlink for vellum CLI (tried ${preferredPath} and ${fallbackPath})`,
+    `   ⚠ Could not create symlink for anu CLI (tried ${preferredPath} and ${fallbackPath})`,
   );
 }
 
@@ -190,7 +190,7 @@ export async function hatchLocal(
       if (existing && (!existing.cloud || existing.cloud === "local")) {
         throw new Error(
           `An assistant named "${instanceName}" is already hatched.\n` +
-            `Run \`vellum wake\` to restart it, or \`vellum retire ${instanceName}\` to remove it first.`,
+            `Run \`anu wake\` to restart it, or \`anu retire ${instanceName}\` to remove it first.`,
         );
       }
 
@@ -235,7 +235,7 @@ export async function hatchLocal(
         reporter.warn(
           "Warning: No LLM provider API key is configured. The assistant will fail when you try to send a message.",
         );
-        reporter.warn("  To fix, export your key before running vellum hatch:");
+        reporter.warn("  To fix, export your key before running anu hatch:");
         reporter.warn("  export ANTHROPIC_API_KEY=<your-key>");
         reporter.warn("");
       }
@@ -282,7 +282,7 @@ export async function hatchLocal(
         });
       } catch (error) {
         reporter.error(
-          `\n❌ Local assistant startup failed — stopping partial processes.`,
+          `\n❌ Local assistant startup failed. Stopping partial processes.`,
         );
         await stopLocalProcesses(resources);
         throw error;
@@ -327,7 +327,7 @@ export async function hatchLocal(
       if (attempt < maxLeaseAttempts) {
         const delayMs = 2000 * 2 ** (attempt - 1);
         reporter.error(
-          `⚠️  Guardian token lease attempt ${attempt}/${maxLeaseAttempts} failed — retrying in ${delayMs / 1000}s: ${err}`,
+          `⚠️  Guardian token lease attempt ${attempt}/${maxLeaseAttempts} failed. Retrying in ${delayMs / 1000}s: ${err}`,
         );
         await new Promise((r) => setTimeout(r, delayMs));
       } else {
@@ -347,7 +347,7 @@ export async function hatchLocal(
   if (provider !== undefined && provider !== null && !guardianAccessToken) {
     reporter.error(
       `⚠️  Provider credential setup skipped because the guardian token was not leased.\n` +
-        `   The assistant is still hatched. Run \`vellum setup --provider ${provider}\` after fixing the connection.`,
+        `   The assistant is still hatched. Run \`anu setup --provider ${provider}\` after fixing the connection.`,
     );
   } else if (provider !== undefined) {
     reporter.log("");
@@ -365,7 +365,7 @@ export async function hatchLocal(
   }
 
   reporter.log("");
-  reporter.log(`✅ Local assistant hatched!`);
+  reporter.log(`✅ Local assistant hatched.`);
   reporter.log("");
   reporter.log("Instance details:");
   reporter.log(`  Name: ${instanceName}`);
@@ -414,7 +414,7 @@ export async function hatchLocal(
       }
       if (consecutiveFailures >= MAX_FAILURES) {
         reporter.log(
-          `\n⚠️  ${healthTarget} stopped responding — shutting down.`,
+          `\n⚠️  ${healthTarget} stopped responding. Shutting down.`,
         );
         await stopLocalProcesses(resources);
         process.exit(1);

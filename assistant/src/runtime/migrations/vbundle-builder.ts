@@ -76,7 +76,7 @@ export interface VBundleExportOptions {
   include_memory_vectors: boolean;
   /**
    * Debug profile: the bundle carries `gateway/export.tar.gz`, the gateway's
-   * database and recent logs, for Vellum staff to inspect. Absent on
+   * database and recent logs, for ANU staff to inspect. Absent on
    * ordinary migration bundles.
    */
   include_gateway?: boolean;

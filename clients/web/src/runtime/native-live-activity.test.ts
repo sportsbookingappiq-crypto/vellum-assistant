@@ -56,7 +56,7 @@ const startOptions: VoiceLiveActivityStart = {
   ...content,
   phase: "connecting",
   label: "Connecting…",
-  assistantName: "Vellum",
+  assistantName: "ANU",
 };
 
 beforeEach(() => {

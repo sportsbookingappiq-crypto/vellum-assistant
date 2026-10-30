@@ -3,7 +3,7 @@
 
 /**
  * Minimal ambient declarations for the subset of the Chrome Extension API
- * surface used by the Vellum browser-relay extension's typed modules.
+ * surface used by the ANU browser-relay extension's typed modules.
  *
  * This is intentionally narrow — it covers what's needed by the
  * typechecked files under `background/` and `popup/`, not the full

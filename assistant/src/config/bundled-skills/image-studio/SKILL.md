@@ -1,7 +1,7 @@
 ---
 name: image-studio
 description: Create images from a text description, or edit photos and graphics the user provides (remove backgrounds or watermarks, retouch, restyle, in-paint). Can produce multiple variants when the user wants options to choose from.
-compatibility: "Designed for Vellum personal assistants"
+compatibility: "Designed for ANU personal assistants"
 metadata:
   emoji: "🎨"
   vellum:

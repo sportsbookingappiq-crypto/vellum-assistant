@@ -13,7 +13,7 @@ let cachedCatalog: CatalogSkill[] | null = null;
 let cacheTimestamp = 0;
 
 /**
- * Resolve the Vellum catalog with in-memory caching.
+ * Resolve the ANU catalog with in-memory caching.
  *
  * When a local first-party catalog is available (dev mode or compiled binary
  * with bundled skills), merge it with the remote catalog so skills published
@@ -44,7 +44,7 @@ export async function getCatalog(): Promise<CatalogSkill[]> {
     if (cachedCatalog) {
       log.warn(
         { err },
-        "Failed to fetch Vellum catalog, keeping stale merged cache",
+        "Failed to fetch ANU catalog, keeping stale merged cache",
       );
       // Reset the TTL window so subsequent calls during the outage are served
       // from cache instead of re-entering fetchCatalog() on every call.
@@ -54,11 +54,11 @@ export async function getCatalog(): Promise<CatalogSkill[]> {
     if (local.length > 0) {
       log.warn(
         { err },
-        "Failed to fetch Vellum catalog, falling back to bundled local catalog",
+        "Failed to fetch ANU catalog, falling back to bundled local catalog",
       );
       catalog = local;
     } else {
-      log.warn({ err }, "Failed to fetch Vellum catalog, returning empty");
+      log.warn({ err }, "Failed to fetch ANU catalog, returning empty");
       return [];
     }
   }

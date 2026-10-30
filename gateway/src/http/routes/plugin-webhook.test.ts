@@ -30,7 +30,7 @@ import { inboundSeenEvents } from "../../db/schema.js";
 import {
   ACCESS_DENIED_NOT_APPROVED_REPLY,
   PLUGIN_ADMISSION_DENIED_NOTICE_PATH,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 
 import type {
   HandleInboundOptions,

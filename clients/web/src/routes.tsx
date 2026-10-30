@@ -257,6 +257,71 @@ export const routeTree = [
     ],
   },
 
+  // ANU task screens: a top-level branch like `/account`, outside the
+  // platform auth middleware and `RootLayout`. They sign in with the ANU
+  // API's own phone login and need no active assistant.
+  {
+    path: "/anu",
+    ErrorBoundary: RouteErrorBoundary,
+    HydrateFallback: RootHydrateFallback,
+    lazy: {
+      Component: () =>
+        import("@/domains/anu/anu-layout").then((m) => m.AnuLayout),
+    },
+    children: [
+      {
+        ErrorBoundary: RouteErrorBoundary,
+        children: [
+          {
+            index: true,
+            lazy: {
+              Component: () =>
+                import("@/domains/anu/anu-tasks-page").then(
+                  (m) => m.AnuTasksPage,
+                ),
+            },
+          },
+          {
+            path: "tasks/:taskId",
+            lazy: {
+              Component: () =>
+                import("@/domains/anu/anu-tasks-page").then(
+                  (m) => m.AnuTasksPage,
+                ),
+            },
+          },
+          {
+            path: "new",
+            lazy: {
+              Component: () =>
+                import("@/domains/anu/anu-new-goal-page").then(
+                  (m) => m.AnuNewGoalPage,
+                ),
+            },
+          },
+          {
+            path: "settings",
+            lazy: {
+              Component: () =>
+                import("@/domains/anu/anu-settings-page").then(
+                  (m) => m.AnuSettingsPage,
+                ),
+            },
+          },
+          {
+            path: "login",
+            lazy: {
+              Component: () =>
+                import("@/domains/anu/anu-login-page").then(
+                  (m) => m.AnuLoginPage,
+                ),
+            },
+          },
+        ],
+      },
+    ],
+  },
+
   // Logout — standalone page, no app chrome
   {
     path: "/logout",
@@ -317,7 +382,7 @@ export const routeTree = [
   // One-time credential entry — public page opened from a single-use
   // credential-request link. Kept OUTSIDE the auth-protected tree (same
   // sibling pattern as /assistant/pair) because the recipient of the link
-  // may have no Vellum session at all; the single-use token, sent in the
+  // may have no ANU session at all; the single-use token, sent in the
   // request body, is the only authorization the gateway needs.
   {
     path: "/assistant/credentials/enter",

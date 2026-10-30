@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { type ReactNode, useCallback, useMemo, useState } from "react";
 
-import { Button } from "@vellumai/design-library/components/button";
+import { Button } from "@anu/design-library/components/button";
 
 import { ExternalAnchor } from "@/components/external-anchor";
 import { useProfileLabel } from "@/assistant/use-profile-label";

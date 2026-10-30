@@ -4,7 +4,7 @@
  * A conversation bound to an external channel carries two kinds of row: the
  * ones that exist in that channel (someone typed them in Slack, Telegram,
  * Discord, a phone thread, an email chain) and the ones that exist only in
- * Vellum. The sidecar draws each row exactly once, so it needs one question
+ * ANU. The sidecar draws each row exactly once, so it needs one question
  * answered per row: does this row exist in the external channel, and if so,
  * what does the channel call it?
  *
@@ -28,7 +28,7 @@
 import {
   pickReactionEmojiFields,
   type ReactionEmojiFields,
-} from "@vellumai/service-contracts/reactions";
+} from "@anu/service-contracts/reactions";
 import { isExternalChannelOrigin } from "@/domains/chat/utils/conversation-channel";
 import type { DisplayMessage } from "@/domains/chat/types/types";
 import type {
@@ -160,7 +160,7 @@ const readSlackProvenance: ChannelMessageProvenanceReader = (
  * Per-channel readers, one per envelope the wire carries.
  *
  * A channel absent from this map is not ineligible for the sidecar. It has no
- * per-row envelope on the wire, so its rows stay in the Vellum lane and its
+ * per-row envelope on the wire, so its rows stay in the ANU lane and its
  * drawer shows the channel's identity and source link instead of a message
  * list. See the module docstring.
  */
@@ -170,7 +170,7 @@ const PROVENANCE_READERS: Record<string, ChannelMessageProvenanceReader> = {
 
 /**
  * The external channel a conversation is bound to, or `null` when it is an
- * ordinary Vellum conversation.
+ * ordinary ANU conversation.
  *
  * Reads `channelBinding.sourceChannel` first (the daemon's authoritative
  * field) and falls back to `originChannel`, matching the daemon-side
@@ -195,8 +195,8 @@ export function getBoundChannelId(
  * cannot attribute the row to the conversation's channel.
  *
  * `null` is the conservative answer and the common one. It never means "this
- * row is definitely Vellum-only", only "nothing observable says otherwise",
- * which is why callers use it to *keep* a row in the Vellum lane rather than
+ * row is definitely ANU-only", only "nothing observable says otherwise",
+ * which is why callers use it to *keep* a row in the ANU lane rather than
  * to move it out of one.
  */
 export function readChannelMessageProvenance(

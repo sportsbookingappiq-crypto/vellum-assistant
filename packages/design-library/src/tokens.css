@@ -1,12 +1,12 @@
 /* ---------------------------------------------------------------------------
- * Design system tokens — @vellumai/design-library
+ * Design system tokens — @anu/design-library
  *
  * Single source of truth for color, typography, and component tokens.
  * Consuming apps import this file to provide the CSS variable context that
  * design-library components depend on.
  *
  * Usage (in a consuming app's global CSS):
- *   @import "@vellumai/design-library/tokens.css";
+ *   @import "@anu/design-library/tokens.css";
  *
  * Theme selection is controlled by a `data-theme` attribute on any ancestor
  * element (typically <html> or a wrapper <div>):
@@ -146,32 +146,33 @@
  * https://tailwindcss.com/docs/theme#using-static-values
  * --------------------------------------------------------------------------- */
 @theme static inline {
-  /* Moss (cool neutral — synced with macOS Figma tokens) */
-  --color-moss-950: #111214;
-  --color-moss-900: #17191C;
-  --color-moss-800: #1C2024;
-  --color-moss-700: #24292E;
-  --color-moss-600: #2D3339;
-  --color-moss-500: #444D56;
-  --color-moss-400: #71808E;
-  --color-moss-300: #A9B2BB;
-  --color-moss-200: #CFCCC9;
-  --color-moss-100: #E9E6E2;
-  --color-moss-50:  #F6F5F4;
+  /* Moss (cool neutral, drawn from the ANU Night family) */
+  --color-moss-950: #070D1F;
+  --color-moss-900: #0C1428;
+  --color-moss-800: #111A30;
+  --color-moss-700: #18223A;
+  --color-moss-600: #202C47;
+  --color-moss-500: #3A4762;
+  --color-moss-400: #66758A;
+  --color-moss-300: #A6B2C2;
+  --color-moss-200: #C9D3DE;
+  --color-moss-100: #E1E9F1;
+  --color-moss-50:  #F3F8FC;
 
-  /* Stone (warm neutral — synced with macOS Figma tokens; overrides
-   * Tailwind v4's default stone scale to match the assistant palette) */
-  --color-stone-950: #111214;
-  --color-stone-900: #17191C;
-  --color-stone-800: #24292E;
-  --color-stone-700: #5A6672;
-  --color-stone-600: #71808E;
-  --color-stone-500: #8D99A5;
-  --color-stone-400: #A9B2BB;
-  --color-stone-300: #CFCCC9;
-  --color-stone-200: #E9E6E2;
-  --color-stone-100: #F2F0EE;
-  --color-stone-50:  #F6F5F4;
+  /* Stone (the second neutral ramp; overrides Tailwind v4's default stone
+   * scale with the same Night-to-Frost greys so a stone utility never
+   * reads warm against the Frost ground) */
+  --color-stone-950: #070D1F;
+  --color-stone-900: #0C1428;
+  --color-stone-800: #18223A;
+  --color-stone-700: #4A5A70;
+  --color-stone-600: #5E6D82;
+  --color-stone-500: #8492A6;
+  --color-stone-400: #A6B2C2;
+  --color-stone-300: #C9D3DE;
+  --color-stone-200: #E1E9F1;
+  --color-stone-100: #ECF2F8;
+  --color-stone-50:  #F3F8FC;
 
   /* Forest (green accent — synced with macOS system-positive) */
   --color-forest-950: #0D2818;
@@ -294,7 +295,12 @@
   --anim-spring: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ===== Light mode (default) — Figma node 2674:20625 ===== */
+/* ===== Light mode (default): ANU Frost =====
+ * The ANU palette (assets/brand/BRAND.md) mapped onto roles, not sprayed on
+ * chrome. Frost is the ground, white is the working surface one tone step up,
+ * Night 900 is the ink and the one filled action, and ANU Blue is kept for
+ * what is live (a running step, a link, focus). Status hues mean status:
+ * green done, red failed, amber waiting on the person. */
 :root,
 [data-theme="light"] {
   /* Native controls (number spinners, scrollbars, pickers) follow the theme
@@ -303,62 +309,62 @@
   color-scheme: light;
 
   /* Surface */
-  --surface-base: #F6F5F4;
-  --surface-overlay: #FDFDFC;
-  --surface-active: #F2F0EE;
+  --surface-base: #F0F9FF;
+  --surface-overlay: #FAFDFF;
+  --surface-active: #E2EDF7;
   --surface-lift: #FFFFFF;
-  --surface-hover: rgba(185, 180, 172, 0.08);
+  --surface-hover: rgba(10, 22, 51, 0.04);
 
   /* Primary */
-  --primary-base: #17191C;
-  --primary-hover: #24292E;
-  --primary-active: #2D3339;
-  --primary-disabled: #F6F5F4;
-  --primary-second-hover: #B9B4AC;
+  --primary-base: #0A1633;
+  --primary-hover: #0F2557;
+  --primary-active: #050B1F;
+  --primary-disabled: #E8EFF6;
+  --primary-second-hover: #9AA9BD;
 
   /* Border */
-  --border-base: #F2F0EE;
-  --border-disabled: #E9E6E2;
-  --border-element: #CFCCC9;
-  --border-hover: #F6F5F4;
-  --border-active: #2D3339;
+  --border-base: #E3EBF3;
+  --border-disabled: #DCE5EF;
+  --border-element: #C3CFDC;
+  --border-hover: #EDF3F9;
+  --border-active: #0A1633;
 
   /* Content. The 5-step intensity ramp (emphasised > default > secondary >
    * tertiary > disabled) covers most text. `quiet`, `faint`, and `strong`
    * are platform-de-facto pairs — they exist because component code uses
    * specific shades the ramp doesn't name. See dark-mode block for full
-   * pair semantics. */
-  --content-default: #24292E;
-  --content-emphasised: #161616;
-  --content-secondary: #5A6672;
-  --content-tertiary: #71808E;
-  --content-quiet: #8D99A5;     /* between tertiary and disabled */
-  --content-strong: #24292E;    /* = default in light, slightly muted in dark */
-  --content-faint: #A9B2BB;     /* lighter than disabled */
-  --content-disabled: #CFCCC9;
-  --content-inset: #FDFDFC;
+   * pair semantics. Every tier that carries words holds 4.5:1 on Frost. */
+  --content-default: #0A1633;
+  --content-emphasised: #050B1F;
+  --content-secondary: #4A5A70;
+  --content-tertiary: #5B6A80;
+  --content-quiet: #66758A;     /* between tertiary and disabled */
+  --content-strong: #0A1633;    /* = default in light, slightly muted in dark */
+  --content-faint: #8A97A8;     /* lighter than disabled */
+  --content-disabled: #B3BECB;
+  --content-inset: #FFFFFF;
 
   /* Surface (extras beyond the base/overlay/active/lift/hover ramp) */
-  --surface-sunken: #F6F5F4;    /* = surface-base in light; recessed in dark */
+  --surface-sunken: #E8F2FB;    /* one step under Frost */
 
   /* Border (extras beyond base/disabled/element/hover/active/overlay) */
-  --border-subtle: #E9E6E2;     /* = border-disabled in light; soft in dark */
+  --border-subtle: #DCE5EF;     /* = border-disabled in light; soft in dark */
 
   /* System */
-  --system-positive-strong: #277E41;
-  --system-positive-weak: #E9F2EC;
-  --system-negative-strong: #DA491A;
-  --system-negative-hover: #E86B40;
-  --system-negative-weak: #F7DAC9;
+  --system-positive-strong: #16794C;
+  --system-positive-weak: #E3F4EA;
+  --system-negative-strong: #C4242A;
+  --system-negative-hover: #D93B40;
+  --system-negative-weak: #FDECEC;
   /* Strong tone to use when the glyph sits on its own weak fill. Tracks
      *-strong except in dark, where negative-strong drops under 3:1 on
      negative-weak. */
-  --system-positive-on-weak: #277E41;
-  --system-negative-on-weak: #DA491A;
-  --system-mid-strong: #F1B21E;
-  --system-mid-weak: #FCF3DD;
-  --system-info-strong: #467CC8;
-  --system-info-weak: #CEDAEC;
+  --system-positive-on-weak: #16794C;
+  --system-negative-on-weak: #C4242A;
+  --system-mid-strong: #D97706;
+  --system-mid-weak: #FEF3D9;
+  --system-info-strong: #2563EB;
+  --system-info-weak: #E0F2FE;
   --notification-attention: #E5484D;
 
   /* Feed identifier */
@@ -383,229 +389,230 @@
   --aux-white: #FFFFFF;
 
   /* Shadow */
-  --shadow-popover: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 3px 15px 0 rgba(0, 0, 0, 0.07);
+  --shadow-popover: 0 1px 3px 0 rgba(10, 22, 51, 0.06), 0 4px 16px 0 rgba(10, 22, 51, 0.08);
 
-  /* Derived */
-  --ring: color-mix(in srgb, var(--system-positive-strong) 30%, transparent);
-  /* Link ink. Tracks the theme's positive-strong, the colour markdown and
-     external links already wear, so a link reads the same wherever it is
-     drawn. Restated per theme block for the same reason as --ring: a var()
+  /* Derived. Focus and links wear ANU Blue: the one hue the chrome is
+     allowed, kept to small marks. Restated per theme block because a var()
      alias resolves where it is declared. */
-  --content-link: var(--system-positive-strong);
-  --content-link-hover: color-mix(in srgb, var(--system-positive-strong) 80%, transparent);
+  --ring: color-mix(in srgb, var(--system-info-strong) 35%, transparent);
+  --content-link: var(--system-info-strong);
+  --content-link-hover: color-mix(in srgb, var(--system-info-strong) 80%, transparent);
   --border-overlay: var(--border-disabled);
   --ghost-hover: var(--surface-active);
   --ghost-pressed: var(--border-disabled);
   --field-bg: var(--surface-lift);
   --field-border: var(--border-element);
-  --tag-bg-neutral: var(--surface-base);
+  --tag-bg-neutral: var(--surface-active);
   --segment-track: var(--surface-active);
 
   /* Background / Foreground */
-  --background: #F6F5F4;
-  --foreground: #24292E;
+  --background: #F0F9FF;
+  --foreground: #0A1633;
 
 }
 
-/* ===== Dark mode — Figma node 2674:20730 ===== */
+/* ===== Dark mode: ANU Night =====
+ * A near-neutral dark with the faintest cool cast from Night, so the screen
+ * reads as a calm instrument rather than a navy dashboard. Surfaces step up
+ * in lightness alone, with no glow and no coloured light; the inverted
+ * primary is a near-white. Azure takes over the live, link and focus roles
+ * that ANU Blue holds on light, because ANU Blue drops under 3:1 here, and
+ * it stays the only hue in the chrome. */
 [data-theme="dark"] {
   color-scheme: dark;
 
   /* Surface */
-  --surface-base: #17191C;
-  --surface-overlay: #1C2024;
-  --surface-active: #444D56;
-  --surface-lift: #24292E;
-  --surface-hover: rgba(233, 230, 226, 0.06);
+  --surface-base: #0B0D11;
+  --surface-overlay: #111419;
+  --surface-active: #1E232B;
+  --surface-lift: #14171C;
+  --surface-hover: rgba(255, 255, 255, 0.05);
 
   /* Primary */
-  --primary-base: #FDFDFC;
-  --primary-hover: #F2F0EE;
-  --primary-active: #E9E6E2;
-  --primary-disabled: #2D3339;
-  --primary-second-hover: #E9E6E2;
+  --primary-base: #F2F4F7;
+  --primary-hover: #E2E6EB;
+  --primary-active: #CDD3DB;
+  --primary-disabled: #1C2026;
+  --primary-second-hover: #CDD3DB;
 
   /* Border */
-  --border-base: #24292E;
-  --border-disabled: #1C2024;
-  --border-element: #5A6672;
-  --border-hover: #2D3339;
-  --border-active: #F6F5F4;
+  --border-base: #1E2229;
+  --border-disabled: #171A20;
+  --border-element: #3A414C;
+  --border-hover: #1E232B;
+  --border-active: #E2E6EB;
 
   /* Content. See light-mode block for the rationale on quiet/faint/strong. */
-  --content-default: #F6F5F4;
-  --content-emphasised: #FDFDFC;
-  --content-secondary: #A9B2BB;
-  --content-tertiary: #8D99A5;
-  --content-quiet: #A9B2BB;     /* = secondary in dark, lighter than tertiary in light */
-  --content-strong: #E9E6E2;
-  --content-faint: #8D99A5;
-  --content-disabled: #5A6672;
-  --content-inset: #17191C;
+  --content-default: #ECEFF3;
+  --content-emphasised: #F5FAFF;
+  --content-secondary: #AAB2BD;
+  --content-tertiary: #8E97A3;
+  --content-quiet: #AAB2BD;     /* = secondary in dark, lighter than tertiary in light */
+  --content-strong: #E2E6EB;
+  --content-faint: #858E9A;
+  --content-disabled: #4A515C;
+  --content-inset: #0B0D11;
 
   /* Surface (extras) */
-  --surface-sunken: #1C2024;
+  --surface-sunken: #08090C;
 
   /* Border (extras) */
-  --border-subtle: #2D3339;
+  --border-subtle: #1E232B;
 
   /* System */
-  --system-positive-strong: #309C50;
-  --system-positive-weak: #2C3A31;
-  --system-negative-strong: #DA491A;
-  --system-negative-hover: #AB3F1C;
-  --system-negative-weak: #4F2D24;
-  --system-positive-on-weak: #309C50;
-  /* Not negative-strong: #DA491A measures 2.86:1 on #4F2D24. #E86B40 is
-     3.81:1, clearing the 3:1 WCAG 1.4.11 asks of non-text indicators. */
-  --system-negative-on-weak: #E86B40;
-  --system-mid-strong: #F1B21E;
-  --system-mid-weak: #4B3D1E;
-  --system-info-strong: #467CC8;
-  --system-info-weak: #2A3A50;
-  --notification-attention: #E5484D;
+  --system-positive-strong: #3FC07A;
+  --system-positive-weak: #14261C;
+  --system-negative-strong: #F0606A;
+  --system-negative-hover: #F47B83;
+  --system-negative-weak: #2C181A;
+  --system-positive-on-weak: #3FC07A;
+  --system-negative-on-weak: #F0606A;
+  --system-mid-strong: #F5B83D;
+  --system-mid-weak: #2A2212;
+  --system-info-strong: #38BDF8;
+  --system-info-weak: #10263A;
+  --notification-attention: #F0606A;
 
   /* Feed identifier */
   --feed-nudge-strong: #DB4B77;
-  --feed-nudge-weak: #432B33;
+  --feed-nudge-weak: #2E1E25;
   --feed-digest-strong: #0E9B8B;
-  --feed-digest-weak: #293D3B;
+  --feed-digest-weak: #13282A;
   /* credits/coins accent (teal) */
   --credits-accent: #0E9B8B;
   --feed-thread-strong: #E9C91A;
-  --feed-thread-weak: #464125;
+  --feed-thread-weak: #29271A;
 
   /* Decorative accent. Strong holds; weak drops to the same band the feed
      identifiers drop to on a dark ground. */
   --accent-orange-strong: #E9642F;
-  --accent-orange-weak: #4E3226;
+  --accent-orange-weak: #2E211B;
   --accent-purple-strong: #A665C9;
-  --accent-purple-weak: #3B2C4A;
+  --accent-purple-weak: #251F30;
 
   /* Aux */
   --aux-white: #FFFFFF;
 
   /* Shadow */
-  --shadow-popover: 0 1px 3px 0 rgba(0, 0, 0, 0.25), 0 4px 12px 0 rgba(0, 0, 0, 0.25);
+  --shadow-popover: 0 1px 3px 0 rgba(0, 0, 0, 0.35), 0 6px 18px 0 rgba(0, 0, 0, 0.35);
 
   /* Derived. Re-declared (rather than inherited from the light block) so
-   * --ring tracks the dark --system-positive-strong even when data-theme is
+   * --ring tracks the dark --system-info-strong even when data-theme is
    * applied to a non-root ancestor. */
-  --ring: color-mix(in srgb, var(--system-positive-strong) 30%, transparent);
-  --content-link: var(--system-positive-strong);
-  --content-link-hover: color-mix(in srgb, var(--system-positive-strong) 80%, transparent);
+  --ring: color-mix(in srgb, var(--system-info-strong) 40%, transparent);
+  --content-link: #7DD3FC;
+  --content-link-hover: color-mix(in srgb, #7DD3FC 80%, transparent);
   --border-overlay: var(--border-hover);
   --ghost-hover: var(--border-base);
-  --ghost-pressed: var(--primary-active);
-  --field-bg: #2D3339;
-  --field-border: transparent;
+  --ghost-pressed: var(--surface-active);
+  --field-bg: #14171C;
+  --field-border: #2A2F37;
   --tag-bg-neutral: var(--primary-disabled);
-  --segment-track: #2D3339;
+  --segment-track: #171A20;
 
   /* Background / Foreground */
-  --background: #17191C;
-  --foreground: #F6F5F4;
+  --background: #0B0D11;
+  --foreground: #ECEFF3;
 }
 
-/* ===== Velvet mode — dark with red/pink accents ===== */
+/* ===== Velvet mode: ANU Polar night, the extra dark variant =====
+ * The darkest ground the brand allows, under Night 950, for OLED phones and
+ * dark rooms. Unlike dark, this variant lets Azure carry the primary action,
+ * so the one filled control is the brand's own ice. */
 [data-theme="velvet"] {
   color-scheme: dark;
 
   /* Surface */
-  --surface-base: #121214;
-  --surface-overlay: #1A171B;
-  --surface-active: #30252B;
-  --surface-lift: #211D22;
-  --surface-hover: rgba(244, 63, 94, 0.08);
+  --surface-base: #01040D;
+  --surface-overlay: #060B19;
+  --surface-active: #142039;
+  --surface-lift: #08101F;
+  --surface-hover: rgba(56, 189, 248, 0.06);
 
   /* Primary */
-  --primary-base: #E83F5B;
-  --primary-hover: #F45A73;
-  --primary-active: #C92E48;
-  --primary-disabled: #30252B;
-  --primary-second-hover: #F43F5E;
+  --primary-base: #38BDF8;
+  --primary-hover: #7DD3FC;
+  --primary-active: #0EA5E9;
+  --primary-disabled: #111A2E;
+  --primary-second-hover: #7DD3FC;
 
   /* Border */
-  --border-base: #24292E;
-  --border-disabled: #1C2024;
-  --border-element: #735261;
-  --border-hover: #30252B;
-  --border-active: #FFB3C7;
+  --border-base: #111A2E;
+  --border-disabled: #0B1324;
+  --border-element: #2B3A57;
+  --border-hover: #142039;
+  --border-active: #7DD3FC;
 
-  /* Content. Velvet inherits the dark values for quiet/faint/strong since
-   * velvet's accent applies at the chrome level (primary/surface), not the
-   * text ramp. Design may refine these per Velvet's own palette later. */
-  --content-default: #F6F5F4;
-  --content-emphasised: #FFF7FA;
-  --content-secondary: #C8B6BE;
-  --content-tertiary: #A98695;
-  --content-quiet: #A9B2BB;
-  --content-strong: #E9E6E2;
-  --content-faint: #8D99A5;
-  --content-disabled: #6B5962;
-  --content-inset: #FFF7FA;
+  /* Content. Velvet shares the dark ramp's steps, re-measured on its deeper
+   * ground. */
+  --content-default: #E0F2FE;
+  --content-emphasised: #F5FAFF;
+  --content-secondary: #9CB3CB;
+  --content-tertiary: #8399B3;
+  --content-quiet: #9CB3CB;
+  --content-strong: #D6E7F5;
+  --content-faint: #73879F;
+  --content-disabled: #3C4A63;
+  --content-inset: #01040D;
 
-  /* Surface (extras). Sunken inherits dark — design to refine if velvet
-   * wants its own subdued surface. */
-  --surface-sunken: #1C2024;
+  /* Surface (extras) */
+  --surface-sunken: #000208;
 
   /* Border (extras) */
-  --border-subtle: #2D3339;
+  --border-subtle: #142039;
 
   /* System */
-  --system-positive-strong: #E83F5B;
-  --system-positive-weak: #382027;
-  --system-negative-strong: #EF4444;
-  --system-negative-hover: #F87171;
-  --system-negative-weak: #3A2024;
-  --system-positive-on-weak: #E83F5B;
-  --system-negative-on-weak: #EF4444;
-  --system-mid-strong: #F1B21E;
-  --system-mid-weak: #42321C;
-  --system-info-strong: #467CC8;
-  --system-info-weak: #2A3A50;
-  --notification-attention: #E5484D;
+  --system-positive-strong: #3FC07A;
+  --system-positive-weak: #0D2318;
+  --system-negative-strong: #F0606A;
+  --system-negative-hover: #F47B83;
+  --system-negative-weak: #2A1016;
+  --system-positive-on-weak: #3FC07A;
+  --system-negative-on-weak: #F0606A;
+  --system-mid-strong: #F5B83D;
+  --system-mid-weak: #2A200C;
+  --system-info-strong: #38BDF8;
+  --system-info-weak: #08243C;
+  --notification-attention: #F0606A;
 
-  /* Feed identifier — reuses the dark palette; velvet's accent colors
-   * apply at the chrome level (primary, surface) rather than swapping
-   * the feed glyph colors. */
+  /* Feed identifier: reuses the dark palette. */
   --feed-nudge-strong: #DB4B77;
-  --feed-nudge-weak: #432B33;
+  --feed-nudge-weak: #3A1F2C;
   --feed-digest-strong: #0E9B8B;
-  --feed-digest-weak: #293D3B;
+  --feed-digest-weak: #0E2A30;
   /* credits/coins accent (teal) */
   --credits-accent: #0E9B8B;
   --feed-thread-strong: #E9C91A;
-  --feed-thread-weak: #464125;
+  --feed-thread-weak: #2E2A16;
 
   /* Decorative accent. Strong holds; weak drops to the same band the feed
      identifiers drop to on a dark ground. */
   --accent-orange-strong: #E9642F;
-  --accent-orange-weak: #4E3226;
+  --accent-orange-weak: #3A2118;
   --accent-purple-strong: #A665C9;
-  --accent-purple-weak: #3B2C4A;
+  --accent-purple-weak: #2A1E3E;
 
   /* Aux */
   --aux-white: #FFFFFF;
 
   /* Shadow */
-  --shadow-popover: 0 1px 3px 0 rgba(0, 0, 0, 0.25), 0 4px 12px 0 rgba(0, 0, 0, 0.25);
+  --shadow-popover: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 6px 18px 0 rgba(0, 0, 0, 0.5);
 
-  /* Derived. --ring re-declared so it tracks velvet's positive accent. */
-  --ring: color-mix(in srgb, var(--system-positive-strong) 30%, transparent);
-  --content-link: var(--system-positive-strong);
-  --content-link-hover: color-mix(in srgb, var(--system-positive-strong) 80%, transparent);
+  /* Derived. --ring re-declared so it tracks velvet's Azure. */
+  --ring: color-mix(in srgb, var(--system-info-strong) 45%, transparent);
+  --content-link: #7DD3FC;
+  --content-link-hover: color-mix(in srgb, #7DD3FC 80%, transparent);
   --border-overlay: var(--border-hover);
   --ghost-hover: var(--border-base);
-  --ghost-pressed: var(--primary-active);
-  --field-bg: #242026;
-  --field-border: transparent;
+  --ghost-pressed: var(--surface-active);
+  --field-bg: #08101F;
+  --field-border: #1E2B45;
   --tag-bg-neutral: var(--primary-disabled);
   --segment-track: var(--surface-active);
 
   /* Background / Foreground */
-  --background: #121214;
-  --foreground: #F6F5F4;
+  --background: #01040D;
+  --foreground: #E0F2FE;
 }
 
 /* ---------------------------------------------------------------------------
@@ -944,44 +951,25 @@
 }
 
 /* ---------------------------------------------------------------------------
- * Skeleton shimmer: a soft gradient band sweeping left→right over a
- * placeholder block while content loads. Consumed by the `Skeleton`
- * component. The highlight mixes the surface toward `--foreground` so it
- * reads in every theme: lighter band in dark/velvet, darker in light.
+ * Skeleton: a flat placeholder at the size of the value it stands in for,
+ * breathing between two opacities while content loads. No gradient band:
+ * a placeholder says "a value goes here", it does not decorate the wait.
+ * The class keeps its historical name because the `Skeleton` component and
+ * app code reference it.
  * --------------------------------------------------------------------------- */
-@keyframes skeleton-shimmer {
-  from { background-position: 150% 0; }
-  to { background-position: -50% 0; }
+@keyframes skeleton-breathe {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
 }
 
 .skeleton-shimmer {
   background-color: var(--surface-active);
-  /* Fallback band for engines without color-mix() (WKWebView before
-   * iOS 16.2, per the iOS 15.0 deployment target): a neutral translucent
-   * highlight over the surface color (no token expresses this without
-   * color-mix, hence the raw rgba). Engines that parse color-mix() take the
-   * declaration below instead. */
-  background-image: linear-gradient(
-    90deg,
-    transparent 35%,
-    rgba(128, 128, 128, 0.12) 50%,
-    transparent 65%
-  );
-  background-image: linear-gradient(
-    90deg,
-    var(--surface-active) 35%,
-    color-mix(in srgb, var(--surface-active), var(--foreground) 12%) 50%,
-    var(--surface-active) 65%
-  );
-  background-size: 200% 100%;
-  background-repeat: no-repeat;
-  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+  animation: skeleton-breathe 1.6s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .skeleton-shimmer {
     animation: none;
-    background-image: none;
   }
 }
 

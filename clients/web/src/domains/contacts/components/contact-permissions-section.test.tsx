@@ -4,7 +4,7 @@ import { createElement } from "react";
 
 import type { ContactPayload } from "@/domains/contacts/types";
 
-mock.module("@vellumai/design-library/components/select", () => ({
+mock.module("@anu/design-library/components/select", () => ({
   Select: ({
     value,
     onChange,

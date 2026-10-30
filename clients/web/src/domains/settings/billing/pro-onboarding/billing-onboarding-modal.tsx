@@ -12,9 +12,9 @@ import {
 } from "@/lib/billing/checkout-intent";
 import { useTranslation } from "@/i18n";
 import { routes } from "@/utils/routes";
-import { ConfirmDialog } from "@vellumai/design-library/components/confirm-dialog";
-import { Modal } from "@vellumai/design-library/components/modal";
-import { toast } from "@vellumai/design-library/components/toast";
+import { ConfirmDialog } from "@anu/design-library/components/confirm-dialog";
+import { Modal } from "@anu/design-library/components/modal";
+import { toast } from "@anu/design-library/components/toast";
 
 import { CompleteState } from "./complete-state";
 import { FetchErrorState } from "./error-states";

@@ -1,5 +1,5 @@
 /**
- * Guards that importing `@vellumai/plugin-api` does not force a DB-graph
+ * Guards that importing `@anu/plugin-api` does not force a DB-graph
  * module's named exports to resolve.
  *
  * Plugin suites routinely partial-mock modules in the persistence/embeddings

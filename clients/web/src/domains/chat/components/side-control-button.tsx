@@ -28,7 +28,7 @@
 
 import type { ComponentProps, ReactNode } from "react";
 
-import { Button, SIDE_MENU_TILE_SIZE } from "@vellumai/design-library";
+import { Button, SIDE_MENU_TILE_SIZE } from "@anu/design-library";
 
 import { ShimmerSurface } from "@/domains/chat/components/shimmer-surface";
 import { cn } from "@/utils/misc";

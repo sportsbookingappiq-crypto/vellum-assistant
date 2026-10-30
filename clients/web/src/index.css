@@ -1,5 +1,10 @@
 @import "tailwindcss";
-@import "@vellumai/design-library/tokens.css";
+@import "@anu/design-library/tokens.css";
+/* Arabic face for the ANU screens; see the `[data-anu-root]` rules below. */
+@import "@fontsource/ibm-plex-sans-arabic/arabic-400.css";
+@import "@fontsource/ibm-plex-sans-arabic/arabic-500.css";
+@import "@fontsource/ibm-plex-sans-arabic/arabic-600.css";
+@import "@fontsource/ibm-plex-sans-arabic/arabic-700.css";
 
 /* Capacitor mobile shell variant. Keys off the data-native-platform marker
  * set by initNativePlatformAttributes() at boot. Deliberately :is(), not
@@ -2043,4 +2048,38 @@ html[data-page-transition="pop"]::view-transition-new(root) {
 .avatar-edit-cursor,
 .avatar-edit-cursor * {
   cursor: pointer !important;
+}
+
+/* ANU screens. Arabic text is set in IBM Plex Sans Arabic, bundled locally,
+ * with DM Sans behind it for Latin runs; code keeps its monospace. */
+
+:lang(ar) [data-anu-root] :where(*:not(code, pre, .font-mono, .font-mono *)) {
+  font-family: "IBM Plex Sans Arabic", "DM Sans", system-ui, sans-serif !important;
+}
+
+/* Syntax colours for the ANU file viewer: ink for most tokens, the theme's
+ * own status hues for strings, numbers and keywords, nothing louder. */
+.anu-code .hljs-keyword,
+.anu-code .hljs-built_in,
+.anu-code .hljs-selector-tag {
+  color: var(--system-info-strong);
+}
+.anu-code .hljs-string,
+.anu-code .hljs-attr,
+.anu-code .hljs-template-tag {
+  color: var(--system-positive-strong);
+}
+.anu-code .hljs-number,
+.anu-code .hljs-literal {
+  color: var(--system-mid-strong);
+}
+.anu-code .hljs-comment,
+.anu-code .hljs-meta {
+  color: var(--content-tertiary);
+  font-style: italic;
+}
+.anu-code .hljs-title,
+.anu-code .hljs-name {
+  color: var(--content-emphasised);
+  font-weight: 500;
 }

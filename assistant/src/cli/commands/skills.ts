@@ -251,7 +251,7 @@ export function registerSkillsCommand(program: Command): void {
           const json = opts.json ?? false;
           const limit = parseInt(opts.limit, 10) || 10;
 
-          // Step 1: Vellum catalog (installed + remote available)
+          // Step 1: ANU catalog (installed + remote available)
           const catalogR = await cliIpcCall<{
             skills: Array<{
               id: string;
@@ -331,7 +331,7 @@ export function registerSkillsCommand(program: Command): void {
           if (!hasResults) {
             log.info(`No skills found for "${query}".`);
             if (!catalogR.ok) {
-              log.warn(`(Vellum catalog unavailable: ${catalogR.error})`);
+              log.warn(`(ANU catalog unavailable: ${catalogR.error})`);
             }
             if (!communityR.ok) {
               log.warn(`(Community registry unavailable: ${communityR.error})`);
@@ -340,7 +340,7 @@ export function registerSkillsCommand(program: Command): void {
           }
 
           if (vellumSkills.length > 0) {
-            log.info(`Vellum catalog (${vellumSkills.length}):\n`);
+            log.info(`ANU catalog (${vellumSkills.length}):\n`);
             for (const s of vellumSkills) {
               const emoji = s.emoji ? `${s.emoji} ` : "";
               const badge = s.kind === "installed" ? " [installed]" : "";

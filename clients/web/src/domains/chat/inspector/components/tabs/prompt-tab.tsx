@@ -8,11 +8,8 @@ import { CopyButton } from "@/components/copy-button";
 import { ToolDefinitionsContent } from "@/domains/chat/inspector/components/tool-definitions-content";
 import { parseToolDefinitions } from "@/domains/chat/inspector/tool-definitions";
 import { useTranslation } from "@/i18n";
-import type {
-  LLMContextSection,
-  LLMRequestLogEntry,
-} from "@vellumai/assistant-api";
-import { Button, Card, Collapsible } from "@vellumai/design-library";
+import type { LLMContextSection, LLMRequestLogEntry } from "@anu/assistant-api";
+import { Button, Card, Collapsible } from "@anu/design-library";
 
 interface PromptTabProps {
   entry: LLMRequestLogEntry;

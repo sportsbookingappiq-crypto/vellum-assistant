@@ -8,15 +8,15 @@
  * way everywhere. No subtitle: the Output section header already says "How your
  * assistant sounds".
  *
- * Only managed (Vellum) assistants get a catalog. BYO providers set a voice id
+ * Only managed (ANU) assistants get a catalog. BYO providers set a voice id
  * on their provider form, which lives with every other provider on Models &
  * Services, so this card points there instead of duplicating that field.
  */
 
 import { useState } from "react";
 
-import { Button } from "@vellumai/design-library/components/button";
-import { Skeleton } from "@vellumai/design-library/components/skeleton";
+import { Button } from "@anu/design-library/components/button";
+import { Skeleton } from "@anu/design-library/components/skeleton";
 
 import { DetailCard } from "@/components/detail-card";
 import { useActiveAssistantId } from "@/assistant/use-active-assistant-id";

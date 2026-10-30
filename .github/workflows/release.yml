@@ -1364,7 +1364,7 @@ jobs:
           fi
           npm publish /tmp/npm-dist/package.tgz --access public --no-provenance
 
-  # `@vellumai/plugin-api` is the public TypeScript authoring contract external
+  # `@anu/plugin-api` is the public TypeScript authoring contract external
   # plugins compile against. Unlike the other npm packages it is not a package
   # directory `npm pack` can consume directly: scripts/build-plugin-api.ts rolls
   # the plugin-api surface into a single self-contained `index.d.ts` (API
@@ -1389,10 +1389,10 @@ jobs:
           node-version-file: .nvmrc
       - name: Install dependencies
         run: |
-          if ! bun install --frozen-lockfile --filter=@vellumai/assistant; then
+          if ! bun install --frozen-lockfile --filter=@anu/assistant; then
             echo "bun install --frozen-lockfile failed; regenerating lockfile and retrying..."
             rm -f bun.lock
-            bun install --filter=@vellumai/assistant
+            bun install --filter=@anu/assistant
           fi
       - name: Build plugin-api package
         run: cd assistant && bun run scripts/build-plugin-api.ts --version "${{ needs.extract-version.outputs.version }}"
@@ -1470,8 +1470,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          if ! bun install --frozen-lockfile --filter=@vellumai/cli; then
-            rm -f bun.lock && rm -rf node_modules && bun install --filter=@vellumai/cli
+          if ! bun install --frozen-lockfile --filter=@anu/cli; then
+            rm -f bun.lock && rm -rf node_modules && bun install --filter=@anu/cli
           fi
 
       - name: Strip bundled deps from the manifest
@@ -1625,10 +1625,10 @@ jobs:
           node-version-file: .nvmrc
       - name: Install dependencies
         run: |
-          if ! bun install --frozen-lockfile --filter=@vellumai/assistant; then
+          if ! bun install --frozen-lockfile --filter=@anu/assistant; then
             echo "bun install --frozen-lockfile failed; regenerating lockfile and retrying..."
             rm -f bun.lock
-            bun install --filter=@vellumai/assistant
+            bun install --filter=@anu/assistant
           fi
       - name: Build plugin-api package
         run: cd assistant && bun run scripts/build-plugin-api.ts --version "${{ needs.extract-version.outputs.version }}"
@@ -1708,8 +1708,8 @@ jobs:
           node-version-file: .nvmrc
       - name: Install dependencies
         run: |
-          if ! bun install --frozen-lockfile --filter=@vellumai/web; then
-            rm -f bun.lock && rm -rf node_modules && bun install --filter=@vellumai/web
+          if ! bun install --frozen-lockfile --filter=@anu/web; then
+            rm -f bun.lock && rm -rf node_modules && bun install --filter=@anu/web
           fi
       - name: Generate API clients
         working-directory: clients/web
@@ -1803,11 +1803,11 @@ jobs:
           cd meta
           jq --arg v "$VERSION" '
             .version = $v |
-            .dependencies["@vellumai/assistant"] = $v |
-            .dependencies["@vellumai/cli"] = $v |
-            .dependencies["@vellumai/credential-executor"] = $v |
-            .dependencies["@vellumai/vellum-gateway"] = $v |
-            .dependencies["@vellumai/web"] = $v
+            .dependencies["@anu/assistant"] = $v |
+            .dependencies["@anu/cli"] = $v |
+            .dependencies["@anu/credential-executor"] = $v |
+            .dependencies["@anu/gateway"] = $v |
+            .dependencies["@anu/web"] = $v
           ' package.json > tmp && mv tmp package.json
       - name: Wait for dependencies to propagate
         run: ./scripts/npm-wait-for-meta-deps.sh
@@ -1912,11 +1912,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          if ! bun install --frozen-lockfile --filter=@vellumai/web; then
+          if ! bun install --frozen-lockfile --filter=@anu/web; then
             echo "bun install --frozen-lockfile failed; regenerating lockfile and retrying..."
             rm -f bun.lock
             rm -rf node_modules
-            bun install --filter=@vellumai/web
+            bun install --filter=@anu/web
           fi
 
       - name: Generate API clients
@@ -2113,8 +2113,8 @@ jobs:
       - name: Install dependencies
         working-directory: ${{ github.workspace }}
         run: |
-          if ! bun install --frozen-lockfile --filter=@vellumai/macos --filter=@vellumai/web; then
-            rm -f bun.lock && rm -rf node_modules && bun install --filter=@vellumai/macos --filter=@vellumai/web
+          if ! bun install --frozen-lockfile --filter=@anu/macos --filter=@anu/web; then
+            rm -f bun.lock && rm -rf node_modules && bun install --filter=@anu/macos --filter=@anu/web
           fi
 
       # Installing does not download the Electron binary or build the mac
@@ -2135,7 +2135,7 @@ jobs:
           # electron-builder.config.cjs derives the app id from
           # VELLUM_ENVIRONMENT, which the pack step below sets from the same
           # staging/production switch.
-          EXPECTED_BUNDLE_ID: ${{ needs.extract-version.outputs.is_staging == 'true' && 'com.vellum.vellum-assistant-electron-staging' || 'com.vellum.vellum-assistant-electron' }}
+          EXPECTED_BUNDLE_ID: ${{ needs.extract-version.outputs.is_staging == 'true' && 'ai.anu.assistant-electron-staging' || 'ai.anu.assistant-electron' }}
         run: |
           if [ -z "$MAC_PROVISIONING_PROFILE" ]; then
             echo "::warning::MAC_PROVISIONING_PROFILE is unset, so the native notifier ships disabled: notifications post through Electron without the assistant avatar."
@@ -2522,7 +2522,7 @@ jobs:
             gh release create "$VERSION_TAG" \
               "${ASSETS[@]}" \
               --repo "${{ github.repository }}" \
-              --title "Vellum $VERSION" \
+              --title "ANU $VERSION" \
               --notes-file "$NOTES_FILE" \
               --latest
             echo "Release created at https://github.com/${{ github.repository }}/releases/tag/$VERSION_TAG"
@@ -2621,7 +2621,7 @@ jobs:
           NEW_VERSION: ${{ needs.extract-version.outputs.version }}
         run: |
           cd vel
-          jq --arg v "$NEW_VERSION" '.dependencies["@vellumai/cli"] = $v' package.json > package.json.tmp && mv package.json.tmp package.json
+          jq --arg v "$NEW_VERSION" '.dependencies["@anu/cli"] = $v' package.json > package.json.tmp && mv package.json.tmp package.json
           bun install
 
       - name: Create Pull Request
@@ -2634,12 +2634,12 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH"
           git add vel/package.json vel/bun.lock
-          git commit -m "Bump @vellumai/cli to ${NEW_VERSION} in vel"
+          git commit -m "Bump @anu/cli to ${NEW_VERSION} in vel"
           git push origin "$BRANCH"
           PR_URL=$(gh pr create \
             --repo vellum-ai/vellum-assistant-platform \
-            --title "Bump @vellumai/cli to ${NEW_VERSION} in vel" \
-            --body "Auto-generated PR to update @vellumai/cli to ${NEW_VERSION}." \
+            --title "Bump @anu/cli to ${NEW_VERSION} in vel" \
+            --body "Auto-generated PR to update @anu/cli to ${NEW_VERSION}." \
             --base main \
             --head "$BRANCH")
           sleep 10
@@ -2747,7 +2747,7 @@ jobs:
           bun-version: '1.3.11'
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile --filter=@vellumai/assistant --filter=@vellumai/vellum-gateway
+        run: bun install --frozen-lockfile --filter=@anu/assistant --filter=@anu/gateway
         working-directory: assistant
 
       - name: Lint
@@ -2792,7 +2792,7 @@ jobs:
           bun-version: '1.3.11'
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile --filter=@vellumai/cli
+        run: bun install --frozen-lockfile --filter=@anu/cli
         working-directory: cli
 
       - name: Lint
@@ -2815,7 +2815,7 @@ jobs:
           bun-version: '1.3.11'
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile --filter=@vellumai/vellum-gateway
+        run: bun install --frozen-lockfile --filter=@anu/gateway
         working-directory: gateway
 
       - name: Lint
@@ -2842,7 +2842,7 @@ jobs:
           bun-version: '1.3.11'
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile --filter=@vellumai/credential-executor
+        run: bun install --frozen-lockfile --filter=@anu/credential-executor
         working-directory: credential-executor
 
       - name: Typecheck
@@ -2867,7 +2867,7 @@ jobs:
           bun-version: '1.3.11'
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile --filter=@vellumai/web
+        run: bun install --frozen-lockfile --filter=@anu/web
         working-directory: clients/web
 
       - name: Generate API clients

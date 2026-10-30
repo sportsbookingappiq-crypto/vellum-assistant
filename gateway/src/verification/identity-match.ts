@@ -9,11 +9,11 @@
  * and every earlier code stays spendable for its full TTL.
  */
 
-import { boundIdentity } from "@vellumai/gateway-client";
+import { boundIdentity } from "@anu/gateway-client";
 import type {
   IdentityBindingStatus,
   IdentityBoundSession,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 
 /**
  * The identity fields the match rules read, plus the binding state.

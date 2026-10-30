@@ -8,9 +8,9 @@
  * reject or reset the image-generation section while the UI reports a
  * successful save.
  *
- * On the `false` branch the card persists a Vellum selection the way the
+ * On the `false` branch the card persists an ANU selection the way the
  * legacy Managed toggle did: `{ mode: "managed" }` with no provider. The
- * legacy read bridge renders that config as Vellum again, so the choice
+ * legacy read bridge renders that config as ANU again, so the choice
  * round-trips.
  *
  * MIN_VERSION targets 0.11.0: the first release whose image-generation

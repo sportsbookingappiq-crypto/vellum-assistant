@@ -12,7 +12,7 @@ import { useEffect, useState, type ComponentProps } from "react";
 import { Download, Plus } from "lucide-react";
 import type { Decorator } from "@storybook/react-vite";
 
-import { Button } from "@vellumai/design-library";
+import { Button } from "@anu/design-library";
 
 import { useIntelligenceLayoutSlotsStore } from "@/components/layout/intelligence-layout-slots-store";
 

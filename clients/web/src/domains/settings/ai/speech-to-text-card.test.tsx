@@ -20,7 +20,7 @@
  */
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import type { ElectronHostOS } from "@vellumai/ipc-contract";
+import type { ElectronHostOS } from "@anu/ipc-contract";
 import {
   cleanup,
   fireEvent,
@@ -44,7 +44,7 @@ const ASSISTANT_ID = "asst-test";
 mock.module("@/assistant/use-active-assistant-id", () => ({
   useActiveAssistantId: () => ASSISTANT_ID,
 }));
-mock.module("@vellumai/design-library/components/toast", () => ({
+mock.module("@anu/design-library/components/toast", () => ({
   toast: { success: () => {}, error: () => {} },
   Toaster: () => null,
   ToastContent: () => null,
@@ -288,7 +288,7 @@ describe("SpeechToTextCard — macOS Native Dictation option", () => {
     expect(sttBody?.services?.stt ?? {}).not.toHaveProperty("provider");
   });
 
-  test("selecting a provider from a Vellum daemon writes that provider", async () => {
+  test("selecting a provider from an ANU daemon writes that provider", async () => {
     daemonConfigData = { services: { stt: { provider: "vellum" } } };
     renderCard();
 
@@ -304,7 +304,7 @@ describe("SpeechToTextCard — macOS Native Dictation option", () => {
   });
 });
 
-describe("SpeechToTextCard — Vellum provider", () => {
+describe("SpeechToTextCard — ANU provider", () => {
   beforeEach(() => {
     localStorage.clear();
     nativeDictationSupported = false;
@@ -320,11 +320,11 @@ describe("SpeechToTextCard — Vellum provider", () => {
     localStorage.clear();
   });
 
-  test("Vellum is offered in the provider dropdown", () => {
+  test("ANU is offered in the provider dropdown", () => {
     renderCard();
 
     openProviderSelect();
-    expect(visibleOptions()).toContain("Vellum");
+    expect(visibleOptions()).toContain("ANU");
   });
 
   test("a vellum daemon provider renders as the selected option with no API key field", () => {
@@ -334,19 +334,19 @@ describe("SpeechToTextCard — Vellum provider", () => {
     const trigger = document.querySelector<HTMLButtonElement>(
       'button[role="combobox"][aria-label="STT provider"]',
     );
-    expect(trigger?.textContent).toContain("Vellum");
-    // Vellum authenticates via the platform connection — there is no key.
+    expect(trigger?.textContent).toContain("ANU");
+    // ANU authenticates via the platform connection — there is no key.
     expect(screen.queryByText("API Key")).toBeNull();
     expect(
-      screen.getByText(/Transcription runs through your Vellum account/),
+      screen.getByText(/Transcription runs through your ANU account/),
     ).toBeTruthy();
   });
 
-  test("selecting Vellum saves provider vellum and stores no credential", async () => {
+  test("selecting ANU saves provider vellum and stores no credential", async () => {
     renderCard();
 
     openProviderSelect();
-    selectOption("Vellum");
+    selectOption("ANU");
     fireEvent.click(screen.getByRole("button", { name: "Save" }));
 
     await waitFor(() => expect(configPatchCalls.length).toBe(1));
@@ -361,7 +361,7 @@ describe("SpeechToTextCard — Vellum provider", () => {
 
   // A config written by the legacy mode toggle marks managed via `mode` while
   // `provider` holds the BYOK restore value.
-  test("a legacy managed-mode daemon renders as Vellum", () => {
+  test("a legacy managed-mode daemon renders as ANU", () => {
     daemonConfigData = {
       services: { stt: { mode: "managed", provider: "deepgram" } },
     };
@@ -370,13 +370,13 @@ describe("SpeechToTextCard — Vellum provider", () => {
     const trigger = document.querySelector<HTMLButtonElement>(
       'button[role="combobox"][aria-label="STT provider"]',
     );
-    expect(trigger?.textContent).toContain("Vellum");
+    expect(trigger?.textContent).toContain("ANU");
     expect(screen.queryByText("API Key")).toBeNull();
   });
 
   test("escaping a legacy managed-mode daemon resets mode alongside the provider", async () => {
     // Without the mode reset, the stale `mode: "managed"` would win over the
-    // BYOK provider choice and the user would silently stay on Vellum.
+    // BYOK provider choice and the user would silently stay on ANU.
     daemonConfigData = {
       services: { stt: { mode: "managed", provider: "deepgram" } },
     };
@@ -392,9 +392,9 @@ describe("SpeechToTextCard — Vellum provider", () => {
     });
   });
 
-  test("leaving Vellum for native dictation writes a daemon-backed fallback", async () => {
+  test("leaving ANU for native dictation writes a daemon-backed fallback", async () => {
     // Native is client-only (no daemon mapping), so without an explicit write
-    // the daemon would stay on Vellum and a refetch would snap the dropdown
+    // the daemon would stay on ANU and a refetch would snap the dropdown
     // back to it.
     nativeDictationSupported = true;
     daemonConfigData = { services: { stt: { provider: "vellum" } } };
@@ -551,7 +551,7 @@ describe("SpeechToTextCard: Spoken language picker", () => {
     daemonConfigData = { services: { stt: { provider: "vellum" } } };
     providerCatalogData = {
       providers: [
-        { id: "vellum", displayName: "Vellum", languageSelection: "manual" },
+        { id: "vellum", displayName: "ANU", languageSelection: "manual" },
         {
           id: "openai-whisper",
           displayName: "Whisper",
@@ -570,7 +570,7 @@ describe("SpeechToTextCard: Spoken language picker", () => {
   });
 
   test("hides when the draft switches between manual providers", async () => {
-    // Saved provider deepgram (manual), dropdown switched to Vellum without
+    // Saved provider deepgram (manual), dropdown switched to ANU without
     // saving: both are manual, but a pick would hot-apply to the still
     // active deepgram config while the row advertises the draft's options,
     // so any pending provider draft hides the picker.
@@ -582,7 +582,7 @@ describe("SpeechToTextCard: Spoken language picker", () => {
           displayName: "Deepgram",
           languageSelection: "manual",
         },
-        { id: "vellum", displayName: "Vellum", languageSelection: "manual" },
+        { id: "vellum", displayName: "ANU", languageSelection: "manual" },
       ],
     };
     renderCard();
@@ -590,7 +590,7 @@ describe("SpeechToTextCard: Spoken language picker", () => {
     await waitFor(() => expect(languageTrigger()).not.toBeNull());
 
     openProviderSelect();
-    selectOption("Vellum");
+    selectOption("ANU");
 
     expect(languageTrigger()).toBeNull();
   });

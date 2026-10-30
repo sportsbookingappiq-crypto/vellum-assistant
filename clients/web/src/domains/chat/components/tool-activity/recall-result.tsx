@@ -3,7 +3,7 @@
  * fully search, the answer written from the evidence, and the evidence itself.
  */
 
-import type { RecallMetadata } from "@vellumai/assistant-api";
+import type { RecallMetadata } from "@anu/assistant-api";
 
 import {
   ClampedContent,

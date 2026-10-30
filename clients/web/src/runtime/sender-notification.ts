@@ -18,7 +18,7 @@ import {
   type NotificationSender,
   type PrepareNotificationIdentityPayload,
   type ResetNotificationIdentitiesPayload,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import { setNotificationIdentityNativeAdapter } from "@/runtime/notification-avatar";
 

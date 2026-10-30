@@ -29,7 +29,7 @@ export function DeveloperGuideContributingContent() {
     <>
       <DocsContent title="Contributing" breadcrumb="Docs / Developer Guide / Contributing">
         <p className="mb-8 text-zinc-600">
-          Everything you need to set up the Vellum Assistant repo locally, run tests, and submit a pull request.
+          Everything you need to set up the ANU repo locally, run tests, and submit a pull request.
           Whether you&apos;re fixing a bug, adding a feature, or improving docs — this page has you covered.
         </p>
 
@@ -61,7 +61,7 @@ export function DeveloperGuideContributingContent() {
           <p className="text-sm text-zinc-500">
             Docker Desktop is optional. It is only needed if you want to run or
             test the containerized deployment mode ({" "}
-            <code className="text-sm">vellum hatch --remote docker</code> ).
+            <code className="text-sm">anu hatch --remote docker</code> ).
           </p>
         </section>
 
@@ -92,7 +92,7 @@ cd vellum-assistant
             </SectionHeading>
             <pre className="mb-4 overflow-x-auto rounded-lg bg-zinc-900 p-4 text-sm text-zinc-100">
 {`├── assistant/            # Bun-based assistant runtime (core logic, HTTP API)
-├── cli/                  # Vellum CLI (multi-assistant management)
+├── cli/                  # ANU CLI (multi-assistant management)
 ├── clients/              # Web, desktop (macOS, Windows, Linux), and mobile clients
 ├── gateway/              # Channel gateway (Telegram, Twilio, OAuth, reverse proxy)
 ├── credential-executor/  # Credential Execution Service (isolated RPC)
@@ -115,12 +115,12 @@ cd vellum-assistant
               Running the Assistant
             </SectionHeading>
             <pre className="mb-4 overflow-x-auto rounded-lg bg-zinc-900 p-4 text-sm text-zinc-100">
-{`vellum hatch            # first-time setup (creates config, provisions keys)
-vellum wake             # start assistant + gateway
-vellum ps               # check process status
-vellum sleep            # stop everything
-vellum terminal         # shell into a managed assistant container
-vellum doctor           # diagnose issues`}
+{`anu hatch            # first-time setup (creates config, provisions keys)
+anu wake             # start assistant + gateway
+anu ps               # check process status
+anu sleep            # stop everything
+anu terminal         # shell into a managed assistant container
+anu doctor           # diagnose issues`}
             </pre>
           </section>
 
@@ -343,7 +343,7 @@ cd assistant && bunx tsc --noEmit`}
             Backwards Compatibility
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
-            Vellum has real users — maintain backwards compatibility for all interfaces, persisted state, and data.
+            ANU has real users — maintain backwards compatibility for all interfaces, persisted state, and data.
             Never ship a change that silently breaks existing behavior.
           </p>
           <p className="mb-4 text-zinc-600">

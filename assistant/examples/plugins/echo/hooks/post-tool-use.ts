@@ -7,7 +7,7 @@
  * Convention: the default export is the function the harness invokes.
  */
 
-import type { PostToolUseContext } from "@vellumai/plugin-api";
+import type { PostToolUseContext } from "@anu/plugin-api";
 
 import { emit } from "../src/emit.js";
 

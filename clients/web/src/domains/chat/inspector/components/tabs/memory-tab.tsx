@@ -12,8 +12,8 @@ import type {
   MemoryV3PoolCandidate,
   MemoryV3SelectionLog,
   MemoryV3SelectionRow,
-} from "@vellumai/assistant-api";
-import { Card } from "@vellumai/design-library";
+} from "@anu/assistant-api";
+import { Card } from "@anu/design-library";
 
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useTranslation } from "@/i18n";

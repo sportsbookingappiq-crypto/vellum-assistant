@@ -65,7 +65,7 @@ export function PlatformLoopbackPage() {
       const registered = await registerLocalPlatformSession(sessionToken);
       if (!registered) {
         setError(
-          "Login failed: couldn't reach the local Vellum server to store the " +
+          "Login failed: couldn't reach the local ANU server to store the " +
             "session. Please try again.",
         );
         return;

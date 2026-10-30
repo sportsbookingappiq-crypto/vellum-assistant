@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        The dark theme's ground (Night 950, the `surface-base` token) under the
+        white ANU lockup, for the launch screen and the window behind the web
+        view. Velvet reaches Android as dark, so it opens on this pair too.
+    -->
+    <color name="launch_screen_background">#050B1F</color>
+    <color name="launch_screen_foreground">#FFFFFF</color>
+    <color name="window_background">#050B1F</color>
+</resources>

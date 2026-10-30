@@ -146,7 +146,7 @@ jobs:
             # Tests must run from assistant/ (not repo root) because the repo-root
             # test-preload.ts guard blocks `bun test` invocations there.
             REPO_ROOT="$(pwd)"
-            bun install --frozen-lockfile --filter=@vellumai/assistant
+            bun install --frozen-lockfile --filter=@anu/assistant
             (cd assistant && bun run -b ../meta/sync-bundled-copies.ts || true)
             TEST_FILES=$(find "$SKILL_DIR" \
               -path "$SKILL_DIR/bot" -prune -o \

@@ -126,16 +126,14 @@ describe("vellum TTS adapter", () => {
       message: "balance",
     };
     const provider = createVellumProvider();
-    await expect(provider.synthesize(request())).rejects.toThrow(
-      /Vellum credits/,
-    );
+    await expect(provider.synthesize(request())).rejects.toThrow(/ANU credits/);
   });
 
   test("unavailable platform throws a connect-your-account message", async () => {
     mockSynthesizeResult = {
       ok: false,
       kind: "unavailable",
-      message: "No Vellum platform connection.",
+      message: "No ANU platform connection.",
     };
     const provider = createVellumProvider();
     await expect(provider.synthesize(request())).rejects.toThrow(
@@ -245,7 +243,7 @@ describe("vellum TTS definition", () => {
     expect(vellumTtsProviderDefinition.secretRequirements).toEqual([
       {
         credentialStoreKey: "credential/vellum/assistant_api_key",
-        displayName: "Vellum account connection",
+        displayName: "ANU account connection",
         setCommand: "assistant platform connect",
       },
     ]);

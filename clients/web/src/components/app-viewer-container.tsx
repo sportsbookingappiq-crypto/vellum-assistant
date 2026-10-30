@@ -12,7 +12,7 @@ import { useTranslation } from "@/i18n";
 import { useAppIframeSandboxDisabled } from "@/lib/app-sandbox-debug-flag";
 import { cn } from "@/utils/misc";
 import { injectBridge } from "@/utils/sandbox-bridge";
-import { Button } from "@vellumai/design-library";
+import { Button } from "@anu/design-library";
 
 /**
  * Sandbox tokens the app frame runs under. No `allow-same-origin`, so the
@@ -28,7 +28,7 @@ export interface AppViewerContainerProps {
   html: string;
   assistantId: string;
   onClose: () => void;
-  /** Routes a validated root-relative Vellum URL in the host client. */
+  /** Routes a validated root-relative ANU URL in the host client. */
   onNavigateAppRoute: (href: string) => void;
   onEdit?: () => void;
   /** When true, the nav bar Edit button becomes the expand-app affordance. */

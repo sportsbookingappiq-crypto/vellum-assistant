@@ -68,7 +68,7 @@ describe("resolveTeleportSuccessorId", () => {
   test("an unregistered local target yields null", async () => {
     // GIVEN a target the platform never registered
     resolveOutcome = async () => {
-      throw new Error("Sign in to Vellum");
+      throw new Error("Sign in to ANU");
     };
 
     // WHEN resolving the successor

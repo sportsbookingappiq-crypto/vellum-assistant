@@ -181,7 +181,7 @@ function serveFailureMessage(result: TailscaleCommandResult): string {
   const detail = joinOutput(result);
   const base =
     "`tailscale serve` failed. This usually means HTTPS certificates or the " +
-    "Serve feature are not enabled for your tailnet — follow the link below to " +
+    "Serve feature are not enabled for your tailnet. Follow the link below to " +
     "enable them, then retry.";
   return detail ? `${base}\n\n${detail}` : base;
 }
@@ -299,7 +299,7 @@ export async function startTailscaleServe(
   if (statusResult.status !== 0 || !statusResult.stdout.trim()) {
     const detail = joinOutput(statusResult);
     throw new Error(
-      "Could not query Tailscale — is the Tailscale app running? " +
+      "Could not query Tailscale. Is the Tailscale app running? " +
         "Start Tailscale and run `tailscale up`, then try again." +
         (detail ? `\n\n${detail}` : ""),
     );

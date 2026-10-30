@@ -1,7 +1,7 @@
 import { BrowserWindow } from "electron";
 import { z } from "zod";
 
-import type { HotkeyScope, ResolvedHotkey } from "@vellumai/ipc-contract";
+import type { HotkeyScope, ResolvedHotkey } from "@anu/ipc-contract";
 
 import { isValidAccelerator } from "./accelerator";
 import {
@@ -45,7 +45,7 @@ interface HotkeyCommand {
  * so conflict detection still sees their chords.
  */
 const HOTKEY_CATALOG: readonly HotkeyCommand[] = [
-  { key: "globalHotkey", label: "Open Vellum", scope: "global" },
+  { key: "globalHotkey", label: "Open ANU", scope: "global" },
   { key: "quickInput", label: "Quick Input", scope: "global" },
   { key: "toggleVoice", label: "Talk", scope: "global" },
   { key: "newConversation", label: "New chat", scope: "menu" },

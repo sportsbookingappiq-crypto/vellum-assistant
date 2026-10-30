@@ -62,7 +62,7 @@ const mockSideMenuItem = ({
   );
 };
 
-mock.module("@vellumai/design-library", () => ({
+mock.module("@anu/design-library", () => ({
   Popover: {
     Root: passthrough,
     Trigger: mockTrigger,

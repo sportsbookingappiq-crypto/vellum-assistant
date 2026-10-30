@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Typography } from "@anu/design-library/components/typography";
 
 import type { PlanSpec } from "@/domains/settings/billing/plan-spec";
 import { PlanTierAvatar } from "@/domains/settings/billing/plan-tier-meta";

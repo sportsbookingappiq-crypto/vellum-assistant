@@ -14,7 +14,7 @@ afterEach(cleanup);
 const ANDROID_PROMOTION: NativeAppPromotion = {
   target: "android",
   appName: getNativeAppName("android"),
-  storeUrl: "https://play.google.com/store/apps/details?id=ai.vellum.assistant",
+  storeUrl: "https://play.google.com/store/apps/details?id=ai.anu.assistant",
 };
 
 function renderBanner(promotion: NativeAppPromotion) {
@@ -61,12 +61,12 @@ describe("NativeAppBanner", () => {
 
     renderBanner(promotion);
 
-    expect(screen.getByText("Get the Vellum app")).toBeDefined();
+    expect(screen.getByText("Get the ANU app")).toBeDefined();
     expect(
-      screen.getByRole("button", { name: "Download Vellum mobile app" }),
+      screen.getByRole("button", { name: "Download ANU mobile app" }),
     ).toBeDefined();
     expect(
-      screen.getByRole("status", { name: "Download the Vellum mobile app" }),
+      screen.getByRole("status", { name: "Download the ANU mobile app" }),
     ).toBeDefined();
   });
 

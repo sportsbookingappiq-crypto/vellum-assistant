@@ -2,7 +2,7 @@ import { Globe, HardDrive } from "lucide-react";
 import { createElement } from "react";
 
 import { useTranslation } from "@/i18n";
-import { Tag } from "@vellumai/design-library";
+import { Tag } from "@anu/design-library";
 
 /**
  * Origin badge for plugins, mirroring `SkillOriginBadge`. Renders a

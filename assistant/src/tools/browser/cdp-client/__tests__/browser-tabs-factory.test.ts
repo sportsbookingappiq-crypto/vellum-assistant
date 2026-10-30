@@ -131,7 +131,7 @@ function makeCandidateFromClient(
 // ── Helpers for fresh-client (pre-sticky) tests ───────────────────────
 
 /**
- * A fake extension client whose `send` method returns Vellum.* pseudo-responses
+ * A fake extension client whose `send` method returns ANU.* pseudo-responses
  * so that fresh-client tab calls can succeed without a prior `send("Runtime.*")`.
  * This simulates how the real ExtensionCdpClient handles Vellum.listTabs etc.
  * through the dispatcher before chrome.debugger.sendCommand.

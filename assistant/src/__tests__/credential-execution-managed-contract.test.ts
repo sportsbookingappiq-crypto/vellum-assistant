@@ -37,7 +37,7 @@ import {
   platformOAuthHandle,
   UpdateManagedCredentialResponseSchema,
   UpdateManagedCredentialSchema,
-} from "@vellumai/service-contracts/credential-rpc";
+} from "@anu/service-contracts/credential-rpc";
 
 import {
   CES_ASSISTANT_DATA_READONLY_MOUNT,

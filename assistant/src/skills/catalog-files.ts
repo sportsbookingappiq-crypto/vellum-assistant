@@ -545,7 +545,7 @@ export async function readCatalogSkillFileContent(
 // ─── Catalog-to-slim conversion ──────────────────────────────────────────────
 
 /**
- * Map a `CatalogSkill` (from the Vellum platform API) to a `SlimSkillResponse`
+ * Map a `CatalogSkill` (from the ANU platform API) to a `SlimSkillResponse`
  * shaped for the "available catalog skill" case. Shared between
  * `listSkillsWithCatalog` (merging catalog entries into the installed list),
  * `getSkillFiles` (catalog fallback for preview listings), and the
@@ -571,11 +571,11 @@ export function catalogSkillToSlim(cs: CatalogSkill): SlimSkillResponse {
   };
 }
 
-// ─── Vellum Catalog Provider ─────────────────────────────────────────────────
+// ─── ANU Catalog Provider ─────────────────────────────────────────────────
 
 /**
  * Create a `SkillFileProvider` that wraps the existing catalog-files functions
- * for the Vellum first-party catalog. This is the first provider implementation
+ * for the ANU first-party catalog. This is the first provider implementation
  * in the unified file-preview chain.
  */
 export function createVellumCatalogProvider(): SkillFileProvider {

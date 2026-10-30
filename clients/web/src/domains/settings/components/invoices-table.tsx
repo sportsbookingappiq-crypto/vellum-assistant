@@ -20,13 +20,13 @@ import { captureError } from "@/lib/sentry/capture-error";
 import { openExternalUrl } from "@/runtime/browser";
 import { assertHasResponse, toApiError } from "@/utils/api-errors";
 import { formatFriendlyDate } from "@/utils/format-date";
-import { Button } from "@vellumai/design-library/components/button";
-import { Card } from "@vellumai/design-library/components/card";
-import { Notice } from "@vellumai/design-library/components/notice";
-import { Tag, type TagTone } from "@vellumai/design-library/components/tag";
-import { toast } from "@vellumai/design-library/components/toast";
-import { Typography } from "@vellumai/design-library/components/typography";
-import { stripeScaleDigits } from "@vellumai/service-contracts/stripe-currency";
+import { Button } from "@anu/design-library/components/button";
+import { Card } from "@anu/design-library/components/card";
+import { Notice } from "@anu/design-library/components/notice";
+import { Tag, type TagTone } from "@anu/design-library/components/tag";
+import { toast } from "@anu/design-library/components/toast";
+import { Typography } from "@anu/design-library/components/typography";
+import { stripeScaleDigits } from "@anu/service-contracts/stripe-currency";
 
 import { useTranslation } from "@/i18n";
 import { BillingSectionHeader } from "./billing-section-header";
@@ -82,7 +82,7 @@ function formatDate(unixSeconds: number): string {
 }
 
 // Stripe hosts the invoice PDF, so this is an external open rather than a
-// Vellum-owned save: a cross-origin fetch would be CORS-blocked, and the
+// ANU-owned save: a cross-origin fetch would be CORS-blocked, and the
 // browser view is Stripe's own hosted invoice page. `openExternalUrl` covers
 // every shell (a hand-rolled target="_blank" anchor is a no-op in the
 // Capacitor WKWebView).

@@ -168,7 +168,7 @@ describe("avatar-store", () => {
         expect(manifest!.image).not.toBeNull();
         expect(manifest!.image!.etag).toMatch(/^[0-9a-f]{16}$/);
         // The accent is the chosen palette colour.
-        expect(manifest!.accent).toEqual({ hex: "#4C9B50", source: "palette" });
+        expect(manifest!.accent).toEqual({ hex: "#1FA088", source: "palette" });
         expect(publishedOrigins).toEqual(["web-1"]);
       },
       NATIVE_RENDER_TEST_TIMEOUT_MS,
@@ -281,7 +281,7 @@ describe("avatar-store", () => {
       );
 
       const state = await setAccent(null);
-      expect(state?.accent).toEqual({ hex: "#E9642F", source: "palette" });
+      expect(state?.accent).toEqual({ hex: "#E96D38", source: "palette" });
     });
 
     test("refuses when there is no avatar, writing nothing", async () => {
@@ -597,7 +597,7 @@ describe("avatar-store", () => {
             body_shape: "blob",
             eye_style: "curious",
             color: "green",
-            accent_hex: "#4c9b50",
+            accent_hex: "#1fa088",
             accent_source: "palette",
           },
         ]);

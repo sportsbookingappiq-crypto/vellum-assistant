@@ -58,14 +58,14 @@ import {
   workspaceDirOf,
 } from "@/utils/workspace-path-links";
 import { useTouchMobile } from "@/hooks/use-touch-mobile";
-import { BottomSheet } from "@vellumai/design-library/components/bottom-sheet";
-import { Button } from "@vellumai/design-library/components/button";
-import { ConfirmDialog } from "@vellumai/design-library/components/confirm-dialog";
-import { Input } from "@vellumai/design-library/components/input";
-import { Menu } from "@vellumai/design-library/components/menu";
-import { Modal } from "@vellumai/design-library/components/modal";
-import { PanelItem } from "@vellumai/design-library/components/panel-item";
-import { Typography } from "@vellumai/design-library/components/typography";
+import { BottomSheet } from "@anu/design-library/components/bottom-sheet";
+import { Button } from "@anu/design-library/components/button";
+import { ConfirmDialog } from "@anu/design-library/components/confirm-dialog";
+import { Input } from "@anu/design-library/components/input";
+import { Menu } from "@anu/design-library/components/menu";
+import { Modal } from "@anu/design-library/components/modal";
+import { PanelItem } from "@anu/design-library/components/panel-item";
+import { Typography } from "@anu/design-library/components/typography";
 
 export type { WorkspaceSortMode };
 

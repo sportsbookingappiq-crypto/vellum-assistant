@@ -14,7 +14,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 
-import { NOTIFICATION_AVATAR_MAX_BYTES } from "@vellumai/avatar-manifest/notification-avatar";
+import { NOTIFICATION_AVATAR_MAX_BYTES } from "@anu/avatar-manifest/notification-avatar";
 import sharp from "sharp";
 
 import {
@@ -59,8 +59,8 @@ const MANIFEST_FILENAME = "avatar.json";
 const NATIVE_RENDER_TEST_TIMEOUT_MS = 15_000;
 
 const TRAITS = { bodyShape: "blob", eyeStyle: "curious", color: "green" };
-/** The palette green (#4C9B50) mixed 14% into white. */
-const GREEN_DISC = { r: 0xe6, g: 0xf1, b: 0xe7 };
+/** The palette green (#1FA088, "Aurora") mixed 14% into white. */
+const GREEN_DISC = { r: 0xe0, g: 0xf2, b: 0xee };
 /** #E9642F mixed 14% into white. */
 const ORANGE_DISC = { r: 0xfc, g: 0xe9, b: 0xe2 };
 /** On the disc and clear of the inset avatar square, which starts at y = 28.16. */

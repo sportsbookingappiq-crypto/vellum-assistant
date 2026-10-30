@@ -2,8 +2,8 @@ import type {
   ChannelDeliveryResult,
   ChannelReplyPayload,
   StreamOp,
-} from "@vellumai/gateway-client";
-import type { ReactionEmojiIdentity } from "@vellumai/service-contracts/reactions";
+} from "@anu/gateway-client";
+import type { ReactionEmojiIdentity } from "@anu/service-contracts/reactions";
 
 import type { AssistantActivityPhase } from "../../api/index.js";
 import type { ChannelId } from "../../channels/types.js";
@@ -76,7 +76,7 @@ export interface EditTarget {
  * The message an emoji reaction lands on, and what to do there.
  *
  * `emoji` is spelled in the channel's own vocabulary (a Slack emoji name, a
- * unicode emoji elsewhere): Vellum names the operation and the channel
+ * unicode emoji elsewhere): ANU names the operation and the channel
  * decides what its argument means, the same way `EditTarget.text` renders
  * per channel.
  */

@@ -12,7 +12,7 @@ export function DocsGithubLink() {
       href={GITHUB_REPO_URL}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Vellum Assistant on GitHub"
+      aria-label="ANU on GitHub"
       className="docs-github-link"
     >
       <Image

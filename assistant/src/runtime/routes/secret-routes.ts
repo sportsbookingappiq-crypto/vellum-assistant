@@ -602,7 +602,7 @@ async function handleDeleteSecret({ body }: RouteHandlerArgs) {
       }
       const service = name.slice(0, colonIdx);
       if (service === "vellum") {
-        throw new BadRequestError("Vellum credentials cannot be deleted");
+        throw new BadRequestError("ANU credentials cannot be deleted");
       }
       const field = name.slice(colonIdx + 1);
       assertMetadataWritable();

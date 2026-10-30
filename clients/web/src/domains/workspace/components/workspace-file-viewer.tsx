@@ -8,7 +8,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Download, FileIcon, FileText, Loader2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { Button, Typography } from "@vellumai/design-library";
+import { Button, Typography } from "@anu/design-library";
 
 import {
   ContentActionBar,

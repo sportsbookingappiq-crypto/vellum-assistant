@@ -76,7 +76,7 @@ mock.module("./main-window", () => ({
 
 // Full `./settings` surface so this mock — which leaks into co-run test files
 // via the global module registry — doesn't break sibling modules.
-mock.module("@vellumai/electron-desktop/settings", () => ({
+mock.module("@anu/electron-desktop/settings", () => ({
   readSetting: () => null,
   writeSetting: () => {},
   onSettingChange: () => () => {},
@@ -84,7 +84,7 @@ mock.module("@vellumai/electron-desktop/settings", () => ({
 
 let companionHidden = false;
 let companionHiddenListener: ((hidden: boolean) => void) | null = null;
-mock.module("@vellumai/electron-desktop/window-state", () => ({
+mock.module("@anu/electron-desktop/window-state", () => ({
   readOnboardingActive: () => false,
   readCompanionHidden: () => companionHidden,
   onCompanionHiddenChange: (callback: (hidden: boolean) => void) => {
@@ -108,7 +108,7 @@ const getCliPathInstallStateMock = mock(
 mock.module("./cli-path-installer", () => ({
   WRAPPER_MARKER: "# vellum-cli-wrapper v1",
   getWrapperDir: () => "/tmp/.local/bin",
-  getWrapperPath: () => "/tmp/.local/bin/vellum",
+  getWrapperPath: () => "/tmp/.local/bin/anu",
   buildWrapperScript: () => "",
   readWrapperOwnership: () => "absent",
   installWrapper: () => "installed",
@@ -156,10 +156,10 @@ const setStateAndRefresh = async (state: CliPathInstallState) => {
   await refreshCliPathMenuState();
 };
 
-const INSTALL_LABEL = "Install vellum Command…";
-const REPAIR_LABEL = "Repair vellum Command…";
-const UNINSTALL_LABEL = "Uninstall vellum Command";
-const SHADOWED_LABEL = "⚠ vellum is shadowed by another install";
+const INSTALL_LABEL = "Install anu Command…";
+const REPAIR_LABEL = "Repair anu Command…";
+const UNINSTALL_LABEL = "Uninstall anu Command";
+const SHADOWED_LABEL = "⚠ anu is shadowed by another install";
 
 installApplicationMenu();
 

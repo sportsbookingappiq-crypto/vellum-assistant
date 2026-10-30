@@ -10,7 +10,7 @@ process.env.VELLUM_LOCKFILE_DIR = testDir;
 import {
   parseTunnelRecord,
   TUNNEL_PROVIDERS,
-} from "@vellumai/service-contracts/ingress";
+} from "@anu/service-contracts/ingress";
 
 import type { AssistantEntry } from "../lib/assistant-config.js";
 import {
@@ -202,7 +202,7 @@ describe("last-tunnel record", () => {
 
   test("every provider the CLI writes is one the shared parser accepts", () => {
     // The daemon reads these records through parseTunnelRecord, so what
-    // `vellum tunnel` writes has to survive that parse for every provider.
+    // `anu tunnel` writes has to survive that parse for every provider.
     for (const provider of TUNNEL_PROVIDERS) {
       const ws = makeWorkspace();
       saveIngressUrl(ws, `https://${provider}.test`, undefined, provider);

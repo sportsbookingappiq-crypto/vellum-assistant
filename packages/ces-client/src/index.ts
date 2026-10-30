@@ -1,13 +1,13 @@
 /**
- * @vellumai/ces-client
+ * @anu/ces-client
  *
  * Shared CES HTTP and RPC client package for assistant and gateway
  * service-to-service communication with the Credential Execution Service.
  *
  * Sub-module exports:
- * - `@vellumai/ces-client/http-credentials` — credential CRUD over CES HTTP
- * - `@vellumai/ces-client/http-log-export`  — CES log export over HTTP
- * - `@vellumai/ces-client/rpc-client`       — CES RPC envelope/handshake client
+ * - `@anu/ces-client/http-credentials` — credential CRUD over CES HTTP
+ * - `@anu/ces-client/http-log-export`  — CES log export over HTTP
+ * - `@anu/ces-client/rpc-client`       — CES RPC envelope/handshake client
  */
 
 export {

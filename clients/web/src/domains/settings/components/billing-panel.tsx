@@ -11,11 +11,11 @@ import {
   useOrganizationsBillingSummaryCreateMutation,
 } from "@/generated/api/@tanstack/react-query.gen";
 import { displayedCreditsUsd } from "@/lib/billing/displayed-credits";
-import { Button } from "@vellumai/design-library/components/button";
-import { Card } from "@vellumai/design-library/components/card";
-import { Notice } from "@vellumai/design-library/components/notice";
-import { StatSquare } from "@vellumai/design-library/components/stat-square";
-import { Toggle } from "@vellumai/design-library/components/toggle";
+import { Button } from "@anu/design-library/components/button";
+import { Card } from "@anu/design-library/components/card";
+import { Notice } from "@anu/design-library/components/notice";
+import { StatSquare } from "@anu/design-library/components/stat-square";
+import { Toggle } from "@anu/design-library/components/toggle";
 import { useTranslation } from "@/i18n";
 import { BillingSectionHeader } from "./billing-section-header";
 import {

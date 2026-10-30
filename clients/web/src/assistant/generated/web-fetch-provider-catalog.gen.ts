@@ -13,7 +13,7 @@ export const WEB_FETCH_PROVIDER_IDS: readonly string[] = [
 export const WEB_FETCH_PROVIDER_DISPLAY_NAMES: Readonly<
   Record<string, string>
 > = {
-  default: "Vellum",
+  default: "ANU",
   firecrawl: "Firecrawl",
   fastcrw: "fastCRW",
   tinyfish: "TinyFish",

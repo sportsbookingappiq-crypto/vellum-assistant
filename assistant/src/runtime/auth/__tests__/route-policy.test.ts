@@ -28,7 +28,7 @@ mock.module("../../../config/env.js", () => ({
   hasUngatedHttpAuthDisabled: () => false,
 }));
 
-import { TRUST_CLASS_VALUES } from "@vellumai/gateway-client";
+import { TRUST_CLASS_VALUES } from "@anu/gateway-client";
 
 import { isContactTrustClass } from "../../trust-class.js";
 import {

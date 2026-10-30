@@ -20,8 +20,8 @@ import {
 import { useAuthStore } from "@/stores/auth-store";
 import { useOrganizationStore } from "@/stores/organization-store";
 import { routes } from "@/utils/routes";
-import { cn } from "@vellumai/design-library/utils/cn";
-import { textLinkVariants } from "@vellumai/design-library/components/text-link";
+import { cn } from "@anu/design-library/utils/cn";
+import { textLinkVariants } from "@anu/design-library/components/text-link";
 
 /**
  * OAuth provider callback handler for the **web** login flow.

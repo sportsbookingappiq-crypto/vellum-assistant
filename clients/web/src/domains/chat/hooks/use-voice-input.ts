@@ -59,8 +59,8 @@ export interface UseVoiceInputReturn {
   /**
    * Called when `VoiceInputButton` delivers a final transcript.
    * Applies explicit dictation replacements, then inserts into the
-   * focused front app when Vellum is backgrounded, or the composer when
-   * Vellum is focused.
+   * focused front app when ANU is backgrounded, or the composer when
+   * ANU is focused.
    */
   handleVoiceTranscript: (rawText: string) => Promise<void>;
 

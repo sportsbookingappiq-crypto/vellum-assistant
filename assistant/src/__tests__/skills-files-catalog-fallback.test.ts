@@ -520,7 +520,7 @@ describe("getSkillFiles — provider chain fallback", () => {
   });
 
   test("skills.sh-shaped ID not in vellum catalog returns files from skills.sh provider", async () => {
-    // Vellum provider doesn't handle this ID
+    // ANU provider doesn't handle this ID
     mockVellumProvider = {
       canHandle: () => false,
       listFiles: async () => null,
@@ -568,7 +568,7 @@ describe("getSkillFiles — provider chain fallback", () => {
   });
 
   test("clawhub-shaped ID not in vellum catalog returns files from clawhub provider", async () => {
-    // Vellum and skills.sh providers don't handle this ID
+    // ANU and skills.sh providers don't handle this ID
     mockVellumProvider = {
       canHandle: () => false,
       listFiles: async () => null,
@@ -670,7 +670,7 @@ describe("getSkillFiles — provider chain fallback", () => {
       readFileContent: async () => null,
       toSlimSkill: async () => ({
         id: "contested-skill",
-        name: "Vellum Contested",
+        name: "ANU Contested",
         description: "",
         kind: "catalog",
         origin: "vellum",
@@ -728,10 +728,10 @@ describe("getSkillFiles — provider chain fallback", () => {
     if ("error" in result) {
       return;
     }
-    // Vellum provider should have been used
+    // ANU provider should have been used
     expect(result.skill.origin).toBe("vellum");
-    expect(result.skill.name).toBe("Vellum Contested");
-    // Vellum was called, but skills.sh and clawhub were NOT called
+    expect(result.skill.name).toBe("ANU Contested");
+    // ANU was called, but skills.sh and clawhub were NOT called
     expect(vellumListFilesCalls).toEqual(["contested-skill"]);
     expect(skillsshListFilesCalls).toEqual([]);
     expect(clawhubListFilesCalls).toEqual([]);

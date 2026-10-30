@@ -44,7 +44,7 @@ import { useResolvedAssistantsStore } from "@/stores/resolved-assistants-store";
 import { saveConsent } from "@/lib/consent/consent-persistence";
 import { useTranslation } from "@/i18n";
 import { PACKAGE_PARAM, routes } from "@/utils/routes";
-import { Button } from "@vellumai/design-library/components/button";
+import { Button } from "@anu/design-library/components/button";
 
 export function PrivacyScreen() {
   const { t } = useTranslation("onboarding");

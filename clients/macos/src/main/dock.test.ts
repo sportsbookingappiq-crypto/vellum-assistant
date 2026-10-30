@@ -40,7 +40,7 @@ mock.module("./ipc", () => ({
     handleRegistrations.push({ channel, schema, fn });
   },
 }));
-mock.module("@vellumai/electron-desktop/avatar", () => ({
+mock.module("@anu/electron-desktop/avatar", () => ({
   onAvatarChange: () => () => undefined,
 }));
 
@@ -59,11 +59,11 @@ mock.module("./session-token-store.client", () => ({
   },
 }));
 
-// Mock @vellumai/local-mode so the dock's lockfile-based local-assistant
+// Mock @anu/local-mode so the dock's lockfile-based local-assistant
 // check works without a real filesystem. Controls whether the dock sees
 // active local assistants (gateway-only auth, no platform token).
 let mockLockfileAssistants: Array<Record<string, unknown>> = [];
-mock.module("@vellumai/local-mode", () => ({
+mock.module("@anu/local-mode", () => ({
   resolveLockfilePaths: () => ["/fake/.vellum.lock.json"],
   getLockfileData: () => ({
     ok: true as const,
@@ -72,7 +72,7 @@ mock.module("@vellumai/local-mode", () => ({
 }));
 
 const avatarBitmapMock = mock((_size: number): Buffer | null => null);
-mock.module("@vellumai/electron-desktop/avatar-image", () => ({
+mock.module("@anu/electron-desktop/avatar-image", () => ({
   avatarBitmap: avatarBitmapMock,
 }));
 
@@ -180,7 +180,7 @@ describe("formatBadge", () => {
 
   test('anything strictly greater than 99 truncates to "99+" before flooring', () => {
     // 99.0001 fails the `count > 99` check and bypasses `Math.floor`,
-    // landing on `"99+"`. This is intentional — Swift Vellum caps at 99
+    // landing on `"99+"`. This is intentional — Swift ANU caps at 99
     // and matching its cap avoids visual jitter at the boundary.
     expect(formatBadge(99.0001)).toBe("99+");
     expect(formatBadge(99.9)).toBe("99+");

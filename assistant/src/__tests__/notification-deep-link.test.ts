@@ -1,5 +1,5 @@
 /**
- * Regression tests for Vellum notification deep-link metadata.
+ * Regression tests for ANU notification deep-link metadata.
  *
  * Validates that the VellumAdapter broadcasts notification_intent with
  * deepLinkMetadata, and that the broadcaster correctly passes deepLinkTarget
@@ -793,7 +793,7 @@ describe("notification deep-link metadata", () => {
         platformAdapter,
       ]);
 
-      // Vellum is ordered first and consumes the queued pairing result;
+      // ANU is ordered first and consumes the queued pairing result;
       // the platform pairing call then receives the mock's auto-generated
       // conversation, so each channel is enriched from its own pairing.
       nextPairingResult = {
@@ -815,7 +815,7 @@ describe("notification deep-link metadata", () => {
 
       await broadcaster.broadcastDecision(signal, decision);
 
-      // Vellum behavior unchanged: paired conversation wins.
+      // ANU behavior unchanged: paired conversation wins.
       expect(vellumAdapter.sent).toHaveLength(1);
       expect(vellumAdapter.sent[0].deepLinkTarget?.conversationId).toBe(
         "conv-vellum-paired",
@@ -828,7 +828,7 @@ describe("notification deep-link metadata", () => {
       expect(String(platformConvId)).toStartWith("mock-conv-");
     });
 
-    // ── Vellum pairing carried into the platform deep link ─────────────
+    // ── ANU pairing carried into the platform deep link ─────────────
     //
     // In production the platform channel is push_only: its own pairing
     // returns null. When the vellum channel creates (or reuses) a
@@ -876,7 +876,7 @@ describe("notification deep-link metadata", () => {
 
       await broadcaster.broadcastDecision(signal, decision);
 
-      // Vellum unchanged: enriched from its own pairing.
+      // ANU unchanged: enriched from its own pairing.
       expect(vellumAdapter.sent).toHaveLength(1);
       expect(vellumAdapter.sent[0].deepLinkTarget?.conversationId).toBe(
         "conv-vellum-created",
@@ -985,7 +985,7 @@ describe("notification deep-link metadata", () => {
 
       const results = await broadcaster.broadcastDecision(signal, decision);
 
-      // Vellum duplicate is skipped without re-sending.
+      // ANU duplicate is skipped without re-sending.
       expect(vellumAdapter.sent).toHaveLength(0);
       const vellumResult = results.find((r) => r.channel === "vellum");
       expect(vellumResult?.status).toBe("skipped");

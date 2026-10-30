@@ -26,8 +26,8 @@ import {
 
 import { useCallback, useEffect, useRef } from "react";
 
-import { ContextMenu, PanelItem, Tooltip } from "@vellumai/design-library";
-import { cn } from "@vellumai/design-library/utils/cn";
+import { ContextMenu, PanelItem, Tooltip } from "@anu/design-library";
+import { cn } from "@anu/design-library/utils/cn";
 
 import { SwipeActionReveal } from "@/components/swipe-action-reveal";
 import { useShowsHoverAffordance } from "@/hooks/use-hover-affordance";

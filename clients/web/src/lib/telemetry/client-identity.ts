@@ -1,7 +1,7 @@
 import {
   CLIENT_METADATA_HEADERS,
   sanitizeClientMetadataValue,
-} from "@vellumai/service-contracts/client-metadata";
+} from "@anu/service-contracts/client-metadata";
 
 import {
   detectBrowserInfo,

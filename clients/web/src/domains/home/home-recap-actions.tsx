@@ -14,9 +14,9 @@ import {
   type FeedItem,
   type FeedItemStatus,
   isPendingGuardianFeedItem,
-} from "@vellumai/assistant-api";
-import { ActionMenu, cn, Tooltip } from "@vellumai/design-library";
-import { Button } from "@vellumai/design-library/components/button";
+} from "@anu/assistant-api";
+import { ActionMenu, cn, Tooltip } from "@anu/design-library";
+import { Button } from "@anu/design-library/components/button";
 
 import { buildReadToggle } from "./read-toggle";
 

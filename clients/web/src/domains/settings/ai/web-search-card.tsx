@@ -19,9 +19,9 @@ import {
   setLocalSetting,
 } from "@/utils/local-settings";
 import { useQueryClient } from "@tanstack/react-query";
-import { Select } from "@vellumai/design-library/components/select";
-import { Input } from "@vellumai/design-library/components/input";
-import { toast } from "@vellumai/design-library/components/toast";
+import { Select } from "@anu/design-library/components/select";
+import { Input } from "@anu/design-library/components/input";
+import { toast } from "@anu/design-library/components/toast";
 
 import { ByoServiceCard } from "@/components/byo-service-card";
 import { ResetButton, SaveButton } from "@/components/service-form-controls";
@@ -85,7 +85,7 @@ export function WebSearchCard() {
       | undefined;
     // A config written by the legacy mode toggle marks managed via `mode`
     // while `provider` holds the BYOK restore value — the daemon routes it to
-    // Vellum, so the card must render it as Vellum too. Provider Native is
+    // ANU, so the card must render it as ANU too. Provider Native is
     // exempt: it stays itself under managed mode (see migration 132).
     const daemonProvider =
       wsService?.mode === "managed" &&
@@ -171,9 +171,9 @@ export function WebSearchCard() {
       // The provider is written as a pair with `mode`: a stale
       // `mode: "managed"` from the legacy toggle would win over a BYOK
       // choice unless reset. Daemons older than the vellum catalog entry
-      // reject the provider value outright, so for them a Vellum selection
+      // reject the provider value outright, so for them an ANU selection
       // writes only the legacy managed mode and lets the deep-merge keep the
-      // stored provider — the read bridge renders that pair as Vellum again.
+      // stored provider — the read bridge renders that pair as ANU again.
       await whenAssistantVersionKnown();
       const webSearchService: {
         provider?: string;

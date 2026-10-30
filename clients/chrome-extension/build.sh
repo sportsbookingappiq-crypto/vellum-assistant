@@ -80,7 +80,7 @@ echo "Installing dependencies..."
 # Build function — shared by initial build and watch-triggered rebuilds.
 # ---------------------------------------------------------------------------
 do_build() {
-  echo "Building the Vellum Assistant Chrome extension…"
+  echo "Building the ANU Chrome extension…"
   echo "  Command: $CMD"
 
   echo "Type-checking with tsc --noEmit..."
@@ -120,8 +120,8 @@ do_build() {
   echo "  Extension version: $EXT_VERSION (full: $EXT_VERSION_FULL)"
 
   case "$VELLUM_ENV" in
-    production) EXT_NAME="Vellum Assistant" ;;
-    *)          EXT_NAME="Vellum Assistant $(echo "$VELLUM_ENV" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')" ;;
+    production) EXT_NAME="ANU" ;;
+    *)          EXT_NAME="ANU $(echo "$VELLUM_ENV" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')" ;;
   esac
   jq --arg n "$EXT_NAME" '.name = $n' "$DIST_DIR/manifest.json" > "$DIST_DIR/manifest.json.tmp" \
     && mv "$DIST_DIR/manifest.json.tmp" "$DIST_DIR/manifest.json" \

@@ -284,7 +284,7 @@ export function createAdapterFromConnection(
     useNativeWebSearch?: boolean;
     /**
      * Effective upstream provider to build the adapter for. Defaults to
-     * `connection.provider`. The provider-agnostic Vellum-managed connection
+     * `connection.provider`. The provider-agnostic ANU-managed connection
      * passes the resolved profile's provider here, since its own row carries
      * only the `vellum` sentinel.
      */
@@ -515,9 +515,9 @@ export function createAdapterFromConnection(
   }
 
   // Usage-attribution headers (`X-Vellum-*`) are only meaningful when the
-  // request is routed through the Vellum-managed proxy. They carry billing
+  // request is routed through the ANU-managed proxy. They carry billing
   // metadata for our own backend. Forwarding them to a third-party endpoint
-  // would leak internal Vellum metadata, so gate on the managed connection
+  // would leak internal ANU metadata, so gate on the managed connection
   // identity, the only route that flows through our proxy.
   const isManagedProxy = isVellumManagedConnection(connection);
   const effectiveAuth = effectiveConnectionAuth(connection);
@@ -570,7 +570,7 @@ function buildConnectionAdapter(
 ): Provider | null {
   const provider = opts.provider ?? connection.provider;
   // The connection's own `vellum` column is a routing sentinel. Dispatch
-  // only when the caller names an upstream, including Vellum-hosted GPU
+  // only when the caller names an upstream, including ANU-hosted GPU
   // models whose catalog id is also `vellum`.
   if (
     connection.provider === VELLUM_MANAGED_PROVIDER &&

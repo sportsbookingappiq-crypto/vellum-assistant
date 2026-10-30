@@ -5,8 +5,8 @@ import { createMemory } from "@/domains/intelligence/memory-graph/create-memory"
 import { memoryGraphOptions } from "@/domains/intelligence/memory-graph/get-memory-graph";
 import { memoryStatsOptions } from "@/domains/intelligence/memory-graph/get-memory-stats";
 import { useTranslation } from "@/i18n";
-import { Button, Modal, toast, Typography } from "@vellumai/design-library";
-import { Textarea } from "@vellumai/design-library/components/input";
+import { Button, Modal, toast, Typography } from "@anu/design-library";
+import { Textarea } from "@anu/design-library/components/input";
 
 export interface CreateMemoryModalProps {
   open: boolean;

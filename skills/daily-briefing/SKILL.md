@@ -1,7 +1,7 @@
 ---
 name: daily-briefing
 description: Proactive daily briefing that fires on a recurring schedule, pulls recent memory and workspace context, composes a structured summary (action items, progress, radar, next steps), and delivers it to all active channels. Enable with a time like "set up my daily briefing at 9am". Disable, reschedule, or check status at any time.
-compatibility: Designed for Vellum personal assistants
+compatibility: Designed for ANU personal assistants
 metadata:
   emoji: "📋"
   vellum:
@@ -69,7 +69,7 @@ Setup runs `scripts/setup.ts` via bash, which calls `assistant schedules create`
 1. The scheduler boots a background conversation with the briefing prompt as the initial message.
 2. The agent runtime injects your recent memory, decisions, and workspace context automatically.
 3. The agent composes the briefing and runs `assistant notifications send` to deliver it.
-4. The notification routes to all your connected channels — the same pipeline as any other Vellum notification.
+4. The notification routes to all your connected channels — the same pipeline as any other ANU notification.
 
 The briefing conversation is reused across runs so context accumulates over time (the agent sees prior briefings when composing today's).
 

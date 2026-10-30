@@ -1,6 +1,6 @@
 # clients/
 
-Home for end-user client surfaces of the Vellum assistant — browser, mobile,
+Home for end-user client surfaces of the ANU assistant — browser, mobile,
 and desktop wrappers that users interact with directly.
 
 ## Structure
@@ -8,7 +8,7 @@ and desktop wrappers that users interact with directly.
 ```
 clients/
 ├── web/               # Web app (Vite)
-├── docs/              # Public docs site: SSR Next.js app serving www.vellum.ai/docs
+├── docs/              # Public docs site: SSR Next.js app serving www.anu.ai/docs
 ├── ios/               # iOS Capacitor shell
 ├── android/           # Android Capacitor shell
 ├── macos/             # macOS desktop wrapper (Electron / electron-vite)
@@ -25,9 +25,9 @@ The Android app is a Capacitor shell that lives in [`android/`](./android/);
 it follows the same remote web app loading model as iOS.
 
 The macOS, Linux, and Windows Electron shells share their platform-neutral main and
-preload foundations through `@vellumai/electron-desktop` and native helper process supervision through `@vellumai/native-sidecar`. Thin client adapters
+preload foundations through `@anu/electron-desktop` and native helper process supervision through `@anu/native-sidecar`. Thin client adapters
 under each platform package connect that core to platform lifecycle and native
-features. Dependency-free Electron helpers remain in `@vellumai/electron-utils`.
+features. Dependency-free Electron helpers remain in `@anu/electron-utils`.
 
 ## What belongs here
 

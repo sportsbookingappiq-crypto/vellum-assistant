@@ -1,7 +1,4 @@
-import {
-  SegmentControl,
-  type SegmentControlItem,
-} from "@vellumai/design-library";
+import { SegmentControl, type SegmentControlItem } from "@anu/design-library";
 
 import { useTranslation } from "@/i18n";
 

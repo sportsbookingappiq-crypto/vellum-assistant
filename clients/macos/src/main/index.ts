@@ -3,39 +3,39 @@ import { app, net, Notification, protocol, session, shell } from "electron";
 import { pathToFileURL } from "node:url";
 import path from "node:path";
 
-import { installCsp } from "@vellumai/electron-desktop/csp";
-import { installCommandPaletteWindow } from "@vellumai/electron-desktop/command-palette-window";
-import { getDeviceId } from "@vellumai/electron-desktop/device-id";
-import { installDictationOverlay } from "@vellumai/electron-desktop/dictation-overlay-window";
+import { installCsp } from "@anu/electron-desktop/csp";
+import { installCommandPaletteWindow } from "@anu/electron-desktop/command-palette-window";
+import { getDeviceId } from "@anu/electron-desktop/device-id";
+import { installDictationOverlay } from "@anu/electron-desktop/dictation-overlay-window";
 import {
   forwardGatewayRequest,
   forwardPairedGatewayRequest,
   type GatewayForwardFetcher,
-} from "@vellumai/electron-desktop/gateway-forward";
-import { installPermissionHandler } from "@vellumai/electron-desktop/permissions";
-import { installPairedGatewayRequestGuard } from "@vellumai/electron-desktop/paired-gateway-request-guard";
+} from "@anu/electron-desktop/gateway-forward";
+import { installPermissionHandler } from "@anu/electron-desktop/permissions";
+import { installPairedGatewayRequestGuard } from "@anu/electron-desktop/paired-gateway-request-guard";
 import {
   executePlatformForwardPlan,
   planPlatformForward,
-} from "@vellumai/electron-desktop/platform-forward";
-import { installPopoutWindows } from "@vellumai/electron-desktop/popout-window";
-import { installQuickInput } from "@vellumai/electron-desktop/quick-input-window";
-import { planAppProtocolAssetRequest } from "@vellumai/electron-utils/app-protocol";
+} from "@anu/electron-desktop/platform-forward";
+import { installPopoutWindows } from "@anu/electron-desktop/popout-window";
+import { installQuickInput } from "@anu/electron-desktop/quick-input-window";
+import { planAppProtocolAssetRequest } from "@anu/electron-utils/app-protocol";
 import {
   pairedGatewayTargetsFromLockfile,
   readAllowedGatewayPorts,
   readPairedGatewayTargets,
   resolveLocalConfigFromEnv,
   resolveLockfilePaths,
-} from "@vellumai/local-mode";
+} from "@anu/local-mode";
 
 import { installAbout, openAboutWindow } from "./about.client";
 import { installAutoUpdate } from "./auto-update.client";
 import {
   BUNDLES_DIR_NAME,
   VELLUMAPP_PROTOCOL,
-} from "@vellumai/electron-desktop/bundle-platform";
-import { registerVellumAppProtocol } from "@vellumai/electron-desktop/vellumapp-protocol";
+} from "@anu/electron-desktop/bundle-platform";
+import { registerVellumAppProtocol } from "@anu/electron-desktop/vellumapp-protocol";
 import { APP_HOST, APP_PROTOCOL } from "./app-config";
 import { resolveAllowedOrigin } from "./app-origin";
 import { writeCliLocator } from "./cli-installer";
@@ -49,20 +49,20 @@ import {
   installFileOpen,
   onFileOpen,
 } from "./file-open.client";
-import { installAvatarIpc } from "@vellumai/electron-desktop/avatar";
-import { installConnectivityProbe } from "@vellumai/electron-desktop/connectivity-probe";
-import { installDownloads } from "@vellumai/electron-desktop/downloads";
-import { installIdentityIpc } from "@vellumai/electron-desktop/identity";
+import { installAvatarIpc } from "@anu/electron-desktop/avatar";
+import { installConnectivityProbe } from "@anu/electron-desktop/connectivity-probe";
+import { installDownloads } from "@anu/electron-desktop/downloads";
+import { installIdentityIpc } from "@anu/electron-desktop/identity";
 import {
   configureNotifications,
   installNotifications,
-} from "@vellumai/electron-desktop/notifications";
-import { installPowerEvents } from "@vellumai/electron-desktop/power-events";
-import { configurePresenceRuntime } from "@vellumai/electron-desktop/presence-runtime";
+} from "@anu/electron-desktop/notifications";
+import { installPowerEvents } from "@anu/electron-desktop/power-events";
+import { configurePresenceRuntime } from "@anu/electron-desktop/presence-runtime";
 import {
   installConnectivityIpc,
   installStatusIpc,
-} from "@vellumai/electron-desktop/status";
+} from "@anu/electron-desktop/status";
 import "./auxiliary-windows.client";
 import { installDock } from "./dock";
 import { installShare } from "./share";
@@ -80,8 +80,9 @@ import {
 import { installGlobalShortcuts } from "./global-shortcuts.client";
 import { installHotkeyHelper } from "./hotkey-helper";
 import { installHotkeysIpc } from "./hotkeys.client";
-import { installImageContextMenu } from "@vellumai/electron-desktop/image-context-menu";
-import { installTextContextMenu } from "@vellumai/electron-desktop/text-context-menu";
+import { installImageContextMenu } from "@anu/electron-desktop/image-context-menu";
+import { installTextContextMenu } from "@anu/electron-desktop/text-context-menu";
+import { pinPackagedUserDataDir } from "@anu/electron-desktop/user-data-dir";
 import {
   getPairedGuardianAccessToken,
   installLocalMode,
@@ -125,11 +126,11 @@ import { installTextInsertionIpc } from "./textInsertion";
 import { installTray } from "./tray.client";
 import { installWebContentsSecurity } from "./windows";
 
-// Dev-only: override the workspace `name` (`@vellumai/macos`) so the
+// Dev-only: override the workspace `name` (`@anu/macos`) so the
 // menu bar's first submenu reads "Vellum Electron", and — more
 // importantly — so `app.getPath("userData")` resolves to
 // `~/Library/Application Support/Vellum Electron/`, cleanly separate
-// from the Swift `Vellum.app` / `Vellum Local.app` / `Vellum Dev.app`
+// from the Swift `ANU.app` / `ANU Local.app` / `ANU Dev.app`
 // installs the developer may also be running.
 //
 // Caveat: `app.setName()` does NOT change the Dock / Cmd-Tab label —
@@ -178,22 +179,16 @@ if (isDev) {
   app.commandLine.appendSwitch("use-mock-keychain");
 }
 
-// Packaged builds all share the same package.json `name` (`@vellumai/macos`),
-// so Electron resolves `app.getPath("userData")` to the same directory for
-// every environment. This causes `requestSingleInstanceLock()` collisions
-// when multiple environment builds (dev, staging, production) run side-by-side.
-// Append an environment suffix for non-production builds; production keeps the
-// original path for backwards compatibility.
+// Packaged builds keep the legacy `userData` directory, with an environment
+// suffix for non-production builds so side-by-side environment builds never
+// collide on `requestSingleInstanceLock()`.
 declare const __VELLUM_ENVIRONMENT__: string;
 if (app.isPackaged) {
   const env =
     typeof __VELLUM_ENVIRONMENT__ === "string"
       ? __VELLUM_ENVIRONMENT__
       : "production";
-  if (env !== "production") {
-    const base = app.getPath("userData");
-    app.setPath("userData", `${base}-${env}`);
-  }
+  pinPackagedUserDataDir(app, env);
 }
 
 initSentryMain();
@@ -293,7 +288,7 @@ const registerAppProtocol = (): void => {
 
     // Paired remote gateways ride the same-origin path too, via
     // `/assistant/__gateway-paired/{assistantId}/*`: the packaged app's CSP
-    // pins `connect-src` to Vellum origins, so the renderer cannot reach a
+    // pins `connect-src` to ANU origins, so the renderer cannot reach a
     // paired gateway directly. The WebRequest guard admits only trusted app
     // frames, and the lockfile's paired entries allowlist the remote targets.
     const pairedProxied = await forwardPairedGatewayRequest(
@@ -523,7 +518,7 @@ app
     // than being the first thing on screen at launch. Open from here on,
     // unless the user has hidden it from the tray, and on screen whenever the
     // app itself is not in front: it stands in for the app while the user is
-    // working somewhere else, and steps off while Vellum is the frontmost app
+    // working somewhere else, and steps off while ANU is the frontmost app
     // with its window showing.
     //
     // A launch that has nobody signed in yet leaves it closed, and the window

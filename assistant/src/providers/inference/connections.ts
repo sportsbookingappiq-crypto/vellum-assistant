@@ -430,12 +430,12 @@ const CANONICAL_CONNECTIONS: Array<{
     name: VELLUM_MANAGED_CONNECTION_NAME,
     provider: VELLUM_MANAGED_PROVIDER,
     auth: { type: "platform" },
-    label: "Vellum",
+    label: "ANU",
   },
 ];
 
 /**
- * The Vellum-managed connection as boot seeding defines it, built without a DB
+ * The ANU-managed connection as boot seeding defines it, built without a DB
  * read. Dispatch uses this when the `vellum` name is occupied by a user-owned
  * row: seeding refuses to overwrite such a row, so the canonical row can be
  * absent from the DB while managed routing still has to work. Platform auth
@@ -458,7 +458,7 @@ export function canonicalVellumConnection(): ProviderConnection {
 }
 
 /**
- * Names of the canonical Vellum-managed connections. Seeded on every daemon
+ * Names of the canonical ANU-managed connections. Seeded on every daemon
  * boot via `seedCanonicalConnections` and representing the platform-managed
  * inference route. They are write-protected at the route layer:
  *   - DELETE is blocked outright (would resurrect on next boot anyway, but
@@ -478,7 +478,7 @@ export const MANAGED_CONNECTION_NAMES: ReadonlySet<string> = new Set(
 
 /**
  * Upsert the canonical connections on every boot. Existing rows are
- * updated to the latest provider/auth values so Vellum can push connection
+ * updated to the latest provider/auth values so ANU can push connection
  * changes to customers in new releases.
  *
  * Label handling: the default label is seeded on initial INSERT so new

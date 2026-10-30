@@ -16,7 +16,7 @@ import { type ComponentProps } from "react";
 
 import { ChevronDown } from "lucide-react";
 
-import { cn } from "@vellumai/design-library";
+import { cn } from "@anu/design-library";
 
 export interface SelectTriggerRowProps extends ComponentProps<"button"> {
   /** Display text for the current value. */

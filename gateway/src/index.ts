@@ -8,7 +8,7 @@ import {
   TWILIO_MEDIA_STREAM_WEBHOOK_PATH,
   TWILIO_STATUS_WEBHOOK_PATH,
   TWILIO_VOICE_WEBHOOK_PATH,
-} from "@vellumai/service-contracts/twilio-ingress";
+} from "@anu/service-contracts/twilio-ingress";
 
 import { AuthRateLimiter } from "./auth-rate-limiter.js";
 import {
@@ -419,7 +419,7 @@ async function main() {
   const config = loadConfig();
   initLogger(config.logFile);
 
-  log.info("Starting Vellum Gateway...");
+  log.info("Starting ANU Gateway...");
 
   // Initialize the JWT signing key shared with the daemon.
   // This must happen before any request handling.
@@ -2960,7 +2960,7 @@ async function main() {
         );
       });
 
-      // Vellum credentials are load-bearing for the Telegram webhook URL when
+      // ANU credentials are load-bearing for the Telegram webhook URL when
       // the managed callback fallback applies: a platform connection arriving
       // or rotating after Telegram setup must repoint Telegram at the managed
       // callback route without waiting for an unrelated Telegram or ingress

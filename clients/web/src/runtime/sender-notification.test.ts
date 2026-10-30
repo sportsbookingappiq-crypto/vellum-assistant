@@ -4,7 +4,7 @@ import type {
   NotificationDeliveryResult,
   PrepareNotificationIdentityPayload,
   ResetNotificationIdentitiesPayload,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 let nativePlatform = true;
 let platform = "ios";

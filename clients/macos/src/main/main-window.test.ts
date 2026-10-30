@@ -204,7 +204,7 @@ let restoredBounds: {
   height: 800,
 };
 
-mock.module("@vellumai/electron-desktop/window-state", () => ({
+mock.module("@anu/electron-desktop/window-state", () => ({
   restoreBounds: () => restoredBounds,
   track: () => undefined,
   readOnboardingActive: () => onboardingActive,

@@ -81,7 +81,7 @@ describe("NativeAppCard", () => {
 
     expect(screen.getByText("Get the iOS App")).toBeDefined();
     expect(
-      screen.getByText("The Vellum iOS app gives you a native experience."),
+      screen.getByText("The ANU iOS app gives you a native experience."),
     ).toBeDefined();
 
     fireEvent.click(screen.getByRole("button", { name: "Download" }));
@@ -117,7 +117,7 @@ describe("NativeAppCard", () => {
   test("opens a configured Android listing and records the action", () => {
     setUserAgent(ANDROID_UA);
     env.VITE_ANDROID_PLAY_STORE_URL =
-      "https://play.google.com/store/apps/details?id=ai.vellum.assistant";
+      "https://play.google.com/store/apps/details?id=ai.anu.assistant";
     const open = mock(() => null);
     window.open = open as typeof window.open;
     render(<NativeAppCard />);
@@ -142,15 +142,15 @@ describe("NativeAppCard", () => {
 
     render(<NativeAppCard />);
 
-    expect(screen.getByText("Get the Vellum Mobile App")).toBeDefined();
+    expect(screen.getByText("Get the ANU Mobile App")).toBeDefined();
     expect(
-      screen.getByText("The Vellum mobile app gives you a native experience."),
+      screen.getByText("The ANU mobile app gives you a native experience."),
     ).toBeDefined();
 
     fireEvent.click(screen.getByRole("button", { name: "Download" }));
 
     expect(open).toHaveBeenCalledWith(
-      "https://www.vellum.ai/downloads",
+      "https://www.anu.ai/downloads",
       "_blank",
       "noopener,noreferrer",
     );
@@ -163,7 +163,7 @@ describe("NativeAppCard", () => {
 
     render(<NativeAppCard />);
 
-    expect(screen.getByText("Get the Vellum Mobile App")).toBeDefined();
+    expect(screen.getByText("Get the ANU Mobile App")).toBeDefined();
   });
 
   test("renders nothing outside mobile web", () => {

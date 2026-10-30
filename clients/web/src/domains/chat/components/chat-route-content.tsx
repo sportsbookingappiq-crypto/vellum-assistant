@@ -109,11 +109,11 @@ import { ProviderBillingBanner } from "@/domains/chat/components/provider-billin
 import { SendErrorModal } from "@/domains/chat/components/send-error-modal";
 import { StoreCredentialDialog } from "@/domains/chat/components/store-credential-dialog";
 import { SuggestionDetailPanel } from "@/domains/chat/components/suggestion-detail-panel";
-import type { DetectedSecret } from "@vellumai/service-contracts/secret-detection";
+import type { DetectedSecret } from "@anu/service-contracts/secret-detection";
 import type { ThreadSuggestion } from "@/domains/chat/suggestions/types";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useTranslation } from "@/i18n";
-import { BottomSheet, Notice } from "@vellumai/design-library";
+import { BottomSheet, Notice } from "@anu/design-library";
 import { useEditMessage } from "@/domains/chat/hooks/use-edit-message";
 import { useOnboardingChoice } from "@/domains/chat/hooks/use-onboarding-choice";
 import { usePullRefresh } from "@/domains/chat/hooks/use-pull-refresh";
@@ -127,7 +127,7 @@ import {
   resolveDroppedDirectories,
   WEB_FOLDER_DROP_ERROR,
 } from "@/domains/chat/components/chat-attachments/handle-folder-drop";
-import { Button } from "@vellumai/design-library";
+import { Button } from "@anu/design-library";
 import { Link, useLocation, useNavigate, useParams } from "react-router";
 import {
   getChatBillingBannerDecision,
@@ -396,7 +396,7 @@ export function ChatMainPanel({
 
   // Channel sidecar: while the flag is on and this conversation is bound to an
   // external channel, rows the client can attribute to that channel are drawn
-  // in the read-only drawer instead of here, so the Vellum lane shows each row
+  // in the read-only drawer instead of here, so the ANU lane shows each row
   // exactly once. Everything downstream in this panel (transcript projection,
   // scroll, empty state, counts) reads the lane, because the lane IS the chat
   // in that arrangement. `vellumMessages` is the same array by reference

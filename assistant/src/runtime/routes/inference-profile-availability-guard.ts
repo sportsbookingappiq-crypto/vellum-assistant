@@ -54,7 +54,7 @@ export function verifyProfileCommand(name: string): string {
 
 function managedAlternative(model: string, repair: ProfileRepairHint): string {
   const served =
-    "this model is served by your signed-in Vellum-managed route (no API key needed)";
+    "this model is served by your signed-in ANU-managed route (no API key needed)";
   const quotedModel = shellQuote(model);
   switch (repair.kind) {
     case "create":
@@ -89,7 +89,7 @@ function byoSequence(provider: string): string {
 
 /**
  * Build the repair guidance for an unavailable selection: the exact
- * Vellum-managed alternative when the model is managed-routable and the
+ * ANU-managed alternative when the model is managed-routable and the
  * managed route is usable; otherwise key collection alone when a connection
  * already exists and only its credential is missing, or the full
  * bring-your-own-key sequence when there is no connection at all.

@@ -86,7 +86,7 @@ export const SLACK_THREAD_ENTRIES: ChannelTranscriptEntry[] = [
     role: "assistant",
     text: "Looking now. The migration step timed out waiting on the advisory lock; retrying once the nightly backfill job releases it.",
     minute: 2,
-    senderName: "Vellum",
+    senderName: "ANU",
     externalMessageId: "1712345800.000300",
   }),
   slackEntry({

@@ -398,13 +398,13 @@ export async function waitForReady(runtimeUrl: string): Promise<boolean> {
       }
       if (readiness === "failed") {
         console.log(
-          "Assistant database migrations FAILED — treating the assistant as not ready so recovery can run.",
+          "Assistant database migrations FAILED. Treating the assistant as not ready so recovery can run.",
         );
         return false;
       }
       const parts = [body?.status].filter(Boolean);
       if (body?.upstream != null) parts.push(`upstream=${body.upstream}`);
-      const detail = parts.length > 0 ? ` — ${parts.join(", ")}` : "";
+      const detail = parts.length > 0 ? `: ${parts.join(", ")}` : "";
       console.log(`Readiness check: ${resp.status}${detail} (retrying...)`);
     } catch {
       // Connection refused / timeout — not up yet
@@ -578,7 +578,7 @@ export async function attemptFailedStateRestore(opts: {
   containerOptions: Parameters<typeof startContainers>[0];
 }): Promise<{ restored: boolean; ready: boolean }> {
   console.log(
-    `📦 Reverted stack not ready — attempting ${opts.backupLabel} backup restore...`,
+    `📦 Reverted stack not ready. Attempting ${opts.backupLabel} backup restore...`,
   );
   console.log(`   Source: ${opts.backupPath}`);
   const restored = await restoreBackup(
@@ -591,7 +591,7 @@ export async function attemptFailedStateRestore(opts: {
     return { restored: false, ready: false };
   }
   console.log(
-    "   Backup imported — restarting containers to complete recovery...",
+    "   Backup imported. Restarting containers to complete recovery...",
   );
   await stopContainers(opts.res);
   await startContainers(opts.containerOptions, (msg) => console.log(msg));
@@ -669,7 +669,7 @@ export async function performDockerRollback(
   // Validate target version < current version
   if (!currentVersion) {
     console.warn(
-      "⚠️  Could not determine current version from health endpoint — skipping version-direction check.\n",
+      "⚠️  Could not determine current version from health endpoint. Skipping version-direction check.\n",
     );
   }
   if (currentVersion) {
@@ -677,7 +677,7 @@ export async function performDockerRollback(
     if (cmp !== null) {
       if (cmp > 0) {
         const msg =
-          "Cannot roll back to a newer version. Use `vellum upgrade` instead.";
+          "Cannot roll back to a newer version. Use `anu upgrade` instead.";
         console.error(msg);
         emitCliError("VERSION_DIRECTION", msg);
         process.exit(1);

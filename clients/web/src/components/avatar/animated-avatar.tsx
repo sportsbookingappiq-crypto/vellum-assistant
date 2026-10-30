@@ -35,7 +35,31 @@ interface AnimatedAvatarProps {
    * intact — e.g. the scattered onboarding edge characters.
    */
   breathe?: boolean;
+  /**
+   * A state the avatar acts out on top of idle or busy motion. No existing
+   * hook reports these, so the surface that knows (a tool run finishing, an
+   * approval prompt opening) passes it:
+   *   - `"success"`: one 640ms hop with the eyes lifting. It plays when the
+   *     prop becomes `"success"`; set it back to null before the next one.
+   *   - `"waiting"`: a slow side-to-side glance and sway for as long as the
+   *     assistant is waiting on the user, e.g. for an approval.
+   * Ignored under `prefers-reduced-motion`.
+   */
+  reaction?: AvatarReaction | null;
 }
+
+export type AvatarReaction = "success" | "waiting";
+
+/**
+ * Keyframes for the reactions, scoped to the SVG that uses them. Transform
+ * only, so a phone composites them without layout or paint.
+ */
+const REACTION_KEYFRAMES = `
+@keyframes avatar-react-hop{0%{transform:translateY(0)}35%{transform:translateY(-7%) scale(1.03,0.98)}70%{transform:translateY(0) scale(0.98,1.02)}100%{transform:none}}
+@keyframes avatar-react-lift{0%,100%{transform:none}35%{transform:translateY(-6%) scale(1.08)}}
+@keyframes avatar-react-sway{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
+@keyframes avatar-react-glance{0%,15%,85%,100%{transform:translateX(0)}30%,45%{transform:translateX(-5%)}60%,75%{transform:translateX(5%)}}
+`;
 
 function randomBetween(min: number, max: number): number {
   return min + Math.random() * (max - min);
@@ -168,6 +192,7 @@ function AnimatedAvatarResolved({
   isAssistantBusy = false,
   attentive = false,
   breathe = true,
+  reaction = null,
   bodyShape,
   eyeStyle,
   color,
@@ -364,6 +389,25 @@ function AnimatedAvatarResolved({
         ? "avatar-breathe-kf 4s ease-in-out infinite"
         : "none";
 
+  const activeReaction = reduce ? null : reaction;
+  const reactionBodyAnimation =
+    activeReaction === "success"
+      ? "avatar-react-hop 640ms cubic-bezier(0.22, 1, 0.36, 1) 1"
+      : activeReaction === "waiting"
+        ? "avatar-react-sway 3.2s cubic-bezier(0.76, 0, 0.24, 1) infinite"
+        : "none";
+  // Swings and hops pivot on the bottom centre, where the body stands.
+  const reactionBodyStyle = {
+    animation: reactionBodyAnimation,
+    transformOrigin: `${size / 2}px ${size}px`,
+  };
+  const reactionEyeAnimation =
+    activeReaction === "success"
+      ? "avatar-react-lift 640ms cubic-bezier(0.22, 1, 0.36, 1) 1"
+      : activeReaction === "waiting"
+        ? "avatar-react-glance 3.2s cubic-bezier(0.76, 0, 0.24, 1) infinite"
+        : "none";
+
   const effectiveTwitchAngle = isAssistantBusy ? 0 : twitchAngle;
   // Never squish the eyes while streaming — guards the one frame between
   // `isAssistantBusy` flipping true and the blink effect resetting `isBlinking`.
@@ -383,6 +427,7 @@ function AnimatedAvatarResolved({
       // one place the busy state is legible from outside: a test, or a reader
       // of the tree, cannot see a path wobble.
       data-busy={isAssistantBusy ? "true" : undefined}
+      data-reaction={activeReaction ?? undefined}
       style={{
         animation: breatheAnimation,
         transformOrigin: "center",
@@ -391,6 +436,7 @@ function AnimatedAvatarResolved({
         overflow: "visible",
       }}
     >
+      {activeReaction && <style>{REACTION_KEYFRAMES}</style>}
       <g
         style={{
           transform: `rotate(${effectiveTwitchAngle}deg)`,
@@ -401,15 +447,17 @@ function AnimatedAvatarResolved({
               : "transform 0.3s ease-out",
         }}
       >
-        <path
-          ref={bodyPathRef}
-          d={baseBodyPath}
-          fill={color.hex}
-          transform={bodyTransform}
-          style={{
-            transition: isAssistantBusy ? "d 0.3s ease-in-out" : "none",
-          }}
-        />
+        <g style={reactionBodyStyle}>
+          <path
+            ref={bodyPathRef}
+            d={baseBodyPath}
+            fill={color.hex}
+            transform={bodyTransform}
+            style={{
+              transition: isAssistantBusy ? "d 0.3s ease-in-out" : "none",
+            }}
+          />
+        </g>
       </g>
 
       <g
@@ -425,9 +473,24 @@ function AnimatedAvatarResolved({
           transition: "transform 0.15s ease-in-out",
         }}
       >
-        {eyeStyle.paths.map((p: EyePathDefinition, i: number) => (
-          <path key={i} d={p.svgPath} fill={p.color} transform={eyeTransform} />
-        ))}
+        {/* The body's reaction again, so the face moves with the body. */}
+        <g style={reactionBodyStyle}>
+          <g
+            style={{
+              animation: reactionEyeAnimation,
+              transformOrigin: `${eyeCenterOutputX}px ${eyeCenterOutputY}px`,
+            }}
+          >
+            {eyeStyle.paths.map((p: EyePathDefinition, i: number) => (
+              <path
+                key={i}
+                d={p.svgPath}
+                fill={p.color}
+                transform={eyeTransform}
+              />
+            ))}
+          </g>
+        </g>
       </g>
     </svg>
   );

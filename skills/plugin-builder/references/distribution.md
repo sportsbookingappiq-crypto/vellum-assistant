@@ -2,13 +2,13 @@
 
 Plugins ship through a curated marketplace and install by name from the CLI. This reference covers the catalog, the install flow, the manifest that lists every installable plugin, and how to install a plugin directly from a GitHub URL before it is in the catalog.
 
-A plugin does not have to live in your workspace to be installed. Vellum keeps a curated catalog of external plugins, and the CLI installs any of them by name. The catalog is a single manifest the Vellum team reviews and approves, so installing a catalog plugin only ever pulls code that has been vetted into that list.
+A plugin does not have to live in your workspace to be installed. ANU keeps a curated catalog of external plugins, and the CLI installs any of them by name. The catalog is a single manifest the ANU team reviews and approves, so installing a catalog plugin only ever pulls code that has been vetted into that list.
 
 For plugins not yet in the catalog, the CLI also accepts a GitHub URL directly. See "Installing from a GitHub URL (untrusted)" below.
 
 ## Publishing your plugin
 
-Once your plugin works locally, you can list it in the marketplace catalog so anyone can install it by name. The catalog is a curated allowlist: you open a PR adding an entry, the Vellum team reviews it, and once merged the plugin is discoverable via `assistant plugins search` and installable via `assistant plugins install`.
+Once your plugin works locally, you can list it in the marketplace catalog so anyone can install it by name. The catalog is a curated allowlist: you open a PR adding an entry, the ANU team reviews it, and once merged the plugin is discoverable via `assistant plugins search` and installable via `assistant plugins install`.
 
 ### 1. Push your plugin to a public GitHub repo
 
@@ -47,10 +47,10 @@ The `name` must be a single kebab-case segment (e.g. `my-plugin`, not `myPlugin`
 
 ### 3. Wait for review
 
-The Vellum team reviews each entry before it lands in the catalog. The review checks that:
+The ANU team reviews each entry before it lands in the catalog. The review checks that:
 
 - The pinned commit matches a public, reachable revision of the repo.
-- The plugin has a valid `package.json` with a `@vellumai/plugin-api` peer dependency.
+- The plugin has a valid `package.json` with a `@anu/plugin-api` peer dependency.
 - The plugin loads cleanly (hooks register, tools validate, no import errors at boot).
 - The surfaces the plugin claims contribute something on boot rather than silently failing.
 
@@ -58,9 +58,9 @@ Once the review approves and the PR merges, the plugin appears in `assistant plu
 
 ## The marketplace catalog
 
-The catalog is computed live from [`plugins/marketplace.json`](https://github.com/vellum-ai/vellum-assistant/blob/main/plugins/marketplace.json) in the assistant repo. It lets Vellum surface plugins that live in other repositories without copying their code, and its shape is a subset of the [Claude Code marketplace schema](https://code.claude.com/docs/en/plugin-marketplaces), so the format is familiar if you have published there.
+The catalog is computed live from [`plugins/marketplace.json`](https://github.com/vellum-ai/vellum-assistant/blob/main/plugins/marketplace.json) in the assistant repo. It lets ANU surface plugins that live in other repositories without copying their code, and its shape is a subset of the [Claude Code marketplace schema](https://code.claude.com/docs/en/plugin-marketplaces), so the format is familiar if you have published there.
 
-- **Curation is the allowlist.** Only repositories listed in the manifest appear in the catalog. There is no open registry, and the Vellum team reviews each entry before it lands.
+- **Curation is the allowlist.** Only repositories listed in the manifest appear in the catalog. There is no open registry, and the ANU team reviews each entry before it lands.
 - **The manifest is the catalog.** It is the sole source of installable plugins. A missing or malformed manifest yields an empty catalog rather than falling back to anything else.
 - **One surface, two clients.** The same catalog backs `assistant plugins search` and the in-product Plugins tab.
 
@@ -95,7 +95,7 @@ While a plugin is still under development, before it is whitelisted in the catal
 # Install from a repo URL (default branch)
 $ assistant plugins install https://github.com/owner/repo
 ⚠ Installing "repo" from an unreviewed GitHub source: owner/repo @ default branch.
- This plugin is NOT in the Vellum marketplace and has not been reviewed.
+ This plugin is NOT in the ANU marketplace and has not been reviewed.
  Its hooks and tools run inside the assistant with full access — install it only if you trust the source.
 Installed untrusted plugin "repo" (8 files) → ~/.vellum/workspace/plugins/repo
 
@@ -266,7 +266,7 @@ The manifest has a top-level `name`, an optional `owner`, and a `plugins` array.
 {
   "name": "vellum-assistant",
   "owner": {
-    "name": "Vellum",
+    "name": "ANU",
     "url": "https://github.com/vellum-ai/vellum-assistant"
   },
   "plugins": [
@@ -314,4 +314,4 @@ e83c5163316f89bfbde7d9ab23ca2e25604af290  refs/tags/v1.2.0^{}
 
 ## Adapting external plugins
 
-Listing a plugin makes it install by name, but a plugin authored for another ecosystem may not match this loader's conventions and so contribute nothing on boot. A **postinstall adapter** bridges that gap: a small, curated transform committed alongside the marketplace entry that reshapes the cloned tree into Vellum's layout during install.
+Listing a plugin makes it install by name, but a plugin authored for another ecosystem may not match this loader's conventions and so contribute nothing on boot. A **postinstall adapter** bridges that gap: a small, curated transform committed alongside the marketplace entry that reshapes the cloned tree into ANU's layout during install.

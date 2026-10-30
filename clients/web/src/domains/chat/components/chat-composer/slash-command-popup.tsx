@@ -1,4 +1,4 @@
-import { PanelItem } from "@vellumai/design-library";
+import { PanelItem } from "@anu/design-library";
 
 import type { SlashCommand } from "@/domains/chat/components/chat-composer/slash-command-catalog";
 

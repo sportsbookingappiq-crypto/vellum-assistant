@@ -19,7 +19,7 @@ function makeConfig(): AssistantConfig {
 }
 
 describe("getVisibleProviderCatalog", () => {
-  test("hides Vellum-hosted GPU models unless hosted inference is on", () => {
+  test("hides ANU-hosted GPU models unless hosted inference is on", () => {
     setOverridesForTesting({});
     const hidden = getVisibleProviderCatalog(makeConfig());
     expect(hidden.find((p) => p.id === "vellum")).toBeUndefined();

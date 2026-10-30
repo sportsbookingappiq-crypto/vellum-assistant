@@ -9,10 +9,10 @@ var DEPS_TO_INLINE = [
   "electron-store",
   "electron-updater",
   "conf",
-  "@vellumai/electron-utils",
-  "@vellumai/ipc-contract",
-  "@vellumai/local-mode",
-  "@vellumai/environments"
+  "@anu/electron-utils",
+  "@anu/ipc-contract",
+  "@anu/local-mode",
+  "@anu/environments"
 ];
 var resolveBuildSha = () => {
   if (process.env.GITHUB_SHA) return process.env.GITHUB_SHA.slice(0, 7);

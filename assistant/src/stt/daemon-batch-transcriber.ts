@@ -206,7 +206,7 @@ export function normalizeSttError(err: unknown): SttError {
 }
 
 // ---------------------------------------------------------------------------
-// Vellum managed adapter — implements BatchTranscriber on top of the
+// ANU managed adapter — implements BatchTranscriber on top of the
 // platform's managed speech endpoint. No API key: the platform connection
 // is the credential.
 // ---------------------------------------------------------------------------

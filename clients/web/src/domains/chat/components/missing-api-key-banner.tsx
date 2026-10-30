@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 
-import { Button } from "@vellumai/design-library";
+import { Button } from "@anu/design-library";
 
 import { useTranslation } from "@/i18n";
 

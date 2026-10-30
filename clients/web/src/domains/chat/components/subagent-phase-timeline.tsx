@@ -18,7 +18,7 @@ import { Brain, Globe } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { memo, useCallback, useMemo, useState } from "react";
 
-import { Typography } from "@vellumai/design-library";
+import { Typography } from "@anu/design-library";
 
 import {
   DefaultStepPill,

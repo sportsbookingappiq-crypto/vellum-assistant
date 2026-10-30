@@ -22,7 +22,7 @@ import {
   ChannelPermissionCellSchema,
   ResolveChannelPermissionRequestSchema,
   type ChannelPermissionSelector,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 
 import { ChannelPermissionStore } from "../../db/channel-permission-store.js";
 import { CHANNEL_IDS, isChannelId } from "../../channels/types.js";

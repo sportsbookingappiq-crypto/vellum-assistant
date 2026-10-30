@@ -1,5 +1,5 @@
 /**
- * The staged external-channel reference, pinned above the Vellum composer.
+ * The staged external-channel reference, pinned above the ANU composer.
  *
  * Sits in the same stack as `StagedQuotesStrip` and reads the same way: a
  * compact quoted preview with a single X that takes it back off. One slot, so
@@ -12,12 +12,12 @@
 import { X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { Button, Card, Typography } from "@vellumai/design-library";
+import { Button, Card, Typography } from "@anu/design-library";
 import {
   quoteBlockquoteAccentClassName,
   quoteBlockquoteClassName,
   quoteBlockquoteContentClassName,
-} from "@vellumai/design-library/components/markdown-message";
+} from "@anu/design-library/components/markdown-message";
 
 import { useChannelReferenceStore } from "@/domains/chat/channel-sidecar/channel-reference-store";
 import { useTranslation } from "@/i18n";

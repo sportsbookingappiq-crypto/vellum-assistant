@@ -4,7 +4,7 @@ import { createHash } from "node:crypto";
 import type {
   NotificationIdentity,
   PrepareNotificationIdentityPayload,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import {
   NOTIFICATION_IDENTITY_MEMORY_LIMIT,

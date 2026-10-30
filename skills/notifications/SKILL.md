@@ -1,7 +1,7 @@
 ---
 name: notifications
 description: Send notifications through the unified notification router
-compatibility: "Designed for Vellum personal assistants"
+compatibility: "Designed for ANU personal assistants"
 metadata:
   emoji: "🔔"
   vellum:
@@ -41,7 +41,7 @@ assistant notifications send --title "..." --message "..." --urgent
 | `--title <title>`      | Yes in practice | Short headline (≤ 8 words). Omitting it triggers a body-truncation fallback that shows up as a duplicate of `--message` — always write a real title. |
 | `--urgent`             | No              | Mark as needing attention now/soon                                                                                                                   |
 | `--quiet`              | No              | Keep it quiet: no OS banner even when the user banners every notification, and no From me mobile push. Still lands in the conversation and Home.     |
-| `--preferred-channels` | No              | Additive channel hints. Vellum stays selected.                                                                                                       |
+| `--preferred-channels` | No              | Additive channel hints. ANU stays selected.                                                                                                          |
 | `--channels`           | No              | Exclusive allowlist (e.g. `telegram`). Replaces the default set. Urgent delivery does not add vellum or platform. Wins over `--preferred-channels`.  |
 | `--json`               | No              | Output machine-readable JSON                                                                                                                         |
 
@@ -112,7 +112,7 @@ assistant notifications send \
 assistant notifications list --json
 ```
 
-Reads from the user's home feed (`$VELLUM_WORKSPACE_DIR/data/home-feed.json`) — the inbox that mirrors background and async notifications surfaced via the unified pipeline. Real-time chat pushes that did not mirror to the feed (direct Telegram/Slack/Vellum-chat sends without `--is-async-background`) will not appear here.
+Reads from the user's home feed (`$VELLUM_WORKSPACE_DIR/data/home-feed.json`) — the inbox that mirrors background and async notifications surfaced via the unified pipeline. Real-time chat pushes that did not mirror to the feed (direct Telegram/Slack/ANU-chat sends without `--is-async-background`) will not appear here.
 
 ### When to call
 

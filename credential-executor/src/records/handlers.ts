@@ -2,7 +2,7 @@
  * RPC handlers for CES credential metadata.
  */
 
-import { CesRpcMethod } from "@vellumai/service-contracts/credential-rpc";
+import { CesRpcMethod } from "@anu/service-contracts/credential-rpc";
 
 import type { RpcHandlerRegistry } from "../server.js";
 import {

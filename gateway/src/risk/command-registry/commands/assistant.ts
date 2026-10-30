@@ -1,4 +1,4 @@
-import { CHANNEL_BOT_PROVIDER } from "@vellumai/service-contracts/channels";
+import { CHANNEL_BOT_PROVIDER } from "@anu/service-contracts/channels";
 
 import type {
   ArgRule,
@@ -525,7 +525,7 @@ const riskOverrides: AssistantRiskOverride[] = [
     path: "roadmap create",
     risk: "high",
     reason:
-      "Publishes an item on the public Vellum roadmap under the assistant's name and notifies Vellum staff",
+      "Publishes an item on the public ANU roadmap under the assistant's name and notifies ANU staff",
   },
   {
     path: "roadmap update",

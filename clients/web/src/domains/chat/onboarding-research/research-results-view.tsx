@@ -14,7 +14,7 @@ import { useTranslation } from "@/i18n";
 
 import type { ReactNode } from "react";
 
-import { Button } from "@vellumai/design-library/components/button";
+import { Button } from "@anu/design-library/components/button";
 
 import {
   ResearchFactsCard,

@@ -1,4 +1,4 @@
-import { Typography } from "@vellumai/design-library";
+import { Typography } from "@anu/design-library";
 
 import { ATTACHMENT_TILE_BOX_CLASS } from "@/domains/chat/components/chat-attachments/message-attachment-square";
 import {

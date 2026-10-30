@@ -11,11 +11,9 @@
  * would place the `angry` eyes about 6% of the icon above where the shipped
  * PNG has them.
  *
- * The app's primary icon (`clients/ios/App/App/AppIcon.icon`) is drawn by hand
- * rather than generated, and places its pair at
- * {@link DEFAULT_EYE_SPAN_FRACTION} whatever style it carries, so a preview
- * standing in for it passes {@link AppIconPreviewProps.primary} to be framed
- * that way.
+ * The app's primary icon carries no eyes at all: it is the ANU mark on the
+ * build's own ground, which {@link PrimaryAppIconPreview} draws on the same
+ * squircle so a row can show either one.
  *
  * Purely presentational: no store, hook, or native bridge. An eye style or
  * color the components catalog does not carry renders as the field alone
@@ -25,6 +23,11 @@
 
 import { useMemo } from "react";
 
+import {
+  ARTWORK_SCALE as MARK_SCALE,
+  MARK_FACETS,
+  MARK_SILHOUETTE,
+} from "@/components/ios-widget-previews/vellum-app-icon-mark";
 import { tightPathBBox, unionBBox } from "@/utils/eye-bbox";
 import type { CharacterComponents, EyePathDefinition } from "@/types/avatar";
 
@@ -63,17 +66,9 @@ export interface AppIconPreviewProps {
   eyeStyle: string;
   color: string;
   /**
-   * Frame the pair the way the app's primary icon frames its own: the whole
-   * {@link DEFAULT_EYE_SPAN_FRACTION}, whatever style is on screen. Alternates
-   * leave this off and take their own entry in the span table.
-   */
-  primary?: boolean;
-  /**
    * Paint the field this exact CSS color rather than the one `color` resolves
    * to, for a depiction whose field is not a catalog color at all. Any color
-   * syntax the renderer parses works, wide-gamut `color()` included. The shells
-   * that ship a primary icon on their own field use it; alternates leave it
-   * off.
+   * syntax the renderer parses works, wide-gamut `color()` included.
    */
   fieldColor?: string;
   /** Rendered width and height in px. */
@@ -105,7 +100,6 @@ function resolveEyeArt(
   components: CharacterComponents | null,
   eyeStyleId: string,
   size: number,
-  primary: boolean,
 ): IconEyeArt | null {
   const eyeStyle = components?.eyeStyles.find((eye) => eye.id === eyeStyleId);
   if (!eyeStyle || eyeStyle.paths.length === 0) {
@@ -117,8 +111,7 @@ function resolveEyeArt(
   if (bbox.w <= 0 || bbox.h <= 0) {
     return null;
   }
-  const span =
-    size * (primary ? DEFAULT_EYE_SPAN_FRACTION : eyeSpanFraction(eyeStyleId));
+  const span = size * eyeSpanFraction(eyeStyleId);
   const scale = Math.min(span / bbox.w, span / bbox.h);
   const translateX = size / 2 - (bbox.x + bbox.w / 2) * scale;
   const translateY = size / 2 - (bbox.y + bbox.h / 2) * scale;
@@ -132,14 +125,13 @@ export function AppIconPreview({
   components,
   eyeStyle,
   color,
-  primary = false,
   fieldColor,
   size = DEFAULT_SIZE,
   className,
 }: AppIconPreviewProps) {
   const art = useMemo(
-    () => resolveEyeArt(components, eyeStyle, size, primary),
-    [components, eyeStyle, size, primary],
+    () => resolveEyeArt(components, eyeStyle, size),
+    [components, eyeStyle, size],
   );
   const catalogHex = components?.colors.find(
     (entry) => entry.id === color,
@@ -172,6 +164,74 @@ export function AppIconPreview({
           ))}
         </g>
       ) : null}
+    </svg>
+  );
+}
+
+/**
+ * The two tones the mark is drawn in: `ice` (Sky silhouette, Ice facets) on a
+ * night ground, `night` (Night 900 silhouette, Deep Blue facets) on a light
+ * one, as `assets/brand/BRAND.md` pairs them for flat renders.
+ */
+export const PRIMARY_MARK_TONES = {
+  ice: { silhouette: "#7DD3FC", facets: "#E0F2FE" },
+  night: { silhouette: "#0A1633", facets: "#1E40AF" },
+} as const;
+
+export type PrimaryMarkTone = keyof typeof PRIMARY_MARK_TONES;
+
+export interface PrimaryAppIconPreviewProps {
+  /** The ground the installed build's icon is drawn on, as any CSS color. */
+  fieldColor: string;
+  /** Which of the mark's two-tone renders that build's icon carries. */
+  tone: PrimaryMarkTone;
+  /** Rendered width and height in px. */
+  size?: number;
+  className?: string;
+}
+
+/**
+ * On-screen preview of the app's primary icon: the ANU mark centered on the
+ * build's ground, its 100-unit canvas filling the share of the tile the icon
+ * gives it. Same squircle and test ids as {@link AppIconPreview}, so a surface
+ * showing whichever icon is installed reads the field the same way.
+ */
+export function PrimaryAppIconPreview({
+  fieldColor,
+  tone,
+  size = DEFAULT_SIZE,
+  className,
+}: PrimaryAppIconPreviewProps) {
+  const radius = size * CORNER_RADIUS_FRACTION;
+  const scale = (size * MARK_SCALE) / 100;
+  const offset = (size - size * MARK_SCALE) / 2;
+  const colors = PRIMARY_MARK_TONES[tone];
+
+  return (
+    <svg
+      aria-hidden="true"
+      data-testid="app-icon-preview"
+      className={className}
+      width={size}
+      height={size}
+      viewBox={`0 0 ${size} ${size}`}
+      style={{ display: "block", flexShrink: 0 }}
+    >
+      <rect
+        data-testid="app-icon-preview-field"
+        width={size}
+        height={size}
+        rx={radius}
+        ry={radius}
+        fill={fieldColor}
+      />
+      <g
+        data-testid="app-icon-preview-mark"
+        transform={`matrix(${scale},0,0,${scale},${offset},${offset})`}
+      >
+        <path d={MARK_SILHOUETTE} fill={colors.silhouette} />
+        <path d={MARK_FACETS} fill={colors.facets} />
+      </g>
     </svg>
   );
 }

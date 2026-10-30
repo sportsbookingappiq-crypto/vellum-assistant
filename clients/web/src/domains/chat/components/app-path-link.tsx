@@ -7,7 +7,7 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router";
 
-import { TextLink } from "@vellumai/design-library/components/text-link";
+import { TextLink } from "@anu/design-library/components/text-link";
 
 export function AppPathLink({
   href,

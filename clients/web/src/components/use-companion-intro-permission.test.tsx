@@ -8,7 +8,7 @@ import {
   mock,
   test,
 } from "bun:test";
-import type { CompanionIntroBeat } from "@vellumai/ipc-contract";
+import type { CompanionIntroBeat } from "@anu/ipc-contract";
 import type {
   SystemPermissionKind,
   SystemPermissionsState,

@@ -5,8 +5,8 @@ import * as motionReact from "motion/react";
 import {
   COMPANION_BASE_AVATAR_BOX,
   COMPANION_BASE_MAX_PILL_WIDTH,
-} from "@vellumai/ipc-contract";
-import type { VoiceActivityState } from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
+import type { VoiceActivityState } from "@anu/ipc-contract";
 
 /**
  * The reduced-motion answer, so one case can render the surface as a reader who
@@ -1480,7 +1480,7 @@ describe("the companion surface's call status line", () => {
 /**
  * The creature is the call button.
  *
- * A press on it starts a call when idle and goes back to Vellum on a call;
+ * A press on it starts a call when idle and goes back to ANU on a call;
  * the caller decides which by the session it holds, and this side names the
  * press for a reader by the phase. Hover unfurls nothing: the creature comes
  * out, and after a dwell says what a press does, as a name and not a control.
@@ -1498,13 +1498,11 @@ describe("the creature as the call button", () => {
     expect(creatureOf(container)?.getAttribute("aria-label")).toBe("Talk");
   });
 
-  test("is named for the way back to Vellum on a call", () => {
+  test("is named for the way back to ANU on a call", () => {
     const { container } = render(
       <CompanionSurface phase="call" call={LISTENING_CALL} />,
     );
-    expect(creatureOf(container)?.getAttribute("aria-label")).toBe(
-      "Open Vellum",
-    );
+    expect(creatureOf(container)?.getAttribute("aria-label")).toBe("Open ANU");
   });
 
   test("reports the press", () => {
@@ -1647,7 +1645,7 @@ describe("the companion surface's dial", () => {
  * rest across that gap reads as the recording having been thrown away, and the
  * report would land in a thread nobody was ever shown.
  */
-describe("the offer of Vellum's dictation", () => {
+describe("the offer of ANU's dictation", () => {
   test("names the app that pasted, and leaves the words to the card", () => {
     const { container } = render(
       <CompanionSurface

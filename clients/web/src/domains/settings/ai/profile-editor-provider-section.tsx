@@ -2,11 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 
 import { useTranslation } from "@/i18n";
 
-import { Button } from "@vellumai/design-library/components/button";
-import { Select } from "@vellumai/design-library/components/select";
-import { SearchableSelect } from "@vellumai/design-library/components/searchable-select";
-import { Input } from "@vellumai/design-library/components/input";
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Button } from "@anu/design-library/components/button";
+import { Select } from "@anu/design-library/components/select";
+import { SearchableSelect } from "@anu/design-library/components/searchable-select";
+import { Input } from "@anu/design-library/components/input";
+import { Typography } from "@anu/design-library/components/typography";
 
 import {
   catalogEnabledFlags,
@@ -164,7 +164,7 @@ export function ProfileEditorProviderSection({
 
   // Providers backed by at least one connection — picking a provider with zero
   // connections binds a profile to a route the daemon can't dispatch through.
-  // The Vellum-managed connection expands into every managed-routable provider
+  // The ANU-managed connection expands into every managed-routable provider
   // (see `providersServedByConnections`). The currently-bound `provider` is
   // always kept so editing a stale profile still renders a sensible trigger.
   const visibleProviders = useMemo(() => {

@@ -3,7 +3,7 @@
  *
  * Reads guardian delivery info from the gateway-backed guardian list.
  *
- * - Vellum: no external endpoint needed — delivery goes through the event
+ * - ANU: no external endpoint needed — delivery goes through the event
  *   broadcast mechanism to connected desktop/mobile clients. The
  *   guardianPrincipalId is included in metadata so downstream adapters
  *   can scope guardian-sensitive notifications to bound guardian devices.
@@ -11,7 +11,7 @@
  *   sourced from the guardian contact's channel record.
  */
 
-import type { GuardianDelivery } from "@vellumai/gateway-client";
+import type { GuardianDelivery } from "@anu/gateway-client";
 
 import { isNotificationDeliverable } from "../channels/config.js";
 import type { ChannelId } from "../channels/types.js";
@@ -70,7 +70,7 @@ export function resolveDestinations(
     // `channel` is a NotificationChannel and the switch below is exhaustive.
     switch (channel) {
       case "vellum": {
-        // Vellum delivery is local — no external endpoint required.
+        // ANU delivery is local — no external endpoint required.
         // Include the guardianPrincipalId so the adapter can annotate
         // guardian-sensitive notifications for scoped delivery.
         const guardian = resolveGuardian(guardians, "vellum");

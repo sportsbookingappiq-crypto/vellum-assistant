@@ -29,7 +29,7 @@ import {
   type CharacterTraits,
   deriveAvatarFromLegacyFiles,
   parseAvatarManifest,
-} from "@vellumai/avatar-manifest";
+} from "@anu/avatar-manifest";
 
 import { getLogger } from "../util/logger.js";
 import { getAvatarDir } from "../util/platform.js";

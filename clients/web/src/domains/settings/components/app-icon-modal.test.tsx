@@ -19,6 +19,7 @@ import {
 import { AppIconModal } from "@/domains/settings/components/app-icon-modal";
 import { BUNDLED_COMPONENTS } from "@/utils/avatar-bundled-components";
 import { appIconNameForTraits } from "@/utils/avatar-app-icon";
+import { avatarTraitLabel } from "@anu/avatar-catalog/labels";
 import type { AppIconModalProps } from "@/domains/settings/components/app-icon-modal";
 
 /** Every icon the generator emits from the catalog, as a full shell would. */
@@ -74,7 +75,7 @@ function alertText(): string | null {
   return alert?.textContent?.trim() ?? null;
 }
 
-/** The eye style and color the rows currently read, in catalog ids. */
+/** The eye style and color the rows currently read, as their display labels. */
 function rowValues(): string[] {
   return Array.from(
     document.querySelectorAll<HTMLElement>('[data-slot="modal-body"] span'),
@@ -140,7 +141,9 @@ describe("AppIconModal", () => {
     // Cycling once proves the seed: the pair moves on from goofy on teal.
     await press("Next eyes");
 
-    expect(rowValues()).toContain(eyeStyleAfter("goofy", 1));
+    expect(rowValues()).toContain(
+      avatarTraitLabel("eyeStyle", eyeStyleAfter("goofy", 1)),
+    );
     await press("Set app icon");
     expect(onApply.mock.calls[0]?.[0]).toBe(
       appIconNameForTraits(eyeStyleAfter("goofy", 1), "teal"),
@@ -185,7 +188,7 @@ describe("AppIconModal", () => {
 
     await press("Next eyes");
 
-    expect(rowValues()).toContain(first);
+    expect(rowValues()).toContain(avatarTraitLabel("eyeStyle", first));
     await press("Set app icon");
     expect(onApply.mock.calls[0]?.[0]).toBe(
       appIconNameForTraits(first, "green"),
@@ -308,8 +311,8 @@ describe("AppIconModal", () => {
     await press("Match avatar");
 
     expect(onApply).not.toHaveBeenCalled();
-    expect(rowValues()).toContain("gentle");
-    expect(rowValues()).toContain("purple");
+    expect(rowValues()).toContain(avatarTraitLabel("eyeStyle", "gentle"));
+    expect(rowValues()).toContain(avatarTraitLabel("color", "purple"));
 
     await press("Set app icon");
     expect(onApply.mock.calls[0]?.[0]).toBe(

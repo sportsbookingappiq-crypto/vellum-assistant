@@ -3,14 +3,14 @@ import { ipcRenderer } from "electron";
 import type {
   BridgeCapabilityRegistry,
   CapabilityModule,
-} from "@vellumai/electron-desktop/capability-registry";
+} from "@anu/electron-desktop/capability-registry";
 import {
   AUTH_CANCEL_OAUTH,
   AUTH_GET_SESSION_TOKEN,
   AUTH_SIGN_OUT,
   AUTH_START_OAUTH,
   type VellumBridge,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 const authFeature: CapabilityModule<
   BridgeCapabilityRegistry<VellumBridge>

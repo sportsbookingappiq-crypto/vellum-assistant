@@ -5,7 +5,7 @@ import {
   QUICK_INPUT_DISMISS,
   QUICK_INPUT_SUBMIT,
   type VellumCommand,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import type { IpcHandle } from "./ipc";
 import { createModuleConfiguration } from "./module-configuration";

@@ -1,12 +1,12 @@
 /**
- * Materializes the workspace-level `@vellumai/plugin-api` shim so that
+ * Materializes the workspace-level `@anu/plugin-api` shim so that
  * user plugins under `<workspaceDir>/plugins/<name>/` can resolve a
  * standard bare import:
  *
- *     import { ... } from "@vellumai/plugin-api";
+ *     import { ... } from "@anu/plugin-api";
  *
  * Bun's Node-style resolution walks up from the plugin directory and
- * finds `<workspaceDir>/node_modules/@vellumai/plugin-api/` — a tiny
+ * finds `<workspaceDir>/node_modules/@anu/plugin-api/` — a tiny
  * shim package whose `index.js` re-binds the plugin-api namespace that
  * the assistant already loaded into its module graph (and parked on
  * `globalThis` under {@link PLUGIN_API_REGISTRY_KEY}). When no host
@@ -30,7 +30,7 @@
  *
  * Called from {@link loadUserPlugins} at the top of its body so the
  * ordering constraint (shim exists before any plugin's
- * `import "@vellumai/plugin-api"` is parsed) is enforced by code, not
+ * `import "@anu/plugin-api"` is parsed) is enforced by code, not
  * by a docstring in `lifecycle.ts`.
  */
 
@@ -44,10 +44,9 @@ import {
 } from "../embedded/plugin-api.js";
 import { getLogger } from "../util/logger.js";
 import { getWorkspaceDir } from "../util/platform.js";
+import { PLUGIN_API_PACKAGE_NAMES } from "./plugin-api-package.js";
 
 const log = getLogger("plugin-api-shim");
-
-const PACKAGE_NAME = "@vellumai/plugin-api";
 
 /**
  * Where the shim imports the plugin-api implementation from when no host
@@ -95,28 +94,29 @@ export async function ensurePluginApiShim(opts?: {
   workspaceDir?: string;
 }): Promise<void> {
   const workspaceDir = opts?.workspaceDir ?? getWorkspaceDir();
-  const shimDir = join(workspaceDir, "node_modules", PACKAGE_NAME);
-
-  await mkdir(shimDir, { recursive: true });
-
   const indexJs = buildShimSource();
-  const packageJson = `${JSON.stringify(
-    {
-      name: PACKAGE_NAME,
-      version: assistantPkg.version,
-      type: "module",
-      main: "./index.js",
-    },
-    null,
-    2,
-  )}\n`;
-
-  await writeFile(join(shimDir, "index.js"), indexJs);
-  await writeFile(join(shimDir, "package.json"), packageJson);
+  const shimDirs: string[] = [];
+  for (const packageName of PLUGIN_API_PACKAGE_NAMES) {
+    const shimDir = join(workspaceDir, "node_modules", packageName);
+    await mkdir(shimDir, { recursive: true });
+    const packageJson = `${JSON.stringify(
+      {
+        name: packageName,
+        version: assistantPkg.version,
+        type: "module",
+        main: "./index.js",
+      },
+      null,
+      2,
+    )}\n`;
+    await writeFile(join(shimDir, "index.js"), indexJs);
+    await writeFile(join(shimDir, "package.json"), packageJson);
+    shimDirs.push(shimDir);
+  }
 
   log.info(
     {
-      shimDir,
+      shimDirs,
       exports: PLUGIN_API_EXPORTS,
       version: assistantPkg.version,
     },

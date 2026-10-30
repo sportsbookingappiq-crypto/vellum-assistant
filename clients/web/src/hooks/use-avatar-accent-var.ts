@@ -8,7 +8,7 @@ import {
 
 /**
  * The CSS custom property carrying the active assistant's avatar accent hex
- * (e.g. `#E9642F` for the orange character). Set on `<html>` by
+ * (e.g. `#E96D38` for the orange "Ember" character). Set on `<html>` by
  * {@link useAvatarAccentVar}; absent while the avatar has no colour (still
  * loading, or an uploaded image the daemon could not read), so consumers
  * read it with a `var(--avatar-accent, <fallback>)` fallback.

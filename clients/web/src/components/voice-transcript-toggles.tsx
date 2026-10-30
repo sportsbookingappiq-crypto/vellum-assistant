@@ -1,4 +1,4 @@
-import { Toggle } from "@vellumai/design-library/components/toggle";
+import { Toggle } from "@anu/design-library/components/toggle";
 
 import { useTranslation } from "@/i18n";
 import { useVoicePrefsStore } from "@/stores/voice-prefs-store";

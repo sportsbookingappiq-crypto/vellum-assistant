@@ -15,8 +15,8 @@ import {
 } from "@/domains/settings/utils/schedule-formatters";
 import { useTranslation } from "@/i18n";
 import { navigateToConversation } from "@/utils/conversation-navigation";
-import { Button } from "@vellumai/design-library/components/button";
-import { PanelItem } from "@vellumai/design-library/components/panel-item";
+import { Button } from "@anu/design-library/components/button";
+import { PanelItem } from "@anu/design-library/components/panel-item";
 
 interface RecentRunsCardProps {
   runs: ScheduleRun[] | undefined;

@@ -19,7 +19,7 @@ import "@/app/docs/docs-theme.css";
 
 export const metadata: Metadata = {
   description:
-    "Release notes for Vellum. See what's new, what changed, and what's coming.",
+    "Release notes for ANU. See what's new, what changed, and what's coming.",
 };
 
 interface ReleasesLayoutProps {
@@ -49,7 +49,7 @@ export default async function ReleasesLayout({
                 >
                   <Image
                     src="/docs/vellum-logo.svg"
-                    alt="Vellum"
+                    alt="ANU"
                     width={100}
                     height={24}
                     unoptimized

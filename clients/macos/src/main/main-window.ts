@@ -1,19 +1,19 @@
 import { BrowserWindow, app, autoUpdater, shell } from "electron";
 import { z } from "zod";
-import { reloadOnRendererCrash } from "@vellumai/electron-desktop/renderer-crash-reload";
-import { createWindowReadiness } from "@vellumai/electron-desktop/window-readiness";
+import { reloadOnRendererCrash } from "@anu/electron-desktop/renderer-crash-reload";
+import { createWindowReadiness } from "@anu/electron-desktop/window-readiness";
 import {
   readOnboardingActive,
   restoreBounds,
   track as trackWindowState,
   writeOnboardingActive,
-} from "@vellumai/electron-desktop/window-state";
+} from "@anu/electron-desktop/window-state";
 
 import { getRendererRootUrl } from "./app-config";
 import { resolveAllowedOrigin } from "./app-origin";
 import { decideNavigation } from "./auth-nav";
-import { type VellumCommand } from "@vellumai/electron-desktop/commands";
-import { getName, onNameChange } from "@vellumai/electron-desktop/identity";
+import { type VellumCommand } from "@anu/electron-desktop/commands";
+import { getName, onNameChange } from "@anu/electron-desktop/identity";
 import { handle } from "./ipc";
 import { createWindow } from "./windows";
 
@@ -35,7 +35,7 @@ const MAIN_MIN_SIZE = { width: 800, height: 600 } as const;
 // switcher, and Mission Control. `titleBarStyle: "hidden"` means it isn't
 // painted in a title bar, but the OS-level NSWindow title still feeds those
 // surfaces.
-const DEFAULT_WINDOW_TITLE = "Vellum";
+const DEFAULT_WINDOW_TITLE = "ANU";
 
 // macOS traffic-light (window controls) position for the main-app layout.
 //
@@ -189,7 +189,7 @@ const createMainWindow = (): BrowserWindow => {
   const win = createWindow({
     // `titleBarStyle: "hidden"` removes the native title bar chrome and its
     // title text (otherwise inherited from the renderer's `<title>` —
-    // "Vellum Assistant") while keeping the macOS traffic lights, so the
+    // "ANU") while keeping the macOS traffic lights, so the
     // renderer content extends up to the top edge behind them.
     browserWindow: { ...sizing, titleBarStyle: "hidden", show: false },
     navigation: { installGuard: installSameOriginNavigationGuard },
@@ -204,7 +204,7 @@ const createMainWindow = (): BrowserWindow => {
   win.setFullScreenable(true);
 
   // Main owns the window title (the active assistant's name). Block the
-  // renderer's static `<title>` ("Vellum Assistant") from overriding it via
+  // renderer's static `<title>` ("ANU") from overriding it via
   // page-title updates, then seed the current name — `installMainWindow`'s
   // `onNameChange` subscription keeps it live as identity loads or changes.
   win.webContents.on("page-title-updated", (event) => {

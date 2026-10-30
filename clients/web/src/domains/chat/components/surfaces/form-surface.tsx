@@ -3,7 +3,7 @@ import {
   type FormPage,
   type FormSurfaceData,
   FormSurfaceDataSchema,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 import {
   ChevronLeft,
   ChevronRight,
@@ -14,7 +14,7 @@ import {
 import { type FormEvent, useCallback, useMemo, useState } from "react";
 
 import type { Surface } from "@/domains/chat/types/types";
-import { Button, Toggle } from "@vellumai/design-library";
+import { Button, Toggle } from "@anu/design-library";
 
 import { ChatMarkdownMessage } from "@/domains/chat/components/chat-markdown-message";
 import { PageProgress } from "@/domains/chat/components/surfaces/page-progress";

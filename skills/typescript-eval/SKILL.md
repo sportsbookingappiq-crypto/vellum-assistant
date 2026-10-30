@@ -1,7 +1,7 @@
 ---
 name: typescript-eval
 description: Test TypeScript code snippets before persisting as skills
-compatibility: "Designed for Vellum personal assistants"
+compatibility: "Designed for ANU personal assistants"
 metadata:
   emoji: "🧪"
   vellum:

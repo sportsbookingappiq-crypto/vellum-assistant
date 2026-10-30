@@ -9,7 +9,7 @@ icons/
   production/
     icon.json          # manifest: `fill.solid` ground plus the layer geometry
     Assets/
-      white-V.svg      # foreground layer
+      white-V.svg      # foreground layer (white ANU snowflake)
   staging/
   dev/
   local/
@@ -28,7 +28,7 @@ The three shipped environments share one palette with the iOS bundles under
 
 | Environment | sRGB      | `fill.solid`                                 |
 | ----------- | --------- | -------------------------------------------- |
-| production  | `#4C9B50` | `display-p3:0.37749,0.60064,0.34581,1.00000` |
+| production  | `#0F2557` | `display-p3:0.08015,0.14303,0.32859,1.00000` |
 | staging     | `#E9C91A` | `display-p3:0.89313,0.79283,0.28410,1.00000` |
 | dev         | `#FF88C9` | `display-p3:0.93870,0.55755,0.77770,1.00000` |
 

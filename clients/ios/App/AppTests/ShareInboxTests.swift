@@ -222,7 +222,7 @@ final class ShareDeepLinkTests: XCTestCase {
 
 final class RecentChatsStoreTests: XCTestCase {
     func testMigratesLegacyStandardSuiteIntoAppGroup() {
-        let group = UserDefaults(suiteName: "ai.vellum.assistant.AppTests.recent.\(UUID().uuidString)")!
+        let group = UserDefaults(suiteName: "ai.anu.assistant.AppTests.recent.\(UUID().uuidString)")!
         let chats = [RecentChat(id: "conv-xyz", title: "Gym")]
         let encoded = try! JSONEncoder().encode(chats)
         UserDefaults.standard.set(encoded, forKey: RecentChatsStore.defaultsKey)
@@ -237,7 +237,7 @@ final class RecentChatsStoreTests: XCTestCase {
     }
 
     func testSaveDropsLegacyStandardCopy() {
-        let group = UserDefaults(suiteName: "ai.vellum.assistant.AppTests.recent.\(UUID().uuidString)")!
+        let group = UserDefaults(suiteName: "ai.anu.assistant.AppTests.recent.\(UUID().uuidString)")!
         UserDefaults.standard.set(Data([1, 2, 3]), forKey: RecentChatsStore.defaultsKey)
         defer {
             UserDefaults.standard.removeObject(forKey: RecentChatsStore.defaultsKey)

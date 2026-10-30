@@ -40,7 +40,7 @@ export function HostingOptionsGcpContent() {
         <p className={paraClass}>
           It keeps your assistant running after you close your laptop, on a
           machine and a disk you own. This is the VPS approach: you create the
-          VM, install Vellum on it, and reach it through a tunnel.
+          VM, install ANU on it, and reach it through a tunnel.
         </p>
         <div className="mb-8" />
 
@@ -144,18 +144,18 @@ gcloud services enable compute.googleapis.com`}</code>
           <p className={paraClass}>Everything from here runs on the VM.</p>
           <ol className={stepListClass}>
             <li>
-              <strong>Install Vellum and its dependencies.</strong>
+              <strong>Install ANU and its dependencies.</strong>
               <div className="mt-3 overflow-x-auto">
                 <pre className={preClass}>
 <code>{`# Bun's installer needs curl and unzip
 sudo apt-get update
 sudo apt-get install -y curl unzip git
 
-# Vellum ships as a Bun package, so Bun needs to be installed
+# ANU ships as a Bun package, so Bun needs to be installed
 curl -fsSL https://bun.sh/install | bash -s "bun-v1.3.11"
 source ~/.bashrc
 
-# Install Vellum itself
+# Install ANU itself
 bun install -g vellum`}</code>
                 </pre>
               </div>
@@ -165,7 +165,7 @@ bun install -g vellum`}</code>
               <strong>Hatch the assistant.</strong>
               <div className="mt-3 overflow-x-auto">
                 <pre className={preClass}>
-<code>{`vellum hatch`}</code>
+<code>{`anu hatch`}</code>
                 </pre>
               </div>
               <p className="mt-3 mb-0">
@@ -182,7 +182,7 @@ bun install -g vellum`}</code>
               terminal and confirm everything works.
               <div className="mt-3 overflow-x-auto">
                 <pre className={preClass}>
-<code>{`vellum client`}</code>
+<code>{`anu client`}</code>
                 </pre>
               </div>
             </li>
@@ -206,23 +206,23 @@ bun install -g vellum`}</code>
           </SectionHeading>
           <ul className={bulletClass}>
             <li>
-              <code className={codeClass}>vellum ps</code> shows what&apos;s
+              <code className={codeClass}>anu ps</code> shows what&apos;s
               running;{" "}
-              <code className={codeClass}>vellum wake</code> and{" "}
-              <code className={codeClass}>vellum sleep</code> start and stop it,
+              <code className={codeClass}>anu wake</code> and{" "}
+              <code className={codeClass}>anu sleep</code> start and stop it,
               keeping the workspace on disk.
             </li>
             <li>
               If you paired any devices,{" "}
-              <code className={codeClass}>vellum devices</code> lists them and{" "}
-              <code className={codeClass}>vellum devices revoke &lt;id&gt;</code>{" "}
+              <code className={codeClass}>anu devices</code> lists them and{" "}
+              <code className={codeClass}>anu devices revoke &lt;id&gt;</code>{" "}
               cuts one off.
             </li>
           </ul>
           <p className={paraClass}>
             Nothing restarts on its own after a VM reboot. Bring the assistant
             back with{" "}
-            <code className={codeClass}>vellum wake</code>, and restart your
+            <code className={codeClass}>anu wake</code>, and restart your
             tunnel too if you set one up.
           </p>
           <p className={lastParaClass}>

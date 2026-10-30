@@ -15,7 +15,7 @@ mock.module("@/utils/pointer", () => ({
   isPointerCoarse: () => false,
 }));
 
-import { ContextMenu } from "@vellumai/design-library";
+import { ContextMenu } from "@anu/design-library";
 
 import { SidebarListContextMenu } from "@/domains/chat/components/sidebar-list-context-menu";
 

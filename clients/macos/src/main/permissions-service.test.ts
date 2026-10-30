@@ -127,11 +127,11 @@ let nativeShowError: Error | null = null;
 const nativePosts: NotifierRequest[] = [];
 const resolveNotificationAvatarPath = mock(() => "/tmp/avatar.png");
 
-mock.module("@vellumai/electron-desktop/notification-avatar-path", () => ({
+mock.module("@anu/electron-desktop/notification-avatar-path", () => ({
   resolveNotificationAvatarPath,
 }));
 
-mock.module("@vellumai/electron-desktop/notifications", () => ({
+mock.module("@anu/electron-desktop/notifications", () => ({
   isPreparedNotificationSenderCurrent: (identity: { scopeId: string }) =>
     preparedSenderCurrent && /^scope:v1:[a-f0-9]{64}$/.test(identity.scopeId),
 }));
@@ -303,7 +303,7 @@ describe("notification permission requests", () => {
     expect(item.status).toBe("granted");
     expect(nativePosts).toHaveLength(1);
     expect(nativePosts[0]).toMatchObject({
-      title: "Vellum",
+      title: "ANU",
       body: "Notifications are enabled.",
     });
     expect(nativePosts[0]!.sender).toBeUndefined();
@@ -345,7 +345,7 @@ describe("notification permission requests", () => {
 
     expect(nativePosts).toHaveLength(1);
     expect(nativePosts[0]).toMatchObject({
-      title: "Vellum",
+      title: "ANU",
       body: "Notifications are enabled.",
     });
     expect(nativePosts[0]!.sender).toBeUndefined();
@@ -381,7 +381,7 @@ describe("notification permission requests", () => {
 
     expect(nativePosts).toHaveLength(1);
     expect(nativePosts[0]).toMatchObject({
-      title: "Vellum",
+      title: "ANU",
       body: "Notifications are enabled.",
     });
     expect(nativePosts[0]!.sender).toBeUndefined();
@@ -416,7 +416,7 @@ describe("notification permission requests", () => {
     expect(item.status).toBe("granted");
     expect(electronNotificationsConstructed).toBe(1);
     expect(electronNotificationOptions).toEqual({
-      title: "Vellum",
+      title: "ANU",
       body: "Notifications are enabled.",
       silent: false,
     });

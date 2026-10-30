@@ -14,7 +14,7 @@
 
 import type { ReactNode } from "react";
 
-import { Typography } from "@vellumai/design-library";
+import { Typography } from "@anu/design-library";
 
 export function SidebarSectionEmptyState({
   title,

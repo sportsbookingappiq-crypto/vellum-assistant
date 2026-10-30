@@ -55,10 +55,10 @@ if (!signingConfigured && (requireSigning || signingValues.values().any { !it.is
 }
 
 android {
-    namespace = "ai.vellum.assistant"
+    namespace = "ai.anu.assistant"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "ai.vellum.assistant"
+        applicationId "ai.anu.assistant"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode versionCodeInput.toInteger()

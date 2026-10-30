@@ -36,6 +36,7 @@
 import enAccount from "@/i18n/locales/en/account.json";
 import enActivation from "@/i18n/locales/en/activation.json";
 import enActivationTasks from "@/i18n/locales/en/activation-tasks.json";
+import enAnu from "@/i18n/locales/en/anu.json";
 import enAssistantInbox from "@/i18n/locales/en/assistant-inbox.json";
 import enChannels from "@/i18n/locales/en/channels.json";
 import enContacts from "@/i18n/locales/en/contacts.json";
@@ -91,6 +92,7 @@ export const FALLBACK_CATALOGS: LocaleCatalogs = {
   activation: enActivation,
   "activation-tasks": enActivationTasks,
   "assistant-inbox": enAssistantInbox,
+  anu: enAnu,
 };
 
 /** Loaders for the locales that are not bundled into the entry chunk. */
@@ -119,6 +121,7 @@ const CATALOG_LOADERS: Record<
     activation: () => import("@/i18n/locales/es/activation.json"),
     "activation-tasks": () => import("@/i18n/locales/es/activation-tasks.json"),
     "assistant-inbox": () => import("@/i18n/locales/es/assistant-inbox.json"),
+    anu: () => import("@/i18n/locales/es/anu.json"),
   },
   ru: {
     common: () => import("@/i18n/locales/ru/common.json"),
@@ -141,6 +144,7 @@ const CATALOG_LOADERS: Record<
     activation: () => import("@/i18n/locales/ru/activation.json"),
     "activation-tasks": () => import("@/i18n/locales/ru/activation-tasks.json"),
     "assistant-inbox": () => import("@/i18n/locales/ru/assistant-inbox.json"),
+    anu: () => import("@/i18n/locales/ru/anu.json"),
   },
   zh: {
     common: () => import("@/i18n/locales/zh/common.json"),
@@ -163,6 +167,7 @@ const CATALOG_LOADERS: Record<
     activation: () => import("@/i18n/locales/zh/activation.json"),
     "activation-tasks": () => import("@/i18n/locales/zh/activation-tasks.json"),
     "assistant-inbox": () => import("@/i18n/locales/zh/assistant-inbox.json"),
+    anu: () => import("@/i18n/locales/zh/anu.json"),
   },
   "zh-TW": {
     common: () => import("@/i18n/locales/zh-TW/common.json"),
@@ -187,7 +192,32 @@ const CATALOG_LOADERS: Record<
       import("@/i18n/locales/zh-TW/activation-tasks.json"),
     "assistant-inbox": () =>
       import("@/i18n/locales/zh-TW/assistant-inbox.json"),
+    anu: () => import("@/i18n/locales/zh-TW/anu.json"),
   },
+  ar: {
+    common: () => import("@/i18n/locales/ar/common.json"),
+    chat: () => import("@/i18n/locales/ar/chat.json"),
+    schedules: () => import("@/i18n/locales/ar/schedules.json"),
+    account: () => import("@/i18n/locales/ar/account.json"),
+    channels: () => import("@/i18n/locales/ar/channels.json"),
+    settings: () => import("@/i18n/locales/ar/settings.json"),
+    workspace: () => import("@/i18n/locales/ar/workspace.json"),
+    terminal: () => import("@/i18n/locales/ar/terminal.json"),
+    "remote-web": () => import("@/i18n/locales/ar/remote-web.json"),
+    "credential-requests": () =>
+      import("@/i18n/locales/ar/credential-requests.json"),
+    logs: () => import("@/i18n/locales/ar/logs.json"),
+    library: () => import("@/i18n/locales/ar/library.json"),
+    home: () => import("@/i18n/locales/ar/home.json"),
+    contacts: () => import("@/i18n/locales/ar/contacts.json"),
+    onboarding: () => import("@/i18n/locales/ar/onboarding.json"),
+    intelligence: () => import("@/i18n/locales/ar/intelligence.json"),
+    activation: () => import("@/i18n/locales/ar/activation.json"),
+    "activation-tasks": () => import("@/i18n/locales/ar/activation-tasks.json"),
+    "assistant-inbox": () => import("@/i18n/locales/ar/assistant-inbox.json"),
+    anu: () => import("@/i18n/locales/ar/anu.json"),
+  },
+
 };
 
 /**

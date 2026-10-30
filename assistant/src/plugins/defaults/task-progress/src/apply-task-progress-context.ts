@@ -1,7 +1,7 @@
 import {
   type ContentBlock,
   type Message,
-} from "@vellumai/plugin-api";
+} from "@anu/plugin-api";
 
 import {
   type ConversationSurfaceSnapshot,

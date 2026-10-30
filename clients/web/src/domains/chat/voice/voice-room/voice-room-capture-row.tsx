@@ -31,7 +31,7 @@
 
 import { X } from "lucide-react";
 
-import { cn } from "@vellumai/design-library";
+import { cn } from "@anu/design-library";
 
 import { cameraModeStyle } from "./camera-mode-paint";
 import type { VoiceRoomPhoto } from "./use-voice-room-camera";

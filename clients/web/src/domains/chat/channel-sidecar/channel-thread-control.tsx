@@ -12,7 +12,7 @@
  * renders a sensible control rather than nothing.
  */
 
-import { Button } from "@vellumai/design-library";
+import { Button } from "@anu/design-library";
 import { PanelRight } from "lucide-react";
 
 import type { ChannelSidecarTarget } from "@/domains/chat/channel-sidecar/channel-sidecar-transcript";

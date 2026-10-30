@@ -2,8 +2,8 @@ import { useMemo, useState } from "react";
 
 import { SettingsDivider } from "@/domains/settings/components/settings-divider";
 import { useTranslation } from "@/i18n";
-import { cn } from "@vellumai/design-library";
-import { Combobox } from "@vellumai/design-library/components/combobox";
+import { cn } from "@anu/design-library";
+import { Combobox } from "@anu/design-library/components/combobox";
 
 interface TimezoneEntry {
   identifier: string;

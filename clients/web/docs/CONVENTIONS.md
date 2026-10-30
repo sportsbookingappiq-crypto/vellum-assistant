@@ -1,6 +1,6 @@
 # Web App — Frontend Conventions
 
-Architectural decisions, patterns, and rationale for the Vellum web app.
+Architectural decisions, patterns, and rationale for the ANU web app.
 Covers code organization, state management, component design, and
 framework strategy. For coding style, naming, and import rules see
 [`STYLE_GUIDE.md`](./STYLE_GUIDE.md).
@@ -942,7 +942,7 @@ second copy of React and white-screens the app. See
 [`clients/web/AGENTS.md`](../AGENTS.md) for the full constraint.
 
 ```ts
-import { Button, Typography } from "@vellumai/design-library";
+import { Button, Typography } from "@anu/design-library";
 ```
 
 Design system components accept props and render UI. They must not
@@ -974,7 +974,7 @@ usage).
 
 ```ts
 // Domain wrapper — lives in domains/chat/components/chat-markdown-message.tsx
-import { MarkdownMessage } from "@vellumai/design-library";
+import { MarkdownMessage } from "@anu/design-library";
 
 // OAuthAwareLink defined in the same file (or extracted to a lib file)
 export function ChatMarkdownMessage(props: ChatMarkdownMessageProps) {
@@ -1026,10 +1026,10 @@ automatically via [npm lifecycle hooks](https://docs.npmjs.com/cli/v10/using-npm
   prefer `bun run typecheck`.
 
 No manual codegen step is needed — `bun install` + `bun run dev` triggers
-these hooks automatically. Vellum maintainers using the internal `vel`
+these hooks automatically. ANU maintainers using the internal `vel`
 CLI also get codegen via `vel up --vite`.
 
-**Vellum maintainers** updating the specs after backend API changes:
+**ANU maintainers** updating the specs after backend API changes:
 
 ```bash
 ./scripts/sync-openapi-specs.sh   # copies from sibling platform checkout
@@ -1130,7 +1130,7 @@ from the wire the moment the schema changes.
 
 `src/generated/` covers what the HTTP routes carry. A wire shape no route
 declares, such as a conversation stream event and the shapes nested in it,
-comes from `@vellumai/assistant-api` instead: the zod schemas in
+comes from `@anu/assistant-api` instead: the zod schemas in
 `assistant/src/api`, served to the web as source (see `AGENTS.md`). The two
 share one origin, since a route whose `responseBody` embeds one of those
 schemas reaches `src/generated/` through the OpenAPI spec. Import the value
@@ -1141,7 +1141,7 @@ client: add or correct the route's `responseBody` (the daemon routes in
 `assistant/src/runtime/routes/*` declare zod `responseBody` schemas that
 drive the OpenAPI spec) and regenerate — do **not** paper over it with a
 hand-rolled type. A missing response-body schema is the usual reason a
-type isn't generated. For a shape from `@vellumai/assistant-api`, the fix
+type isn't generated. For a shape from `@anu/assistant-api`, the fix
 is its schema in `assistant/src/api`.
 
 ```ts
@@ -1244,7 +1244,7 @@ wrapping the SPA.
 
 ## Platform gating
 
-"Platform" here means the Vellum platform (hosting and auth), not the device
+"Platform" here means the ANU platform (hosting and auth), not the device
 platform. For surfaces that differ across desktop, iOS, and Android, see
 [`PLATFORM_ADAPTATION.md`](./PLATFORM_ADAPTATION.md).
 
@@ -1253,8 +1253,8 @@ which UI surfaces are available:
 
 | Signal | Where | What it means |
 |--------|-------|---------------|
-| `isLocalClient()` | `src/lib/local-mode.ts` | `true` when `VITE_PLATFORM_MODE` is unset — the app is running against a local/self-hosted daemon, not the Vellum platform |
-| `hasPlatformSession` | `src/stores/auth-store.ts` | `true` when the user has a valid session with the Vellum platform (set asynchronously after probing the allauth session endpoint) |
+| `isLocalClient()` | `src/lib/local-mode.ts` | `true` when `VITE_PLATFORM_MODE` is unset — the app is running against a local/self-hosted daemon, not the ANU platform |
+| `hasPlatformSession` | `src/stores/auth-store.ts` | `true` when the user has a valid session with the ANU platform (set asynchronously after probing the allauth session endpoint) |
 | `isPlatformDisabled()` | `src/lib/local-mode.ts` | Env var / config setting (`VITE_VELLUM_DISABLE_PLATFORM` or `__VELLUM_CONFIG__.disablePlatform`). When `true` in local mode, the API interceptor no-ops all platform client requests |
 
 ### The five user states
@@ -1276,7 +1276,7 @@ returns one of three states:
 | `"disabled"` | Show the UI but disable it (prompt re-login) | `hasPlatformSession` is `false`, platform features still enabled |
 | `"gated"` | Hide the UI entirely | Local mode AND `VITE_VELLUM_DISABLE_PLATFORM` is set |
 
-Use this hook for any UI surface that depends on the Vellum platform
+Use this hook for any UI surface that depends on the ANU platform
 API. The three actions map to concrete UI patterns:
 
 - **Full** — render normally.

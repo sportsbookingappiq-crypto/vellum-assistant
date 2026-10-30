@@ -7,8 +7,9 @@
  * command-by-command, tracking the current point, so single-coordinate commands
  * — `H`/`V` (horizontal/vertical lineto) — update one axis while every other
  * command extends the box by full (x, y) pairs. Pairing every number as (x, y)
- * without tracking commands would desync on the lone `H`/`V` value; the `grumpy`
- * eye style is the only one that uses `H`, so correct handling matters for it.
+ * without tracking commands would desync on the lone `H`/`V` value. The
+ * bundled eye styles are absolute `M`/`L`/`C`/`Z` only, but art from elsewhere
+ * (an older catalog served by a daemon this client predates) may use them.
  */
 
 export type BBox = { x: number; y: number; w: number; h: number };

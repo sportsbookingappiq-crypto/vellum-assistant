@@ -34,7 +34,7 @@ import { useIsNativePlatform } from "@/runtime/native-auth";
 import { useVellumCommands } from "@/runtime/vellum-commands";
 import { getVoiceInputMediaStream } from "@/utils/voice-input-device";
 import { isHoldDictation } from "@/utils/voice-key";
-import { Button, cn } from "@vellumai/design-library";
+import { Button, cn } from "@anu/design-library";
 
 const RECORDING_GLYPH_CLASS = "[&_svg]:size-5 touch-mobile:[&_svg]:size-5";
 
@@ -603,7 +603,7 @@ export const VoiceInputButton = forwardRef<
     };
   }, [recording, cancelRecording]);
 
-  // The DOM listener above only sees Escape while a Vellum window has
+  // The DOM listener above only sees Escape while an ANU window has
   // focus. During system-wide push-to-talk dictation into another app the
   // Electron escape monitor owns Escape and relays it as a command; the
   // same recorder-ownership guard applies.

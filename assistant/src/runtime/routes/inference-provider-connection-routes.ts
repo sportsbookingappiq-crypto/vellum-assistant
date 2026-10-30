@@ -145,7 +145,7 @@ async function parseCustomProviderFields(
 
       // SSRF protection: reject private IPs, localhost, cloud metadata
       // endpoints — but only for platform-hosted daemons where the container
-      // runs on Vellum infrastructure. Self-hosted daemons run on the user's
+      // runs on ANU infrastructure. Self-hosted daemons run on the user's
       // own machine, so localhost/private addresses are the expected target
       // (e.g. LM Studio, vLLM, text-generation-webui).
       if (getIsPlatform()) {
@@ -227,7 +227,7 @@ function assertAuthMatchesProvider(provider: string, auth: Auth): void {
   if (managedAuth !== managedProvider) {
     throw new BadRequestError(
       managedAuth
-        ? `Auth type "platform" is only valid for provider "${VELLUM_MANAGED_PROVIDER}", not "${provider}". Vellum-managed routing is selected by the provider, so omit "auth" to derive it.`
+        ? `Auth type "platform" is only valid for provider "${VELLUM_MANAGED_PROVIDER}", not "${provider}". ANU-managed routing is selected by the provider, so omit "auth" to derive it.`
         : `Provider "${VELLUM_MANAGED_PROVIDER}" is always platform-authenticated; "${auth.type}" auth is not valid for it. Omit "auth" to derive it, or name a real provider for key-based auth.`,
     );
   }
@@ -351,7 +351,7 @@ async function handleCreateConnection({ body = {} }: RouteHandlerArgs) {
   // BYOK row that managed routing then ignores. Refuse the name up front.
   if (MANAGED_CONNECTION_NAMES.has(name)) {
     throw new BadRequestError(
-      `Connection name "${name}" is reserved for the Vellum-managed connection. Pick another name.`,
+      `Connection name "${name}" is reserved for the ANU-managed connection. Pick another name.`,
     );
   }
   // Provider ids and routing identities are labels in profile config, so an
@@ -614,7 +614,7 @@ async function handleDeleteConnection({ pathParams = {} }: RouteHandlerArgs) {
     MANAGED_CONNECTION_NAMES.has(name) && !isVellumManagedConnection(existing);
   if (MANAGED_CONNECTION_NAMES.has(name) && !claimsManagedName) {
     throw new BadRequestError(
-      `Cannot delete managed connection "${name}". This is a Vellum-managed connection that is re-seeded on every startup.`,
+      `Cannot delete managed connection "${name}". This is an ANU-managed connection that is re-seeded on every startup.`,
     );
   }
 
@@ -806,7 +806,7 @@ export const ROUTES: RouteDefinition[] = [
     },
     summary: "Update a provider connection",
     description:
-      "Update an existing connection. Cannot rename or change the provider. Omitting auth keeps the stored auth; passing credential alone rotates the key via provider-derived api_key auth. An explicit auth object must agree with the connection's provider; platform auth belongs to vellum and only to vellum. For the Vellum-managed connection (vellum) the auth is locked to platform; label remains editable.",
+      "Update an existing connection. Cannot rename or change the provider. Omitting auth keeps the stored auth; passing credential alone rotates the key via provider-derived api_key auth. An explicit auth object must agree with the connection's provider; platform auth belongs to vellum and only to vellum. For the ANU-managed connection (vellum) the auth is locked to platform; label remains editable.",
     tags: ["inference"],
     pathParams: [{ name: "name", description: "Connection name" }],
     requestBody: z.object({
@@ -836,14 +836,14 @@ export const ROUTES: RouteDefinition[] = [
     },
     summary: "Delete a provider connection",
     description:
-      "Delete a provider connection. Fails with 400 for the Vellum-managed connection (vellum) which is re-seeded on boot. Fails with 409 if any profile or call-site references the connection.",
+      "Delete a provider connection. Fails with 400 for the ANU-managed connection (vellum) which is re-seeded on boot. Fails with 409 if any profile or call-site references the connection.",
     tags: ["inference"],
     pathParams: [{ name: "name", description: "Connection name" }],
     responseBody: z.object({ ok: z.literal(true) }),
     additionalResponses: {
       "400": {
         description:
-          "Connection is a Vellum-managed connection and cannot be deleted",
+          "Connection is an ANU-managed connection and cannot be deleted",
       },
       "404": { description: "Connection not found" },
       "409": {

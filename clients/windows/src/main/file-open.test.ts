@@ -1,7 +1,7 @@
 import { expect, mock, test } from "bun:test";
 import path from "node:path";
 
-import { FILE_OPEN_DRAIN, FILE_OPEN_EVENT } from "@vellumai/ipc-contract";
+import { FILE_OPEN_DRAIN, FILE_OPEN_EVENT } from "@anu/ipc-contract";
 
 type Listener = (...args: unknown[]) => unknown;
 
@@ -61,7 +61,7 @@ const makeEvent = () => {
 test("delivers canonical first-instance and second-instance file paths once", () => {
   const originalArgv = process.argv;
   const firstPath = "exports/例.vellum";
-  process.argv = ["Vellum.exe", firstPath, firstPath, "notes.txt"];
+  process.argv = ["ANU.exe", firstPath, firstPath, "notes.txt"];
   try {
     fileOpenModule.install({} as never);
   } finally {
@@ -80,7 +80,7 @@ test("delivers canonical first-instance and second-instance file paths once", ()
   for (const listener of appListeners.get("second-instance") ?? []) {
     listener(
       {},
-      ["Vellum.exe", secondRelativePath, secondRelativePath, "archive.vellum.bak"],
+      ["ANU.exe", secondRelativePath, secondRelativePath, "archive.vellum.bak"],
       secondWorkingDirectory,
     );
   }

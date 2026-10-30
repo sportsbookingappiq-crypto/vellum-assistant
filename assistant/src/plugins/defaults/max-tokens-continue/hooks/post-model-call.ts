@@ -42,7 +42,7 @@ import {
   INTERNAL_NUDGE_OUTPUT_SUPPRESSION,
   isMaxTokensStopReason,
   type PostModelCallContext,
-} from "@vellumai/plugin-api";
+} from "@anu/plugin-api";
 
 import {
   consumeMaxTokensContinueBudget,

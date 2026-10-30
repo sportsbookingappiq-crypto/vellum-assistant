@@ -1,7 +1,7 @@
 ---
 name: computer-use
 description: Control a connected desktop
-compatibility: "Designed for Vellum personal assistants"
+compatibility: "Designed for ANU personal assistants"
 metadata:
   emoji: "🖥️"
   vellum:

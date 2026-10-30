@@ -134,7 +134,7 @@ describe("parity with meta/llm-provider-catalog.json", () => {
   const pickerProviderIds = webProviderIds;
 
   test("vellum picker is the union of served catalogs, including GPU models", () => {
-    // MODELS_BY_PROVIDER.vellum lists only Vellum-hosted GPU models. The
+    // MODELS_BY_PROVIDER.vellum lists only ANU-hosted GPU models. The
     // picker still exposes the union of every served catalog through
     // getModelsForProvider("vellum").
     expect(MODELS_BY_PROVIDER.vellum.map((model) => model.id)).toEqual([

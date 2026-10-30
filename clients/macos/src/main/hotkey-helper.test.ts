@@ -286,27 +286,27 @@ describe("getMacHelperPath", () => {
   });
 
   test("resolves the per-environment executable name from CFBundleExecutable", () => {
-    helperExecutableName = "Vellum Helper Dev";
+    helperExecutableName = "ANU Helper Dev";
     expect(getMacHelperPath()).toBe(
-      "/repo/clients/macos/resources/vellum-mac-helper.app/Contents/MacOS/Vellum Helper Dev",
+      "/repo/clients/macos/resources/vellum-mac-helper.app/Contents/MacOS/ANU Helper Dev",
     );
   });
 
   test("resolves the per-environment bundle folder name from the sidecar", () => {
-    helperBundleName = "Vellum Helper Dev";
+    helperBundleName = "ANU Helper Dev";
     expect(getMacHelperAppPath()).toBe(
-      "/repo/clients/macos/resources/Vellum Helper Dev.app",
+      "/repo/clients/macos/resources/ANU Helper Dev.app",
     );
     expect(getMacHelperPath()).toBe(
-      "/repo/clients/macos/resources/Vellum Helper Dev.app/Contents/MacOS/vellum-mac-helper",
+      "/repo/clients/macos/resources/ANU Helper Dev.app/Contents/MacOS/vellum-mac-helper",
     );
   });
 
   test("resolves the packaged bundle folder name from the sidecar", () => {
     appState.isPackaged = true;
-    helperBundleName = "Vellum Helper Staging";
+    helperBundleName = "ANU Helper Staging";
     expect(getMacHelperAppPath()).toBe(
-      "/mock/resources/bin/Vellum Helper Staging.app",
+      "/mock/resources/bin/ANU Helper Staging.app",
     );
   });
 });

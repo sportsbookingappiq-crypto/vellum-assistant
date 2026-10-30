@@ -116,7 +116,7 @@ describe("TunnelStatusRow", () => {
     });
 
     expect(screen.getByText(/Start this assistant's tunnel again/)).toBeDefined();
-    expect(screen.getByText("vellum tunnel --provider tailscale")).toBeDefined();
+    expect(screen.getByText("anu tunnel --provider tailscale")).toBeDefined();
   });
 
   test("reports an address that answers without serving the pairing app", () => {
@@ -135,7 +135,7 @@ describe("TunnelStatusRow", () => {
     ).toBeDefined();
     expect(screen.getByText("HTTP 404")).toBeDefined();
     expect(screen.getByText(/Start this assistant's tunnel again/)).toBeDefined();
-    expect(screen.getByText("vellum tunnel --provider tailscale")).toBeDefined();
+    expect(screen.getByText("anu tunnel --provider tailscale")).toBeDefined();
     expect(screen.getByText(PUBLIC_URL)).toBeDefined();
   });
 
@@ -147,7 +147,7 @@ describe("TunnelStatusRow", () => {
       provider: "ngrok",
     });
 
-    expect(screen.getByText("vellum tunnel --provider ngrok")).toBeDefined();
+    expect(screen.getByText("anu tunnel --provider ngrok")).toBeDefined();
   });
 
   test("names the assistant a foreign edge is serving", () => {
@@ -192,7 +192,7 @@ describe("TunnelStatusRow", () => {
       ),
     ).toBeDefined();
     expect(
-      screen.getByText("vellum tunnel --provider cloudflare"),
+      screen.getByText("anu tunnel --provider cloudflare"),
     ).toBeDefined();
     expect(screen.getByText(PUBLIC_URL)).toBeDefined();
   });
@@ -206,7 +206,7 @@ describe("TunnelStatusRow", () => {
     );
 
     expect(
-      screen.getByText("vellum tunnel jarvis --provider tailscale"),
+      screen.getByText("anu tunnel jarvis --provider tailscale"),
     ).toBeDefined();
   });
 
@@ -217,7 +217,7 @@ describe("TunnelStatusRow", () => {
     );
 
     expect(
-      screen.getByText("vellum tunnel 'My Assistant' --provider tailscale"),
+      screen.getByText("anu tunnel 'My Assistant' --provider tailscale"),
     ).toBeDefined();
   });
 
@@ -233,7 +233,7 @@ describe("TunnelStatusRow", () => {
       ),
     ).toBeDefined();
     // No provider to name, so no restart command and no address.
-    expect(screen.queryByText(/vellum tunnel/)).toBeNull();
+    expect(screen.queryByText(/anu tunnel/)).toBeNull();
     expect(screen.queryByText(PUBLIC_URL)).toBeNull();
     expect(refreshButton().disabled).toBe(false);
   });
@@ -269,43 +269,43 @@ describe("TunnelStatusRow", () => {
 describe("tunnelStartCommand", () => {
   test("leaves a plain name unquoted", () => {
     expect(tunnelStartCommand("tailscale", "jarvis-2.0_beta")).toBe(
-      "vellum tunnel jarvis-2.0_beta --provider tailscale",
+      "anu tunnel jarvis-2.0_beta --provider tailscale",
     );
   });
 
   test("neutralizes a command separator", () => {
     expect(tunnelStartCommand("tailscale", "Bob&Alice")).toBe(
-      "vellum tunnel 'Bob&Alice' --provider tailscale",
+      "anu tunnel 'Bob&Alice' --provider tailscale",
     );
   });
 
   test("neutralizes variable expansion", () => {
     expect(tunnelStartCommand("tailscale", "My $team")).toBe(
-      "vellum tunnel 'My $team' --provider tailscale",
+      "anu tunnel 'My $team' --provider tailscale",
     );
   });
 
   test("neutralizes command substitution", () => {
     expect(tunnelStartCommand("tailscale", "a`whoami`")).toBe(
-      "vellum tunnel 'a`whoami`' --provider tailscale",
+      "anu tunnel 'a`whoami`' --provider tailscale",
     );
   });
 
   test("closes, escapes and reopens around an embedded single quote", () => {
     expect(tunnelStartCommand("tailscale", "Bob's box")).toBe(
-      "vellum tunnel 'Bob'\\''s box' --provider tailscale",
+      "anu tunnel 'Bob'\\''s box' --provider tailscale",
     );
   });
 
   test("keeps a name with whitespace one argument", () => {
     expect(tunnelStartCommand("ngrok", "My Assistant")).toBe(
-      "vellum tunnel 'My Assistant' --provider ngrok",
+      "anu tunnel 'My Assistant' --provider ngrok",
     );
   });
 
   test("omits the name when none is known", () => {
     expect(tunnelStartCommand("cloudflare", null)).toBe(
-      "vellum tunnel --provider cloudflare",
+      "anu tunnel --provider cloudflare",
     );
   });
 });

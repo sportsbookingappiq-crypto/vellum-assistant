@@ -43,7 +43,7 @@ const initialLifecycleState = useAssistantLifecycleStore.getState();
 // does NOT fire a profile-create success toast itself — that toast belongs to
 // the surrounding surface (Settings via ProfileDetailPanel, composer via its
 // own quick-add), preventing a double-fire.
-mock.module("@vellumai/design-library/components/toast", () => ({
+mock.module("@anu/design-library/components/toast", () => ({
   toast: {
     success: (message: string) => {
       toastSuccessCalls.push(message);
@@ -610,21 +610,21 @@ describe("ProfileEditorModal create mode — provider-first", () => {
     });
   });
 
-  test("the Vellum-managed connection leads, with the unconnected providers behind it", () => {
+  test("the ANU-managed connection leads, with the unconnected providers behind it", () => {
     // A platform-hosted user's only connection is the single provider-agnostic
     // `vellum` connection. It leads the list as one entry (never the managed
     // upstreams it routes to); BYOK providers follow as connect-me entries.
     renderCreate([makeConnection("vellum-managed", "vellum")]);
     fireEvent.click(providerTrigger());
-    expect(optionRows()[0]).toEqual({ label: "Vellum", meta: "Managed" });
+    expect(optionRows()[0]).toEqual({ label: "ANU", meta: "Managed" });
     expect(optionLabels()).toEqual([
-      "Vellum",
+      "ANU",
       ...UNCONNECTED_PROVIDER_LABELS,
       "+ Create new provider",
     ]);
   });
 
-  test("selecting Vellum saves the model's managed upstream bound to the vellum connection", async () => {
+  test("selecting ANU saves the model's managed upstream bound to the vellum connection", async () => {
     const saveCalls: { name: string; entry: Record<string, unknown> }[] = [];
     const onSave = (name: string, entry: unknown) => {
       saveCalls.push({ name, entry: entry as Record<string, unknown> });
@@ -632,7 +632,7 @@ describe("ProfileEditorModal create mode — provider-first", () => {
     };
     renderCreate([makeConnection("vellum-managed", "vellum")], onSave);
 
-    selectProvider("Vellum");
+    selectProvider("ANU");
     selectModel("Claude Opus 4.8");
 
     await waitFor(() => {
@@ -648,7 +648,7 @@ describe("ProfileEditorModal create mode — provider-first", () => {
     expect(saveCalls[0].entry.provider_connection).toBe("vellum-managed");
   });
 
-  test("a Vellum fireworks-hosted model derives the fireworks upstream", async () => {
+  test("an ANU fireworks-hosted model derives the fireworks upstream", async () => {
     const saveCalls: { name: string; entry: Record<string, unknown> }[] = [];
     const onSave = (name: string, entry: unknown) => {
       saveCalls.push({ name, entry: entry as Record<string, unknown> });
@@ -656,7 +656,7 @@ describe("ProfileEditorModal create mode — provider-first", () => {
     };
     renderCreate([makeConnection("vellum-managed", "vellum")], onSave);
 
-    selectProvider("Vellum");
+    selectProvider("ANU");
     selectModel("GLM 5.3");
 
     await waitFor(() => {
@@ -748,7 +748,7 @@ describe("ProfileEditorModal create mode — provider-first", () => {
       };
       renderCreate([makeConnection("vellum-managed", "vellum")], onSave);
 
-      selectProvider("Vellum");
+      selectProvider("ANU");
       selectModel("Claude Opus 4.8");
 
       await waitFor(() => {
@@ -779,7 +779,7 @@ describe("ProfileEditorModal create mode — provider-first", () => {
       };
       renderCreate([makeConnection("vellum-managed", "vellum")], onSave);
 
-      selectProvider("Vellum");
+      selectProvider("ANU");
       selectModel("Claude Opus 4.8");
 
       await waitFor(() => {
@@ -837,9 +837,9 @@ describe("ProfileEditorModal create mode — provider-first", () => {
     });
   });
 
-  test("a legacy-shape managed profile presents as Vellum in edit mode", async () => {
+  test("a legacy-shape managed profile presents as ANU in edit mode", async () => {
     // Managed profiles store their real upstream (anthropic) bound to the
-    // vellum connection; the editor must present them as "Vellum".
+    // vellum connection; the editor must present them as "ANU".
     render(
       <Wrapper>
         <ProfileEditorModal
@@ -864,12 +864,12 @@ describe("ProfileEditorModal create mode — provider-first", () => {
     );
 
     await waitFor(() => {
-      expect(optionLabel(providerTrigger())).toBe("Vellum");
+      expect(optionLabel(providerTrigger())).toBe("ANU");
     });
     expect(document.body.textContent).not.toContain("Connection (optional)");
   });
 
-  test("editing a Vellum profile with a catalog-unknown model preserves the stored upstream", async () => {
+  test("editing an ANU profile with a catalog-unknown model preserves the stored upstream", async () => {
     const saveCalls: { name: string; entry: Record<string, unknown> }[] = [];
     const onSave = (name: string, entry: unknown) => {
       saveCalls.push({ name, entry: entry as Record<string, unknown> });
@@ -911,7 +911,7 @@ describe("ProfileEditorModal create mode — provider-first", () => {
     expect(saveCalls[0].entry.provider_connection).toBe("vellum");
   });
 
-  test("a user-owned connection merely named 'vellum' does not trigger Vellum mode", async () => {
+  test("a user-owned connection merely named 'vellum' does not trigger ANU mode", async () => {
     // The daemon's seeder preserves a user row named "vellum" whose provider
     // is not the sentinel; editing a profile bound to it must keep the real
     // provider and not corrupt the binding.
@@ -949,7 +949,7 @@ describe("ProfileEditorModal create mode — provider-first", () => {
     );
 
     // The trigger renders the ENDPOINT entry (labeled by the row name) —
-    // not Vellum picker mode; the wire payload proves the distinction.
+    // not ANU picker mode; the wire payload proves the distinction.
     await waitFor(() => {
       expect(optionLabel(providerTrigger())).toBe("vellum");
     });
@@ -1042,9 +1042,9 @@ describe("ProfileEditorModal create mode — provider-first", () => {
     });
   });
 
-  test("Vellum hides the Connection sub-dropdown", () => {
+  test("ANU hides the Connection sub-dropdown", () => {
     renderCreate([makeConnection("vellum-managed", "vellum")]);
-    selectProvider("Vellum");
+    selectProvider("ANU");
     expect(document.body.textContent).not.toContain("Connection (optional)");
     expect(
       Array.from(document.querySelectorAll("label")).some((l) =>

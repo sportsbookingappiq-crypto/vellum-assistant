@@ -10,7 +10,7 @@ export interface VellumProviderOptions {
 }
 
 /**
- * OpenAI-compatible client for Vellum-hosted GPU inference.
+ * OpenAI-compatible client for ANU-hosted GPU inference.
  * Managed requests set `baseURL` to the platform `/v1/runtime-proxy/vellum`
  * path and authenticate with the assistant API key. These models have no
  * bring-your-own-key path.
@@ -23,7 +23,7 @@ export class VellumProvider extends OpenAIChatCompletionsProvider {
   ) {
     super(apiKey || "not-needed", model, {
       providerName: "vellum",
-      providerLabel: "Vellum",
+      providerLabel: "ANU",
       streamTimeoutMs: options.streamTimeoutMs,
       omitToolChoiceWhenReasoning: true,
       ...(options.baseURL ? { baseURL: options.baseURL } : {}),

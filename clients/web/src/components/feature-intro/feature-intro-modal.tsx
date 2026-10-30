@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
-import { cn } from "@vellumai/design-library/utils/cn";
-import { Modal } from "@vellumai/design-library/components/modal";
+import { cn } from "@anu/design-library/utils/cn";
+import { Modal } from "@anu/design-library/components/modal";
 
 import { useTranslation } from "@/i18n";
 

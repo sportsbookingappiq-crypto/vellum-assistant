@@ -9,7 +9,7 @@ import {
   Modal,
   toast,
   Typography,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 
 export interface VercelTokenDialogProps {
   open: boolean;

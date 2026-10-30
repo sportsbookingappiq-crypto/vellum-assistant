@@ -1149,7 +1149,7 @@ async function handleUninstallPlugin({
   const rawName = pathParams.name ?? "";
 
   // The daemon marks itself DB-ready and serves HTTP before
-  // `initializePlugins()` materializes the workspace `@vellumai/plugin-api`
+  // `initializePlugins()` materializes the workspace `@anu/plugin-api`
   // shim, so a DELETE that lands in that boot window would run a plugin's
   // `shutdown` hook before the shim exists — a hook importing the package
   // would fail to resolve and be silently skipped before the directory is
@@ -1525,7 +1525,7 @@ async function handleUpgradePlugin({
   // caller-supplied ref — a `settings.write` principal cannot redirect the
   // upgrade at an unreviewed revision.
   //
-  // Ensure the workspace `@vellumai/plugin-api` shim before the upgrade (as
+  // Ensure the workspace `@anu/plugin-api` shim before the upgrade (as
   // the uninstall route does before `uninstallPlugin`): the old version's
   // `shutdown` runs mid-upgrade at the swap boundary, and a hook that imports
   // the package must resolve even inside the daemon boot window.
@@ -1832,7 +1832,7 @@ export const ROUTES: RouteDefinition[] = [
         name: "ref",
         schema: { type: "string" },
         description:
-          "Accepted for backward compatibility. The catalog is resolved from the Vellum platform (or the bundled manifest when platform features are disabled); this ref does not select a git revision — it is echoed back and used as the cache key. Defaults to the CLI's `DEFAULT_PLUGIN_REF` (typically `main`).",
+          "Accepted for backward compatibility. The catalog is resolved from the ANU platform (or the bundled manifest when platform features are disabled); this ref does not select a git revision — it is echoed back and used as the cache key. Defaults to the CLI's `DEFAULT_PLUGIN_REF` (typically `main`).",
       },
     ],
     responseBody: pluginsSearchResponseSchema,

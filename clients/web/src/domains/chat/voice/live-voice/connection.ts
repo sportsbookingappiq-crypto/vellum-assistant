@@ -41,7 +41,7 @@
  * watch (`domains/chat/watch`), and the assistant desktop (`domains/chat/desktop`).
  */
 
-import { velayHostForPlatformHost } from "@vellumai/service-contracts/ingress";
+import { velayHostForPlatformHost } from "@anu/service-contracts/ingress";
 
 import { authLiveVoiceTokenCreate } from "@/generated/api/sdk.gen";
 import type { LiveVoiceTokenResponse } from "@/generated/api/types.gen";

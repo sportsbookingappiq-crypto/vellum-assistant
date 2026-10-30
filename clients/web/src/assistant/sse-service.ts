@@ -25,7 +25,7 @@
  */
 
 import * as Sentry from "@sentry/react";
-import type { AssistantEventEnvelope } from "@vellumai/assistant-api";
+import type { AssistantEventEnvelope } from "@anu/assistant-api";
 
 import { lifecycleService } from "@/assistant/lifecycle-service";
 import {

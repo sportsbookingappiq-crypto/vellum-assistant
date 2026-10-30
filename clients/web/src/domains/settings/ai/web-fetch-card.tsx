@@ -18,9 +18,9 @@ import {
   setLocalSetting,
 } from "@/utils/local-settings";
 import { useQueryClient } from "@tanstack/react-query";
-import { Select } from "@vellumai/design-library/components/select";
-import { Input } from "@vellumai/design-library/components/input";
-import { toast } from "@vellumai/design-library/components/toast";
+import { Select } from "@anu/design-library/components/select";
+import { Input } from "@anu/design-library/components/input";
+import { toast } from "@anu/design-library/components/toast";
 
 import { ByoServiceCard } from "@/components/byo-service-card";
 import { ResetButton, SaveButton } from "@/components/service-form-controls";

@@ -1,13 +1,13 @@
-import { WhatIsVellumContent } from "@/app/docs/_components/what-is-vellum-content";
+import { WhatIsAnuContent } from "@/app/docs/_components/what-is-anu-content";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({
-  title: "What is Vellum? - Vellum Docs",
+  title: "What is ANU? - ANU Docs",
   description:
-    "What is Vellum? A personal AI assistant with tools, memory, identity, and a private cloud workspace, different from ChatGPT or Claude.",
+    "What is ANU? A personal AI assistant with tools, memory, identity, and a private cloud workspace, different from ChatGPT or Claude.",
   path: "/docs/getting-started/what-is-vellum",
 });
 
-export default function WhatIsVellumPage() {
-  return <WhatIsVellumContent />;
+export default function WhatIsAnuPage() {
+  return <WhatIsAnuContent />;
 }

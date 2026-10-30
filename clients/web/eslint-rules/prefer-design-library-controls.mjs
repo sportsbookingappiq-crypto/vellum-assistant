@@ -1,7 +1,7 @@
 /**
  * Custom ESLint rule: prefer-design-library-controls.
  *
- * `@vellumai/design-library` has a primitive for every control a screen
+ * `@anu/design-library` has a primitive for every control a screen
  * needs: `Button` (with `iconOnly`, `loading`, `variant="link"`), `TextLink`,
  * `Chip`, `FilterChip`, `ListRow`, `PanelItem`, `OptionCard`, `Disclosure`.
  * A component audit on 2026-09-18 found the app hand-rolling them anyway:
@@ -49,7 +49,7 @@
 
 const MESSAGES = {
   rawButton:
-    "Raw <button>. Use Button from @vellumai/design-library (iconOnly for a glyph, variant=\"link\" for a link-shaped action), or a row or chip primitive. See docs/STYLE_GUIDE.md, \"Which primitive\".",
+    "Raw <button>. Use Button from @anu/design-library (iconOnly for a glyph, variant=\"link\" for a link-shaped action), or a row or chip primitive. See docs/STYLE_GUIDE.md, \"Which primitive\".",
   blankAnchor:
     "<a target=\"_blank\"> does nothing inside the iOS and Android shells. Use ExternalAnchor from @/components/external-anchor, which carries the native click handler and the rel hardening.",
   roleButton:
@@ -170,7 +170,7 @@ export const preferDesignLibraryControls = {
     type: "problem",
     docs: {
       description:
-        "Prefer @vellumai/design-library controls over raw buttons, bare external anchors, role=button, focus-visible rings and hand-rolled spinners.",
+        "Prefer @anu/design-library controls over raw buttons, bare external anchors, role=button, focus-visible rings and hand-rolled spinners.",
     },
     schema: [],
     messages: MESSAGES,

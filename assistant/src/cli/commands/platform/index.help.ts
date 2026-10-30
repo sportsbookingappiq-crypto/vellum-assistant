@@ -4,12 +4,12 @@ import type { CliCommandHelp } from "../../lib/cli-command-help.js";
 
 export const platformHelp: CliCommandHelp = {
   name: "platform",
-  description: "Manage Vellum Platform integration",
+  description: "Manage ANU Platform integration",
   options: [
     { flags: "--json", description: "Machine-readable compact JSON output" },
   ],
   helpText: `
-The platform subsystem manages the connection to Vellum Platform. Use
+The platform subsystem manages the connection to ANU Platform. Use
 'connect', 'status', and 'disconnect' to manage platform credentials.
 Any assistant using the managed LLM proxy can use these commands.
 
@@ -31,7 +31,7 @@ Examples:
     {
       name: "connect",
       description:
-        "Connect this assistant to the Vellum Platform by storing credentials",
+        "Connect this assistant to the ANU Platform by storing credentials",
       helpText: `
 Initiates a platform connection flow. Emits a signal for connected clients
 to show a platform login UI where the user can sign in and store credentials.
@@ -263,7 +263,7 @@ Examples:
     {
       name: "disconnect",
       description:
-        "Disconnect from the Vellum Platform by removing stored credentials",
+        "Disconnect from the ANU Platform by removing stored credentials",
       helpText: `
 Removes all stored platform credentials from the assistant's secure
 credential store. After disconnecting, platform-managed features (managed

@@ -1,4 +1,4 @@
-import { safeStringSlice } from "@vellumai/plugin-api";
+import { safeStringSlice } from "@anu/plugin-api";
 
 import { FRONTMATTER_REGEX, parseFrontmatterFields } from "../frontmatter.js";
 import { injectedConceptHeader } from "../substrate/injected-block-slugs.js";

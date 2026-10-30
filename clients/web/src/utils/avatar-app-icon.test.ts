@@ -237,10 +237,9 @@ describe("traitsForAppIconName", () => {
 });
 
 describe("DEFAULT_APP_ICON_TRAITS", () => {
-  // Pinned to `clients/ios/App/App/AppIcon.icon`, which draws quirky eyes on
-  // the green field. A preview of "no alternate applied" is only honest while
-  // these two agree.
-  test("names the pair the shipped default icon is drawn from", () => {
+  // The picker opens here for a user with no applied icon and no character
+  // avatar, so it has to name a pair every shell bundles an alternate for.
+  test("names the pair the picker opens on", () => {
     expect(DEFAULT_APP_ICON_TRAITS).toEqual({
       eyeStyle: "quirky",
       color: "green",

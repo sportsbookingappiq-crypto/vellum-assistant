@@ -4,7 +4,7 @@ Implementation plan for [JARVIS-1578](https://linear.app/vellum/issue/JARVIS-157
 
 Status: implementation and source review complete; automated checks pass. Live device acceptance remains pending. Updated September 22, 2026.
 
-The user confirmed that browser support covers a Vellum tab that remains open. Notifications after the tab is closed are a separate follow-up.
+The user confirmed that browser support covers an ANU tab that remains open. Notifications after the tab is closed are a separate follow-up.
 
 ## Implementation notes
 
@@ -12,7 +12,7 @@ The four phases share one development workspace and will be published as an orde
 
 Workflow-manager completion wakes are a separate remaining path. They do not carry the run identity and schedule/quiet ownership needed by this producer. Extending those wakes requires explicit provenance before enabling their alerts, so these changes cover delegated tasks and background commands without claiming all workflow completions.
 
-Background provenance reuses existing task/tool IDs and persisted trigger/result rows. If a successful result is deferred while other work remains pending, later terminal continuations can recover that unread result from the bounded machine-continuation history, including when later work fails or is cancelled. The recipient is the assistant's active Vellum guardian, matching existing reply delivery; task records do not carry a separate launch-time recipient. The resolved principal is included in the notification's existing context payload and checked before local or mobile delivery. Declared completion ownership must validate before delivery and is restricted to recipient-matched desktop/browser and mobile destinations. Recipient-owned background completions stay out of the assistant-wide Home feed and notification bell because those surfaces do not filter by recipient. Their results remain in the source conversation, with scoped desktop/browser and mobile alerts. No database or wire-format migration is introduced.
+Background provenance reuses existing task/tool IDs and persisted trigger/result rows. If a successful result is deferred while other work remains pending, later terminal continuations can recover that unread result from the bounded machine-continuation history, including when later work fails or is cancelled. The recipient is the assistant's active ANU guardian, matching existing reply delivery; task records do not carry a separate launch-time recipient. The resolved principal is included in the notification's existing context payload and checked before local or mobile delivery. Declared completion ownership must validate before delivery and is restricted to recipient-matched desktop/browser and mobile destinations. Recipient-owned background completions stay out of the assistant-wide Home feed and notification bell because those surfaces do not filter by recipient. Their results remain in the source conversation, with scoped desktop/browser and mobile alerts. No database or wire-format migration is introduced.
 
 Completion callbacks use the pipeline's existing permanent deduplication claim. The scheduler waits for active background commands, terminal callbacks for cancelled commands, and queued result continuations before selecting its final result. Failed earlier explicit sends do not count as successful result delivery, but this change does not add a durable retry queue for a completion whose transports all fail. Releasing an already processed event's claim would also duplicate its notification-bell entry, so that delivery-retry redesign is outside this change.
 
@@ -67,7 +67,7 @@ Primary files: `assistant/src/notifications/decision-engine.ts`, `adapters/macos
 
 Acceptance: qualifying replies and scheduled results can reach desktop/browser banners; unrelated silent events remain silent; local-only installations work; notification clicks open the correct assistant and conversation; no duplicate transcript preview or unauthorized recipient delivery appears.
 
-Tests: notification decision engine, Vellum adapter, broadcaster, conversation pairing, notification-intent hook, and native remote/local deduplication. Include the current tests that explicitly require platform-only reply routing and update their contract with the implementation.
+Tests: notification decision engine, ANU adapter, broadcaster, conversation pairing, notification-intent hook, and native remote/local deduplication. Include the current tests that explicitly require platform-only reply routing and update their contract with the implementation.
 
 ## Phase 2: Suppress only when the relevant conversation is attended
 

@@ -7,13 +7,13 @@
  * and multiple domains subscribe to these events.
  *
  * Every wire event is covered by `APIAssistantEvent` (the inferred union
- * from `@vellumai/assistant-api`); each new schema added there appears in
+ * from `@anu/assistant-api`); each new schema added there appears in
  * `AssistantEvent` automatically. `UnknownEvent` is the client-only
  * fallback the parser emits for any payload the canonical union doesn't
  * recognise.
  */
 
-import type { AssistantEvent as APIAssistantEvent } from "@vellumai/assistant-api";
+import type { AssistantEvent as APIAssistantEvent } from "@anu/assistant-api";
 
 // ---------------------------------------------------------------------------
 // SSE event interfaces
@@ -74,7 +74,7 @@ export const USER_FACING_INTERACTION_KINDS: ReadonlySet<string> =
 /**
  * Every event the chat SSE stream might emit. All wire events are
  * covered by `APIAssistantEvent` (the inferred union from
- * `@vellumai/assistant-api`); each new schema added there appears here
+ * `@anu/assistant-api`); each new schema added there appears here
  * automatically. `UnknownEvent` is the client-only fallback for any
  * payload the canonical union doesn't recognise.
  */

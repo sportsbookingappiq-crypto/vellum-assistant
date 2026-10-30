@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { cn } from "@vellumai/design-library";
+import { cn } from "@anu/design-library";
 
 export interface EmptyStateProps {
   /** Glyph or brand mark rendered inside the icon well. */

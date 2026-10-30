@@ -16,18 +16,18 @@ import {
 } from "@/domains/settings/utils/cron-builder";
 import { useTranslation } from "@/i18n";
 import { useEffectiveTimezone } from "@/utils/use-effective-timezone";
-import { cn } from "@vellumai/design-library";
-import { Button } from "@vellumai/design-library/components/button";
+import { cn } from "@anu/design-library";
+import { Button } from "@anu/design-library/components/button";
 import {
   Select,
   type SelectOption,
-} from "@vellumai/design-library/components/select";
-import { Input, Textarea } from "@vellumai/design-library/components/input";
-import { Modal } from "@vellumai/design-library/components/modal";
+} from "@anu/design-library/components/select";
+import { Input, Textarea } from "@anu/design-library/components/input";
+import { Modal } from "@anu/design-library/components/modal";
 import {
   SegmentControl,
   type SegmentControlItem,
-} from "@vellumai/design-library/components/segment-control";
+} from "@anu/design-library/components/segment-control";
 
 // ---------------------------------------------------------------------------
 // Static option lists for the cadence builder

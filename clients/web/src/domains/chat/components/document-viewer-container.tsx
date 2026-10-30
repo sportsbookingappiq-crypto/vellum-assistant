@@ -25,7 +25,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 
 import { LazyBoundary } from "@/components/lazy-boundary";
-import { ActionMenu, Button, toast, Typography } from "@vellumai/design-library";
+import { ActionMenu, Button, toast, Typography } from "@anu/design-library";
 import {
   Check,
   Download,

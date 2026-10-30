@@ -43,7 +43,7 @@ import {
   type PluginLogger,
   resolveMediaSourceData,
   retainedToolResultMediaKeysBeforeCap,
-} from "@vellumai/plugin-api";
+} from "@anu/plugin-api";
 
 import { persistImage } from "./image-persist.js";
 import {

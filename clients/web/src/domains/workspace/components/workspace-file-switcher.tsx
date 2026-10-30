@@ -1,6 +1,6 @@
 import { ChevronDown } from "lucide-react";
 import type { ReactNode, Ref } from "react";
-import { Button } from "@vellumai/design-library";
+import { Button } from "@anu/design-library";
 
 import { useTranslation } from "@/i18n";
 import {

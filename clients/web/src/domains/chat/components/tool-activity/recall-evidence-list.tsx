@@ -7,8 +7,8 @@
  * anything else is a readout.
  */
 
-import type { RecallEvidenceItem } from "@vellumai/assistant-api";
-import { ListRow, Typography } from "@vellumai/design-library";
+import type { RecallEvidenceItem } from "@anu/assistant-api";
+import { ListRow, Typography } from "@anu/design-library";
 
 import {
   LocalFileIcon,

@@ -7,7 +7,7 @@ import {
   Waves,
   type LucideIcon,
 } from "lucide-react";
-import { Collapsible, Typography } from "@vellumai/design-library";
+import { Collapsible, Typography } from "@anu/design-library";
 
 import { useTranslation } from "@/i18n";
 import { cn } from "@/utils/misc";

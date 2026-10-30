@@ -33,8 +33,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Check, Search } from "lucide-react";
 
-import { cn } from "@vellumai/design-library";
-import { Combobox } from "@vellumai/design-library/components/combobox";
+import { cn } from "@anu/design-library";
+import { Combobox } from "@anu/design-library/components/combobox";
 
 import { useTranslation } from "@/i18n";
 import {

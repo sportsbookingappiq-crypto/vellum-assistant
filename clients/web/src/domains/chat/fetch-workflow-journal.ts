@@ -10,7 +10,7 @@ import { captureError } from "@/lib/sentry/capture-error";
 import {
   WorkflowJournalResponseSchema,
   type WorkflowJournalResponse,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 
 import { workflowsRunsByIdJournalGet } from "@/generated/daemon/sdk.gen";
 

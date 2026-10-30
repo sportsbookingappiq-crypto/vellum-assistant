@@ -239,7 +239,7 @@ async function installDockerToolchain(): Promise<void> {
       throw new Error(
         `GitHub API returned ${resp.status}` +
           (resp.status === 403
-            ? " (rate-limited) — try again later."
+            ? " (rate-limited). Try again later."
             : `. Check your network connection.`),
       );
     }
@@ -438,7 +438,7 @@ async function ensureDockerInstalled(): Promise<void> {
       // Colima may fail if a previous VM instance is in a corrupt state.
       // Attempt to delete the stale instance and retry once.
       console.log(
-        "⚠️  Colima start failed — attempting to reset stale VM state...",
+        "⚠️  Colima start failed. Attempting to reset stale VM state...",
       );
       try {
         await exec("colima", ["stop", "--force"]).catch(() => {});
@@ -508,7 +508,7 @@ export async function retireDocker(name: string): Promise<void> {
       await stopProcess(watcherPid, "file-watcher");
     } else {
       console.log(
-        `PID ${watcherPid} is not a vellum process — skipping stale file-watcher PID.`,
+        `PID ${watcherPid} is not an ANU process. Skipping stale file-watcher PID.`,
       );
     }
   }
@@ -548,11 +548,11 @@ export async function retireDocker(name: string): Promise<void> {
   // - Use loadAllAssistantsAcrossEnvs() instead of loadAllAssistants() to
   //   avoid stopping Colima while another VELLUM_ENVIRONMENT still has a
   //   running Docker instance.
-  // - Track whether Vellum started Colima (vs. the user already had it
-  //   running for non-Vellum workloads) \u2014 e.g. via a dedicated Colima
+  // - Track whether ANU started Colima (vs. the user already had it
+  //   running for non-ANU workloads) \u2014 e.g. via a dedicated Colima
   //   profile (`colima start --profile vellum`) or a sentinel file.
   // - Only stop if both conditions are met: no cross-env Docker instances
-  //   AND Vellum owns the Colima lifecycle.
+  //   AND ANU owns the Colima lifecycle.
 
   console.log(`\u2705 Docker instance retired.`);
 }
@@ -626,7 +626,7 @@ function findRepoRoot(): string {
   }
 
   // Walk up from the compiled binary's location. When the CLI is bundled
-  // inside the macOS app (e.g. .../dist/Vellum.app/Contents/MacOS/vellum-cli),
+  // inside the macOS app (e.g. .../dist/ANU.app/Contents/MacOS/vellum-cli),
   // the binary still lives inside the repo tree, so walking up will
   // eventually reach the repo root.
   const execRoot = walkUpForRepoRoot(dirname(process.execPath));
@@ -1034,7 +1034,7 @@ function startFileWatcher(opts: {
     }
 
     const serviceNames = [...services].join(", ");
-    console.log(`\n🔄 Changes detected — rebuilding: ${serviceNames}`);
+    console.log(`\n🔄 Changes detected. Rebuilding: ${serviceNames}`);
 
     try {
       await Promise.all(
@@ -1055,7 +1055,7 @@ function startFileWatcher(opts: {
         await exec("docker", runArgs[service]());
       }
 
-      console.log("✅ Rebuild complete — watching for changes...\n");
+      console.log("✅ Rebuild complete. Watching for changes...\n");
     } catch (err) {
       console.error(
         `❌ Rebuild failed: ${err instanceof Error ? err.message : err}`,
@@ -1209,7 +1209,7 @@ export async function hatchDocker(params: HatchDockerParams): Promise<void> {
     // strategy as the gateway port: the env-default (production 7821 /
     // non-prod overrides) is the *preferred* starting point, and we walk
     // upward until we find a free port. Without this, two concurrent
-    // `vellum hatch --remote docker` on the same host collide on a fixed
+    // `anu hatch --remote docker` on the same host collide on a fixed
     // 7821 bind ("port is already allocated"). Unused when netnsContainer
     // is set — no host ports are published in that mode.
     let assistantPort: number;
@@ -1256,7 +1256,7 @@ export async function hatchDocker(params: HatchDockerParams): Promise<void> {
       fullSourceTreeAvailable = hasFullSourceTree(repoRoot);
       if (!fullSourceTreeAvailable) {
         log(
-          "⚠️  Dockerfiles found but no source tree — falling back to image pull",
+          "⚠️  Dockerfiles found but no source tree. Falling back to image pull",
         );
         repoRoot = undefined;
       }
@@ -1565,7 +1565,7 @@ export async function hatchDocker(params: HatchDockerParams): Promise<void> {
     if (!ready && !(watch && repoRoot)) {
       throw new Error(
         notReadyReason === "migrations_failed"
-          ? "Assistant database migrations failed — the container is running but DB-backed routes are unavailable; check its logs and restore a backup or retry the migration"
+          ? "Assistant database migrations failed. The container is running but DB-backed routes are unavailable; check its logs and restore a backup or retry the migration"
           : "Timed out waiting for assistant to become ready",
       );
     }
@@ -1580,12 +1580,12 @@ export async function hatchDocker(params: HatchDockerParams): Promise<void> {
       if (providerSetupAction === "defer" && provider !== null) {
         log(
           `Provider credential setup deferred in detached mode.\n` +
-            `Run \`vellum setup --provider ${provider}\` after the assistant is ready.`,
+            `Run \`anu setup --provider ${provider}\` after the assistant is ready.`,
         );
       } else if (providerSetupAction === "missing-token" && provider !== null) {
         log(
           `⚠️  Provider credential setup skipped because the guardian token was not leased.\n` +
-            `   The assistant is still hatched. Run \`vellum setup --provider ${provider}\` after fixing the connection.`,
+            `   The assistant is still hatched. Run \`anu setup --provider ${provider}\` after fixing the connection.`,
         );
       } else if (
         providerSetupAction === "configure" &&
@@ -1639,7 +1639,7 @@ export async function hatchDocker(params: HatchDockerParams): Promise<void> {
         // SIGINT (Ctrl+C): full cleanup including stopping containers.
         process.on("SIGINT", () => void cleanup());
 
-        // SIGTERM (from `vellum retire`): exit quickly — the caller
+        // SIGTERM (from `anu retire`): exit quickly — the caller
         // handles container teardown, so we only need to close the
         // file watchers and let the process terminate.
         process.on("SIGTERM", () => {
@@ -1693,16 +1693,18 @@ async function waitForGatewayAndLease(opts: {
   };
 
   if (detached) {
-    log("\n✅ Docker assistant hatched!\n");
+    log("\n✅ Docker assistant hatched.\n");
     log("Instance details:");
     log(`  Name: ${instanceName}`);
     log(`  Runtime: ${runtimeUrl}`);
     log(`  Container: ${containerName}`);
     log("");
-    log(`Stop with: vellum retire ${instanceName}`);
+    log(
+      `Stop it with: anu sleep ${instanceName} (data is kept). Delete it with: anu retire ${instanceName}`,
+    );
 
-    // Lease a guardian token even in detached mode so that `vellum ps`,
-    // `vellum exec`, and other CLI commands can authenticate to the
+    // Lease a guardian token even in detached mode so that `anu ps`,
+    // `anu exec`, and other CLI commands can authenticate to the
     // gateway. Skip the /readyz readiness poll (the caller asked to detach
     // and not block) but retry the lease itself since the gateway may need
     // a moment to accept connections after the container starts.
@@ -1734,8 +1736,8 @@ async function waitForGatewayAndLease(opts: {
     if (!guardianAccessToken) {
       log(
         `⚠️  Guardian token lease failed after ${DOCKER_READY_TIMEOUT_MS / 1000}s.\n` +
-          `   The assistant is running but CLI commands (vellum ps, vellum exec) will not authenticate.\n` +
-          `   Re-hatch or run \`vellum setup\` to recover.`,
+          `   The assistant is running but CLI commands (anu ps, anu exec) will not authenticate.\n` +
+          `   Re-hatch or run \`anu setup\` to recover.`,
       );
     }
     return { ready: true, guardianAccessToken };
@@ -1776,7 +1778,7 @@ async function waitForGatewayAndLease(opts: {
       }
       const parts = [body?.status].filter(Boolean);
       if (body?.upstream != null) parts.push(`upstream=${body.upstream}`);
-      const detail = parts.length > 0 ? ` — ${parts.join(", ")}` : "";
+      const detail = parts.length > 0 ? `: ${parts.join(", ")}` : "";
       log(`Readiness check: ${resp.status}${detail} (retrying...)`);
     } catch {
       // Connection refused / timeout — not up yet
@@ -1858,7 +1860,7 @@ async function waitForGatewayAndLease(opts: {
       `\u26a0\ufe0f  Guardian token lease: FAILED after ${(
         (Date.now() - leaseStart) /
         1000
-      ).toFixed(1)}s — ${lastLeaseError ?? "unknown error"}`,
+      ).toFixed(1)}s: ${lastLeaseError ?? "unknown error"}`,
     );
   }
 

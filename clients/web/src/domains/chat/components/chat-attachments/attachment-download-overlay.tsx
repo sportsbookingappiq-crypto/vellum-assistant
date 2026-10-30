@@ -22,9 +22,9 @@ import { useTranslation } from "@/i18n";
 
 import { Download } from "lucide-react";
 import type { MouseEvent } from "react";
-import { Button } from "@vellumai/design-library/components/button";
-import { Tooltip } from "@vellumai/design-library/components/tooltip";
-import { cn } from "@vellumai/design-library/utils/cn";
+import { Button } from "@anu/design-library/components/button";
+import { Tooltip } from "@anu/design-library/components/tooltip";
+import { cn } from "@anu/design-library/utils/cn";
 
 interface AttachmentDownloadOverlayProps {
   /** Names the control, since the icon alone does not say what it downloads. */

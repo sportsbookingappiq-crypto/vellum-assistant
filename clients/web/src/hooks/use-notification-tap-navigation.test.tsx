@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 import { act, cleanup, renderHook, waitFor } from "@testing-library/react";
 
-import type { NotificationIdentity } from "@vellumai/ipc-contract";
+import type { NotificationIdentity } from "@anu/ipc-contract";
 
 import * as switchServiceRuntime from "@/assistant/switch-service";
 import { useAssistantLifecycleStore } from "@/assistant/lifecycle-store";

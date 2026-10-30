@@ -44,7 +44,7 @@ on:
       # Both native shells embed the web layer's marketing attribution
       # allowlist; the same drift tests pin the two copies to it.
       - 'clients/web/src/domains/account/social-auth.ts'
-      - 'clients/android/app/src/main/java/ai/vellum/assistant/Attribution.java'
+      - 'clients/android/app/src/main/java/ai/anu/assistant/Attribution.java'
       - 'clients/ios/App/App/Attribution.swift'
       - '.github/workflows/pr-native-drift.yaml'
 
@@ -84,13 +84,13 @@ jobs:
 
       - name: Install dependencies
         working-directory: clients/web
-        # `@vellumai/assistant` is here for the avatar icon drift check:
+        # `@anu/assistant` is here for the avatar icon drift check:
         # rasterizing the icons needs its native `@resvg/resvg-js` binding
         # and its workspace dependencies.
         run: |
           bun install --frozen-lockfile \
-            --filter=@vellumai/web \
-            --filter=@vellumai/assistant
+            --filter=@anu/web \
+            --filter=@anu/assistant
 
       - name: Check drift guards
         working-directory: clients/ios

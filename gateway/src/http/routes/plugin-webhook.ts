@@ -33,7 +33,7 @@ import {
   meetsAdmissionFloor,
   PLUGIN_ADMISSION_DENIED_NOTICE_PATH,
   PluginAdmissionDeniedNoticeSchema,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 
 import {
   findDeclaredRoute,
@@ -69,7 +69,7 @@ import {
 import { getLogger } from "../../logger.js";
 import { readLimitedBodyBytes } from "../read-limited-body.js";
 import { verifyVellumSignature } from "../vellum-signature.js";
-import { proxyForwardToResponse } from "@vellumai/assistant-client";
+import { proxyForwardToResponse } from "@anu/assistant-client";
 
 const log = getLogger("plugin-webhook");
 
@@ -78,7 +78,7 @@ const log = getLogger("plugin-webhook");
  *
  * `vellum` routes verify against the platform's own webhook secret — the
  * same credential the email webhook uses — so a plugin that only ever hears
- * from Vellum needs no secret of its own. Everything else verifies against
+ * from ANU needs no secret of its own. Everything else verifies against
  * the plugin's, stored under its own service name.
  *
  * A route declaring `verification` names its own field instead, but only the

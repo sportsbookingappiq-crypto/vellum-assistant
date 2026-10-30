@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-import { ConfirmDialog } from "@vellumai/design-library/components/confirm-dialog";
-import { Select } from "@vellumai/design-library/components/select";
+import { ConfirmDialog } from "@anu/design-library/components/confirm-dialog";
+import { Select } from "@anu/design-library/components/select";
 
 import { useTranslation } from "@/i18n";
-import { Notice } from "@vellumai/design-library/components/notice";
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Notice } from "@anu/design-library/components/notice";
+import { Typography } from "@anu/design-library/components/typography";
 
 import {
   ADMISSION_POLICY_DEFAULT,

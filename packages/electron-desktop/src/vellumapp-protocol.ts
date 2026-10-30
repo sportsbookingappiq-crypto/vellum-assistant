@@ -15,7 +15,7 @@ import { pathToFileURL } from "node:url";
 import { net, protocol } from "electron";
 
 import { VELLUMAPP_PROTOCOL } from "./bundle-platform";
-import { resolveRelativePath } from "@vellumai/electron-utils/app-protocol";
+import { resolveRelativePath } from "@anu/electron-utils/app-protocol";
 
 const MIME_TYPES: Record<string, string> = {
   ".html": "text/html",

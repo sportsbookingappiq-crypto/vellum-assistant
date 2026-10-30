@@ -21,7 +21,7 @@ const dependencies = (
   },
   readFile: async () => "",
   getVersionInfo: () => ({
-    appName: "Vellum",
+    appName: "ANU",
     version: "1.2.3",
     commitSha: "abc1234",
     releaseChannel: "staging",
@@ -38,7 +38,7 @@ describe("collectDiagnostics", () => {
     const result = collectDiagnostics();
 
     expect(result.app).toEqual({
-      name: "Vellum",
+      name: "ANU",
       version: "1.2.3",
       commitSha: "abc1234",
       releaseChannel: "staging",
@@ -74,7 +74,7 @@ describe("collectRedactedLogs", () => {
           return [
             "session_token=private-value",
             "user@example.com",
-            "C:\\Users\\Alice\\AppData\\Local\\Vellum",
+            "C:\\Users\\Alice\\AppData\\Local\\ANU",
           ].join("\n");
         },
       }),
@@ -83,7 +83,7 @@ describe("collectRedactedLogs", () => {
 
     expect(result).toContain("session_token=[REDACTED]");
     expect(result).toContain("[REDACTED_EMAIL]");
-    expect(result).toContain("~\\AppData\\Local\\Vellum");
+    expect(result).toContain("~\\AppData\\Local\\ANU");
     expect(result).not.toContain("private-value");
   });
 });

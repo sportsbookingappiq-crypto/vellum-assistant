@@ -1,5 +1,5 @@
 /**
- * Tests for `vellum connect import <link-or-url>`: drive the host-side pairing
+ * Tests for `anu connect import <link-or-url>`: drive the host-side pairing
  * session (device-code exchange) and persist a lockfile entry + guardian token
  * under a unique local id.
  */
@@ -208,7 +208,7 @@ describe("connect import", () => {
 
     const output = logs.join("\n");
     expect(output).toContain("Imported paired assistant 'link-box'");
-    expect(output).toContain("vellum client link-box");
+    expect(output).toContain("anu client link-box");
     // No intermediate output: an approved link never shows an approval code.
     expect(output).not.toContain("Code:");
     expect(output).not.toContain("Waiting for approval");
@@ -261,7 +261,7 @@ describe("connect import", () => {
 
     const output = logs.join("\n");
     expect(output).toContain("Code: ABCD-EFGH");
-    expect(output).toContain("vellum pair --web-approve ABCD-EFGH");
+    expect(output).toContain("anu pair --web-approve ABCD-EFGH");
     expect(output).toContain("Imported paired assistant 'coded-box'");
     // No refresh credential came back, so the import is access-only.
     expect(output).toContain("access-only");
@@ -376,7 +376,7 @@ describe("connect import", () => {
     expect(fetched).toBe(false);
     const output = logs.join("\n");
     expect(output).toContain("deprecated");
-    expect(output).toContain("vellum pair");
+    expect(output).toContain("anu pair");
     expect(output).toContain("Imported paired assistant 'legacy-box'");
     expect(findAssistantByName("legacy-box")!.runtimeUrl).toBe(HOST);
     expect(loadGuardianToken("legacy-box")?.accessToken).toBe("bundle-tok");

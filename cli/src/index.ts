@@ -3,10 +3,7 @@
 import { join } from "path";
 import { readFileSync } from "node:fs";
 
-import {
-  resolveConfigDir,
-  SigningKeyContinuityError,
-} from "@vellumai/local-mode";
+import { resolveConfigDir, SigningKeyContinuityError } from "@anu/local-mode";
 
 import { emitCliError } from "./lib/cli-error.js";
 
@@ -92,68 +89,152 @@ const commands = {
 
 type CommandName = keyof typeof commands;
 
+const HELP_GROUPS = [
+  "Create and run",
+  "Talk to an assistant",
+  "Data and versions",
+  "Remote access",
+  "Platform account",
+  "Troubleshoot",
+] as const;
+
+/**
+ * Top-level help, grouped by what a person is trying to do. Typed as a
+ * `Record<CommandName, ...>` so adding a command without a help line fails
+ * the type check. Commands print in insertion order within each group.
+ */
+const COMMAND_HELP: Record<
+  CommandName,
+  readonly [group: (typeof HELP_GROUPS)[number], description: string]
+> = {
+  hatch: [
+    "Create and run",
+    "Create an assistant: local (default), Docker, or ANU platform",
+  ],
+  wake: ["Create and run", "Start a local or Docker assistant and its gateway"],
+  sleep: ["Create and run", "Stop the assistant and gateway; data is kept"],
+  ps: [
+    "Create and run",
+    "List assistants, or one assistant's processes and health",
+  ],
+  use: [
+    "Create and run",
+    "Choose the assistant other commands target by default",
+  ],
+  setup: [
+    "Create and run",
+    "Store a model provider API key on the active assistant",
+  ],
+  client: [
+    "Talk to an assistant",
+    "Chat in this terminal, or open the web client",
+  ],
+  message: ["Talk to an assistant", "Send one message and exit"],
+  events: [
+    "Talk to an assistant",
+    "Stream replies, tool calls, and confirmations live",
+  ],
+  confirm: [
+    "Talk to an assistant",
+    "Allow or deny a pending tool confirmation",
+  ],
+  voice: [
+    "Talk to an assistant",
+    "Type to an assistant and hear it answer out loud",
+  ],
+  workflows: ["Talk to an assistant", "Inspect and control workflow runs"],
+  backup: [
+    "Data and versions",
+    "Export a running assistant to a .vbundle archive",
+  ],
+  restore: [
+    "Data and versions",
+    "Restore data (and optionally a version) from a .vbundle",
+  ],
+  teleport: [
+    "Data and versions",
+    "Move an assistant between local, Docker, and platform",
+  ],
+  upgrade: ["Data and versions", "Upgrade an assistant to a newer version"],
+  rollback: ["Data and versions", "Return an assistant to a previous version"],
+  retire: ["Data and versions", "Delete an assistant and its data"],
+  recover: ["Data and versions", "Bring back a retired local assistant"],
+  tunnel: ["Remote access", "Put a local assistant behind an HTTPS tunnel"],
+  pair: [
+    "Remote access",
+    "Print a pairing link and QR code for another device [beta]",
+  ],
+  connect: [
+    "Remote access",
+    "Pair with an assistant on another machine [beta]",
+  ],
+  devices: [
+    "Remote access",
+    "List or revoke devices paired to a local assistant [beta]",
+  ],
+  unpair: [
+    "Remote access",
+    "Forget an assistant paired from another machine [beta]",
+  ],
+  terminal: [
+    "Remote access",
+    "Open a shell in a managed assistant's container",
+  ],
+  ssh: ["Remote access", "SSH into a remote assistant instance"],
+  exec: ["Remote access", "Run a command inside an assistant's container"],
+  login: ["Platform account", "Log in to the ANU platform"],
+  logout: ["Platform account", "Log out of the ANU platform"],
+  whoami: ["Platform account", "Show the logged-in platform user"],
+  env: [
+    "Platform account",
+    "Show or set the default environment (production, local, ...)",
+  ],
+  roadmap: ["Platform account", "List and edit items on the ANU roadmap"],
+  logs: ["Troubleshoot", "Show an assistant's logs"],
+  flags: ["Troubleshoot", "Show and toggle feature flags"],
+  gateway: ["Troubleshoot", "Manage gateway authentication tokens"],
+  clean: [
+    "Troubleshoot",
+    "Stop leftover ANU processes that no assistant tracks",
+  ],
+  "debug-bundle": [
+    "Troubleshoot",
+    "Send ANU staff a debug bundle of a self-hosted assistant",
+  ],
+};
+
 function printHelp(): void {
-  console.log("Usage: vellum <command> [options]");
+  const entries = Object.entries(COMMAND_HELP);
+  const width = Math.max(...entries.map(([name]) => name.length)) + 2;
+  console.log("anu: create, run, and talk to ANU assistants.");
   console.log("");
-  console.log("Commands:");
-  console.log("  backup   Export a backup of a running assistant");
-  console.log("  clean    Kill orphaned vellum processes");
-  console.log("  client   Connect to a hatched assistant");
-  console.log("  confirm  Resolve a pending tool confirmation on an assistant");
+  console.log("Usage: anu <command> [options]");
+  console.log("");
   console.log(
-    "  connect  Pair with an assistant running on another machine [beta]",
+    "With no command, anu opens the chat client for the active assistant if it",
   );
-  console.log(
-    "  devices  List or revoke devices paired to a local assistant [beta]",
-  );
-  console.log("  env      Manage the default CLI environment");
-  console.log("  events   Stream events from a running assistant");
-  console.log("  exec     Execute a command inside an assistant's container");
-  console.log("  flags    Show and toggle feature flags");
-  console.log("  gateway  Gateway management commands");
-  console.log("  hatch    Create a new assistant instance");
-  console.log("  logs     View logs from an assistant instance");
-  console.log("  login    Log in to the Vellum platform");
-  console.log("  logout   Log out of the Vellum platform");
-  console.log("  message  Send a message to a running assistant");
-  console.log(
-    "  pair     Print a pairing link and QR code for another device [beta]",
-  );
-  console.log(
-    "  ps       List assistants (or processes for a specific assistant)",
-  );
-  console.log("  recover  Restore a previously retired local assistant");
-  console.log(
-    "  restore  Restore data (and optionally version) from a .vbundle backup",
-  );
-  console.log("  retire   Delete an assistant instance");
-  console.log("  roadmap  Manage roadmap items");
-  console.log("  rollback  Roll back an assistant to a previous version");
-  console.log("  setup    Configure API keys interactively");
-  console.log("  sleep    Stop the assistant process");
-  console.log("  ssh      SSH into a remote assistant instance");
-  console.log(
-    "  debug-bundle  Send Vellum staff a debug bundle of a self-hosted assistant",
-  );
-  console.log("  teleport Transfer assistant data between environments");
-  console.log("  terminal Open a terminal into a managed assistant container");
-  console.log("  tunnel   Create a tunnel for a locally hosted assistant");
-  console.log(
-    "  unpair   Forget a paired assistant imported from another machine [beta]",
-  );
-  console.log("  upgrade  Upgrade an assistant to a newer version");
-  console.log("  use      Set the active assistant for commands");
-  console.log("  voice    Type to an assistant and hear it answer out loud");
-  console.log("  wake     Start the assistant and gateway");
-  console.log("  whoami   Show current logged-in user");
-  console.log("  workflows Inspect and control workflow runs");
+  console.log("is running, and prints this help otherwise.");
+  for (const group of HELP_GROUPS) {
+    console.log("");
+    console.log(`${group}:`);
+    for (const [name, [entryGroup, description]] of entries) {
+      if (entryGroup === group) {
+        console.log(`  ${name.padEnd(width)}${description}`);
+      }
+    }
+  }
   console.log("");
   console.log("Options:");
   console.log(
-    "  --no-color, --plain   Disable colored output (honors NO_COLOR env)",
+    "  --no-color, --plain   Turn off colored output (honors NO_COLOR)",
   );
-  console.log("  --version, -v         Show version");
+  console.log("  --version, -v         Print the CLI version");
   console.log("  --help, -h            Show this help");
+  console.log("");
+  console.log(
+    "Run 'anu <command> --help' for a command's options and examples.",
+  );
+  console.log("First time? Run 'anu hatch', then 'anu client'.");
 }
 
 /**
@@ -171,7 +252,7 @@ function applyNoColorFlags(argv: string[]): void {
 
 /**
  * Load env vars from the vellum config dotenv file into `process.env` so
- * that `vellum hatch` forwards provider API keys to containers and other
+ * that `anu hatch` forwards provider API keys to containers and other
  * commands have access to them.
  *
  * Reads `$XDG_CONFIG_HOME/vellum{-env}/.env` — the same config directory
@@ -263,7 +344,7 @@ async function main() {
   process.argv = [...process.argv.slice(0, 2), ...filteredArgs];
 
   if (commandName === "--version" || commandName === "-v") {
-    console.log(`@vellumai/cli v${cliPkg.version}`);
+    console.log(`@anu/cli v${cliPkg.version}`);
     process.exit(0);
   }
 
@@ -283,7 +364,9 @@ async function main() {
   const command = commands[commandName as CommandName];
 
   if (!command) {
-    console.error(`Unknown command: ${commandName}`);
+    console.error(
+      `Unknown command '${commandName}'. Run 'anu --help' to see all commands.`,
+    );
     process.exit(1);
   }
 

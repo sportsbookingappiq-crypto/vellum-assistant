@@ -9,17 +9,17 @@
         Do not edit by hand.
     -->
     <group
-        android:pivotX="350"
-        android:pivotY="380"
-        android:scaleX="0.0904"
-        android:scaleY="0.0904"
-        android:translateX="-296"
-        android:translateY="-326">
+        android:pivotX="300"
+        android:pivotY="300"
+        android:scaleX="0.0874"
+        android:scaleY="0.0874"
+        android:translateX="-246"
+        android:translateY="-246">
         <path
             android:fillColor="#FFFFFF"
-            android:pathData="M364.85 351.133L548.822 267C548.822 267 478.078 493.069 364.85 351.133Z" />
+            android:pathData="M282.74 295.2C294.83 340.42 272.55 387.77 230 407.27C187.45 426.77 137.03 412.74 110.67 374.07C84.31 335.39 89.69 283.33 123.4 250.86L282.74 295.2Z" />
         <path
             android:fillColor="#FFFFFF"
-            android:pathData="M334.972 351.133L151 267C151 267 221.744 493.069 334.972 351.133Z" />
+            android:pathData="M317.26 295.2C305.17 340.42 327.45 387.77 370 407.27C412.55 426.77 462.97 412.74 489.33 374.07C515.69 335.39 510.31 283.33 476.6 250.86L317.26 295.2Z" />
     </group>
 </vector>

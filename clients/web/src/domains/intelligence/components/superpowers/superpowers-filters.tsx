@@ -33,7 +33,7 @@ import {
   Input,
   PanelItem,
   Popover,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 
 interface FilterOption {
   value: SuperpowerFilter;
@@ -56,7 +56,7 @@ type TranslateFilterLabel = (
 function filterLabel(value: SuperpowerFilter, t: TranslateFilterLabel): string {
   switch (value) {
     case "vellum":
-      return "Vellum";
+      return "ANU";
     case "clawhub":
       return "Clawhub";
     case "skillssh":

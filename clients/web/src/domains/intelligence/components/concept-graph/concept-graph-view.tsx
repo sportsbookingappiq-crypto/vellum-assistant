@@ -21,7 +21,7 @@ import { VIRTUAL_CENTER } from "@/domains/intelligence/components/constellation-
 import { memoryGraphOptions } from "@/domains/intelligence/memory-graph/get-memory-graph";
 import { emitMemoryEvent } from "@/domains/intelligence/memory-telemetry";
 import { useTranslation } from "@/i18n";
-import { Button } from "@vellumai/design-library";
+import { Button } from "@anu/design-library";
 
 import { buildForceLayout } from "./build-force-layout";
 import { CenteredMessage } from "./centered-message";

@@ -8,7 +8,7 @@ import {
   beforeAll,
   afterAll,
 } from "bun:test";
-import { hashInviteCode, hashInviteToken } from "@vellumai/gateway-client";
+import { hashInviteCode, hashInviteToken } from "@anu/gateway-client";
 import type { GatewayConfig } from "../config.js";
 import { initSigningKey } from "../auth/token-service.js";
 
@@ -988,7 +988,7 @@ describe("handleUpsertContact (gateway-native)", () => {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          displayName: "Vellum Bot",
+          displayName: "ANU Bot",
           contactType: "assistant",
           assistantMetadata: {
             species: "vellum",
@@ -1011,7 +1011,7 @@ describe("handleUpsertContact (gateway-native)", () => {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          displayName: "Vellum Bot",
+          displayName: "ANU Bot",
           contactType: "assistant",
           assistantMetadata: {
             species: "vellum",
@@ -1034,7 +1034,7 @@ describe("handleUpsertContact (gateway-native)", () => {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          displayName: "Vellum Bot",
+          displayName: "ANU Bot",
           contactType: "assistant",
           assistantMetadata: {
             species: "vellum",

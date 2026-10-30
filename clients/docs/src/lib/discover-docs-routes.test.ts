@@ -146,7 +146,7 @@ describe("docs sitemap", () => {
   test("excludes the key-concepts redirect stub", () => {
     expect(discoverDocsRoutes()).toContain("/docs/getting-started/key-concepts");
     expect(entries.map((entry) => entry.url)).not.toContain(
-      "https://www.vellum.ai/docs/getting-started/key-concepts",
+      "https://www.anu.ai/docs/getting-started/key-concepts",
     );
   });
 

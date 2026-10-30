@@ -22,11 +22,11 @@ function markdownUrl(route: string): string {
 
 export function buildLlmsText(pages: DocsPageMeta[]): string {
   const lines = [
-    "# Vellum Docs",
+    "# ANU Docs",
     "",
-    "> Vellum is a personal AI assistant that remembers, learns, and takes real action across your apps, files, and communication channels.",
+    "> ANU is a personal AI assistant that remembers, learns, and takes real action across your apps, files, and communication channels.",
     "",
-    "Vellum runs in Vellum Cloud by default, can run locally or on your own infrastructure, and ships as open-source software. These docs cover setup, memory, channels, skills, tools, hosting, security, and developer workflows.",
+    "ANU runs in ANU Cloud by default, can run locally or on your own infrastructure, and ships as open-source software. These docs cover setup, memory, channels, skills, tools, hosting, security, and developer workflows.",
     "",
     "Install: `curl -fsSL https://www.vellum.ai/install.sh | bash && . ~/.config/vellum/env`",
     "",

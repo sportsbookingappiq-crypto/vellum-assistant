@@ -210,7 +210,7 @@ const MODE_TRADEOFFS: Record<StatusCheckMode, string[]> = {
     "More secure than relying on Chrome's native remote debugging functionality.",
   ],
   [BROWSER_STATUS_MODE.CDP_INSPECT]: [
-    "This is the second-best approach for all things browser-use, after the native Vellum Assistant Chrome Extension.",
+    "This is the second-best approach for all things browser-use, after the native ANU Chrome Extension.",
     "It requires Chrome version 146 or greater",
     "It requires toggling on remote debugging in Chrome Settings",
     "It's prone to phishing attacks from other local processes that may try to do their own remote debugging.",
@@ -308,7 +308,7 @@ const REMEDIATION_HINTS: Record<string, string[]> = {
   "extension:transport_error": [
     CHROME_EXTENSION_INSTALL_HINT,
     DESKTOP_APP_INSTALL_HINT,
-    "Make sure Chrome is open with the Vellum extension enabled, or that the desktop app is running.",
+    "Make sure Chrome is open with the ANU extension enabled, or that the desktop app is running.",
     "In the extension popup, check that the status shows connected.",
   ],
   // cdp-inspect backend — discovery-level failures
@@ -2549,7 +2549,7 @@ function extensionConnectionActions(): string[] {
   return [
     CHROME_EXTENSION_INSTALL_HINT,
     DESKTOP_APP_INSTALL_HINT,
-    "Tell the user to make sure a browser is open with the Vellum Chrome extension on.",
+    "Tell the user to make sure a browser is open with the ANU Chrome extension on.",
   ];
 }
 

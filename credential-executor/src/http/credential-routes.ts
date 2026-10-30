@@ -19,7 +19,7 @@
 
 import { timingSafeEqual } from "node:crypto";
 
-import type { SecureKeyBackend } from "@vellumai/credential-storage";
+import type { SecureKeyBackend } from "@anu/credential-storage";
 
 // ---------------------------------------------------------------------------
 // Account key normalization

@@ -1,7 +1,7 @@
 import {
   reactionEmojiIdentity,
   type ReactionEmojiFields,
-} from "@vellumai/service-contracts/reactions";
+} from "@anu/service-contracts/reactions";
 import type { ResponseArtifact } from "@/domains/chat/transcript/response-artifacts";
 import {
   isAcpSpawnCall,

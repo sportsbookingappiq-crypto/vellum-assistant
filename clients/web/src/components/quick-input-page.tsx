@@ -8,7 +8,7 @@ import {
   type KeyboardEvent,
 } from "react";
 
-import { Button } from "@vellumai/design-library/components/button";
+import { Button } from "@anu/design-library/components/button";
 
 import { useTranslation } from "@/i18n";
 import { dismissQuickInput, submitQuickInput } from "@/runtime/quick-input";
@@ -59,7 +59,7 @@ export function QuickInputPage() {
         className="flex w-full items-center gap-3 rounded-2xl border border-[var(--border-element)] bg-[var(--surface-base)] px-4 py-3 shadow-lg"
       >
         <img
-          src={publicAsset("/vellum-logo.svg")}
+          src={publicAsset("/anu-logo.svg")}
           alt={t("quickInputPage.logoAlt")}
           width={24}
           height={24}
@@ -67,7 +67,7 @@ export function QuickInputPage() {
           draggable={false}
         />
         <img
-          src={publicAsset("/vellum-logo-white.svg")}
+          src={publicAsset("/anu-logo-white.svg")}
           alt={t("quickInputPage.logoAlt")}
           width={24}
           height={24}

@@ -413,7 +413,7 @@ export class NotificationBroadcaster {
         : undefined;
     const results: NotificationDeliveryResult[] = options?.resultsSink ?? [];
 
-    // Vellum pairing carried forward for the platform channel's deep link.
+    // ANU pairing carried forward for the platform channel's deep link.
     // A single-pass carry is safe because orderedChannels sorts vellum first.
     let vellumPairing: {
       conversationId: string;
@@ -915,7 +915,7 @@ export class NotificationBroadcaster {
    * Only for channel deliveries (`continue_existing_conversation`, the
    * strategy every external channel adapter has): pairing resolved the home
    * conversation before the send and wrote no row, so this is the one write.
-   * Vellum and platform deliveries keep their own pairing rows. Returns
+   * ANU and platform deliveries keep their own pairing rows. Returns
    * undefined when there is nothing to record (no home, no chat, no provider
    * id) and when the write fails: the post is already on the channel, so a
    * lost row is logged rather than turning the delivery into a failure.

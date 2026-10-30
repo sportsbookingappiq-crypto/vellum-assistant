@@ -6,7 +6,7 @@ Operational procedures for diagnosing and recovering from snapshot issues.
 
 ### Symptom
 
-Backup CLI commands (`vellum backup create`) and scheduled snapshot ticks repeatedly fail with one of:
+Backup CLI commands (`anu backup create`) and scheduled snapshot ticks repeatedly fail with one of:
 
 - `snapshot in progress (locked by pid <N>)`
 - `snapshot in progress (lock holder unidentified; possible partial write)`

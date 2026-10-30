@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { toast } from "@vellumai/design-library";
+import { toast } from "@anu/design-library";
 
 import {
   visibleProfilesForPicker,

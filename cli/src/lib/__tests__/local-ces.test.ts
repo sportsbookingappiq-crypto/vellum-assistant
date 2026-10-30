@@ -9,7 +9,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, beforeAll, describe, expect, mock, test } from "bun:test";
 
-import { resolveIpcEndpoint } from "@vellumai/ipc-server-utils";
+import { resolveIpcEndpoint } from "@anu/ipc-server-utils";
 
 import { resolveCesSocketPath, startCes } from "../local.js";
 
@@ -140,7 +140,7 @@ describe("startCes", () => {
   }, 15_000);
   test("uses a Windows named pipe for the local CES seam", () => {
     const resources = {
-      instanceDir: "C:\\Users\\Example\\Vellum\\assistant-123",
+      instanceDir: "C:\\Users\\Example\\ANU\\assistant-123",
     } as Parameters<typeof resolveCesSocketPath>[0];
 
     const socketPath = resolveCesSocketPath(resources, "win32");

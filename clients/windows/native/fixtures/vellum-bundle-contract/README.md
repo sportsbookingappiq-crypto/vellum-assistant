@@ -1,4 +1,4 @@
-# Vellum bundle contract fixtures
+# ANU bundle contract fixtures
 
 `valid.vellum` uses the format version 2 manifest and DEFLATE settings from
 `assistant/src/bundler/app-bundler.ts`. Other fixtures cover malformed ZIP data,

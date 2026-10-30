@@ -18,7 +18,7 @@
  * library.
  */
 
-import { Notice } from "@vellumai/design-library";
+import { Notice } from "@anu/design-library";
 
 export function ReplicaNotice() {
   return (

@@ -437,7 +437,7 @@ function resolveOverrideOrDefault(
     if (implied !== undefined) {
       tweak.provider = implied;
       // A provider-specific connection must not pin a mismatch onto the
-      // implied provider — but the provider-agnostic Vellum managed
+      // implied provider — but the provider-agnostic ANU managed
       // connection routes any managed-routable upstream and must survive,
       // or platform installs lose their only connection.
       if (

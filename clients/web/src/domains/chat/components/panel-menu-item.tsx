@@ -12,8 +12,8 @@ import { type ReactNode } from "react";
 
 import { type LucideIcon } from "lucide-react";
 
-import { PanelItem } from "@vellumai/design-library";
-import { cn } from "@vellumai/design-library/utils/cn";
+import { PanelItem } from "@anu/design-library";
+import { cn } from "@anu/design-library/utils/cn";
 
 /** 1px divider matching the in-popover separator style used across the app. */
 export function PanelMenuDivider() {

@@ -70,7 +70,7 @@ class FakeClient {
   shutdown(): void {}
 }
 let fakeClient = new FakeClient();
-mock.module("@vellumai/native-sidecar/supervisor", () => ({
+mock.module("@anu/native-sidecar/supervisor", () => ({
   NativeSidecarClient: class {
     constructor() {
       return fakeClient as never;

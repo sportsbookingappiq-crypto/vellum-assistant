@@ -2,9 +2,9 @@ import { SkillsReferenceGmailContent } from "@/app/docs/_components/skills-refer
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({
-  title: "Gmail - Vellum Docs",
+  title: "Gmail - ANU Docs",
   description:
-    "Gmail skill for Vellum — full inbox management including archive, label, draft, send, and filter capabilities.",
+    "Gmail skill for ANU — full inbox management including archive, label, draft, send, and filter capabilities.",
   path: "/docs/skills-reference/gmail",
 });
 

@@ -4,7 +4,7 @@ import {
   COMPANION_INTRO_EVENTS,
   COMPANION_INTRO_VERSION,
   type CompanionIntroReport,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import { useOnboardingStore } from "@/domains/onboarding/onboarding-store";
 

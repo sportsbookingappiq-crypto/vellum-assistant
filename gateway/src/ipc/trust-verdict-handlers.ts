@@ -12,7 +12,7 @@
 import {
   makeResolutionFailedVerdict,
   ResolveInboundTrustRequestSchema,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 
 import { resolveAdmissionPolicy } from "../risk/admission-policy-cache.js";
 import { resolveTrustVerdict } from "../risk/trust-verdict-resolver.js";

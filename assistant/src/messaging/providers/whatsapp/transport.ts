@@ -1,4 +1,4 @@
-import { ChannelDeliveryError } from "@vellumai/gateway-client/http-delivery";
+import { ChannelDeliveryError } from "@anu/gateway-client/http-delivery";
 
 import { getLogger } from "../../../util/logger.js";
 import { directDeliveryContext } from "../callback-routing.js";

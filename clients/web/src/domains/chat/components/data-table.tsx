@@ -14,7 +14,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 import { Check, Copy } from "lucide-react";
 import { useCallback, type ReactNode } from "react";
 

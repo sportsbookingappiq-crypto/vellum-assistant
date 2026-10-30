@@ -27,7 +27,7 @@ mock.module("../persistence/llm-request-log-store.js", () => ({
 }));
 
 // ── Imports (after mocks) ─────────────────────────────────────────────────────
-import { REDACTED_SENTINEL_OPEN } from "@vellumai/service-contracts/redacted-credential";
+import { REDACTED_SENTINEL_OPEN } from "@anu/service-contracts/redacted-credential";
 
 import type { ToolActivityMetadata } from "../api/events/tool-result.js";
 import type { ResolvedRevealCandidate } from "../daemon/chat-credential-redaction.js";
@@ -51,7 +51,7 @@ const webSearchActivity: ToolActivityMetadata = {
     results: [
       {
         rank: 1,
-        title: "Vellum",
+        title: "ANU",
         url: "https://vellum.ai",
         domain: "vellum.ai",
       },

@@ -103,7 +103,7 @@ paired with any conversation (`conversation-pairing.ts` skips every
 non-vellum guardian delivery), and the Slack DM cold backfill skips
 messages whose ts matches a recorded guardian delivery for the chat
 (`guardian_requests_list_deliveries_by_chat`), so a card never enters
-a Vellum transcript. The in-app homes of a request are the feed item
+an ANU transcript. The in-app homes of a request are the feed item
 and the source conversation's pinned vellum card.
 
 ## Cards are not conversation history

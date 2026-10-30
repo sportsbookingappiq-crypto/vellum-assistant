@@ -6,7 +6,7 @@
  *   2. Builds a new spec-compliant frontmatter block:
  *      - `name`: directory name (kebab-case)
  *      - `description`: kept unchanged
- *      - `compatibility`: "Designed for Vellum personal assistants"
+ *      - `compatibility`: "Designed for ANU personal assistants"
  *      - `license`: kept if present
  *      - `metadata`: JSON object with emoji + vellum sub-object
  *   3. Writes the updated SKILL.md preserving the original body content
@@ -257,7 +257,7 @@ function migrateSkill(dirName, skillDir) {
   frontmatterLines.push(`description: ${escapedDescription}`);
 
   frontmatterLines.push(
-    `compatibility: "Designed for Vellum personal assistants"`,
+    `compatibility: "Designed for ANU personal assistants"`,
   );
 
   if (license) {

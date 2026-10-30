@@ -15,7 +15,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { Button, CardRoot, Typography } from "@vellumai/design-library";
+import { Button, CardRoot, Typography } from "@anu/design-library";
 
 import { SkillIcon } from "@/components/skill-icon";
 import { skillsByIdGetOptions } from "@/generated/daemon/@tanstack/react-query.gen";

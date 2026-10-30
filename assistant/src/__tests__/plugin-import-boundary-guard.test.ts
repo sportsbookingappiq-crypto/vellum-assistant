@@ -8,20 +8,20 @@ import { Glob } from "bun";
  * Guard tests for the plugin import boundary. Each immediate subdirectory of
  * `assistant/src/plugins/defaults/` is one self-contained plugin. A plugin's
  * production code may import only:
- *   1. from `@vellumai/plugin-api` (the public plugin API surface), or
+ *   1. from `@anu/plugin-api` (the public plugin API surface), or
  *   2. from within its own plugin directory.
  *
  * Anything else is an "escaping import": a relative import resolving outside
  * the plugin's own directory (reaching into assistant host code, a sibling
  * plugin, or `plugins/types.js`), or a bare specifier other than
- * `@vellumai/plugin-api` (node:*, bun:*, or a third-party package).
+ * `@anu/plugin-api` (node:*, bun:*, or a third-party package).
  *
  * Two guards run here:
  *   - A baseline RATCHET ({@link BASELINE}) that fails when a NEW escaping
  *     import appears for a plugin (and when a baseline entry goes stale), so
  *     coupling to host internals cannot silently grow.
  *   - An ANTI-BACKSLIDE check that forbids importing, from `providers/types.js`
- *     or `config/schemas/llm.js`, any symbol that `@vellumai/plugin-api`
+ *     or `config/schemas/llm.js`, any symbol that `@anu/plugin-api`
  *     already re-exports — locking in the migration that moved those type
  *     imports onto the public API.
  *
@@ -38,7 +38,7 @@ const DEFAULTS_ABS = join(process.cwd(), DEFAULTS_REL);
 /**
  * Allowed escaping imports per plugin: plugin name → sorted list of distinct
  * specifiers it reaches for outside itself. These are host-internal couplings
- * with no `@vellumai/plugin-api` equivalent (memory/daemon/context/config
+ * with no `@anu/plugin-api` equivalent (memory/daemon/context/config
  * internals, runtime builtins, third-party packages). `providers/types.js`
  * appears only for `ToolDefinition` (a `tools/tool-types.js` type
  * distinct from plugin-api's), which the anti-backslide guard enforces.
@@ -317,7 +317,7 @@ const BASELINE: Record<string, readonly string[]> = {
 };
 
 /**
- * Symbols that `@vellumai/plugin-api` re-exports from `providers/types.js`. A
+ * Symbols that `@anu/plugin-api` re-exports from `providers/types.js`. A
  * plugin must import these from the public API, not the host module. NOT
  * listed (and therefore allowed from `providers/types.js`): `ToolDefinition`,
  * which `providers/types.js` re-exports from `tools/tool-types.js`
@@ -342,7 +342,7 @@ const PLUGIN_API_PROVIDER_TYPES: ReadonlySet<string> = new Set([
   "WebSearchToolResultContent",
 ]);
 
-/** Symbols `@vellumai/plugin-api` re-exports from `config/schemas/llm.js`. */
+/** Symbols `@anu/plugin-api` re-exports from `config/schemas/llm.js`. */
 const PLUGIN_API_LLM_TYPES: ReadonlySet<string> = new Set(["LLMCallSite"]);
 
 /** Matches `import ... from "X"`, `export ... from "X"`, `import("X")`,
@@ -410,7 +410,7 @@ function collectEscapes(files: PluginFile[]): Escape[] {
     let match: RegExpExecArray | null;
     while ((match = regex.exec(file.source)) !== null) {
       const specifier = match[1] ?? match[2] ?? match[3];
-      if (!specifier || specifier === "@vellumai/plugin-api") {
+      if (!specifier || specifier === "@anu/plugin-api") {
         continue;
       }
       if (specifier.startsWith(".")) {
@@ -560,7 +560,7 @@ describe("plugin import boundary", () => {
         "not in its baseline):",
         ...added,
         "",
-        "If @vellumai/plugin-api already exports this symbol, import it from",
+        "If @anu/plugin-api already exports this symbol, import it from",
         "there. If this is genuinely host-internal with no plugin-api",
         "equivalent, regenerate the baseline with",
         "UPDATE_PLUGIN_IMPORT_BASELINE=1 and explain the new coupling in your PR.",
@@ -581,7 +581,7 @@ describe("plugin import boundary", () => {
     expect(problems, problems.join("\n")).toEqual([]);
   });
 
-  test("plugins import plugin-api-provided types from @vellumai/plugin-api, not host modules", () => {
+  test("plugins import plugin-api-provided types from @anu/plugin-api, not host modules", () => {
     const violations: string[] = [];
     for (const file of files) {
       violations.push(
@@ -599,8 +599,8 @@ describe("plugin import boundary", () => {
     }
 
     const message = [
-      "Plugin files import symbols from host modules that @vellumai/plugin-api",
-      "already re-exports. Import them from @vellumai/plugin-api instead:",
+      "Plugin files import symbols from host modules that @anu/plugin-api",
+      "already re-exports. Import them from @anu/plugin-api instead:",
       ...violations,
       "",
       "(ToolDefinition from providers/types.js is allowed — it is a distinct",

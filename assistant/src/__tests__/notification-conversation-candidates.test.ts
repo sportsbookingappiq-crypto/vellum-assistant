@@ -88,7 +88,7 @@ describe("serializeCandidatesForPrompt", () => {
       vellum: [
         {
           conversationId: "conv-001",
-          title: "Vellum thread",
+          title: "ANU thread",
           updatedAt: 1700000000000,
           latestSourceEventName: "schedule.notify",
           channel: "vellum" as NotificationChannel,

@@ -3,10 +3,10 @@
  *
  * When the platform connection is usable and a speech service has no working
  * BYOK credential, that service's effective provider is `"vellum"` so a fresh
- * Vellum connection gets voice features with zero configuration. A service
- * whose BYOK credential is configured is never redirected — connecting Vellum
+ * ANU connection gets voice features with zero configuration. A service
+ * whose BYOK credential is configured is never redirected — connecting ANU
  * must not silently reroute an existing voice setup — and a service already on
- * Vellum is left alone.
+ * ANU is left alone.
  *
  * {@link resolveEffectiveSpeechProviders} is the single definition of that
  * rule. It writes nothing, so runtime paths that only need to know which
@@ -288,7 +288,7 @@ export async function maybeDefaultSpeechToManaged(): Promise<void> {
     invalidateConfigCache();
     log.info(
       { defaulted: updates.map(({ path }) => path) },
-      "Defaulted unconfigured speech services to the Vellum provider after connection",
+      "Defaulted unconfigured speech services to the ANU provider after connection",
     );
   } catch (err) {
     // Convenience defaulting must never break credential storage.

@@ -1,4 +1,4 @@
-import type { StreamPlan, StreamPlanStep } from "@vellumai/gateway-client";
+import type { StreamPlan, StreamPlanStep } from "@anu/gateway-client";
 
 import { coerceSurfaceDataRecord } from "../api/surfaces.js";
 

@@ -170,7 +170,7 @@ export { STT_ROLE_REQUIREMENTS, STT_ROLES, type SttRole };
  * Canonical STT service configuration.
  *
  * `provider` is the only axis: `"vellum"` transcribes through the platform,
- * billed to Vellum credits; any other provider uses the user's own API key.
+ * billed to ANU credits; any other provider uses the user's own API key.
  */
 export const SttServiceSchema = z
   .object({

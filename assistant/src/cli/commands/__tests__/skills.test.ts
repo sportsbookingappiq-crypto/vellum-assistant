@@ -576,7 +576,7 @@ describe("skills search", () => {
             {
               id: "react-tools",
               name: "React Tools",
-              description: "Vellum version",
+              description: "ANU version",
               origin: "vellum",
               kind: "catalog",
               status: "available",

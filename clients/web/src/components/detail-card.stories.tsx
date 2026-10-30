@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Button, Toggle } from "@vellumai/design-library";
+import { Button, Toggle } from "@anu/design-library";
 
 import { DetailCard } from "./detail-card";
 

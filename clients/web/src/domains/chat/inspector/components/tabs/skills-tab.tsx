@@ -1,13 +1,13 @@
 import { type ReactNode } from "react";
 
-import { Card } from "@vellumai/design-library";
+import { Card } from "@anu/design-library";
 
 import {
   aggregateSkillLoads,
   type SkillLoad,
 } from "@/domains/chat/inspector/skill-load-aggregator";
 import { Trans, useTranslation } from "@/i18n";
-import type { LLMRequestLogEntry } from "@vellumai/assistant-api";
+import type { LLMRequestLogEntry } from "@anu/assistant-api";
 
 interface SkillsTabProps {
   logs: LLMRequestLogEntry[];

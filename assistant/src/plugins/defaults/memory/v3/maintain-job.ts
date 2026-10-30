@@ -78,10 +78,7 @@
  * and `invalidateLanes` without process-global module mocks.
  */
 
-import {
-  listInstalledSkills,
-  type ResolvedSkillEntry,
-} from "@vellumai/plugin-api";
+import { listInstalledSkills, type ResolvedSkillEntry } from "@anu/plugin-api";
 
 import { isMemoryV3Live } from "../../../../config/memory-v3-gate.js";
 import type { AssistantConfig } from "../../../../config/types.js";

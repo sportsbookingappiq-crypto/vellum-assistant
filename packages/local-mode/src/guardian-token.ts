@@ -5,7 +5,7 @@ import path from "node:path";
 import {
   isDnsIndependentLoopbackUrl,
   isLoopbackPublicUrl,
-} from "@vellumai/service-contracts/remote-web-pairing";
+} from "@anu/service-contracts/remote-web-pairing";
 
 import { guardianTokenPath, resolveConfigDirPaths } from "./config";
 import type { CliInvocation } from "./util";
@@ -86,7 +86,7 @@ export function isConfidentialRefreshUrl(gatewayUrl: string): boolean {
 /**
  * Whether a URL's host is loopback, judged wide; false for unparseable URLs.
  * Delegates to the shared pairing predicate so this package's refusals and the
- * address checks in `@vellumai/service-contracts` judge a host by the same
+ * address checks in `@anu/service-contracts` judge a host by the same
  * rules. Callers refuse what this matches; a caller granting loopback a
  * privilege reads `isDnsIndependentLoopbackUrl` instead.
  */
@@ -111,7 +111,7 @@ export type TokenResult =
   | { ok: false; status: number; error: string };
 
 /**
- * Prefix of the machine-readable line `vellum gateway token refresh` writes
+ * Prefix of the machine-readable line `anu gateway token refresh` writes
  * to stderr on failure so hosts can distinguish a spent credential (401)
  * from an unreachable gateway (503) without scraping the human message.
  */
@@ -126,7 +126,7 @@ export function formatGuardianRefreshCliFailure(
 }
 
 /**
- * Read the structured status out of a failed `vellum gateway token refresh`.
+ * Read the structured status out of a failed `anu gateway token refresh`.
  * An unlabeled non-zero exit defaults to 503: this spawn only runs when the
  * on-disk refresh token is still unexpired, so a bare CLI failure is an
  * unreachable or still-starting gateway, not a spent credential.
@@ -177,9 +177,9 @@ export function parseGuardianRefreshCliFailure(
 
 export interface GuardianTokenOptions {
   /**
-   * True when the entry was imported from another machine via `vellum pair`.
+   * True when the entry was imported from another machine via `anu pair`.
    * A paired entry has no local daemon, so expired-refresh guidance points at
-   * re-pairing instead of `vellum hatch`/`vellum wake`.
+   * re-pairing instead of `anu hatch`/`anu wake`.
    */
   paired?: boolean;
   /** Gateway URL resolved for the paired proxy request. */
@@ -289,8 +289,8 @@ export function getGuardianAccessToken(
       ok: false,
       status: 401,
       error: options?.paired
-        ? "Guardian token expired. Run `vellum pair` on the assistant's machine, then re-import it from the app's connect flow or with `vellum connect import`."
-        : "Guardian token expired. Re-run `vellum hatch` or `vellum wake`.",
+        ? "Guardian token expired. Run `anu pair` on the assistant's machine, then re-import it from the app's connect flow or with `anu connect import`."
+        : "Guardian token expired. Re-run `anu hatch` or `anu wake`.",
     });
   }
 

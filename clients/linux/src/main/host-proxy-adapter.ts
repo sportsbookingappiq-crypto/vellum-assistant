@@ -5,11 +5,11 @@ import { app } from "electron";
 import {
   createHostProxyClientHeaders,
   type HostProxyRuntime,
-} from "@vellumai/electron-desktop/host-proxy/router";
-import { HostBrowserExecutor } from "@vellumai/electron-desktop/host-proxy/executors/host-browser-executor";
-import { hostFileExecutor } from "@vellumai/electron-desktop/host-proxy/executors/host-file-executor";
-import { hostTransferExecutor } from "@vellumai/electron-desktop/host-proxy/executors/host-transfer-executor";
-import { createHostUiSnapshotExecutor } from "@vellumai/electron-desktop/host-proxy/executors/host-ui-snapshot-executor";
+} from "@anu/electron-desktop/host-proxy/router";
+import { HostBrowserExecutor } from "@anu/electron-desktop/host-proxy/executors/host-browser-executor";
+import { hostFileExecutor } from "@anu/electron-desktop/host-proxy/executors/host-file-executor";
+import { hostTransferExecutor } from "@anu/electron-desktop/host-proxy/executors/host-transfer-executor";
+import { createHostUiSnapshotExecutor } from "@anu/electron-desktop/host-proxy/executors/host-ui-snapshot-executor";
 
 import { getRendererBase } from "./app-config";
 import { hostBashExecutor } from "./executors/host-bash-adapter";

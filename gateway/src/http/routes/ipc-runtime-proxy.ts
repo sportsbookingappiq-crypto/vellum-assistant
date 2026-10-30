@@ -12,10 +12,7 @@
  * IPC, and converts the result back into an HTTP Response.
  */
 
-import {
-  routeAdmitsTrustClass,
-  tokenMayReachRoute,
-} from "@vellumai/gateway-client";
+import { routeAdmitsTrustClass, tokenMayReachRoute } from "@anu/gateway-client";
 
 import { admitActorToken } from "../../auth/actor-token-revocation.js";
 import {

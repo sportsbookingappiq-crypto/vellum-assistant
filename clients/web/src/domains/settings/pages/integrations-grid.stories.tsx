@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { FilterChip } from "@vellumai/design-library/components/filter-chip";
-import { Input } from "@vellumai/design-library/components/input";
+import { FilterChip } from "@anu/design-library/components/filter-chip";
+import { Input } from "@anu/design-library/components/input";
 import { Search } from "lucide-react";
 import { useState } from "react";
 
@@ -284,7 +284,7 @@ export const EveryConnectState: Story = {
 };
 
 /**
- * Signed out of the Vellum platform. The tiles are the ones above, glyph for
+ * Signed out of the ANU platform. The tiles are the ones above, glyph for
  * glyph: the click goes to the login flow instead of to the provider, and no
  * tile spends a line saying so.
  */

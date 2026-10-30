@@ -16,7 +16,7 @@ import { captureError } from "@/lib/sentry/capture-error";
 import { type MutableRefObject, useCallback, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
-import { toast } from "@vellumai/design-library/components/toast";
+import { toast } from "@anu/design-library/components/toast";
 import { appIdForPath, routes } from "@/utils/routes";
 import { carriedAppEntryState } from "@/utils/app-navigation";
 import {

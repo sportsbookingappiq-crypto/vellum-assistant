@@ -2,10 +2,10 @@ import { useState } from "react";
 
 import { createPlatformAssistant } from "@/assistant/create-platform-assistant";
 import { useTranslation } from "@/i18n";
-import { Button } from "@vellumai/design-library/components/button";
-import { Input } from "@vellumai/design-library/components/input";
-import { Modal } from "@vellumai/design-library/components/modal";
-import { toast } from "@vellumai/design-library/components/toast";
+import { Button } from "@anu/design-library/components/button";
+import { Input } from "@anu/design-library/components/input";
+import { Modal } from "@anu/design-library/components/modal";
+import { toast } from "@anu/design-library/components/toast";
 
 interface CreateAssistantDialogProps {
   open: boolean;

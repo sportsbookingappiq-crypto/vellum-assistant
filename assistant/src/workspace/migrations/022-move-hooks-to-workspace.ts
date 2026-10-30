@@ -1,7 +1,7 @@
 /**
  * Workspace migration 022: Move hooks directory from root to workspace.
  *
- * Previously, `~/.vellum/hooks/` lived directly under the Vellum root. This
+ * Previously, `~/.vellum/hooks/` lived directly under the ANU root. This
  * migration moves existing hook directories and files into
  * `$VELLUM_WORKSPACE_DIR/hooks/` so that getWorkspaceHooksDir() resolves
  * correctly under the workspace.

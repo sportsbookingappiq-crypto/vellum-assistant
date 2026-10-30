@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { toast } from "@vellumai/design-library";
+import { toast } from "@anu/design-library";
 import { useCallback } from "react";
 
 import {

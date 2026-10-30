@@ -2,7 +2,7 @@
  * One external-channel row inside the read-only channel drawer.
  *
  * A message row carries the single action the drawer offers: staging it as a
- * reference on the Vellum composer. That control uses the shared reveal
+ * reference on the ANU composer. That control uses the shared reveal
  * treatment (`data-reveal`), which keeps it out of the way on a pointer
  * device, paints it on hover and on `:focus-visible`, and shows it outright
  * wherever the device reports `hover: none`. Keyboard and touch therefore
@@ -14,12 +14,12 @@
 
 import { Check, CornerUpLeft } from "lucide-react";
 
-import { Button, Typography } from "@vellumai/design-library";
+import { Button, Typography } from "@anu/design-library";
 import {
   quoteBlockquoteAccentClassName,
   quoteBlockquoteClassName,
   quoteBlockquoteContentClassName,
-} from "@vellumai/design-library/components/markdown-message";
+} from "@anu/design-library/components/markdown-message";
 
 import {
   channelTimestampToIso,

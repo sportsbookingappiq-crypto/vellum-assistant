@@ -8,7 +8,7 @@
 
 import { ExternalLink, Info } from "lucide-react";
 
-import { Button } from "@vellumai/design-library/components/button";
+import { Button } from "@anu/design-library/components/button";
 
 import { ExternalAnchor } from "@/components/external-anchor";
 import { useTranslation } from "@/i18n";

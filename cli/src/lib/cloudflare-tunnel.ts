@@ -157,7 +157,7 @@ export async function runCloudflareTunnel(
   const port = opts.port ?? GATEWAY_PORT;
 
   console.log(`Starting cloudflared quick tunnel to localhost:${port}...`);
-  console.log("No Cloudflare account required — quick tunnels are free.");
+  console.log("No Cloudflare account required. Quick tunnels are free.");
   console.log("");
 
   let publicUrl: string | undefined;

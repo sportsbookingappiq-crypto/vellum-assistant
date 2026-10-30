@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Card } from "@vellumai/design-library/components/card";
+import { Card } from "@anu/design-library/components/card";
 
 export type IntegrationListLayout = "row" | "tile";
 

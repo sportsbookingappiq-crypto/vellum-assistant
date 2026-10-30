@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Card, cn } from "@vellumai/design-library";
+import { Card, cn } from "@anu/design-library";
 
 export interface DetailCardProps {
   id?: string;

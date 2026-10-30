@@ -11,13 +11,13 @@ const msbuildPlatform = targetArch === "arm64" ? "ARM64" : "x64";
 
 const productName =
   env === "production"
-    ? "Vellum"
-    : `Vellum ${env.charAt(0).toUpperCase() + env.slice(1)}`;
+    ? "ANU"
+    : `ANU ${env.charAt(0).toUpperCase() + env.slice(1)}`;
 
 const appId =
   env === "production"
-    ? "com.vellum.vellum-assistant-electron"
-    : `com.vellum.vellum-assistant-electron-${env}`;
+    ? "ai.anu.assistant-electron"
+    : `ai.anu.assistant-electron-${env}`;
 
 const schemes =
   env === "production"
@@ -203,14 +203,14 @@ module.exports = {
   },
   protocols: [
     {
-      name: "Vellum Deep Links",
+      name: "ANU Deep Links",
       schemes,
     },
   ],
   fileAssociations: [
     {
       ext: "vellum",
-      name: "Vellum Bundle",
+      name: "ANU Bundle",
     },
   ],
   beforePack: buildElectronEntrypoints,

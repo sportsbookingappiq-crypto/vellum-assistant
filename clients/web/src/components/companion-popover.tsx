@@ -36,16 +36,16 @@ import type {
   CompanionPopoverAction,
   CompanionPopoverAnswer,
   CompanionPopoverView,
-} from "@vellumai/ipc-contract";
-import { COMPANION_POPOVER_SECRET_MAX } from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
+import { COMPANION_POPOVER_SECRET_MAX } from "@anu/ipc-contract";
 import {
   MarkdownMessage,
   type MarkdownImageComponent,
   type MarkdownLinkComponent,
-} from "@vellumai/design-library";
-import { Button } from "@vellumai/design-library/components/button";
-import { Input } from "@vellumai/design-library/components/input";
-import { ScrollShadow } from "@vellumai/design-library/components/scroll-shadow";
+} from "@anu/design-library";
+import { Button } from "@anu/design-library/components/button";
+import { Input } from "@anu/design-library/components/input";
+import { ScrollShadow } from "@anu/design-library/components/scroll-shadow";
 
 import {
   MicrophonePicker,

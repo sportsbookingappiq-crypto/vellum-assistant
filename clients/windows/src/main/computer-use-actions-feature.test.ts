@@ -1,7 +1,7 @@
 import { expect, mock, test } from "bun:test";
 
-import type { HostProxyPoster } from "@vellumai/electron-desktop/host-proxy/poster";
-import type { HostProxySseMessage } from "@vellumai/electron-desktop/host-proxy/sse";
+import type { HostProxyPoster } from "@anu/electron-desktop/host-proxy/poster";
+import type { HostProxySseMessage } from "@anu/electron-desktop/host-proxy/sse";
 
 // Keep electron-log's file backend out of the test process.
 mock.module("./logger", () => ({
@@ -14,7 +14,7 @@ mock.module("./logger", () => ({
 }));
 
 const { DesktopCapabilityRegistry } =
-  await import("@vellumai/electron-desktop/capability-registry");
+  await import("@anu/electron-desktop/capability-registry");
 const {
   COMPUTER_USE_ACTION_EXECUTORS,
   createWindowsHostCuExecutor,
@@ -100,7 +100,7 @@ test("a cancel received before the helper responds drops the result", async () =
   expect(postCuResult).not.toHaveBeenCalled();
 });
 
-test("excludes Vellum windows while the helper captures the screen", async () => {
+test("excludes ANU windows while the helper captures the screen", async () => {
   const states = [false, true];
   const windows = states.map((_, index) => ({
     isContentProtected: () => states[index],

@@ -10,7 +10,7 @@ import type {
   ConversationMessageToolCall,
   QuestionEntry,
   QuestionRequestEvent,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 
 /**
  * A tool call as rendered in the transcript. Extends the canonical wire

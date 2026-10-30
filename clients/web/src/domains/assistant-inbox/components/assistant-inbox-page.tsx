@@ -12,7 +12,7 @@ import {
   TabsPanel,
   TabsRoot,
   TabsTrigger,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 
 import { useTranslation } from "@/i18n";
 

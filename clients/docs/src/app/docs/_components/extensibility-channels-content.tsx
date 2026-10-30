@@ -124,7 +124,7 @@ export function ExtensibilityChannelsContent() {
             hand a vendor with{" "}
             <code>resolveWebhookUrl({"{ path: \"events\" }"})</code> from{" "}
             <Link href={PLUGIN_API_URL} className={linkClass}>
-              <code>@vellumai/plugin-api</code>
+              <code>@anu/plugin-api</code>
             </Link>
             . Do not hardcode a hostname. Do not tell a vendor to POST at{" "}
             <code>/x/plugins/...</code>.

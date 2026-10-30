@@ -1,4 +1,4 @@
-import type { DiskPressureStatus } from "@vellumai/assistant-api";
+import type { DiskPressureStatus } from "@anu/assistant-api";
 
 export type DiskPressureMonitorMode =
   "inactive" | "warning" | "acknowledgement-required" | "cleanup";

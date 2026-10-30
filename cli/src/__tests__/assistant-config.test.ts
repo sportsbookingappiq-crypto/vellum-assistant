@@ -816,7 +816,7 @@ describe("cross-environment hint on resolution failure", () => {
     seedDevAssistant();
     const msg = formatAssistantLookupError("ghost", { status: "not_found" });
     expect(msg).toContain("No assistant found with name or ID 'ghost'.");
-    expect(msg).toContain("Install vellum Command");
+    expect(msg).toContain("Install anu Command");
     expect(msg).toContain("VELLUM_ENVIRONMENT=dev");
   });
 
@@ -835,19 +835,19 @@ describe("cross-environment hint on resolution failure", () => {
         makeEntry("assistant-2", "http://localhost:7822", { name: "Alice" }),
       ],
     });
-    expect(msg).not.toContain("Install vellum Command");
+    expect(msg).not.toContain("Install anu Command");
   });
 
   test("resolveTargetAssistant zero-assistants error carries the hint", () => {
     seedDevAssistant();
     const combined = captureResolveTargetAssistantError();
-    expect(combined).toContain("No assistant found. Run 'vellum hatch' first.");
-    expect(combined).toContain("Install vellum Command");
+    expect(combined).toContain("No assistant found. Run 'anu hatch' first.");
+    expect(combined).toContain("Install anu Command");
   });
 
   test("resolveTargetAssistant zero-assistants error stays bare without other envs", () => {
     const combined = captureResolveTargetAssistantError();
-    expect(combined).toContain("No assistant found. Run 'vellum hatch' first.");
-    expect(combined).not.toContain("Install vellum Command");
+    expect(combined).toContain("No assistant found. Run 'anu hatch' first.");
+    expect(combined).not.toContain("Install anu Command");
   });
 });

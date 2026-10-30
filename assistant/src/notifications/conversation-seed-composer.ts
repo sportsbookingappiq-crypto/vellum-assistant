@@ -3,7 +3,7 @@
  *
  * Generates richer seed content for notification conversations than the concise
  * title/body used in native notification popups. Verbosity adapts to the
- * delivery surface: Vellum desktop gets flowing prose, Telegram gets compact.
+ * delivery surface: ANU desktop gets flowing prose, Telegram gets compact.
  *
  * Composes from `copy.title/body` rather than hardcoded English templates
  * so LLM-localized copy is preserved for non-English users.

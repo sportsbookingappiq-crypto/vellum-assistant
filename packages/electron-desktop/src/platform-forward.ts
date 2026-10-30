@@ -193,7 +193,7 @@ export const PROXY_NETWORK_ERROR_CODE = "proxy_network_error";
 export const PROXY_ERROR_HEADER = "X-Vellum-Proxy-Error";
 
 const PROXY_NETWORK_ERROR_DETAIL =
-  "Couldn't reach Vellum. Check your internet connection and try again.";
+  "Couldn't reach ANU. Check your internet connection and try again.";
 
 /**
  * Chromium net-stack failures that resolve on their own within seconds —

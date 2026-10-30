@@ -17,7 +17,7 @@ import { MoreHorizontal } from "lucide-react";
 import type { ComponentProps, MouseEvent } from "react";
 
 import { useTranslation } from "@/i18n";
-import { cn } from "@vellumai/design-library/utils/cn";
+import { cn } from "@anu/design-library/utils/cn";
 
 /**
  * The box every control in a section header's trailing cluster draws in, so a

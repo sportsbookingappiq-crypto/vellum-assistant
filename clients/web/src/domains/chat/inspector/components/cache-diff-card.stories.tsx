@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { withQueryCache } from "@/lib/story-query-cache";
 
-import type { LLMRequestLogEntry } from "@vellumai/assistant-api";
+import type { LLMRequestLogEntry } from "@anu/assistant-api";
 
 import { CacheDiffCard } from "./cache-diff-card";
 
@@ -35,7 +35,7 @@ const meta: Meta<typeof CacheDiffCard> = {
 export default meta;
 type Story = StoryObj<typeof CacheDiffCard>;
 
-const SYSTEM_PROMPT = `You are Vellum, a helpful assistant.
+const SYSTEM_PROMPT = `You are ANU, a helpful assistant.
 
 Follow the user's instructions carefully and use the available tools when
 they help you answer accurately. Keep responses concise.`;

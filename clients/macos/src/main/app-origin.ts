@@ -4,7 +4,7 @@ import {
   createAllowedOriginResolver,
   isAllowedOrigin,
   type AllowedOrigin,
-} from "@vellumai/electron-desktop/app-origin";
+} from "@anu/electron-desktop/app-origin";
 
 import { APP_HOST, APP_PROTOCOL, getDevRendererBase } from "./app-config";
 

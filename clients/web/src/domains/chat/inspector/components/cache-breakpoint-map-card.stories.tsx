@@ -3,10 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { createStoryQueryClient } from "@/lib/story-query-cache";
 
-import type {
-  LLMCallSummary,
-  LLMRequestLogEntry,
-} from "@vellumai/assistant-api";
+import type { LLMCallSummary, LLMRequestLogEntry } from "@anu/assistant-api";
 
 import { CacheBreakpointMapCard } from "./cache-breakpoint-map-card";
 
@@ -37,7 +34,7 @@ function text(value: string, cacheControl?: { type: string; ttl: string }) {
   };
 }
 
-const SYSTEM_PROMPT = `You are Vellum, a helpful assistant. Follow the user's
+const SYSTEM_PROMPT = `You are ANU, a helpful assistant. Follow the user's
 instructions carefully and use the available tools when they help you answer
 accurately. Keep responses concise.`;
 

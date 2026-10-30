@@ -1,4 +1,4 @@
-# Vellum Assistant - Windows (Electron)
+# ANU - Windows (Electron)
 
 The Windows desktop client. Like `clients/macos`, this is an Electron shell
 around the `clients/web` renderer: in dev it loads the Vite dev server (or
@@ -13,7 +13,7 @@ bundled `resources/cli-runtime/web-dist` over a privileged `app://` protocol.
   enforcement, CSP, a permission allowlist, and sandboxed `vellumapp://`
   serving) and then composes `src/main/features/*`.
 - `src/main/features/*` and `src/preload/features/*` are capability modules
-  installed through the registries in `@vellumai/electron-desktop`. Every
+  installed through the registries in `@anu/electron-desktop`. Every
   `.ts` file in those directories is picked up automatically; a new capability
   is a new file, never an edit to `index.ts`.
 - `src/preload/core-capabilities.ts` is the always-present core of
@@ -52,9 +52,9 @@ Packaged Windows startup installs the bundled CLI runtime for the current user:
 - `<Electron userData>/cli/install-state.json` records the current runtime and
   one valid fallback. Reusing an older installed version preserves the prior
   current version as the fallback.
-- A small owned launcher is installed under `%LOCALAPPDATA%\Vellum\bin` and
+- A small owned launcher is installed under `%LOCALAPPDATA%\ANU\bin` and
   delegates to the selected versioned runtime. Non-production channels use
-  separate launcher directories. A launcher without the Vellum ownership
+  separate launcher directories. A launcher without the ANU ownership
   marker is left untouched.
 - Long-lived assistant, gateway, and worker executables remain in the
   versioned runtime. Provisioning and uninstall never replace or remove those
@@ -66,14 +66,14 @@ Packaged Windows startup installs the bundled CLI runtime for the current user:
 - Machine PATH entries are evaluated before user entries. If another
   `vellum.exe` wins resolution, startup records the launcher as shadowed.
 
-`vellum retire` stages assistant data before archiving it. On Windows the
+`anu retire` stages assistant data before archiving it. On Windows the
 background archive uses PowerShell and the built-in `tar.exe`; other platforms
 use the existing POSIX archive process.
 
 ## Automated backups
 
 The packaged Windows client does not expose automated backup configuration yet.
-The installed `vellum backup <name>` command creates an on-demand local export,
+The installed `anu backup <name>` command creates an on-demand local export,
 but the internal `assistant backup` command is not installed on the user PATH.
 
 Windows has no implicit offsite destination. A future automated backup surface

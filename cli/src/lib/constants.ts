@@ -30,10 +30,12 @@ const ANSI = {
   reset: "\x1b[0m",
   bold: "\x1b[1m",
   red: "\x1b[31m",
-  magenta: "\x1b[35m",
+  brightBlue: "\x1b[94m",
 } as const;
 
 interface SpeciesConfig {
+  /** Name shown to people. The species id itself is a persisted contract. */
+  label: string;
   color: string;
   art: string[];
   hatchedEmoji: string;
@@ -43,6 +45,7 @@ interface SpeciesConfig {
 
 export const SPECIES_CONFIG: Record<Species, SpeciesConfig> = {
   openclaw: {
+    label: "OpenClaw",
     color: ANSI.red,
     art: [
       `${ANSI.red}     ___${ANSI.reset}`,
@@ -70,27 +73,27 @@ export const SPECIES_CONFIG: Record<Species, SpeciesConfig> = {
     ],
   },
   vellum: {
-    color: ANSI.magenta,
+    label: "ANU",
+    color: ANSI.brightBlue,
+    // The ANU mark in six lines: six rays, branches on the vertical pair, and
+    // an open core (see assets/brand/BRAND.md).
     art: [
-      `${ANSI.magenta}   .-.-.-.${ANSI.reset}`,
-      `${ANSI.magenta}  |${ANSI.reset}${ANSI.bold} o   o ${ANSI.reset}${ANSI.magenta}|${ANSI.reset}`,
-      `${ANSI.magenta}  |${ANSI.reset}${ANSI.bold}  ---  ${ANSI.reset}${ANSI.magenta}|${ANSI.reset}`,
-      `${ANSI.magenta}  |_|_|_|_|${ANSI.reset}`,
-      `${ANSI.magenta}   | | | |${ANSI.reset}`,
-      `${ANSI.magenta}   ^ ^_^ ^${ANSI.reset}`,
+      `${ANSI.brightBlue}       |${ANSI.reset}`,
+      `${ANSI.brightBlue} \`-.  \\|/  .-'${ANSI.reset}`,
+      `${ANSI.brightBlue}    \`-/ \\-'${ANSI.reset}`,
+      `${ANSI.brightBlue}    .-\\ /-.${ANSI.reset}`,
+      `${ANSI.brightBlue} .-'  /|\\  \`-.${ANSI.reset}`,
+      `${ANSI.brightBlue}       |${ANSI.reset}`,
     ],
-    hatchedEmoji: "👾",
+    hatchedEmoji: "✼",
     waitingMessages: [
-      "Warming up the mothership...",
-      "Getting cozy in there...",
-      "Calibrating the antenna...",
-      "Scanning the galaxy...",
+      "Waiting for the assistant to start...",
+      "Waiting for the gateway...",
     ],
     runningMessages: [
       "Running startup script...",
-      "Teaching the alien to code...",
-      "Powering up...",
-      "Almost ready to beam down...",
+      "Starting the assistant...",
+      "Checking health...",
     ],
   },
 };

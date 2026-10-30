@@ -1,4 +1,4 @@
-import { Button, Input, Notice, Typography } from "@vellumai/design-library";
+import { Button, Input, Notice, Typography } from "@anu/design-library";
 import type { MutationStatus } from "@/components/channel-setup-wizard";
 import { Trans, useTranslation } from "@/i18n";
 import {

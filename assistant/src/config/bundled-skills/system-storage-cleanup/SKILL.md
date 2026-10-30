@@ -1,7 +1,7 @@
 ---
 name: system-storage-cleanup
 description: "Handle disk pressure, critically low storage, safe storage limits, and storage cleanup mode by inspecting disk usage and proposing safe cleanup steps."
-compatibility: "Designed for Vellum personal assistants"
+compatibility: "Designed for ANU personal assistants"
 metadata:
   emoji: "\U0001F9F9"
   vellum:

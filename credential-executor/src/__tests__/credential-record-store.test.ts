@@ -4,8 +4,8 @@ import { join } from "node:path";
 
 import { describe, expect, test } from "bun:test";
 
-import type { SecureKeyBackend } from "@vellumai/credential-storage";
-import type { CredentialRecord } from "@vellumai/service-contracts/credential-rpc";
+import type { SecureKeyBackend } from "@anu/credential-storage";
+import type { CredentialRecord } from "@anu/service-contracts/credential-rpc";
 
 import { importWorkspaceMetadataMigration } from "../migrations/003-import-workspace-metadata.js";
 import {

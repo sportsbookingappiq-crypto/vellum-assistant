@@ -12,7 +12,7 @@ import {
   type DictationOverlayHitRegion,
   type DictationOverlayMessage,
   type DictationOverlayState,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import {
   createFloatingWindow,

@@ -1,6 +1,6 @@
 import { Heart, Monitor, Moon, Sun } from "lucide-react";
 
-import { cn, SegmentControl } from "@vellumai/design-library";
+import { cn, SegmentControl } from "@anu/design-library";
 
 import { useTranslation } from "@/i18n";
 import { type ThemePreference } from "@/utils/theme-preferences";

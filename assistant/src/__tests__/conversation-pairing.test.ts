@@ -818,7 +818,7 @@ describe("pairDeliveryWithConversation", () => {
     mockExistingConversations["conv-bound-vellum"] = {
       id: "conv-bound-vellum",
       source: "notification",
-      title: "Vellum Thread",
+      title: "ANU Thread",
     };
     mockBindings["notification:vellum:device-1"] = {
       conversationId: "conv-bound-vellum",

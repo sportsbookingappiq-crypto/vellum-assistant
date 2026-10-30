@@ -367,7 +367,7 @@ export function createHostBrowserDispatcher(
         });
         return;
       }
-      // Handle synthetic Vellum.* methods that use chrome extension APIs
+      // Handle synthetic ANU.* methods that use chrome extension APIs
       // directly instead of routing through chrome.debugger. These methods
       // do not require a resolved CDP target, so they must be dispatched
       // BEFORE `resolveTarget()`.

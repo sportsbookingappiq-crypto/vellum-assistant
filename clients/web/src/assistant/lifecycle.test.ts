@@ -37,7 +37,7 @@ describe("resolveAssistantLifecycleState — transport-shaped failures (LUM-2402
         ok: false,
         status: 502,
         error: {
-          detail: "Couldn't reach Vellum.",
+          detail: "Couldn't reach ANU.",
           code: PROXY_NETWORK_ERROR_CODE,
         },
       }),

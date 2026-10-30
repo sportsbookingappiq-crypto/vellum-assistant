@@ -9,8 +9,8 @@ export const STORYBOOKS: Record<
   StorybookId,
   { label: string; devPort: string }
 > = {
-  "design-library": { label: "Vellum Design Library", devPort: "6006" },
-  web: { label: "Vellum Web", devPort: "6007" },
+  "design-library": { label: "ANU Design Library", devPort: "6006" },
+  web: { label: "ANU Web", devPort: "6007" },
 };
 
 export type LocationLike = {

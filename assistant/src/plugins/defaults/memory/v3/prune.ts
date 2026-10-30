@@ -66,7 +66,7 @@
  * cannot free.
  */
 
-import type { ContentBlock, Message } from "@vellumai/plugin-api";
+import type { ContentBlock, Message } from "@anu/plugin-api";
 
 import { getMemoryConfig } from "../config.js";
 import { getLogger } from "../logging.js";

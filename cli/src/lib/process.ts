@@ -10,7 +10,7 @@ import {
 } from "./http-client.js";
 
 const VELLUM_COMMAND_PATTERN =
-  /vellum-daemon|vellum-cli|vellum-gateway|credential-executor|@vellumai|[\\/]\.?vellum[\\/]|[\\/]daemon[\\/]main|[\\/]\.vellum[\\/].*qdrant[\\/]bin[\\/]qdrant/;
+  /vellum-daemon|vellum-cli|vellum-gateway|credential-executor|@vellumai|@anu|[\\/]\.?vellum[\\/]|[\\/]daemon[\\/]main|[\\/]\.vellum[\\/].*qdrant[\\/]bin[\\/]qdrant/;
 
 export const isVellumCommandLine = (command: string): boolean =>
   VELLUM_COMMAND_PATTERN.test(command);
@@ -223,7 +223,7 @@ export type ProcessState =
  * matches the spawner's own `waitForDaemonReady` timeout so a concurrent
  * caller never kills a process the spawner is still waiting on) for it to
  * start answering health checks. If it remains unresponsive, verifies it
- * belongs to Vellum before killing it, then cleans up the PID file.
+ * belongs to ANU before killing it, then cleans up the PID file.
  *
  * When callers pass the `"readyz"` readiness endpoint, this also CLASSIFIES
  * DB migration readiness with a single `/readyz` probe (read from the body —
@@ -254,10 +254,10 @@ export async function resolveProcessState(
       "healthz",
     );
     if (!becameHealthy) {
-      // Genuinely hung — kill if it belongs to Vellum, otherwise just clean up.
+      // Genuinely hung — kill if it belongs to ANU, otherwise just clean up.
       if (isVellumProcess(result.pid)) {
         console.log(
-          `${label} process alive (pid ${result.pid}) but not responding — killing and restarting...`,
+          `${label} process alive (pid ${result.pid}) but not responding. Killing and restarting...`,
         );
         const stopped = await stopProcess(result.pid, label);
         if (!stopped && isProcessAlive(pidFile).alive) {
@@ -265,7 +265,7 @@ export async function resolveProcessState(
         }
       } else {
         console.log(
-          `Stale PID file (pid ${result.pid} is not a Vellum process) — cleaning up...`,
+          `Stale PID file (pid ${result.pid} is not an ANU process). Cleaning up...`,
         );
       }
       removeFiles(pidFile);
@@ -300,11 +300,11 @@ export async function resolveProcessState(
 /**
  * SIGKILL ceiling for stopping the assistant daemon.
  *
- * Defined in `@vellumai/local-mode` because the host wrappers that spawn these
+ * Defined in `@anu/local-mode` because the host wrappers that spawn these
  * commands derive their own timeouts from it: a wrapper that expires first
  * kills the CLI before this ceiling is ever reached.
  */
-export { DAEMON_STOP_TIMEOUT_MS } from "@vellumai/local-mode";
+export { DAEMON_STOP_TIMEOUT_MS } from "@anu/local-mode";
 
 /**
  * Stop a process by PID: SIGTERM, wait up to `timeoutMs`, then SIGKILL if still alive.
@@ -455,7 +455,7 @@ export async function stopProcessByPidFile(
   // and clean up the stale files instead.
   if (!ownsProcess(pid)) {
     console.log(
-      `PID ${pid} is not a vellum process — cleaning up stale ${label} PID file.`,
+      `PID ${pid} is not an ANU process. Cleaning up stale ${label} PID file.`,
     );
     removeFiles(pidFile, extraCleanupFiles);
     return false;

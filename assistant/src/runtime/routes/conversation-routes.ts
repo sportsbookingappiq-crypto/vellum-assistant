@@ -7,8 +7,8 @@ import {
   CLIENT_METADATA_HEADERS,
   type ClientMetadataField,
   sanitizeClientMetadataValue,
-} from "@vellumai/service-contracts/client-metadata";
-import { pickReactionEmojiFields } from "@vellumai/service-contracts/reactions";
+} from "@anu/service-contracts/client-metadata";
+import { pickReactionEmojiFields } from "@anu/service-contracts/reactions";
 import { v7 as uuidv7 } from "uuid";
 import { z } from "zod";
 

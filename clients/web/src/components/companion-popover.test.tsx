@@ -5,7 +5,7 @@ import type {
   CompanionPopover as CompanionPopoverContent,
   CompanionPopoverAnswer,
   CompanionPopoverView,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import {
   CompanionPopover,
@@ -244,7 +244,7 @@ describe("the popover's cards", () => {
     });
 
     expect(container.textContent).toContain("Shipping address");
-    fireEvent.click(buttonOf(container, "Open Vellum")!);
+    fireEvent.click(buttonOf(container, "Open ANU")!);
 
     expect(answers).toEqual([{ kind: "open" }]);
   });

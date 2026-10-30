@@ -14,7 +14,7 @@
 import { Check, type LucideIcon } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 
-import { cn } from "@vellumai/design-library";
+import { cn } from "@anu/design-library";
 
 import type { ActivationColor } from "../catalog";
 

@@ -28,13 +28,13 @@ describe("redactText", () => {
   });
 
   test("redacts Windows user paths", () => {
-    const input = "Reading C:\\Users\\Alice\\AppData\\Local\\Vellum";
-    expect(redactText(input)).toBe("Reading ~\\AppData\\Local\\Vellum");
+    const input = "Reading C:\\Users\\Alice\\AppData\\Local\\ANU";
+    expect(redactText(input)).toBe("Reading ~\\AppData\\Local\\ANU");
   });
 
   test("redacts Windows user paths containing spaces", () => {
-    const input = "Reading C:\\Users\\Example User\\AppData\\Local\\Vellum";
-    expect(redactText(input)).toBe("Reading ~\\AppData\\Local\\Vellum");
+    const input = "Reading C:\\Users\\Example User\\AppData\\Local\\ANU";
+    expect(redactText(input)).toBe("Reading ~\\AppData\\Local\\ANU");
   });
 
   test("redacts assigned session tokens", () => {

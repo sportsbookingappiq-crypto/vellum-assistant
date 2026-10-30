@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import type { VellumBridge } from "@vellumai/ipc-contract";
+import type { VellumBridge } from "@anu/ipc-contract";
 
 import {
   isElectron,

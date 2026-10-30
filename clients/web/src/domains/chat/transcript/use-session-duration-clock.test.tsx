@@ -14,7 +14,7 @@ import { publishElectronWindowAttentionSource } from "@/runtime/event-sources/el
 import { __resetLifecycleEdgeForTests } from "@/runtime/event-sources/lifecycle-edge";
 import { subscribeToWindowAttention } from "@/runtime/window-attention";
 
-import type { WindowAttentionPayload } from "@vellumai/ipc-contract";
+import type { WindowAttentionPayload } from "@anu/ipc-contract";
 
 import { useSessionDurationClock } from "./use-session-duration-clock";
 

@@ -1,8 +1,8 @@
 /**
  * Smoke test for the recommended install.sh script.
  *
- * Runs the install script (including `vellum hatch`) and then validates
- * that `vellum ps` reports the hatched assistant. Retires the assistant
+ * Runs the install script (including `anu hatch`) and then validates
+ * that `anu ps` reports the hatched assistant. Retires the assistant
  * at the end to clean up.
  *
  * Skipped by default — the install script pulls the latest *published*
@@ -20,10 +20,10 @@ const INSTALL_SCRIPT = path.resolve(
 );
 
 describe.skip("install.sh", () => {
-  test("installs vellum CLI and vellum ps works", () => {
+  test("installs anu CLI and anu ps works", () => {
     /**
      * Tests that the install.sh script successfully installs the CLI
-     * and that `vellum ps` produces valid output afterward.
+     * and that `anu ps` produces valid output afterward.
      */
 
     const shellEnv = {
@@ -32,7 +32,7 @@ describe.skip("install.sh", () => {
     };
 
     // GIVEN the recommended install.sh script
-    // WHEN we run the install script (which includes vellum hatch)
+    // WHEN we run the install script (which includes anu hatch)
     execSync(`bash "${INSTALL_SCRIPT}" && . ~/.config/vellum/env`, {
       stdio: "inherit",
       timeout: 300_000,
@@ -40,8 +40,8 @@ describe.skip("install.sh", () => {
       env: shellEnv,
     });
 
-    // THEN `vellum ps` should run successfully and report one assistant
-    const psOutput = execSync(`vellum ps`, {
+    // THEN `anu ps` should run successfully and report one assistant
+    const psOutput = execSync(`anu ps`, {
       encoding: "utf-8",
       timeout: 30_000,
       shell: "/bin/bash",
@@ -59,7 +59,7 @@ describe.skip("install.sh", () => {
     const assistantName = lines[0]?.trim().split(/\s{2,}/)[0];
 
     if (assistantName) {
-      execSync(`vellum retire ${assistantName}`, {
+      execSync(`anu retire ${assistantName}`, {
         stdio: "inherit",
         timeout: 30_000,
         shell: "/bin/bash",

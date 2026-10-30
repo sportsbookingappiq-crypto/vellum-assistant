@@ -1,16 +1,16 @@
 /**
- * Package boundary tests for @vellumai/gateway-client.
+ * Package boundary tests for @anu/gateway-client.
  *
  * Ensures the package:
  * 1. Does NOT import from assistant, gateway, or credential-executor service
  *    runtime modules.
- * 2. Does NOT import from runtime shared packages (@vellumai/credential-storage,
- *    @vellumai/egress-proxy).
+ * 2. Does NOT import from runtime shared packages (@anu/credential-storage,
+ *    @anu/egress-proxy).
  * 3. Remains a lightweight client package with no runtime service dependencies.
  *
- * @vellumai/gateway-client is a typed HTTP client for assistant-to-gateway
+ * @anu/gateway-client is a typed HTTP client for assistant-to-gateway
  * calls (trust API, feature flags, log export, deliver). It may depend on
- * @vellumai/service-contracts for shared type definitions, but must not pull
+ * @anu/service-contracts for shared type definitions, but must not pull
  * in runtime service internals.
  */
 
@@ -51,26 +51,26 @@ const FORBIDDEN_IMPORT_PATTERNS = [
   // Assistant runtime internals
   /from\s+["'](?:\.\.\/)+assistant\/src/,
   /require\s*\(\s*["'](?:\.\.\/)+assistant\/src/,
-  /from\s+["']@vellumai\/assistant(?:\/|["'])/,
-  /require\s*\(\s*["']@vellumai\/assistant(?:\/|["'])/,
+  /from\s+["']@anu\/assistant(?:\/|["'])/,
+  /require\s*\(\s*["']@anu\/assistant(?:\/|["'])/,
 
   // Gateway runtime internals (not the gateway-client package itself)
   /from\s+["'](?:\.\.\/)+gateway\/src/,
   /require\s*\(\s*["'](?:\.\.\/)+gateway\/src/,
-  /from\s+["']@vellumai\/(?:vellum-)?gateway(?:\/|["'])/,
-  /require\s*\(\s*["']@vellumai\/(?:vellum-)?gateway(?:\/|["'])/,
+  /from\s+["']@anu\/(?:vellum-)?gateway(?:\/|["'])/,
+  /require\s*\(\s*["']@anu\/(?:vellum-)?gateway(?:\/|["'])/,
 
   // Credential executor runtime internals
   /from\s+["'](?:\.\.\/)+credential-executor\/src/,
   /require\s*\(\s*["'](?:\.\.\/)+credential-executor\/src/,
-  /from\s+["']@vellumai\/credential-executor(?:\/|["'])/,
-  /require\s*\(\s*["']@vellumai\/credential-executor(?:\/|["'])/,
+  /from\s+["']@anu\/credential-executor(?:\/|["'])/,
+  /require\s*\(\s*["']@anu\/credential-executor(?:\/|["'])/,
 
   // Runtime shared packages
-  /from\s+["']@vellumai\/credential-storage(?:\/|["'])/,
-  /require\s*\(\s*["']@vellumai\/credential-storage(?:\/|["'])/,
-  /from\s+["']@vellumai\/egress-proxy(?:\/|["'])/,
-  /require\s*\(\s*["']@vellumai\/egress-proxy(?:\/|["'])/,
+  /from\s+["']@anu\/credential-storage(?:\/|["'])/,
+  /require\s*\(\s*["']@anu\/credential-storage(?:\/|["'])/,
+  /from\s+["']@anu\/egress-proxy(?:\/|["'])/,
+  /require\s*\(\s*["']@anu\/egress-proxy(?:\/|["'])/,
 ];
 
 describe("package boundary", () => {
@@ -103,7 +103,7 @@ describe("package boundary", () => {
         `Found ${violations.length} forbidden import(s) in gateway-client package:\n` +
           violations.map((v) => `  - ${v}`).join("\n") +
           "\n\n" +
-          "@vellumai/gateway-client must not import from service runtime modules\n" +
+          "@anu/gateway-client must not import from service runtime modules\n" +
           "or runtime shared packages (credential-storage, egress-proxy).",
       );
     }
@@ -128,10 +128,10 @@ describe("package boundary", () => {
 
     const forbidden = Object.keys(allDeps).filter((dep) =>
       [
-        "@vellumai/assistant",
-        "@vellumai/vellum-gateway",
-        "@vellumai/credential-storage",
-        "@vellumai/egress-proxy",
+        "@anu/assistant",
+        "@anu/gateway",
+        "@anu/credential-storage",
+        "@anu/egress-proxy",
       ].includes(dep),
     );
 

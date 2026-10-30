@@ -6,7 +6,7 @@ import {
   perceivedStartedAt,
   toolCallRank,
 } from "@/domains/chat/utils/tool-call-status";
-import type { ConversationMessageToolCall } from "@vellumai/assistant-api";
+import type { ConversationMessageToolCall } from "@anu/assistant-api";
 
 function make(
   overrides: Partial<ConversationMessageToolCall> = {},

@@ -1,5 +1,5 @@
 /**
- * `vellum devices [name]` and `vellum devices revoke <hashedDeviceId> [name] [--yes]`
+ * `anu devices [name]` and `anu devices revoke <hashedDeviceId> [name] [--yes]`
  *
  * Host-side of pairing lifecycle: list and revoke the devices paired to a LOCAL
  * self-hosted assistant. Calls the loopback-only gateway endpoints
@@ -8,14 +8,14 @@
  * only ever stores the HASHED device id, so list returns and revoke accepts the
  * same `hashedDeviceId` (the raw device id is never persisted anywhere).
  *
- * This is the counterpart to `vellum unpair`: `unpair` forgets a connection on
+ * This is the counterpart to `anu unpair`: `unpair` forgets a connection on
  * the *paired* machine (client side); `devices` revokes a device from the *host*
  * that runs the assistant (server side).
  */
 
 import { createHash } from "node:crypto";
 
-import type { DeviceRecord } from "@vellumai/local-mode";
+import type { DeviceRecord } from "@anu/local-mode";
 
 import {
   type AssistantEntry,
@@ -36,11 +36,11 @@ import {
 import { loopbackSafeFetch } from "../lib/loopback-fetch.js";
 
 function printUsage(): void {
-  console.log(`vellum devices [beta] - List and revoke devices paired to a local assistant
+  console.log(`anu devices [beta] - List and revoke devices paired to a local assistant
 
 USAGE:
-    vellum devices [name]
-    vellum devices revoke <hashedDeviceId> [name] [--yes]
+    anu devices [name]
+    anu devices revoke <hashedDeviceId> [name] [--yes]
 
 ARGUMENTS:
     [name]              Name or id of the local assistant (defaults to the active/sole one)
@@ -51,14 +51,14 @@ OPTIONS:
     --json             Print machine-readable JSON on stdout (revoke requires --yes)
 
 Lists the devices paired to a local (host-side) assistant, or revokes one by its
-hashed id. Runs on the machine that hosts the assistant — paired connections
-imported from another machine are managed with 'vellum unpair' instead.
+hashed id. Runs on the machine that hosts the assistant; paired connections
+imported from another machine are managed with 'anu unpair' instead.
 
 EXAMPLES:
-    vellum devices
-    vellum devices my-desk
-    vellum devices revoke 3f9a1c...
-    vellum devices revoke 3f9a1c... my-desk --yes
+    anu devices
+    anu devices my-desk
+    anu devices revoke 3f9a1c...
+    anu devices revoke 3f9a1c... my-desk --yes
 `);
 }
 
@@ -75,9 +75,9 @@ function resolveLoopbackBase(entry: AssistantEntry): string {
       `Error: '${displayName}' is a paired connection imported from another machine.`,
     );
     console.error(
-      "Run `vellum devices` on the host that runs the assistant to manage its devices.",
+      "Run `anu devices` on the host that runs the assistant to manage its devices.",
     );
-    console.error("To forget this connection here, use `vellum unpair`.");
+    console.error("To forget this connection here, use `anu unpair`.");
     process.exit(1);
   }
 
@@ -88,7 +88,7 @@ function resolveLoopbackBase(entry: AssistantEntry): string {
       : undefined);
   if (!base) {
     console.error(
-      `Error: no local gateway found for '${displayName}'. \`vellum devices\` runs on the machine hosting the assistant.`,
+      `Error: no local gateway found for '${displayName}'. \`anu devices\` runs on the machine hosting the assistant.`,
     );
     process.exit(1);
   }
@@ -169,8 +169,8 @@ async function listDevices(
       `    name:       ${device.clientReportedName || "not reported"}`,
     );
     console.log(`    user agent: ${device.pairingUserAgent || "not recorded"}`);
-    console.log(`    issued:     ${formatTimestamp(device.issuedAt, "—")}`);
-    console.log(`    expires:    ${formatTimestamp(device.expiresAt, "—")}`);
+    console.log(`    issued:     ${formatTimestamp(device.issuedAt, "-")}`);
+    console.log(`    expires:    ${formatTimestamp(device.expiresAt, "-")}`);
     console.log(
       `    last used:  ${formatTimestamp(device.lastUsedAt, "never")}`,
     );
@@ -182,7 +182,7 @@ async function listDevices(
     console.log("");
   }
   console.log(
-    `${devices.length} device(s). Revoke one with: vellum devices revoke <hashedDeviceId>`,
+    `${devices.length} device(s). Revoke one with: anu devices revoke <hashedDeviceId>`,
   );
 }
 

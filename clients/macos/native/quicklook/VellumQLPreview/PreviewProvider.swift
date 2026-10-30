@@ -329,7 +329,7 @@ class PreviewProvider: QLPreviewProvider, QLPreviewingController {
                 \(metaRows)
             </div>
             \(capsHTML)
-            <div class="badge">Vellum App Bundle</div>
+            <div class="badge">ANU App Bundle</div>
         </div>
         </body>
         </html>

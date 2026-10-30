@@ -9,7 +9,7 @@ import {
 } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 
-import { Select } from "@vellumai/design-library/components/select";
+import { Select } from "@anu/design-library/components/select";
 
 import { buildCallSiteMetadataMap } from "@/domains/settings/billing/usage/call-site-metadata";
 import {

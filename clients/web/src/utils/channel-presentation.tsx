@@ -5,7 +5,7 @@
  *
  * The chat surface tags conversations that originate from an external
  * channel — in the header and channel footer — with the channel's human
- * label and an icon so they read as distinct from native Vellum
+ * label and an icon so they read as distinct from native ANU
  * conversations. This module is the "adapter" layer for that presentation:
  * add a channel here once and every surface picks it up.
  *
@@ -30,11 +30,11 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import type { ChannelId } from "@vellumai/service-contracts/channels";
+import type { ChannelId } from "@anu/service-contracts/channels";
 
 import { DiscordLogo } from "@/components/icons/discord-logo";
 
-import type { TagTone } from "@vellumai/design-library/components/tag";
+import type { TagTone } from "@anu/design-library/components/tag";
 
 import { useTranslation } from "@/i18n";
 import type { AssistantChannelState } from "@/types/channel-types";

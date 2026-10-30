@@ -11,12 +11,12 @@ import {
   pairedHostLabel,
   type Lockfile,
   type LockfileAssistant,
-} from "@vellumai/local-mode/contract";
+} from "@anu/local-mode/contract";
 import {
   type CompanionSize,
   type CompanionSizeAxis,
   type VellumCommand,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import { onAvatarChange } from "./avatar";
 import { getName, onNameChange } from "./identity";

@@ -1,7 +1,7 @@
 import { Sparkles, X } from "lucide-react";
 
 import { useTranslation } from "@/i18n";
-import { Button } from "@vellumai/design-library";
+import { Button } from "@anu/design-library";
 
 interface ConceptGraphIntroBannerProps {
   onDismiss: () => void;

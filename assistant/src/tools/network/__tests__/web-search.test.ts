@@ -671,7 +671,7 @@ describe("web_search tool", () => {
 
     expect(result.isError).toBe(true);
     expect(result.content).toContain("Managed search proxy is unavailable");
-    expect(result.content).toContain("Log in to Vellum");
+    expect(result.content).toContain("Log in to ANU");
   });
 
   test("your-own mode keeps direct Brave BYOK behavior unchanged", async () => {
@@ -844,7 +844,7 @@ describe("web_search tool", () => {
     expect(result.isError).toBe(false);
     expect(capturedUrl).toContain("api.keenable.ai/v1/search/public");
     expect(capturedHeaders.get("x-api-key")).toBeNull();
-    expect(capturedHeaders.get("x-keenable-title")).toBe("Vellum Assistant");
+    expect(capturedHeaders.get("x-keenable-title")).toBe("ANU");
     expect(result.content).toContain("Keenable Result 1");
     expect(result.content).toContain("https://example.com/keenable-1");
   });

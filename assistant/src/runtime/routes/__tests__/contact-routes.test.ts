@@ -15,10 +15,7 @@
 
 import { beforeEach, describe, expect, mock, test } from "bun:test";
 
-import {
-  IpcCallError,
-  IpcConnectError,
-} from "@vellumai/gateway-client/ipc-client";
+import { IpcCallError, IpcConnectError } from "@anu/gateway-client/ipc-client";
 import { z } from "zod";
 
 let ipcCalls: { method: string; params?: Record<string, unknown> }[] = [];

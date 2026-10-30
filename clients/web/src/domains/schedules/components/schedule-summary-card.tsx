@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 
 import { Maximize2, Minimize2 } from "lucide-react";
 
-import { Card, Skeleton } from "@vellumai/design-library";
-import { Button } from "@vellumai/design-library/components/button";
+import { Card, Skeleton } from "@anu/design-library";
+import { Button } from "@anu/design-library/components/button";
 
 import { useTranslation } from "@/i18n";
 import { SCHEDULE_USAGE_WINDOW_DAYS } from "@/utils/usage-window";

@@ -11,7 +11,7 @@ import type {
   DocumentCommentDeletedEvent,
   DocumentCommentReopenedEvent,
   DocumentCommentResolvedEvent,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 import type { DocumentsByIdCommentsPostResponse } from "@/generated/daemon/types.gen";
 
 export type DocumentCommentEvent =

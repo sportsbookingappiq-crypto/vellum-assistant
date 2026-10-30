@@ -9,7 +9,7 @@
 import {
   detectShortcutPlatform,
   formatAcceleratorHint,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 
 import type { CompanionCallShortcuts } from "@/components/companion-surface";
 

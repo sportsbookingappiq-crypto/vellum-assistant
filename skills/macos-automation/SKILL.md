@@ -1,7 +1,7 @@
 ---
 name: macos-automation
 description: Automate native macOS apps and system interactions via osascript (AppleScript)
-compatibility: "Designed for Vellum personal assistants"
+compatibility: "Designed for ANU personal assistants"
 metadata:
   icon: assets/icon.svg
   emoji: "🍎"
@@ -67,7 +67,7 @@ osascript -e 'tell application "Safari" to open location "https://example.com"'
 osascript -e 'tell application "Music" to playpause'
 
 # Display a system notification
-osascript -e 'display notification "Done!" with title "Vellum"'
+osascript -e 'display notification "Done!" with title "ANU"'
 ```
 
 ## Tips

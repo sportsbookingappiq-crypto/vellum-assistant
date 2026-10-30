@@ -4,21 +4,21 @@ import {
   createHostProxyClientHeaders,
   installHostProxyBridge as installSharedHostProxyBridge,
   type HostProxyRuntime,
-} from "@vellumai/electron-desktop/host-proxy/router";
-import { getDeviceId } from "@vellumai/electron-desktop/device-id";
+} from "@anu/electron-desktop/host-proxy/router";
+import { getDeviceId } from "@anu/electron-desktop/device-id";
 import {
   getGuardianAccessToken,
   resolveConfigDir,
   resolveEnvironmentName,
   type CliInvocation,
-} from "@vellumai/local-mode";
+} from "@anu/local-mode";
 
 import { app } from "electron";
 
-import { HostBrowserExecutor } from "@vellumai/electron-desktop/host-proxy/executors/host-browser-executor";
-import { hostFileExecutor } from "@vellumai/electron-desktop/host-proxy/executors/host-file-executor";
-import { hostTransferExecutor } from "@vellumai/electron-desktop/host-proxy/executors/host-transfer-executor";
-import { createHostUiSnapshotExecutor } from "@vellumai/electron-desktop/host-proxy/executors/host-ui-snapshot-executor";
+import { HostBrowserExecutor } from "@anu/electron-desktop/host-proxy/executors/host-browser-executor";
+import { hostFileExecutor } from "@anu/electron-desktop/host-proxy/executors/host-file-executor";
+import { hostTransferExecutor } from "@anu/electron-desktop/host-proxy/executors/host-transfer-executor";
+import { createHostUiSnapshotExecutor } from "@anu/electron-desktop/host-proxy/executors/host-ui-snapshot-executor";
 
 import { getDevRendererBase, RENDERER_BASE_PROD } from "./app-config";
 import { showCompanionCoachmarks } from "./companion-window";

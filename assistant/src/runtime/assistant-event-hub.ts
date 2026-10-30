@@ -15,7 +15,7 @@
 import {
   DESKTOP_PRESENCE_STATES,
   type DesktopPresenceState,
-} from "@vellumai/service-contracts/desktop-presence";
+} from "@anu/service-contracts/desktop-presence";
 
 import type { AssistantEvent } from "../api/index.js";
 import type { HostProxyCapability, InterfaceId } from "../channels/types.js";

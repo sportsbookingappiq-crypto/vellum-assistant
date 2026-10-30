@@ -4,7 +4,7 @@ import type {
   RiskAllowlistOption,
   RiskDirectoryScopeOption,
   RiskPatternScopeOption,
-} from "@vellumai/gateway-client";
+} from "@anu/gateway-client";
 
 import { getConfig } from "../config/loader.js";
 import {

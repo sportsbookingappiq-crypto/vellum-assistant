@@ -1,5 +1,5 @@
 /**
- * Vellum managed TTS WebSocket streaming session.
+ * ANU managed TTS WebSocket streaming session.
  *
  * Runs a single-utterance synthesis session against the gateway's managed
  * speech relay (`/v1/speech/tts/stream`, gateway → velay → Deepgram; velay

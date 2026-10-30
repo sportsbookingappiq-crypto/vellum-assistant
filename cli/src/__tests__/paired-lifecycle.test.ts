@@ -1,5 +1,5 @@
 /**
- * Tests for the `cloud: "paired"` lifecycle guards: `vellum wake`/`vellum sleep`
+ * Tests for the `cloud: "paired"` lifecycle guards: `anu wake`/`anu sleep`
  * must refuse a remote pairing with a clear "managed on its host machine"
  * message instead of treating it as an on-machine process.
  */
@@ -88,7 +88,7 @@ describe("paired lifecycle guards", () => {
 
     expect(exited).toBe(true);
     expect(errors).toContain("paired from another machine");
-    expect(errors).toContain("vellum client px");
+    expect(errors).toContain("anu client px");
     // It must NOT fall through to the generic local/docker guard.
     expect(errors).not.toContain("only works with local and docker");
   });
@@ -99,7 +99,7 @@ describe("paired lifecycle guards", () => {
 
     expect(exited).toBe(true);
     expect(errors).toContain("paired from another machine");
-    expect(errors).toContain("vellum client px");
+    expect(errors).toContain("anu client px");
     expect(errors).not.toContain("only works with local and docker");
   });
 
@@ -109,7 +109,7 @@ describe("paired lifecycle guards", () => {
 
     expect(exited).toBe(true);
     expect(errors).toContain("paired from another machine");
-    expect(errors).toContain("vellum unpair");
+    expect(errors).toContain("anu unpair");
     // It must NOT fall through to the generic "Unknown cloud type" path.
     expect(errors).not.toContain("Unknown cloud type");
   });

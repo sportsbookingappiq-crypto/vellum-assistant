@@ -1,12 +1,12 @@
 ---
 name: update
 description: >
-  Restart the Vellum assistant and gateway services. Smart branch handling: pulls from main by default, restarts in-place on feature branches, or switches to a specified branch. Pass --pull to force-pull on the current branch.
+  Restart the ANU assistant and gateway services. Smart branch handling: pulls from main by default, restarts in-place on feature branches, or switches to a specified branch. Pass --pull to force-pull on the current branch.
 ---
 
-# Update - Restart Vellum (with Smart Branch Handling)
+# Update - Restart ANU (with Smart Branch Handling)
 
-Restart the Vellum assistant and gateway services with branch-aware git behavior.
+Restart the ANU assistant and gateway services with branch-aware git behavior.
 
 ## Arguments
 
@@ -28,27 +28,27 @@ The user may pass `$ARGUMENTS` to control branch behavior:
 
 1. Preflight snapshot - capture current state before making changes:
    ```bash
-   vellum ps
+   anu ps
    ```
 
-2. Quiesce with `vellum sleep` - stop assistant and gateway processes. This is directory-agnostic and stops processes globally regardless of CWD:
+2. Quiesce with `anu sleep` - stop assistant and gateway processes. This is directory-agnostic and stops processes globally regardless of CWD:
    ```bash
-   vellum sleep || true
+   anu sleep || true
    ```
 
-3. Verify stopped - run `vellum ps` and confirm no running processes. If `vellum ps` shows processes still running, run fallback cleanup to force-kill them:
+3. Verify stopped - run `anu ps` and confirm no running processes. If `anu ps` shows processes still running, run fallback cleanup to force-kill them:
    ```bash
-   vellum ps
+   anu ps
    ```
 
-   **Fallback cleanup if `vellum ps` confirms processes are still running:**
+   **Fallback cleanup if `anu ps` confirms processes are still running:**
    ```bash
    pkill -x "vellum-assistant" || true
    pkill -f "gateway/src/index" || true
    lsof -ti :7830 | xargs kill -9 2>/dev/null || true
    lsof -ti :7821 | xargs kill -9 2>/dev/null || true
    ```
-   After fallback cleanup, run `vellum ps` again to confirm all processes are stopped.
+   After fallback cleanup, run `anu ps` again to confirm all processes are stopped.
 
 4. Smart branch handling - determine what git operations (if any) to perform:
 
@@ -101,17 +101,17 @@ The user may pass `$ARGUMENTS` to control branch behavior:
    fi
    ```
 
-6. Restart with `vellum wake` - start assistant and gateway from the current checkout. `vellum wake` must be run from the checkout directory that should supply the new assistant code:
+6. Restart with `anu wake` - start assistant and gateway from the current checkout. `anu wake` must be run from the checkout directory that should supply the new assistant code:
    ```bash
-   vellum wake
+   anu wake
    ```
 
-7. Verify fresh state - run `vellum ps` to confirm processes are running:
+7. Verify fresh state - run `anu ps` to confirm processes are running:
    ```bash
    sleep 5
    echo ""
    echo "=== Startup Summary ==="
-   vellum ps
+   anu ps
    echo "======================="
    ```
 

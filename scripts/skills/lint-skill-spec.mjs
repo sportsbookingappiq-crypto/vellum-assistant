@@ -11,10 +11,10 @@
  *      no consecutive hyphens, no leading/trailing hyphens.
  *   6. `description` constraints: 1-1024 chars, non-empty.
  *   7. Optional `compatibility`: 1-500 chars if present.
- *   8. Required `metadata.emoji` (Vellum extension).
+ *   8. Required `metadata.emoji` (ANU extension).
  *   9. Frontmatter is followed by Markdown body content.
  *  10. Non-standard top-level fields emit migration guidance:
- *      - Vellum-specific fields → move to `metadata.vellum`
+ *      - ANU-specific fields → move to `metadata.vellum`
  *      - Environment requirements → move to `compatibility`
  *
  * Usage:
@@ -22,8 +22,8 @@
  *
  * Options:
  *   --dir <path>           Override the default skills directory (skills/)
- *   --skip-emoji           Skip the Vellum-specific metadata.emoji check
- *   --skip-category        Skip the Vellum-specific metadata.vellum.category check
+ *   --skip-emoji           Skip the ANU-specific metadata.emoji check
+ *   --skip-category        Skip the ANU-specific metadata.vellum.category check
  *   --allow-tools-json     Skip the TOOLS.json prohibition check
  *
  * If no skill names are provided, all skills are checked.
@@ -388,7 +388,7 @@ function validateSkill(skillName, { skillsDir, skipEmoji, skipCategory, allowToo
     ),
   );
 
-  // 5. Validate required metadata.emoji (Vellum requirement) — skippable via --skip-emoji
+  // 5. Validate required metadata.emoji (ANU requirement) — skippable via --skip-emoji
   if (!skipEmoji) {
     errors.push(
       ...validateMetadataEmoji(frontmatter.metadata).map(

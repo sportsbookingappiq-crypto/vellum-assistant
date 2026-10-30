@@ -8,7 +8,7 @@
  * Read-only — no writes, no assistant DB, no IPC.
  */
 
-import type { GuardianDelivery } from "@vellumai/gateway-client";
+import type { GuardianDelivery } from "@anu/gateway-client";
 import { and, desc, eq, inArray } from "drizzle-orm";
 
 import { getGatewayDb } from "../db/connection.js";

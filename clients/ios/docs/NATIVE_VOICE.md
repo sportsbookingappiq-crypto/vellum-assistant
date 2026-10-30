@@ -22,7 +22,7 @@ exactly four things:
 | --- | --- |
 | `VoiceAudioSessionPlugin` | Owns `AVAudioSession` for the duration of a session (`.playAndRecord` / `.voiceChat`), and reports interruptions |
 | `VoiceLiveActivityPlugin` | Requests, updates, and ends the one ActivityKit activity mirroring the session |
-| `VoiceActivity` widget extension | Renders that activity on the Lock Screen and in the Dynamic Island, plus the two Control Center / Lock Screen controls (the voice one below, and the non-voice "Open Vellum" app launcher). The same bundle also hosts three non-voice Home Screen widgets, Catch Up, Status, and Quick Actions, which draw the shared App Group snapshot and carry a voice button of their own |
+| `VoiceActivity` widget extension | Renders that activity on the Lock Screen and in the Dynamic Island, plus the two Control Center / Lock Screen controls (the voice one below, and the non-voice "Open ANU" app launcher). The same bundle also hosts three non-voice Home Screen widgets, Catch Up, Status, and Quick Actions, which draw the shared App Group snapshot and carry a voice button of their own |
 | App Intents + `AppShortcutsProvider` | Turn a Siri phrase, a Spotlight hit, an Action Button press, a control tap, or a widget button into a `<scheme>://voice` URL |
 
 Everything native is *additive*. Remove all of it and voice still works — that
@@ -264,7 +264,7 @@ otherwise arrive as a `prompt` of `Ben ` plus a stray parameter.
 
 | Producer | Mode | Where |
 | --- | --- | --- |
-| `StartVoiceModeIntent` (Siri: "Talk to Vellum") | `resume` | `App/App/Intents/` |
+| `StartVoiceModeIntent` (Siri: "Talk to ANU") | `resume` | `App/App/Intents/` |
 | `StartNewVoiceConversationIntent` (Action Button, Control Center, Home Screen widgets) | `new` | `App/App/Shared/` |
 | `AskVellumIntent` (Siri collects the question) | `new` + `prompt` | `App/App/Intents/` |
 | Live Activity `widgetURL` (island / Lock Screen tap) | `resume` | `App/VoiceActivity/VoiceSessionLiveActivity.swift` |
@@ -408,8 +408,8 @@ runtime: the shortcut still appears in the Shortcuts app, so it looks registered
 — Siri simply never matches a word of it. There is no build error and no log.
 
 The token resolves from **`CFBundleDisplayName`**, which `App/Info.plist` sets to
-`$(BUNDLE_DISPLAY_NAME)` and each environment's xcconfig supplies: "Vellum",
-"Vellum Staging", "Vellum Dev". All three are pronounceable, which is why one
+`$(BUNDLE_DISPLAY_NAME)` and each environment's xcconfig supplies: "ANU",
+"ANU Staging", "ANU Dev". All three are pronounceable, which is why one
 phrase list serves every build. If `BUNDLE_DISPLAY_NAME` were ever dropped from
 an xcconfig, `CFBundleDisplayName` would expand to an empty string and the token
 would fall back to `CFBundleName` — which is `$(PRODUCT_NAME)`, itself
@@ -770,7 +770,7 @@ The Simulator does not faithfully reproduce any of these.
 | --- | --- |
 | Backgrounded and locked audio | The simulator does not suspend the web process the way real iOS does — this is exactly the measurement the missing spike needs |
 | Siri phrase matching | Needs the on-device App Intents index and real speech. Allow a few minutes after install before the phrases resolve |
-| Action Button | iPhone 15 Pro or newer. Settings → Action Button → Shortcut → Vellum → "New voice conversation" |
+| Action Button | iPhone 15 Pro or newer. Settings → Action Button → Shortcut → ANU → "New voice conversation" |
 | Spotlight surfacing | Device-side indexing, which lags install |
 | Apple Intelligence routing | Requires a device where Apple Intelligence is available |
 | `.notifyOthersOnDeactivation` | Start music, run a voice session, end it, confirm the music resumes |

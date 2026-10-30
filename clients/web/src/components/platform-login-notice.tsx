@@ -1,13 +1,13 @@
 import { type ReactNode } from "react";
 
-import { Notice } from "@vellumai/design-library/components/notice";
+import { Notice } from "@anu/design-library/components/notice";
 
 import { PlatformLoginButton } from "@/components/platform-login-button";
 
 interface PlatformLoginNoticeProps {
   /**
    * Why the surface needs a platform session — typically the existing
-   * "Log in to the Vellum platform to {action}." sentence.
+   * "Log in to the ANU platform to {action}." sentence.
    */
   children: ReactNode;
   /** Forwarded to the underlying `Notice` (e.g. layout spacing). */

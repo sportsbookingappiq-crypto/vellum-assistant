@@ -30,14 +30,14 @@ export function IntegrationsTavilyContent() {
       <DocsContent
         title={integration?.name ?? "Tavily"}
         breadcrumb="Docs / Integrations / Tavily"
-        subtitle="Real-time web search built for AI agents. Use Tavily as the web search provider in your Vellum assistant for citation-grade, relevance-scored results."
+        subtitle="Real-time web search built for AI agents. Use Tavily as the web search provider in your ANU assistant for citation-grade, relevance-scored results."
       >
         <section id="what-it-does">
           <SectionHeading id="what-it-does" level={2}>
             What it does
           </SectionHeading>
           <p className="mb-4 text-zinc-600">
-            Vellum ships with a built-in web search capability that connects your assistant&apos;s
+            ANU ships with a built-in web search capability that connects your assistant&apos;s
             conversations to real-time information from the open web. Tavily is one of the
             supported providers, and the one we recommend when you want results shaped for agents
             rather than humans.
@@ -45,7 +45,7 @@ export function IntegrationsTavilyContent() {
           <p className="mb-0 text-zinc-600">
             Each Tavily result comes with a relevance score, the URL, the title, and a
             pre-extracted content block, so the assistant can quote from a page without a separate
-            fetch step. Once configured, Vellum routes web search queries through the Tavily API
+            fetch step. Once configured, ANU routes web search queries through the Tavily API
             so the model can answer questions with up-to-date sources instead of guessing from
             training data.
           </p>
@@ -57,7 +57,7 @@ export function IntegrationsTavilyContent() {
           </SectionHeading>
           <ul className="mb-0 list-disc space-y-2 pl-6 text-zinc-600">
             <li>
-              A running Vellum assistant. Cloud, self-hosted, or the desktop apps all work.
+              A running ANU assistant. Cloud, self-hosted, or the desktop apps all work.
             </li>
             <li>
               A Tavily API key. Create one at{" "}
@@ -89,7 +89,7 @@ export function IntegrationsTavilyContent() {
           <ol className="mb-6 list-decimal space-y-3 pl-6 text-zinc-600">
             <li>
               <strong>Open assistant settings.</strong>{" "}
-              In Vellum, head to{" "}
+              In ANU, head to{" "}
               <span className="font-medium text-zinc-900">
                 Settings &rarr; Models &amp; Services
               </span>
@@ -99,12 +99,12 @@ export function IntegrationsTavilyContent() {
               <strong>Add your Tavily API key.</strong>{" "}
               Under the <span className="font-medium text-zinc-900">Web Search</span> section,
               choose <span className="font-medium text-zinc-900">Tavily</span> as the provider and
-              paste your API key. Vellum stores the key in your local secure store and never
+              paste your API key. ANU stores the key in your local secure store and never
               writes it to disk in plaintext.
             </li>
             <li>
               <strong>Ask something current.</strong>{" "}
-              Start a new conversation and ask a question that needs fresh information. Vellum
+              Start a new conversation and ask a question that needs fresh information. ANU
               calls Tavily under the hood and feeds the results back to the model in context.
             </li>
           </ol>
@@ -165,7 +165,7 @@ assistant config set services.web-search.provider tavily`}
             <li>
               <strong>Billing.</strong>{" "}
               Tavily usage is billed directly by Tavily under the account that owns the key,
-              separately from Vellum credits.
+              separately from ANU credits.
             </li>
             <li>
               <strong>Privacy.</strong>{" "}
@@ -217,7 +217,7 @@ assistant config set services.web-search.provider tavily`}
                 rel="noopener noreferrer"
                 className="text-emerald-700 underline hover:text-emerald-800"
               >
-                Tavily &harr; Vellum guide
+                Tavily &harr; ANU guide
               </Link>{" "}
               on the Tavily docs site.
             </li>
@@ -226,7 +226,7 @@ assistant config set services.web-search.provider tavily`}
                 href="/docs/key-concepts/web-search"
                 className="text-emerald-700 underline hover:text-emerald-800"
               >
-                Vellum Web Search reference
+                ANU Web Search reference
               </Link>{" "}
               for the full provider matrix and fallback chain.
             </li>

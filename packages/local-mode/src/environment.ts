@@ -10,7 +10,7 @@ const PRODUCTION_ENVIRONMENT_NAME = "production";
 
 /**
  * Location of the persisted default-environment file, written by
- * `vellum env set`. It lives at a fixed, environment-agnostic path so it can
+ * `anu env set`. It lives at a fixed, environment-agnostic path so it can
  * be read before the environment is known. Uses AppData on Windows and the
  * XDG config home on macOS and Linux.
  */
@@ -63,7 +63,7 @@ export function readDefaultEnvironment(
  * Resolution order matches the CLI's `resolveEnvironmentSource`:
  *   1. `VELLUM_ENVIRONMENT` (explicit override, also inherited by the
  *      hatch/retire child processes the CLI spawns)
- *   2. the persisted default written by `vellum env set`
+ *   2. the persisted default written by `anu env set`
  *   3. `production`
  *
  * Resolving the persisted default here — rather than only inspecting

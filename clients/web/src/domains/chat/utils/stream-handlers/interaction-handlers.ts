@@ -11,7 +11,7 @@ import type {
   InteractionResolvedEvent,
   QuestionRequestEvent,
   SecretRequestEvent,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 import { normalizeQuestionRequest } from "@/domains/chat/api/event-types";
 import { ensureMainWindowVisible } from "@/runtime/main-window";
 import { companionTakesPrompts } from "@/runtime/companion-surface";

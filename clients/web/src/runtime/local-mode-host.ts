@@ -10,14 +10,14 @@ import type {
   LocalRevokeDeviceResult,
   LocalUpgradeOptions,
   LocalWakeOptions,
-} from "@vellumai/ipc-contract";
-import { parseLockfile } from "@vellumai/local-mode/contract";
+} from "@anu/ipc-contract";
+import { parseLockfile } from "@anu/local-mode/contract";
 import type {
   Lockfile,
   LockfileAssistant,
   LocalAssistantResources,
   LockfileWriteResult,
-} from "@vellumai/local-mode/contract";
+} from "@anu/local-mode/contract";
 
 import { isElectron } from "@/runtime/is-electron";
 
@@ -26,7 +26,7 @@ import { isElectron } from "@/runtime/is-electron";
  * reads/writes, and guardian-token acquisition).
  *
  * Local mode provisions an assistant on the user's own machine by driving the
- * Vellum CLI and reading/writing its lockfile. That work runs in a trusted
+ * ANU CLI and reading/writing its lockfile. That work runs in a trusted
  * host process, never the renderer: in the Electron desktop shell it runs in
  * the main process behind `window.vellum.localMode.*`; on the web/dev host it
  * runs in the Vite dev server behind `/assistant/__local/*` middleware. This
@@ -35,7 +35,7 @@ import { isElectron } from "@/runtime/is-electron";
  * `runtime/` wrapper rule in `clients/web/docs/ELECTRON.md`.
  *
  * Both branches return the same wire contract, so callers never observe which
- * host they're on. The contract types are owned by `@vellumai/local-mode` —
+ * host they're on. The contract types are owned by `@anu/local-mode` —
  * the package every host produces them from — and re-exported here so `lib/`
  * can keep importing them from `runtime/` without reaching back into `lib/`.
  *
@@ -154,7 +154,7 @@ function readInjectedConfig(): { mode?: string } | undefined {
 
 /**
  * Whether a local-mode host (the Electron IPC bridge, the Vite dev server, or
- * the `vellum client` CLI server) backs this runtime and can serve
+ * the `anu client` CLI server) backs this runtime and can serve
  * `/assistant/__local/*`. The managed web build and the remote-web tunnel
  * cannot, yet both still surface local / self-hosted assistants via the platform
  * `is_local` flag — so callers and UI MUST consult this before offering a local
@@ -179,7 +179,7 @@ export function isLocalModeHostAvailable(): boolean {
 
 /**
  * Whether this host serves `/assistant/__local/avatar/{id}`: the Electron main
- * process and the Vite dev server do; the packaged `vellum client` web host
+ * process and the Vite dev server do; the packaged `anu client` web host
  * deliberately does not (its `.vellum` boundary), and its SPA fallback would
  * answer the request with HTML. `import.meta.env.DEV` is what separates the
  * dev server from a served build.
@@ -232,7 +232,7 @@ async function requestLocalCommand<T extends { ok: boolean }>(
 /**
  * Provision a local assistant for the requested species.
  *
- * Both hosts spawn the Vellum CLI in a trusted process and return the same
+ * Both hosts spawn the ANU CLI in a trusted process and return the same
  * `{ ok, assistantId }` contract: the Electron main process behind
  * `window.vellum.localMode.hatch`, the Vite dev server behind the
  * `/assistant/__local/hatch` middleware. Callers reload the lockfile to
@@ -382,7 +382,7 @@ export async function replacePlatformAssistantsHost(
 }
 
 /**
- * Retire a local assistant. Both hosts drive the Vellum CLI's `retire` in a
+ * Retire a local assistant. Both hosts drive the ANU CLI's `retire` in a
  * trusted process and return the same `{ ok, error }` contract.
  */
 export async function retireLocalAssistantHost(
@@ -511,7 +511,7 @@ const DEVICE_MANAGEMENT_UNSUPPORTED_ERROR =
  * List the devices holding pairing tokens for a local assistant. Device
  * management is host-side only: the gateway's devices routes reject browser
  * origins by design, so the trusted host (Electron main, the Vite dev
- * middleware, or the `vellum client` server) spawns the CLI's `devices
+ * middleware, or the `anu client` server) spawns the CLI's `devices
  * --json` and returns its result over this seam. Older Electron hosts that
  * predate the IPC channel degrade to a structured unsupported error, which
  * doubles as the UI's visibility gate on those app shells.
@@ -558,7 +558,7 @@ export async function revokePairedDeviceHost(
 }
 
 /**
- * Stop a local assistant's daemon and gateway. Both hosts drive the Vellum
+ * Stop a local assistant's daemon and gateway. Both hosts drive the ANU
  * CLI's `sleep --force` in a trusted process and return the same `{ ok, error }`
  * contract. Used as the first half of a restart (sleep → wake).
  */
@@ -582,7 +582,7 @@ export async function sleepLocalAssistantHost(
 
 /**
  * Wake (start/restart) a local assistant's daemon and gateway. Both hosts
- * drive the Vellum CLI's `wake` in a trusted process and return the same
+ * drive the ANU CLI's `wake` in a trusted process and return the same
  * `{ ok, error }` contract.
  *
  * This is the non-destructive repair primitive: it revives a stopped or
@@ -616,7 +616,7 @@ export async function wakeLocalAssistantHost(
   return postLocalCommand<LocalWakeResult>(
     "/assistant/__local/wake",
     { assistantId, repairGuardian: options?.repairGuardian },
-    "Wake failed. Try running vellum wake in your terminal.",
+    "Wake failed. Try running anu wake in your terminal.",
   );
 }
 

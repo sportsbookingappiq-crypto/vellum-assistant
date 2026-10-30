@@ -1,6 +1,6 @@
 import { useLayoutEffect, type CSSProperties, type ReactNode } from "react";
 
-import { cn } from "@vellumai/design-library";
+import { cn } from "@anu/design-library";
 
 import { usePageSurfaceStore } from "@/stores/page-surface-store";
 

@@ -2,9 +2,9 @@ import { DeveloperGuideContent } from "@/app/docs/_components/developer-guide-co
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({
-  title: "Developer Guide - Vellum Docs",
+  title: "Developer Guide - ANU Docs",
   description:
-    "Technical reference for contributors and developers working on the Vellum Assistant platform.",
+    "Technical reference for contributors and developers working on the ANU platform.",
   path: "/docs/developer-guide",
 });
 

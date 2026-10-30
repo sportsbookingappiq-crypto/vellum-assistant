@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, mock, test } from "bun:test";
 
-import type { ChannelReplyPayload } from "@vellumai/gateway-client";
-import { ChannelDeliveryError } from "@vellumai/gateway-client/http-delivery";
+import type { ChannelReplyPayload } from "@anu/gateway-client";
+import { ChannelDeliveryError } from "@anu/gateway-client/http-delivery";
 
 // Replace each channel's provider-API send layer with spies so the dispatcher's
 // routing and sub-operation selection can be asserted without network calls.

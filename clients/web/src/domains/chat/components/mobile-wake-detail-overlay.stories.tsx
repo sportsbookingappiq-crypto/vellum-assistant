@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { PortalContainerProvider } from "@vellumai/design-library/utils/portal-container";
+import { PortalContainerProvider } from "@anu/design-library/utils/portal-container";
 
 import {
   Transcript,

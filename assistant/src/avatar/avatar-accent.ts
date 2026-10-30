@@ -1,17 +1,14 @@
 /**
  * Reading an accent colour out of an avatar image.
  *
- * The colour maths is `dominantAccentHex` in `@vellumai/avatar-manifest`,
+ * The colour maths is `dominantAccentHex` in `@anu/avatar-manifest`,
  * shared with the web so both sides agree on what colour an image is. This
  * module only decodes: sharp turns the upload into a small square of RGBA
  * pixels, centre-cropped the way the avatar is drawn, so the sample comes from
  * the pixels the user actually sees.
  */
-import { accentHexForColorId } from "@vellumai/avatar-catalog/colors";
-import {
-  type AvatarAccent,
-  dominantAccentHex,
-} from "@vellumai/avatar-manifest";
+import { accentHexForColorId } from "@anu/avatar-catalog/colors";
+import { type AvatarAccent, dominantAccentHex } from "@anu/avatar-manifest";
 
 import { getLogger } from "../util/logger.js";
 

@@ -284,7 +284,7 @@ jobs:
       - name: Install dependencies
         run: |
           if [ -f bun.lock ]; then
-            bun install --frozen-lockfile --filter=@vellumai/assistant
+            bun install --frozen-lockfile --filter=@anu/assistant
           else
             for pkg in packages/*/ assistant; do
               [ -f "$pkg/package.json" ] || continue
@@ -341,11 +341,11 @@ jobs:
 
           # Bump meta-package dependency versions
           jq --arg v "$VERSION" '
-            .dependencies["@vellumai/assistant"] = $v |
-            .dependencies["@vellumai/cli"] = $v |
-            .dependencies["@vellumai/credential-executor"] = $v |
-            .dependencies["@vellumai/vellum-gateway"] = $v |
-            .dependencies["@vellumai/web"] = $v
+            .dependencies["@anu/assistant"] = $v |
+            .dependencies["@anu/cli"] = $v |
+            .dependencies["@anu/credential-executor"] = $v |
+            .dependencies["@anu/gateway"] = $v |
+            .dependencies["@anu/web"] = $v
           ' meta/package.json > tmp && mv tmp meta/package.json
 
           # Bump Chrome extension version (manifest.json + package.json)

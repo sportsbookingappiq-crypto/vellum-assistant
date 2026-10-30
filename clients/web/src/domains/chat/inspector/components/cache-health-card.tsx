@@ -19,8 +19,8 @@ import {
   MISSING_VALUE,
 } from "@/domains/chat/inspector/inspector-formatters";
 import { useTranslation } from "@/i18n";
-import type { LLMCallSummary } from "@vellumai/assistant-api";
-import { Card, Notice, type NoticeTone } from "@vellumai/design-library";
+import type { LLMCallSummary } from "@anu/assistant-api";
+import { Card, Notice, type NoticeTone } from "@anu/design-library";
 type ChatTranslate = ReturnType<typeof useTranslation<"chat">>["t"];
 
 export interface CacheHealthCardProps {

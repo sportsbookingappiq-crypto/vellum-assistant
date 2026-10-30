@@ -23,7 +23,7 @@ import {
   cn,
   Tooltip,
   type CustomPropertyStyle,
-} from "@vellumai/design-library";
+} from "@anu/design-library";
 
 export interface SidebarIconTileProps
   extends Omit<ComponentProps<"button">, "style" | "children" | "onClick"> {

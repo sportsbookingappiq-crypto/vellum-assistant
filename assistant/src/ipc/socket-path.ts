@@ -1,4 +1,4 @@
-import { resolveIpcEndpoint } from "@vellumai/ipc-server-utils";
+import { resolveIpcEndpoint } from "@anu/ipc-server-utils";
 
 import { getWorkspaceDir } from "../util/platform.js";
 

@@ -1,6 +1,6 @@
 import AppIntents
 
-/// "New chat": open Vellum on a fresh draft conversation.
+/// "New chat": open ANU on a fresh draft conversation.
 ///
 /// The action behind the New Chat buttons on the Home Screen widgets. Unlike
 /// `OpenVellumIntent`, which lands wherever the user left off, this one asks
@@ -14,7 +14,7 @@ import AppIntents
 struct OpenNewChatIntent: AppIntent {
     static var title: LocalizedStringResource = "New chat"
     static var description = IntentDescription(
-        "Open Vellum and start a new chat."
+        "Open ANU and start a new chat."
     )
 
     /// Both launch-mode declarations are load-bearing; do not "clean this up".

@@ -25,7 +25,7 @@ import { isActiveStatus } from "@/utils/workflow-status";
 import type {
   WorkflowRunStatus,
   WorkflowJournalResponse,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 
 import { fetchWorkflowJournal } from "./fetch-workflow-journal";
 import { fetchWorkflowRun } from "./fetch-workflow-run";

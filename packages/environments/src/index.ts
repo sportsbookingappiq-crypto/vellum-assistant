@@ -1,5 +1,5 @@
 /**
- * @vellumai/environments: the single source of truth for how a Vellum install
+ * @anu/environments: the single source of truth for how an ANU install
  * is laid out and which deployment environment it belongs to.
  *
  * Two things live here:

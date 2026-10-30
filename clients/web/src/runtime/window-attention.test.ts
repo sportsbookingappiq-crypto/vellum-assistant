@@ -7,7 +7,7 @@
 
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 
-import type { WindowAttentionPayload } from "@vellumai/ipc-contract";
+import type { WindowAttentionPayload } from "@anu/ipc-contract";
 
 import {
   canHandleForegroundDirective,
@@ -174,7 +174,7 @@ describe("isVisibleToUser", () => {
   });
 
   test("reads the host's window report under Electron, not the DOM", () => {
-    // Vellum windows disable the Page Visibility API, so the DOM reads
+    // ANU windows disable the Page Visibility API, so the DOM reads
     // visible wherever the window actually is.
     setVisibilityState("visible");
     installBridge();

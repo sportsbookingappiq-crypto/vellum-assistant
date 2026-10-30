@@ -2,9 +2,9 @@ import { SkillsReferenceEmailAgentMailContent } from "@/app/docs/_components/ski
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({
-  title: "Email (AgentMail) - Vellum Docs",
+  title: "Email (AgentMail) - ANU Docs",
   description:
-    "Email skill for Vellum — send, read, search, and manage email from your assistant's own address.",
+    "Email skill for ANU — send, read, search, and manage email from your assistant's own address.",
   path: "/docs/skills-reference/email-agentmail",
 });
 

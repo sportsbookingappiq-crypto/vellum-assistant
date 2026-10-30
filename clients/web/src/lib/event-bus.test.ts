@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 
-import type { AssistantEventEnvelope } from "@vellumai/assistant-api";
+import type { AssistantEventEnvelope } from "@anu/assistant-api";
 
 // Registered before the bus is imported so the bus binds to the mock.
 const captureErrorMock = mock(() => {});

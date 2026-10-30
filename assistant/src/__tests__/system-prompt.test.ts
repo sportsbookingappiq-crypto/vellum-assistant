@@ -120,24 +120,21 @@ describe("buildSystemPrompt", () => {
   });
 
   test("uses IDENTITY.md when it exists", () => {
-    writeFileSync(
-      join(TEST_DIR, "IDENTITY.md"),
-      "# My Identity\n\nI am Vellum.",
-    );
+    writeFileSync(join(TEST_DIR, "IDENTITY.md"), "# My Identity\n\nI am ANU.");
     const result = buildSystemPrompt();
     // IDENTITY.md renders as the `08-identity` workspace-backed section.
-    expect(result).toContain("# My Identity\n\nI am Vellum.");
+    expect(result).toContain("# My Identity\n\nI am ANU.");
   });
 
   test("composes IDENTITY.md + SOUL.md when both exist", () => {
-    writeFileSync(join(TEST_DIR, "IDENTITY.md"), "# Identity\n\nI am Vellum.");
+    writeFileSync(join(TEST_DIR, "IDENTITY.md"), "# Identity\n\nI am ANU.");
     writeFileSync(join(TEST_DIR, "SOUL.md"), "# Soul\n\nBe thoughtful.");
     const result = buildSystemPrompt();
     // IDENTITY renders before SOUL (sections `08-identity` then
     // `09-soul`).
-    expect(result).toContain("# Identity\n\nI am Vellum.");
+    expect(result).toContain("# Identity\n\nI am ANU.");
     expect(result).toContain("# Soul\n\nBe thoughtful.");
-    const identityIdx = result.indexOf("# Identity\n\nI am Vellum.");
+    const identityIdx = result.indexOf("# Identity\n\nI am ANU.");
     const soulIdx = result.indexOf("# Soul\n\nBe thoughtful.");
     expect(identityIdx).toBeLessThan(soulIdx);
   });
@@ -164,7 +161,7 @@ describe("buildSystemPrompt", () => {
   });
 
   test("side-chain prompt options still include IDENTITY.md and SOUL.md", () => {
-    writeFileSync(join(TEST_DIR, "IDENTITY.md"), "# Identity\n\nI am Vellum.");
+    writeFileSync(join(TEST_DIR, "IDENTITY.md"), "# Identity\n\nI am ANU.");
     writeFileSync(join(TEST_DIR, "SOUL.md"), "# Soul\n\nBe thoughtful.");
 
     const result = buildSystemPrompt({
@@ -172,17 +169,17 @@ describe("buildSystemPrompt", () => {
       excludeCustomPrefix: true,
     });
 
-    expect(result).toContain("# Identity\n\nI am Vellum.");
+    expect(result).toContain("# Identity\n\nI am ANU.");
     expect(result).toContain("# Soul\n\nBe thoughtful.");
   });
 
   test("ignores empty SOUL.md", () => {
     writeFileSync(join(TEST_DIR, "SOUL.md"), "   \n  \n  ");
-    writeFileSync(join(TEST_DIR, "IDENTITY.md"), "# Identity\n\nI am Vellum.");
+    writeFileSync(join(TEST_DIR, "IDENTITY.md"), "# Identity\n\nI am ANU.");
     const result = buildSystemPrompt();
     // IDENTITY renders but SOUL is gated off by the renderer's
     // empty-body check; no SOUL content should appear.
-    expect(result).toContain("# Identity\n\nI am Vellum.");
+    expect(result).toContain("# Identity\n\nI am ANU.");
     expect(result).not.toContain("   \n  \n  ");
   });
 
@@ -372,11 +369,11 @@ describe("buildSystemPrompt", () => {
     mkdirSync(join(TEST_DIR, "channels"), { recursive: true });
     writeFileSync(
       join(TEST_DIR, "channels", "vellum.md"),
-      "# Channel persona\n\nThis is the Vellum channel.",
+      "# Channel persona\n\nThis is the ANU channel.",
     );
     const result = buildSystemPrompt();
     expect(result).toContain("# Channel persona");
-    expect(result).toContain("This is the Vellum channel.");
+    expect(result).toContain("This is the ANU channel.");
   });
 
   test("includes VOICE.md as the 12-voice section with prepended heading", () => {
@@ -577,12 +574,12 @@ describe("buildSystemPrompt", () => {
   test("strips comment lines starting with _ from prompt files", () => {
     writeFileSync(
       join(TEST_DIR, "IDENTITY.md"),
-      "# Identity\n_ This is a comment\nI am Vellum.\n_ Another comment",
+      "# Identity\n_ This is a comment\nI am ANU.\n_ Another comment",
     );
     const result = buildSystemPrompt();
     // IDENTITY.md renders in the static prefix via the 08-identity section,
     // so we assert against the full prompt rather than basePrompt.
-    expect(result).toContain("# Identity\nI am Vellum.");
+    expect(result).toContain("# Identity\nI am ANU.");
     expect(result).not.toContain("_ This is a comment");
     expect(result).not.toContain("_ Another comment");
   });
@@ -602,12 +599,12 @@ describe("buildSystemPrompt", () => {
 
   test("file with only comment lines is treated as empty", () => {
     writeFileSync(join(TEST_DIR, "SOUL.md"), "_ All comments\n_ Nothing else");
-    writeFileSync(join(TEST_DIR, "IDENTITY.md"), "# Identity\n\nI am Vellum.");
+    writeFileSync(join(TEST_DIR, "IDENTITY.md"), "# Identity\n\nI am ANU.");
     const result = buildSystemPrompt();
     // Comment-only SOUL.md gets stripped down to "" by
     // `stripCommentLines` and is then gated off by the renderer's
     // empty-body check; only IDENTITY contributes content here.
-    expect(result).toContain("# Identity\n\nI am Vellum.");
+    expect(result).toContain("# Identity\n\nI am ANU.");
     expect(result).not.toContain("_ All comments");
     expect(result).not.toContain("_ Nothing else");
   });
@@ -714,13 +711,13 @@ describe("buildSystemPrompt", () => {
     test("workspace file content still appears after prefix", () => {
       mkdirSync(SYSTEM_PROMPTS_DIR, { recursive: true });
       writeFileSync(PREFIX_FILE, PREFIX_FRONTMATTER + "Custom prefix\n");
-      writeFileSync(join(TEST_DIR, "IDENTITY.md"), "I am Vellum.");
+      writeFileSync(join(TEST_DIR, "IDENTITY.md"), "I am ANU.");
       const result = buildSystemPrompt();
       expect(result.startsWith("Custom prefix")).toBe(true);
       // IDENTITY.md renders via 08-identity in the static prefix after
       // the 00-prefix slot.
       const prefixIdx = result.indexOf("Custom prefix");
-      const identityIdx = result.indexOf("I am Vellum.");
+      const identityIdx = result.indexOf("I am ANU.");
       expect(prefixIdx).toBeGreaterThan(-1);
       expect(identityIdx).toBeGreaterThan(prefixIdx);
     });

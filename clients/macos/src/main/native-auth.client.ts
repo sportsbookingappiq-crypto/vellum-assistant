@@ -3,8 +3,8 @@ import { app, session, shell } from "electron";
 import {
   configureNativeAuth,
   installNativeAuth,
-} from "@vellumai/electron-desktop/native-auth";
-import { resolveLocalConfigFromEnv } from "@vellumai/local-mode";
+} from "@anu/electron-desktop/native-auth";
+import { resolveLocalConfigFromEnv } from "@anu/local-mode";
 
 import { handle, handleSync } from "./ipc";
 import { ensureVisible } from "./main-window";

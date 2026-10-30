@@ -19,7 +19,7 @@ import {
 import {
   COMPANION_INTRO_BEATS,
   type CompanionSurfaceState,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 const moveByMock = mock((_dx: number, _dy: number) => undefined);
 const releaseMock = mock(() => undefined);
@@ -790,10 +790,10 @@ describe("dragging the companion surface", () => {
 
   /**
    * The creature is the call button when there is no call. On one, the press
-   * goes back to Vellum instead, which is where the room and the transcript
+   * goes back to ANU instead, which is where the room and the transcript
    * are, and the same holds for a dial still waiting on its session.
    */
-  test("a press that held still on a call goes back to Vellum", async () => {
+  test("a press that held still on a call goes back to ANU", async () => {
     STATE.call = LISTENING_CALL;
     const { container } = render(<CompanionSurfacePage />);
     const { avatar, pill } = await pinSurface(container);
@@ -812,7 +812,7 @@ describe("dragging the companion surface", () => {
     expect(startVoiceMock).not.toHaveBeenCalled();
   });
 
-  test("a press that held still on a dial goes back to Vellum too", async () => {
+  test("a press that held still on a dial goes back to ANU too", async () => {
     STATE.dialing = true;
     const { container } = render(<CompanionSurfacePage />);
     const { avatar, pill } = await pinSurface(container);

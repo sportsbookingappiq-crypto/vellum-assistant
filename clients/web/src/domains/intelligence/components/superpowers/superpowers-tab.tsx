@@ -82,7 +82,7 @@ import { useSupportsPluginsSurface } from "@/lib/backwards-compat/plugins-surfac
 import { useAssistantIdentityStore } from "@/stores/assistant-identity-store";
 import { getLocalBool, setLocalBool } from "@/utils/local-settings";
 import { routes } from "@/utils/routes";
-import { Button, Card, ConfirmDialog, toast } from "@vellumai/design-library";
+import { Button, Card, ConfirmDialog, toast } from "@anu/design-library";
 
 interface SuperpowersTabProps {
   assistantId: string;
@@ -1015,7 +1015,7 @@ type TranslateEmptyStateCopy = (
     | "superpowersTab.emptyState.defaultSubtitle",
 ) => string;
 
-/** `Vellum`, `Clawhub`, and `skills.sh` in the empty-state copy are brand/product names, never translated. */
+/** `ANU`, `Clawhub`, and `skills.sh` in the empty-state copy are brand/product names, never translated. */
 function getEmptyStateCopy(
   filter: SuperpowerFilter,
   category: string | null,

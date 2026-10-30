@@ -52,7 +52,7 @@ import {
   type Message,
   parseSurfaceShowResultId,
   type PostModelCallContext,
-} from "@vellumai/plugin-api";
+} from "@anu/plugin-api";
 
 import {
   isSurfaceCompletionNudged,

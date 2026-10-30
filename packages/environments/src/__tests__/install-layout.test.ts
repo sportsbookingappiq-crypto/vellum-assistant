@@ -34,7 +34,7 @@ describe("isRepoCheckoutPath", () => {
   test("an installed package is not a checkout", () => {
     expect(
       isRepoCheckoutPath(
-        "/Users/x/Library/Application Support/@vellumai/macos/cli/latest/node_modules/@vellumai/assistant/src/index.ts",
+        "/Users/x/Library/Application Support/@anu/macos/cli/latest/node_modules/@anu/assistant/src/index.ts",
       ),
     ).toBe(false);
   });
@@ -56,7 +56,7 @@ describe("findAssistantCommand", () => {
   test("finds the command shipped beside an installed package", () => {
     const nodeModules = join(root, "cli", "latest", "node_modules");
     const command = seedCommand(nodeModules);
-    const path = join(nodeModules, "@vellumai", "assistant", "src", "index.ts");
+    const path = join(nodeModules, "@anu", "assistant", "src", "index.ts");
 
     expect(findAssistantCommand(path)).toBe(command);
   });
@@ -66,7 +66,7 @@ describe("findAssistantCommand", () => {
     const outerCommand = seedCommand(outer);
     const inner = join(outer, "vellum", "node_modules");
     const innerCommand = seedCommand(inner);
-    const path = join(inner, "@vellumai", "assistant", "src", "index.ts");
+    const path = join(inner, "@anu", "assistant", "src", "index.ts");
 
     expect(findAssistantCommand(path)).toBe(innerCommand);
     expect(innerCommand).not.toBe(outerCommand);
@@ -77,7 +77,7 @@ describe("findAssistantCommand", () => {
     const outerCommand = seedCommand(outer);
     const inner = join(outer, "vellum", "node_modules");
     mkdirSync(inner, { recursive: true });
-    const path = join(inner, "@vellumai", "assistant", "src", "index.ts");
+    const path = join(inner, "@anu", "assistant", "src", "index.ts");
 
     expect(findAssistantCommand(path)).toBe(outerCommand);
   });
@@ -91,7 +91,7 @@ describe("findAssistantCommand", () => {
   test("returns null when the install ships no assistant command", () => {
     const nodeModules = join(root, "node_modules");
     mkdirSync(join(nodeModules, ".bin"), { recursive: true });
-    const path = join(nodeModules, "@vellumai", "assistant", "src", "index.ts");
+    const path = join(nodeModules, "@anu", "assistant", "src", "index.ts");
 
     expect(findAssistantCommand(path)).toBeNull();
   });

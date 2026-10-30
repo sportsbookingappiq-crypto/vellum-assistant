@@ -20,7 +20,7 @@ import {
   mediaBlockAttachmentId,
   type Message,
   resolveMediaSourceData,
-} from "@vellumai/plugin-api";
+} from "@anu/plugin-api";
 
 import {
   isBelowMinDimension,

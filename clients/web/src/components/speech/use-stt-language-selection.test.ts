@@ -21,7 +21,7 @@ import { createElement, type ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react";
 
-mock.module("@vellumai/design-library/components/toast", () => ({
+mock.module("@anu/design-library/components/toast", () => ({
   toast: { success: () => {}, error: () => {} },
   Toaster: () => null,
   ToastContent: () => null,
@@ -135,7 +135,7 @@ describe("useSttLanguageSelection", () => {
     daemonConfigData = { services: { stt: { provider: "vellum" } } };
     providerCatalogData = {
       providers: [
-        { id: "vellum", displayName: "Vellum", languageSelection: "manual" },
+        { id: "vellum", displayName: "ANU", languageSelection: "manual" },
       ],
     };
 
@@ -154,7 +154,7 @@ describe("useSttLanguageSelection", () => {
     };
     providerCatalogData = {
       providers: [
-        { id: "vellum", displayName: "Vellum", languageSelection: "manual" },
+        { id: "vellum", displayName: "ANU", languageSelection: "manual" },
       ],
     };
 
@@ -184,7 +184,7 @@ describe("useSttLanguageSelection", () => {
     daemonConfigData = { services: { stt: { provider: "vellum" } } };
     providerCatalogData = {
       providers: [
-        { id: "vellum", displayName: "Vellum", languageSelection: "manual" },
+        { id: "vellum", displayName: "ANU", languageSelection: "manual" },
       ],
     };
 
@@ -204,7 +204,7 @@ describe("useSttLanguageSelection", () => {
     daemonConfigData = { services: { stt: { provider: "vellum" } } };
     providerCatalogData = {
       providers: [
-        { id: "vellum", displayName: "Vellum", languageSelection: "manual" },
+        { id: "vellum", displayName: "ANU", languageSelection: "manual" },
       ],
     };
     deferPatches = true;
@@ -240,7 +240,7 @@ describe("useSttLanguageSelection", () => {
     };
     providerCatalogData = {
       providers: [
-        { id: "vellum", displayName: "Vellum", languageSelection: "manual" },
+        { id: "vellum", displayName: "ANU", languageSelection: "manual" },
       ],
     };
 

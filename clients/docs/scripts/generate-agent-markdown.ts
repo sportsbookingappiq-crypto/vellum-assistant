@@ -141,15 +141,15 @@ async function main() {
 
     let converted: ConvertedPage;
     if (rendered) {
-      converted = await convertHtml(rendered.html, metaTitle || "Vellum Docs");
+      converted = await convertHtml(rendered.html, metaTitle || "ANU Docs");
     } else if (metaTitle || description) {
       // Page imports but does not render statically. Emit a stub so agents
       // requesting Markdown never get a 404 for a route that serves HTML.
       fallbacks += 1;
       converted = {
-        title: metaTitle || "Vellum Docs",
+        title: metaTitle || "ANU Docs",
         body: [
-          `# ${metaTitle || "Vellum Docs"}`,
+          `# ${metaTitle || "ANU Docs"}`,
           description,
           `This page is not available as Markdown. View it at ${SITE_URL}${route}.`,
         ]

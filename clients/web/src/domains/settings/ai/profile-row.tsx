@@ -1,11 +1,11 @@
 import { AlertCircle, EllipsisVertical } from "lucide-react";
 
-import { actionMenuDestructiveClasses } from "@vellumai/design-library/components/action-menu";
-import { Button } from "@vellumai/design-library/components/button";
-import { ListRow } from "@vellumai/design-library/components/list-row";
-import { Menu } from "@vellumai/design-library/components/menu";
-import { Tag } from "@vellumai/design-library/components/tag";
-import { Tooltip } from "@vellumai/design-library/components/tooltip";
+import { actionMenuDestructiveClasses } from "@anu/design-library/components/action-menu";
+import { Button } from "@anu/design-library/components/button";
+import { ListRow } from "@anu/design-library/components/list-row";
+import { Menu } from "@anu/design-library/components/menu";
+import { Tag } from "@anu/design-library/components/tag";
+import { Tooltip } from "@anu/design-library/components/tooltip";
 
 import { catalogModelSupportsText } from "@/assistant/llm-model-catalog";
 import { resolveModelDisplayName } from "@/assistant/model-display";
@@ -39,7 +39,7 @@ interface ProfileRowProps {
 
 /**
  * One row of the Profiles section (Figma 7412:133380): label, a
- * "{model} • Managed by Vellum" subtitle, the Default chip, and a kebab
+ * "{model} • Managed by ANU" subtitle, the Default chip, and a kebab
  * menu showing only the actions valid for this row (per the design
  * annotation on Light 738). Clicking the row opens the profile in the
  * sidepanel.

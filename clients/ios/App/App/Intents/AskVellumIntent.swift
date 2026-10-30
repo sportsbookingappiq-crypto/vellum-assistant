@@ -6,7 +6,7 @@ import AppIntents
 /// The difference from `StartVoiceModeIntent` / `StartNewVoiceConversationIntent`
 /// is where the first turn comes from. Those two open the app into voice mode
 /// and leave the user to speak once they are there. This one takes the question
-/// as a parameter, so "ask Vellum what's on my calendar" carries the question
+/// as a parameter, so "ask ANU what's on my calendar" carries the question
 /// with it and the app opens with it already in hand. Because the shell proves
 /// the link came from this intent (`CommandURLProvenance`, LUM-3281), the web
 /// layer asks the question for the user as a text turn in a fresh
@@ -26,12 +26,12 @@ import AppIntents
 /// to `AppEnum` or `AppEntity` — a free-form `String` cannot appear in one. So
 /// the registered phrases end at the app name, and Siri collects the question in
 /// a follow-up turn driven by `requestValueDialog` below. That is also exactly
-/// what should happen for a bare "Hey Siri, ask Vellum": the parameter is
+/// what should happen for a bare "Hey Siri, ask ANU": the parameter is
 /// non-optional, so Siri prompts rather than launching into an empty session.
 struct AskVellumIntent: AppIntent {
     static var title: LocalizedStringResource = "Ask a question"
     static var description = IntentDescription(
-        "Open Vellum and ask your question right away in a new conversation."
+        "Open ANU and ask your question right away in a new conversation."
     )
 
     /// What the user wants to ask. Non-optional on purpose: an invocation with
@@ -39,7 +39,7 @@ struct AskVellumIntent: AppIntent {
     /// resolve to `nil` and start a silent session.
     @Parameter(
         title: "Request",
-        requestValueDialog: IntentDialog("What should I ask Vellum?")
+        requestValueDialog: IntentDialog("What should I ask ANU?")
     )
     var request: String
 

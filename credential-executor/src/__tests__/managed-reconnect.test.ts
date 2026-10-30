@@ -17,11 +17,11 @@ import { existsSync, mkdirSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
-import { resolveIpcEndpoint } from "@vellumai/ipc-server-utils";
+import { resolveIpcEndpoint } from "@anu/ipc-server-utils";
 import {
   CES_PROTOCOL_VERSION,
   type HandshakeAck,
-} from "@vellumai/service-contracts/credential-rpc";
+} from "@anu/service-contracts/credential-rpc";
 
 import type { Subprocess } from "bun";
 

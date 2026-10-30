@@ -42,7 +42,11 @@ export function renderWorkspaceTopLevelContext(
   options: WorkspaceTopLevelRenderOptions = {},
 ): string {
   const lines: string[] = ["<workspace>"];
-  lines.push(`Root: ${snapshot.rootPath}`);
+  // The snapshot is scanned from the conversation's working directory, the
+  // cwd of `bash` and the base of relative file-tool paths.
+  lines.push(
+    `Root: ${snapshot.rootPath} (working directory of bash and file tools)`,
+  );
   lines.push(`Directories: ${snapshot.directories.join(", ")}`);
   lines.push(`Files: ${snapshot.files.join(", ")}`);
   if (options.conversationAttachmentsPath) {

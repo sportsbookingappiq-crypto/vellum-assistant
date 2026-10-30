@@ -869,10 +869,10 @@ HTML_TEMPLATE = """<!doctype html>
 
   <div class="handoff">
     <div class="title">Next step</div>
-    <p>Now that you know what's broken, fix it with content. Load the <code>geo-article-writer</code> skill in Vellum and we'll start filling the topical gaps the audit just surfaced. Tell it your category and your top 2 competitors when it asks.</p>
+    <p>Now that you know what's broken, fix it with content. Load the <code>geo-article-writer</code> skill in ANU and we'll start filling the topical gaps the audit just surfaced. Tell it your category and your top 2 competitors when it asks.</p>
   </div>
 
-  <div class="footer">geo-audit · run any domain · part of the Vellum GEO toolkit</div>
+  <div class="footer">geo-audit · run any domain · part of the ANU GEO toolkit</div>
 </div>
 </body>
 </html>

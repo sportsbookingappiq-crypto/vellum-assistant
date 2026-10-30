@@ -7,7 +7,7 @@
  */
 import { describe, expect, test } from "bun:test";
 
-import type { GuardianDelivery } from "@vellumai/gateway-client";
+import type { GuardianDelivery } from "@anu/gateway-client";
 
 import { resolveAnchoredGuardian } from "./anchored-guardian.js";
 
@@ -29,7 +29,7 @@ describe("resolveAnchoredGuardian — gateway arm", () => {
           channelType: "vellum",
           address: "v-addr",
           principalId: "p-anchor",
-          displayName: "Vellum",
+          displayName: "ANU",
         }),
         gw({
           channelType: "telegram",
@@ -56,7 +56,7 @@ describe("resolveAnchoredGuardian — gateway arm", () => {
           channelType: "vellum",
           address: "v-addr",
           principalId: "p-anchor",
-          displayName: "Vellum",
+          displayName: "ANU",
         }),
         gw({
           channelType: "telegram",
@@ -70,7 +70,7 @@ describe("resolveAnchoredGuardian — gateway arm", () => {
     expect(result).toEqual({
       principalId: "p-anchor",
       address: "v-addr",
-      displayName: "Vellum",
+      displayName: "ANU",
       channelType: "vellum",
       source: "vellum-anchor",
     });
@@ -83,7 +83,7 @@ describe("resolveAnchoredGuardian — gateway arm", () => {
           channelType: "vellum",
           address: "v-addr",
           principalId: "p-anchor",
-          displayName: "Vellum",
+          displayName: "ANU",
         }),
       ],
       sourceChannel: "telegram",
@@ -119,7 +119,7 @@ describe("resolveAnchoredGuardian — requireAnchorPrincipal (cosmetic label)", 
           channelType: "vellum",
           address: "v-addr",
           principalId: null,
-          displayName: "Vellum",
+          displayName: "ANU",
         }),
       ],
       sourceChannel: "telegram",
@@ -135,7 +135,7 @@ describe("resolveAnchoredGuardian — requireAnchorPrincipal (cosmetic label)", 
           channelType: "vellum",
           address: "v-addr",
           principalId: null,
-          displayName: "Vellum",
+          displayName: "ANU",
         }),
       ],
       sourceChannel: "telegram",

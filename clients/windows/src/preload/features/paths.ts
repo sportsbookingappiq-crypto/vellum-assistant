@@ -3,9 +3,9 @@ import { ipcRenderer, webUtils } from "electron";
 import type {
   BridgeCapabilityRegistry,
   CapabilityModule,
-} from "@vellumai/electron-desktop/capability-registry";
-import { createFileOpenPreloadBridge } from "@vellumai/electron-desktop/file-open-preload";
-import type { VellumBridge } from "@vellumai/ipc-contract";
+} from "@anu/electron-desktop/capability-registry";
+import { createFileOpenPreloadBridge } from "@anu/electron-desktop/file-open-preload";
+import type { VellumBridge } from "@anu/ipc-contract";
 
 const module: CapabilityModule<BridgeCapabilityRegistry<VellumBridge>> = {
   id: "paths",

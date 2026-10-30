@@ -79,7 +79,7 @@ export async function resolveImageGenCredentials(opts: {
     ) {
       return {
         errorHint:
-          "Managed proxy is not available. Please log in to Vellum or switch to Your Own mode.",
+          "Managed proxy is not available. Please log in to ANU or switch to Your Own mode.",
       };
     }
     return {

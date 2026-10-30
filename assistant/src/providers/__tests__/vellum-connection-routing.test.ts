@@ -33,7 +33,7 @@ const vellumConnection = {
   name: "vellum",
   provider: "vellum",
   auth: { type: "platform" },
-  label: "Vellum",
+  label: "ANU",
 } as unknown as ProviderConnection;
 
 const resolvedAuth: ResolvedAuth = {
@@ -54,7 +54,7 @@ describe("vellum connection routing", () => {
 
   test("the vellum sentinel does not dispatch without an override", () => {
     // No `provider` override → the connection column is the routing
-    // sentinel and must not build an adapter, even though Vellum-hosted
+    // sentinel and must not build an adapter, even though ANU-hosted
     // GPU models share this catalog id.
     const adapter = createAdapterFromConnection(
       vellumConnection,
@@ -142,7 +142,7 @@ describe("vellum connection persistence (DB round-trip)", () => {
       name: "vellum",
       provider: "vellum",
       auth: { type: "platform" },
-      label: "Vellum",
+      label: "ANU",
     });
     expect(result.ok).toBe(true);
   });

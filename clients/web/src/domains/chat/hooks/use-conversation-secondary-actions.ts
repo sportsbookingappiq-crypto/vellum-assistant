@@ -13,7 +13,7 @@ import { captureError } from "@/lib/sentry/capture-error";
 import { useCallback, useEffect, useRef } from "react";
 
 import { useNavigate } from "react-router";
-import { toast } from "@vellumai/design-library";
+import { toast } from "@anu/design-library";
 
 import type { Conversation } from "@/types/conversation-types";
 import {

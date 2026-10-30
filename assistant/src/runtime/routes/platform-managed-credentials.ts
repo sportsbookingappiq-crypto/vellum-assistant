@@ -1,5 +1,5 @@
 /**
- * Credentials the Vellum platform provisions onto a managed assistant pod for
+ * Credentials the ANU platform provisions onto a managed assistant pod for
  * its own use: the API key the daemon authenticates to the managed LLM proxy
  * with, and the base URL that proxy lives at.
  *
@@ -11,7 +11,7 @@
  * calling principal.
  *
  * The two fields travel together because they are one capability. The API key
- * spends inference on Vellum's account, and the base URL decides which host
+ * spends inference on ANU's account, and the base URL decides which host
  * receives it: the gateway resolves the platform host from
  * `vellum:platform_base_url` (see `gateway/src/platform-url.ts`) and then
  * sends `vellum:assistant_api_key` to it as the bearer. Leaving the URL
@@ -44,5 +44,5 @@ export function platformManagedCredentialRefusal(
   const name = service && field ? `${service}:${field}` : "This credential";
   const verb =
     action === "read" ? "inspected or revealed" : "changed or deleted";
-  return `${name} is provisioned and owned by the Vellum platform. It cannot be ${verb} through the credentials API.`;
+  return `${name} is provisioned and owned by the ANU platform. It cannot be ${verb} through the credentials API.`;
 }

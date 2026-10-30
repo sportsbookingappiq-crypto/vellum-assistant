@@ -1,5 +1,5 @@
 /**
- * Canonical environment contract for the Vellum Chrome extension.
+ * Canonical environment contract for the ANU Chrome extension.
  *
  * This module is the single source of truth for:
  *   - the set of valid extension environments
@@ -103,7 +103,7 @@ export interface CloudUrls {
 /**
  * Return the cloud API and web base URLs for the given environment.
  *
- * Production uses the canonical Vellum production hosts. Non-production
+ * Production uses the canonical ANU production hosts. Non-production
  * environments use environment-prefixed subdomains following the
  * convention `<env>-api.vellum.ai` / `<env>-assistant.vellum.ai`, with
  * `local` using `localhost` origins for both.

@@ -1,5 +1,5 @@
 /**
- * Tests for `vellum devices` (list) and `vellum devices revoke <hashedDeviceId>`:
+ * Tests for `anu devices` (list) and `anu devices revoke <hashedDeviceId>`:
  * the host-side CLI that calls the loopback `GET /v1/devices` and
  * `POST /v1/devices/revoke` endpoints. Verifies host-gating (refuses paired
  * connections), the destructive-revoke confirmation, and that requests carry no
@@ -93,7 +93,7 @@ function headerKeys(init?: RequestInit): string[] {
   return h ? Object.keys(h).map((k) => k.toLowerCase()) : [];
 }
 
-describe("vellum devices", () => {
+describe("anu devices", () => {
   beforeEach(() => {
     process.env.VELLUM_LOCKFILE_DIR = testDir;
     process.env.XDG_CONFIG_HOME = testDir;
@@ -132,7 +132,7 @@ describe("vellum devices", () => {
     const { logs } = await runDevices();
     expect(logs).toContain("USAGE:");
     expect(logs).toContain("EXAMPLES:");
-    expect(logs).toContain("vellum devices revoke");
+    expect(logs).toContain("anu devices revoke");
   });
 
   test("lists active devices over loopback with no browser/proxy headers", async () => {
@@ -373,7 +373,7 @@ describe("vellum devices", () => {
     const { exited, errors } = await runDevices();
 
     expect(exited).toBe(true);
-    expect(errors).toContain("vellum unpair");
+    expect(errors).toContain("anu unpair");
     expect(fetchCalls).toHaveLength(0);
   });
 

@@ -49,7 +49,7 @@ import {
   getConversationProcessingStartedAt,
   getRecordedConversationToolSurface,
   isConversationProcessing,
-} from "@vellumai/plugin-api";
+} from "@anu/plugin-api";
 
 import {
   type ClientOs,

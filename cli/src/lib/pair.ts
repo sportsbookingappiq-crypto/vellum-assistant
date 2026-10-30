@@ -1,5 +1,5 @@
 /**
- * Pure helpers for `vellum pair`'s remote-web approval flow.
+ * Pure helpers for `anu pair`'s remote-web approval flow.
  *
  * Pairing challenge stores are in-memory per gateway process, so approving a
  * code against a different assistant or environment than the one that served
@@ -8,7 +8,7 @@
  * actually asked.
  */
 
-import { REMOTE_WEB_PAIRING_CODE_TTL_MS } from "@vellumai/service-contracts/remote-web-pairing";
+import { REMOTE_WEB_PAIRING_CODE_TTL_MS } from "@anu/service-contracts/remote-web-pairing";
 
 const CODE_TTL_MINUTES = Math.round(REMOTE_WEB_PAIRING_CODE_TTL_MS / 60_000);
 

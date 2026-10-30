@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, mock, test } from "bun:test";
 import type {
   NotificationIdentity,
   PrepareNotificationIdentityPayload,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import {
   __clearNotificationIdentitySnapshotsForTests,

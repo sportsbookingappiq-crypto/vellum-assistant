@@ -8,7 +8,7 @@ import {
   test,
 } from "bun:test";
 import type { PermissionsService } from "./permissions-service";
-import type { PermissionGuideState } from "@vellumai/ipc-contract";
+import type { PermissionGuideState } from "@anu/ipc-contract";
 
 const handles = new Map<string, Function>();
 const listeners = new Map<string, Function>();
@@ -90,8 +90,8 @@ const avatarIcon = {
   resize: () => avatarIcon,
 };
 mock.module(
-  "@vellumai/electron-desktop/avatar",
-  (): Partial<typeof import("@vellumai/electron-desktop/avatar")> => ({
+  "@anu/electron-desktop/avatar",
+  (): Partial<typeof import("@anu/electron-desktop/avatar")> => ({
     getAvatarPng: () => avatarPng,
     getAccentHex: () => accentHex,
     onAvatarChange: (callback: () => void) => {
@@ -106,7 +106,7 @@ mock.module("node:fs/promises", () => ({
 mock.module("electron", () => ({
   nativeImage: { createFromBuffer: () => avatarIcon },
   app: {
-    getPath: () => "/Applications/Vellum.app/Contents/MacOS/Vellum",
+    getPath: () => "/Applications/ANU.app/Contents/MacOS/ANU",
     getFileIcon: async (_file: string, options: { size: string }) => {
       // Electron does not support the large icon size on macOS.
       expect(["small", "normal"]).toContain(options.size);
@@ -130,7 +130,7 @@ mock.module("electron", () => ({
     getAnimationSettings: () => ({ prefersReducedMotion: true }),
   },
 }));
-mock.module("@vellumai/electron-desktop/floating-window", () => ({
+mock.module("@anu/electron-desktop/floating-window", () => ({
   createFloatingWindow: ({ kind }: { kind: string }) => {
     const win = new FakeWindow();
     windows.set(kind, win);
@@ -155,7 +155,7 @@ mock.module("./companion-capture-sources", () => ({
 }));
 mock.module("./sidecar/mac-helper-path", () => ({
   getMacHelperAppPath: () =>
-    "/Applications/Vellum.app/Contents/Resources/bin/Vellum Helper.app",
+    "/Applications/ANU.app/Contents/Resources/bin/ANU Helper.app",
 }));
 const preparePresentation = mock(() => undefined);
 mock.module("./permissions-service", () => ({
@@ -228,7 +228,7 @@ describe("native permission guide", () => {
       sender: win.webContents,
     });
     expect(win.webContents.startDrag).toHaveBeenCalledWith({
-      file: "/Applications/Vellum.app/Contents/Resources/bin/Vellum Helper.app",
+      file: "/Applications/ANU.app/Contents/Resources/bin/ANU Helper.app",
       icon: avatarIcon,
     });
   });
@@ -285,7 +285,7 @@ describe("native permission guide", () => {
   test("drags the helper bundle only from its live guide sender", async () => {
     await begin();
     const session = get()!;
-    expect(session.appName).toBe("Vellum Helper");
+    expect(session.appName).toBe("ANU Helper");
     const win = windows.get("permission-guide")!;
     const drag = listeners.get("vellum:permissions:guide:drag")!;
     drag([session.id], { sender: {} });
@@ -293,7 +293,7 @@ describe("native permission guide", () => {
     expect(win.webContents.startDrag).not.toHaveBeenCalled();
     drag([session.id], { sender: win.webContents });
     expect(win.webContents.startDrag).toHaveBeenCalledWith({
-      file: "/Applications/Vellum.app/Contents/Resources/bin/Vellum Helper.app",
+      file: "/Applications/ANU.app/Contents/Resources/bin/ANU Helper.app",
       icon,
     });
   });

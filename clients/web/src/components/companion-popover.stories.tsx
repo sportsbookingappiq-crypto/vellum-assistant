@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { CompanionPopover } from "@/components/companion-popover";
-import { COMPANION_POPOVER_INSET } from "@vellumai/ipc-contract";
+import { COMPANION_POPOVER_INSET } from "@anu/ipc-contract";
 
 /**
  * The popover beside the companion, over a desktop it floats above: the short

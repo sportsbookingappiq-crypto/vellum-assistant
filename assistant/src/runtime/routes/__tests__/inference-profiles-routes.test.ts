@@ -32,7 +32,7 @@ mock.module("../../../persistence/embeddings/embedding-backend.js", () => ({
   clearEmbeddingBackendCache: () => {},
 }));
 
-// The availability guard judges the Vellum-managed route and the credential
+// The availability guard judges the ANU-managed route and the credential
 // store for real; both are stood in for here so tests can pick a state.
 let managedProxyEnabled = true;
 mock.module("../../../providers/platform-proxy/context.js", () => ({
@@ -116,7 +116,7 @@ function seedKeyedConnection(provider: string): void {
   });
 }
 
-/** The Vellum-managed row every routing-identity profile resolves to. */
+/** The ANU-managed row every routing-identity profile resolves to. */
 function seedVellumConnection(): void {
   seedConnection("vellum", "vellum", { type: "platform" });
 }
@@ -238,7 +238,7 @@ describe("POST inference/profiles (create) validation", () => {
         },
       }),
     ).rejects.toThrow(
-      /"not-a-real-model" is not served by the Vellum managed route/,
+      /"not-a-real-model" is not served by the ANU managed route/,
     );
   });
 

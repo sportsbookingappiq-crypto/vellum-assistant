@@ -62,7 +62,7 @@ its acceptance metadata. Transcript pairing, unread state, feed policy,
 external-channel delivery, scheduled results, and action-required alerts retain
 their existing behavior.
 
-Local completion delivery requires the active Vellum guardian principal from
+Local completion delivery requires the active ANU guardian principal from
 the resolved destination. The broadcaster checks that identity before pairing,
 and the adapter targets the event hub's `targetActorPrincipalId` before sending
 title or body. Missing identity, or a background completion naming a different
@@ -121,7 +121,7 @@ Approval prompts do not count as prior result delivery. Internal jobs and
 workflow-manager wakes retain their existing behavior; workflow wakes need
 explicit run and quiet-mode provenance before they can use this producer.
 
-The recipient is the assistant's active Vellum guardian, as for ordinary
+The recipient is the assistant's active ANU guardian, as for ordinary
 replies. Completion signals retain the pipeline's permanent deduplication
 claims and existing best-effort delivery semantics. There is no new retry
 queue for a signal whose transports all fail.
@@ -246,7 +246,7 @@ Each policy defines:
 
 Before an adapter sends a notification, `pairDeliveryWithConversation()` (in `conversation-pairing.ts`) decides which conversation the delivery belongs to, from the channel's `conversationStrategy` and the decision engine's per-channel conversation action. The module header and the function's inline comments are the source of truth for the details. The rules that hold across them:
 
-- **Vellum (`start_new_conversation`)**:
+- **ANU (`start_new_conversation`)**:
   - A signal that sets `requiresConversation` gets a conversation of its own, created with its seed message before the send (`standard` unless the producer overrides `conversationType`). An explicit `reuse_existing` action appends to a valid target instead, and falls back to a new conversation (`conversationFallbackUsed: true`) when the target is stale.
   - A signal that does not set it creates no conversation, except that with `assistant-initiated-threads` on, an `assistant.share` with no `conversationMetadata.source` of its own is promoted to one when its producing conversation is a background or scheduled run, or does not resolve (`resolveAssistantInitiatedThread()` in `assistant-initiated-thread.ts`). Otherwise its body is appended to the conversation that produced it (resolved from `sourceContextId`). A `chat.assistant_reply` appends nothing, because the full reply is already in that transcript.
 - **External channels (`continue_existing_conversation`)**: only the chat's home conversation is resolved, and nothing is written. The broadcaster records the delivered post as an assistant row once the channel acknowledges it (`recordDeliveredChannelPost`), so a failed or pending delivery never reads as something the assistant said.
@@ -269,7 +269,7 @@ The system produces **three distinct copy outputs** per notification:
 
 1. The **decision engine** can produce `title`/`body` (popup copy), `deliveryText` (chat copy), and `conversationSeedMessage` (richer conversation content) per channel.
 2. **Adapters** use the surface-appropriate field:
-   - Vellum notifications use `title` + `body`.
+   - ANU notifications use `title` + `body`.
    - Telegram delivery prefers `deliveryText` and falls back to `conversationSeedMessage`, then `body`, then `title`.
 3. **Conversation pairing** uses the conversation seed as the conversation's opening message:
    - If the LLM produced a valid `conversationSeedMessage`, it is used directly (after a sanity check rejects empty, too-short, JSON dumps, or excessively long values).
@@ -408,7 +408,7 @@ schedule_jobs table (routing_intent, routing_hints_json)
 
 The notification system delivers to five channel types:
 
-### Vellum (always connected)
+### ANU (always connected)
 
 Local SSE via the assistant's broadcast mechanism. The `VellumAdapter` emits a `notification_intent` message containing:
 
@@ -438,7 +438,7 @@ The destination for each comes from the guardian delivery list in `destination-r
 
 Connected channels are resolved at signal emission time by `getConnectedChannels()` in `emit-signal.ts`, from the guardian delivery list (`getGuardianDelivery()`):
 
-- **Vellum** is always considered connected (the local transport is always available when the assistant is running)
+- **ANU** is always considered connected (the local transport is always available when the assistant is running)
 - **Platform** is always considered connected; a missing credential surfaces as a failed delivery
 - **Telegram** is connected when the guardian has a chat ID on the channel
 - **Slack** is connected when the guardian's chat ID is a DM channel (`D`-prefixed), so a binding made from a shared channel never receives notifications
@@ -546,7 +546,7 @@ Where classification does not run, any other code-less reply falls through to th
 | `copy-composer.ts`              | Template-based fallback notification copy when LLM copy is unavailable                                     |
 | `conversation-seed-composer.ts` | Surface-aware conversation seed generation (richer than notification copy)                                 |
 | `destination-resolver.ts`       | Resolves per-channel endpoints (Telegram and Slack chat ID, Discord user ID)                               |
-| `adapters/macos.ts`             | Vellum adapter -- broadcasts `notification_intent` via SSE with deep-link metadata                         |
+| `adapters/macos.ts`             | ANU adapter -- broadcasts `notification_intent` via SSE with deep-link metadata                            |
 | `adapters/platform.ts`          | Platform adapter: posts to the platform push-dispatch endpoint for native mobile push                      |
 | `adapters/telegram.ts`          | Telegram adapter: calls the Telegram Bot API through `messaging/providers/telegram-bot/send.ts`            |
 | `adapters/slack.ts`             | Slack adapter: posts to the guardian's DM through `messaging/providers/slack/send.ts`                      |
@@ -659,7 +659,7 @@ FROM notification_deliveries d
 WHERE d.conversation_id IS NOT NULL
 ORDER BY d.created_at DESC;
 
--- Vellum deliveries where the client failed to post the notification
+-- ANU deliveries where the client failed to post the notification
 SELECT d.rendered_title, d.client_delivery_status, d.client_delivery_error, d.client_delivery_at
 FROM notification_deliveries d
 WHERE d.channel = 'vellum' AND d.client_delivery_status = 'client_failed'

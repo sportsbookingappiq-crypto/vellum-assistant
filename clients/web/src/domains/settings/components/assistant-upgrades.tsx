@@ -27,11 +27,11 @@ import {
 import { useAssistantFeatureFlagStore } from "@/stores/assistant-feature-flag-store";
 import { useClientFeatureFlagStore } from "@/stores/client-feature-flag-store";
 import { compareParsed, parseSemver } from "@/utils/semver";
-import { Button } from "@vellumai/design-library/components/button";
-import { ConfirmDialog } from "@vellumai/design-library/components/confirm-dialog";
-import { Select } from "@vellumai/design-library/components/select";
-import { toast } from "@vellumai/design-library/components/toast";
-import { textLinkVariants } from "@vellumai/design-library/components/text-link";
+import { Button } from "@anu/design-library/components/button";
+import { ConfirmDialog } from "@anu/design-library/components/confirm-dialog";
+import { Select } from "@anu/design-library/components/select";
+import { toast } from "@anu/design-library/components/toast";
+import { textLinkVariants } from "@anu/design-library/components/text-link";
 
 function releaseLabel(
   release: ReleaseListItem,

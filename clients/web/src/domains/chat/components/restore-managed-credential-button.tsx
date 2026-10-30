@@ -1,5 +1,5 @@
 /**
- * The repair for a rejected Vellum-managed credential, offered on the chat
+ * The repair for a rejected ANU-managed credential, offered on the chat
  * error banner.
  *
  * The assistant cannot mint this credential: the platform issues it and a
@@ -18,8 +18,8 @@ import {
   recoverLocalAssistantPlatformCredential,
 } from "@/lib/local-platform-identity";
 import { captureError } from "@/lib/sentry/capture-error";
-import { Button } from "@vellumai/design-library";
-import { toast } from "@vellumai/design-library/components/toast";
+import { Button } from "@anu/design-library";
+import { toast } from "@anu/design-library/components/toast";
 
 export interface RestoreManagedCredentialButtonProps {
   /**

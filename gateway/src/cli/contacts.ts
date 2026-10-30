@@ -5,7 +5,7 @@
  * The risk-ceiling write is `set_contact_threshold`. inherit maps to null.
  */
 
-import { ipcCall } from "@vellumai/gateway-client/ipc-client";
+import { ipcCall } from "@anu/gateway-client/ipc-client";
 
 import { resolveIpcSocketPath } from "../ipc/endpoint.js";
 import { getLogger } from "../logger.js";
@@ -149,7 +149,7 @@ export function contactsUsage(): string {
     "  $ gateway contacts set-risk-threshold abc-123 --threshold high",
     "  $ gateway contacts set-risk-threshold abc-123 --threshold inherit",
     "",
-    "From the host: vellum exec --service gateway -- gateway contacts list",
+    "From the host: anu exec --service gateway -- gateway contacts list",
   ].join("\n");
 }
 
@@ -261,7 +261,7 @@ export async function runContactsCommand(args: string[]): Promise<number> {
 
 function failUnreachable(): number {
   console.error(
-    "Gateway is not running or is unreachable over IPC. Start it with 'vellum wake', then retry.",
+    "Gateway is not running or is unreachable over IPC. Start it with 'anu wake', then retry.",
   );
   return 1;
 }

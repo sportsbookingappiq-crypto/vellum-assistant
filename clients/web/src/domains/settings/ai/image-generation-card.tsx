@@ -8,9 +8,9 @@ import { useTranslation } from "@/i18n";
 import { captureError } from "@/lib/sentry/capture-error";
 
 import { getLocalSetting, setLocalSetting } from "@/utils/local-settings";
-import { Select } from "@vellumai/design-library/components/select";
-import { Input } from "@vellumai/design-library/components/input";
-import { toast } from "@vellumai/design-library/components/toast";
+import { Select } from "@anu/design-library/components/select";
+import { Input } from "@anu/design-library/components/input";
+import { toast } from "@anu/design-library/components/toast";
 
 import {
   LS_IMAGE_GEN_MODEL,
@@ -89,7 +89,7 @@ export function ImageGenerationCard() {
       return getLocalSetting(LS_IMAGE_GEN_PROVIDER, "gemini");
     }
     // A config written by the legacy mode toggle marks managed via `mode` —
-    // the daemon routes it to Vellum, so the card renders it as Vellum too.
+    // the daemon routes it to ANU, so the card renders it as ANU too.
     if (imageGenService?.mode === "managed") {
       return "vellum";
     }
@@ -175,9 +175,9 @@ export function ImageGenerationCard() {
       // The provider is written as a pair with `mode`: a stale
       // `mode: "managed"` from the legacy toggle would win over a BYOK choice
       // unless reset. Only the `vellum` value is unrepresentable on assistants
-      // older than its enum entry. For those a Vellum selection writes the
+      // older than its enum entry. For those an ANU selection writes the
       // legacy managed mode alone (the read bridge renders that pair as
-      // Vellum), while BYOK providers keep their explicit provider write.
+      // ANU), while BYOK providers keep their explicit provider write.
       await whenAssistantVersionKnown();
       if (hasUserKey) {
         await provisionProviderKey(

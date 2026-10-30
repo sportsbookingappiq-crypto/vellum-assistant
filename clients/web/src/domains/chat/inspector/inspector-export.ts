@@ -1,11 +1,8 @@
 import JSZip from "jszip";
 
 import type { LlmLogPayload } from "@/domains/chat/inspector/inspector-payload-api";
-import type {
-  LLMContextSection,
-  LLMRequestLogEntry,
-} from "@vellumai/assistant-api";
-import type { LlmContextResponse } from "@vellumai/assistant-api";
+import type { LLMContextSection, LLMRequestLogEntry } from "@anu/assistant-api";
+import type { LlmContextResponse } from "@anu/assistant-api";
 
 export interface InspectorExportFile {
   path: string;

@@ -2,9 +2,9 @@ import { GettingStartedOverviewContent } from "@/app/docs/_components/getting-st
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({
-  title: "Getting Started - Vellum Docs",
+  title: "Getting Started - ANU Docs",
   description:
-    "Get started with Vellum: installation, key concepts, a quick start guide, and self-improving skills.",
+    "Get started with ANU: installation, key concepts, a quick start guide, and self-improving skills.",
   path: "/docs/getting-started",
 });
 

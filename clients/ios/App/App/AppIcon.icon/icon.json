@@ -2,13 +2,13 @@
   "fill-specializations": [
     {
       "value": {
-        "solid": "display-p3:0.37749,0.60064,0.34581,1.00000"
+        "solid": "display-p3:0.08015,0.14303,0.32859,1.00000"
       }
     },
     {
       "appearance": "dark",
       "value": {
-        "solid": "display-p3:0.37749,0.60064,0.34581,1.00000"
+        "solid": "display-p3:0.08015,0.14303,0.32859,1.00000"
       }
     }
   ],
@@ -24,13 +24,13 @@
             }
           ],
           "glass": false,
-          "image-name": "eyes.svg",
-          "name": "eyes",
+          "image-name": "anu-mark.svg",
+          "name": "anu-mark",
           "position": {
-            "scale": 2.213,
+            "scale": 6.4,
             "translation-in-points": [
-              61.33,
-              -14.21
+              0,
+              0
             ]
           }
         }

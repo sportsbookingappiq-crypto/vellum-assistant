@@ -12,7 +12,7 @@ import { useTranslation } from "@/i18n";
 import { getSoundManager } from "@/lib/sounds/sound-manager";
 import { resolveEffectiveTraits } from "@/utils/avatar-render";
 import { canResolveDefinitions } from "@/utils/avatar-svg-compositor";
-import { AnimatedAvatar } from "./animated-avatar";
+import { AnimatedAvatar, type AvatarReaction } from "./animated-avatar";
 
 export interface ChatAvatarProps {
   components: CharacterComponents | null;
@@ -22,6 +22,8 @@ export interface ChatAvatarProps {
   className?: string;
   interactive?: boolean;
   isAssistantBusy?: boolean;
+  /** A reaction for a character avatar to act out; see {@link AnimatedAvatar}. */
+  reaction?: AvatarReaction | null;
   /**
    * Stamp `data-voice-origin` on the avatar's root so the live-voice room can
    * find this on-screen avatar and grow its entrance from here. Set on the
@@ -38,7 +40,7 @@ export interface ChatAvatarProps {
  * 1. Animated character avatar from saved traits
  * 2. Custom uploaded image
  * 3. Default animated character avatar from first component of each type
- * 4. Vellum "V" fallback
+ * 4. ANU "V" fallback
  *
  * Animation:
  *   - Mount plays an entrance spring (scale 0.6 → 1, opacity 0 → 1).
@@ -56,6 +58,7 @@ function ChatAvatarComponent({
   className,
   interactive = false,
   isAssistantBusy = false,
+  reaction = null,
   originAnchor = false,
 }: ChatAvatarProps) {
   const { t } = useTranslation();
@@ -132,6 +135,7 @@ function ChatAvatarComponent({
           traits={effectiveTraits}
           size={size}
           isAssistantBusy={isAssistantBusy}
+          reaction={reaction}
         />
       </motion.div>
     );

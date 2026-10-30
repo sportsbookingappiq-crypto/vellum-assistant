@@ -8,15 +8,12 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-import { ActionMenu } from "@vellumai/design-library/components/action-menu";
-import {
-  Button,
-  buttonVariants,
-} from "@vellumai/design-library/components/button";
-import { SplitButton } from "@vellumai/design-library/components/split-button";
-import { Tooltip } from "@vellumai/design-library/components/tooltip";
-import { cn } from "@vellumai/design-library/utils/cn";
-import { useHoverCapable } from "@vellumai/design-library/utils/hover-capability";
+import { ActionMenu } from "@anu/design-library/components/action-menu";
+import { Button, buttonVariants } from "@anu/design-library/components/button";
+import { SplitButton } from "@anu/design-library/components/split-button";
+import { Tooltip } from "@anu/design-library/components/tooltip";
+import { cn } from "@anu/design-library/utils/cn";
+import { useHoverCapable } from "@anu/design-library/utils/hover-capability";
 
 import { IntegrationIcon } from "@/components/integrations/integration-icon";
 import { useTranslation } from "@/i18n";
@@ -73,7 +70,7 @@ export interface IntegrationTileProps {
   /**
    * Puts a chevron beside the connect action for the other ways in. For a
    * self-hosted assistant, where the choice between the provider's server,
-   * Vellum's hosted sign-in, and your own OAuth app is a real one the user is
+   * ANU's hosted sign-in, and your own OAuth app is a real one the user is
    * expected to make, so a caller reads it from
    * `useActiveAssistantIsSelfHosted()` (`@/hooks/use-platform-gate`). With one
    * method there is nothing to choose, so the button stays plain whatever

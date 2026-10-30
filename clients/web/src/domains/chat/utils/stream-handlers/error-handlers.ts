@@ -9,7 +9,7 @@ import type {
   ConversationErrorEvent,
   ConversationNoticeEvent,
   ErrorEvent,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 
 export function handleStreamError(
   event: ErrorEvent,

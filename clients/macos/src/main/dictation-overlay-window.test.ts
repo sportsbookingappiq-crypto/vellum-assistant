@@ -7,7 +7,7 @@ import {
   createDictationOverlayController,
   positionDictationOverlayInWorkArea,
   type DictationOverlayState,
-} from "@vellumai/electron-desktop/dictation-overlay-window";
+} from "@anu/electron-desktop/dictation-overlay-window";
 
 type Harness = {
   controller: ReturnType<typeof createDictationOverlayController>;

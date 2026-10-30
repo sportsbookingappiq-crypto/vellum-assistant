@@ -6,7 +6,7 @@ import type { CliPathInstallState } from "./cli-path-installer";
 // Stubs and mocks
 // ---------------------------------------------------------------------------
 
-const WRAPPER_PATH = "/Users/test/.local/bin/vellum";
+const WRAPPER_PATH = "/Users/test/.local/bin/anu";
 const PATH_EXPORT_LINE = 'export PATH="$HOME/.local/bin:$PATH"';
 const FISH_ADD_PATH_LINE = 'fish_add_path "$HOME/.local/bin"';
 
@@ -109,7 +109,7 @@ describe("runInstallCliCommandFlow", () => {
 
     expect(showMessageBoxMock).toHaveBeenCalledTimes(1);
     expect(showMessageBoxMock.mock.calls[0]?.[0]?.message).toBe(
-      "Replace existing vellum file?",
+      "Replace existing anu file?",
     );
     expect(installWrapperMock).toHaveBeenCalledTimes(1);
     expect(installWrapperMock).toHaveBeenCalledWith({ overwriteForeign: false });
@@ -141,7 +141,7 @@ describe("runInstallCliCommandFlow", () => {
     expect(ensureCliInstalledMock).toHaveBeenCalledTimes(1);
     // State is only checked once, after install, for the success dialog.
     expect(getCliPathInstallStateMock).toHaveBeenCalledTimes(1);
-    expect(lastDialog()?.message).toBe("Vellum CLI installed");
+    expect(lastDialog()?.message).toBe("ANU CLI installed");
   });
 
   test("CLI runtime download failure points at the Repair menu item", async () => {
@@ -152,10 +152,10 @@ describe("runInstallCliCommandFlow", () => {
     expect(showMessageBoxMock).not.toHaveBeenCalled();
     expect(showErrorBoxMock).toHaveBeenCalledTimes(1);
     const [title, message] = showErrorBoxMock.mock.calls[0]!;
-    expect(title).toBe("Failed to install vellum command");
-    expect(message).toContain(`The vellum command was installed at ${WRAPPER_PATH}`);
+    expect(title).toBe("Failed to install anu command");
+    expect(message).toContain(`The anu command was installed at ${WRAPPER_PATH}`);
     expect(message).toContain("registry unreachable");
-    expect(message).toContain('"Repair vellum Command"');
+    expect(message).toContain('"Repair anu Command"');
     expect(message).toContain("retried automatically");
   });
 
@@ -166,9 +166,9 @@ describe("runInstallCliCommandFlow", () => {
 
     expect(installWrapperMock).toHaveBeenCalledWith({ overwriteForeign: false });
     expect(writeTextMock).not.toHaveBeenCalled();
-    expect(lastDialog()?.message).toBe("Vellum CLI installed");
+    expect(lastDialog()?.message).toBe("ANU CLI installed");
     expect(lastDialog()?.detail).toContain(WRAPPER_PATH);
-    expect(lastDialog()?.detail).toContain('run "vellum"');
+    expect(lastDialog()?.detail).toContain('run "anu"');
   });
 
   test("installed but not in PATH copies the export line to the clipboard", async () => {
@@ -251,7 +251,7 @@ describe("runInstallCliCommandFlow", () => {
 
     expect(showErrorBoxMock).toHaveBeenCalledTimes(1);
     expect(showErrorBoxMock).toHaveBeenCalledWith(
-      "Failed to install vellum command",
+      "Failed to install anu command",
       "boom",
     );
   });
@@ -264,7 +264,7 @@ describe("runUninstallCliCommandFlow", () => {
     await runUninstallCliCommandFlow();
 
     expect(showMessageBoxMock.mock.calls[0]?.[0]?.message).toBe(
-      "Uninstall vellum command?",
+      "Uninstall anu command?",
     );
     expect(uninstallWrapperMock).not.toHaveBeenCalled();
   });
@@ -275,7 +275,7 @@ describe("runUninstallCliCommandFlow", () => {
     await runUninstallCliCommandFlow();
 
     expect(uninstallWrapperMock).toHaveBeenCalledTimes(1);
-    expect(lastDialog()?.detail).toBe("The vellum command was removed.");
+    expect(lastDialog()?.detail).toBe("The anu command was removed.");
   });
 
   test("not-ours refuses to remove a foreign file", async () => {
@@ -283,7 +283,7 @@ describe("runUninstallCliCommandFlow", () => {
 
     await runUninstallCliCommandFlow();
 
-    expect(lastDialog()?.detail).toContain("wasn't installed by Vellum");
+    expect(lastDialog()?.detail).toContain("wasn't installed by ANU");
     expect(lastDialog()?.detail).toContain("not removing it");
   });
 
@@ -292,7 +292,7 @@ describe("runUninstallCliCommandFlow", () => {
 
     await runUninstallCliCommandFlow();
 
-    expect(lastDialog()?.detail).toBe("The vellum command is not installed.");
+    expect(lastDialog()?.detail).toBe("The anu command is not installed.");
   });
 
   test("uninstallWrapper throwing surfaces via showErrorBox", async () => {
@@ -303,7 +303,7 @@ describe("runUninstallCliCommandFlow", () => {
     await runUninstallCliCommandFlow();
 
     expect(showErrorBoxMock).toHaveBeenCalledWith(
-      "Failed to uninstall vellum command",
+      "Failed to uninstall anu command",
       "eperm",
     );
   });

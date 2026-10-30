@@ -1,4 +1,4 @@
-import { isInviteCodeRedemptionEnabled } from "@vellumai/gateway-client";
+import { isInviteCodeRedemptionEnabled } from "@anu/gateway-client";
 import { z } from "zod";
 
 import { resolveTwilioPhoneNumber } from "../calls/twilio-config.js";

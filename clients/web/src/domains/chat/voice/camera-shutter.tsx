@@ -44,7 +44,7 @@ import type {
 } from "react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 
-import { cn } from "@vellumai/design-library";
+import { cn } from "@anu/design-library";
 import { useReducedMotion } from "motion/react";
 
 import { cameraModeStyle } from "@/domains/chat/voice/voice-room/camera-mode-paint";

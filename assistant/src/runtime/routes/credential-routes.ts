@@ -207,7 +207,7 @@ function resolveCredentialLookup(
 /**
  * Refuse any use of a credential the platform provisions for itself, whatever
  * the calling principal. Reads are refused because the API key spends
- * inference on Vellum's account. Writes are refused because they are a read
+ * inference on ANU's account. Writes are refused because they are a read
  * by another name: repointing `vellum:platform_base_url` sends the next
  * platform call, bearing that same key, to a host of the writer's choosing.
  *

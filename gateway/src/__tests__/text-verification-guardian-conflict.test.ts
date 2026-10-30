@@ -18,7 +18,7 @@ import {
   test,
 } from "bun:test";
 
-import { hashVerificationSecret } from "@vellumai/gateway-client";
+import { hashVerificationSecret } from "@anu/gateway-client";
 
 /** The daemon's answer to every IPC call; a test swaps it to fail. */
 let ipcCallAssistantImpl: () => Promise<unknown> = async () => ({});

@@ -2,7 +2,7 @@ import type { TFunction } from "i18next";
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 
-import { Card } from "@vellumai/design-library";
+import { Card } from "@anu/design-library";
 
 import { useActiveAssistantId } from "@/assistant/use-active-assistant-id";
 import { Trans, t, useTranslation } from "@/i18n";

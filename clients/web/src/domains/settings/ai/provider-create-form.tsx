@@ -2,13 +2,13 @@ import { useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "@vellumai/design-library/components/button";
-import { Disclosure } from "@vellumai/design-library/components/disclosure";
-import { Select } from "@vellumai/design-library/components/select";
-import { Input } from "@vellumai/design-library/components/input";
-import { Modal } from "@vellumai/design-library/components/modal";
-import { toast } from "@vellumai/design-library/components/toast";
-import { Typography } from "@vellumai/design-library/components/typography";
+import { Button } from "@anu/design-library/components/button";
+import { Disclosure } from "@anu/design-library/components/disclosure";
+import { Select } from "@anu/design-library/components/select";
+import { Input } from "@anu/design-library/components/input";
+import { Modal } from "@anu/design-library/components/modal";
+import { toast } from "@anu/design-library/components/toast";
+import { Typography } from "@anu/design-library/components/typography";
 
 import { Trans, useTranslation } from "@/i18n";
 import {

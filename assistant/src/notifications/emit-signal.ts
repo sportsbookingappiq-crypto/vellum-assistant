@@ -9,7 +9,7 @@
  * propagated unless `throwOnError` is enabled.
  */
 
-import type { GuardianDelivery } from "@vellumai/gateway-client";
+import type { GuardianDelivery } from "@anu/gateway-client";
 import { v4 as uuid } from "uuid";
 
 import { getDeliverableChannels } from "../channels/config.js";
@@ -135,7 +135,7 @@ export async function getConnectedChannels(): Promise<NotificationChannel[]> {
   for (const channel of getDeliverableChannels()) {
     switch (channel) {
       case "vellum":
-        // Vellum is always considered connected (the local transport is
+        // ANU is always considered connected (the local transport is
         // always available when the assistant is running).
         channels.push(channel);
         break;
@@ -461,7 +461,7 @@ export async function emitNotificationSignal<TEventName extends string>(
     // signal. The probe is deadline-bounded internally, so a slow credential
     // backend cannot stall the urgent dispatch.
     //
-    // Vellum PREPENDS and platform APPENDS: the broadcaster re-sorts by
+    // ANU PREPENDS and platform APPENDS: the broadcaster re-sorts by
     // dispatch rank, so selection order only matters to single_channel
     // enforcement's first-selected fallback (step 2.5b), which must keep
     // the in-app banner rather than a push the server may skip.

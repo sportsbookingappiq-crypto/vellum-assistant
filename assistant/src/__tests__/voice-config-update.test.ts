@@ -128,8 +128,8 @@ describe("voice_config_update — tts_provider", () => {
 
   test("a provider switch scrubs a legacy mode key from the raw config", async () => {
     // The daemon ignores a legacy `mode` key, but the settings cards read
-    // `mode: "managed"` as the Vellum marker — left behind, they would render
-    // Vellum while the daemon routes the newly chosen provider.
+    // `mode: "managed"` as the ANU marker — left behind, they would render
+    // ANU while the daemon routes the newly chosen provider.
     writeConfig({ services: { tts: { mode: "managed", provider: "vellum" } } });
     invalidateConfigCache();
 
@@ -285,7 +285,7 @@ describe("voice_config_update — tts_voice_id (managed/vellum active)", () => {
     );
 
     expect(result.isError).toBe(false);
-    expect(result.content).toStartWith("Vellum managed voice updated to");
+    expect(result.content).toStartWith("ANU managed voice updated to");
     expect(result.content).toContain(
       'ui_show { surface_type: "voice_picker", data: {} }',
     );

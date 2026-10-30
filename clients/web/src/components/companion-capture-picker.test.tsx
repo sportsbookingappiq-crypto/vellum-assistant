@@ -5,7 +5,7 @@ import type {
   CompanionCapturePick,
   CompanionCaptureSources,
   WatchCaptureTarget,
-} from "@vellumai/ipc-contract";
+} from "@anu/ipc-contract";
 
 import { CompanionCapturePicker } from "./companion-capture-picker";
 

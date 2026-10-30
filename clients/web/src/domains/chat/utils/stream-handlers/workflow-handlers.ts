@@ -4,7 +4,7 @@ import type {
   WorkflowLeafStartedEvent,
   WorkflowLeafFinishedEvent,
   WorkflowCompletedEvent,
-} from "@vellumai/assistant-api";
+} from "@anu/assistant-api";
 
 import { useWorkflowStore } from "@/domains/chat/workflow-store";
 import type { StreamHandlerContext } from "@/domains/chat/utils/stream-handlers/types";

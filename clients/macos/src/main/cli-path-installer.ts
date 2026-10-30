@@ -29,13 +29,13 @@ export function getWrapperDir(): string {
   return path.join(homedir(), ".local", "bin");
 }
 
-/** Absolute path of the `vellum` PATH wrapper. */
+/** Absolute path of the `anu` PATH wrapper. */
 export function getWrapperPath(): string {
-  return path.join(getWrapperDir(), "vellum");
+  return path.join(getWrapperDir(), "anu");
 }
 
 /**
- * Build the POSIX sh wrapper installed at `~/.local/bin/vellum`. The script
+ * Build the POSIX sh wrapper installed at `~/.local/bin/anu`. The script
  * is machine-stable: all machine-specific paths flow through the locator
  * file, which the app rewrites on every launch — except the locator path
  * itself, which is embedded here.
@@ -44,15 +44,15 @@ export function buildWrapperScript(): string {
   return [
     "#!/bin/sh",
     WRAPPER_MARKER,
-    '# Installed by Vellum.app ("Install vellum Command"). Safe to delete.',
+    '# Installed by ANU.app ("Install anu Command"). Safe to delete.',
     `LOCATOR=${shQuote(getCliLocatorPath())}`,
     'if [ ! -f "$LOCATOR" ]; then',
-    '  echo "vellum: CLI not set up yet. Launch Vellum.app once to finish setup." >&2',
+    '  echo "anu: CLI not set up yet. Launch ANU.app once to finish setup." >&2',
     "  exit 1",
     "fi",
     '. "$LOCATOR"',
     'if [ ! -x "$VELLUM_BUN" ] || [ ! -e "$VELLUM_CLI_BIN" ]; then',
-    '  echo "vellum: installation is incomplete. Launch Vellum.app once to repair it." >&2',
+    '  echo "anu: installation is incomplete. Launch ANU.app once to repair it." >&2',
     "  exit 1",
     "fi",
     'exec "$VELLUM_BUN" "$VELLUM_CLI_BIN" "$@"',
@@ -159,7 +159,7 @@ export async function getCliPathInstallState(): Promise<CliPathInstallState> {
   }
 
   const wrapperPath = getWrapperPath();
-  const [firstHit] = findExecutablesInPath("vellum", shellPath);
+  const [firstHit] = findExecutablesInPath("anu", shellPath);
   const firstHitIsWrapper =
     firstHit !== undefined &&
     (firstHit === wrapperPath || realpathOr(firstHit) === realpathOr(wrapperPath));

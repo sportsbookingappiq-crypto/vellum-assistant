@@ -11,9 +11,9 @@ import {
   getNotificationPermission,
   refreshNotificationPermission,
 } from "@/runtime/notifications";
-import { Button } from "@vellumai/design-library/components/button";
-import { Card } from "@vellumai/design-library/components/card";
-import { Tag, type TagTone } from "@vellumai/design-library/components/tag";
+import { Button } from "@anu/design-library/components/button";
+import { Card } from "@anu/design-library/components/card";
+import { Tag, type TagTone } from "@anu/design-library/components/tag";
 
 type PermissionState = Awaited<ReturnType<typeof getNotificationPermission>>;
 

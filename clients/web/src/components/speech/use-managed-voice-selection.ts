@@ -13,7 +13,7 @@
  * voice change the phone `voice_config_update` path gives, with no session
  * runtime message.
  *
- * Only offered for managed (Vellum) assistants whose daemon advertises voice
+ * Only offered for managed (ANU) assistants whose daemon advertises voice
  * selection — BYO providers pick their voice on Settings → Models & Services,
  * with the rest of their provider config. When
  * unavailable, `available` is false and the surfaces render no picker.

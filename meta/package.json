@@ -2,8 +2,9 @@
   "name": "vellum",
   "version": "0.12.6",
   "license": "MIT",
-  "description": "Install the full Vellum stack locally",
+  "description": "Install the full ANU stack locally",
   "bin": {
+    "anu": "./bin/vellum.js",
     "vellum": "./bin/vellum.js",
     "assistant": "./bin/assistant.js",
     "gateway": "./bin/gateway.js"
