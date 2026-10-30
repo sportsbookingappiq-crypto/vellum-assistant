@@ -1,0 +1,180 @@
+{
+  "anuMark": {
+    "label": "ANU"
+  },
+  "anuLayout": {
+    "unlockReason": "Unlock ANU",
+    "restoring": "Opening ANU"
+  },
+  "anuLoginPage": {
+    "title": "Sign in to ANU",
+    "lede": "Give ANU a goal. It plans the steps, runs each one where you can watch, and asks before it acts for you.",
+    "phoneLabel": "Phone number",
+    "phoneHint": "Include the country code, for example +1 202 555 0100.",
+    "sendCode": "Text me a code",
+    "codeLabel": "6-digit code",
+    "codeSentTo": "We sent a code to {phone}.",
+    "changeNumber": "Use a different number",
+    "verify": "Sign in",
+    "resend": "Send a new code",
+    "expiresIn": "Expires in {time}",
+    "expired": "This code has expired. Send a new one.",
+    "devCode": "Development code {code}",
+    "useDevCode": "Fill it in",
+    "errorInvalidPhone": "That number looks incomplete. Include the country code.",
+    "errorInvalidCode": "{count, plural, one {That code is not right. # attempt left.} other {That code is not right. # attempts left.}}",
+    "errorCodeFormat": "Enter the 6 digits from the text message.",
+    "errorCodeLocked": "Too many wrong codes. Send a new one.",
+    "errorCodeExpired": "This code has expired. Send a new one.",
+    "errorRateLimited": "{seconds, plural, one {Too many codes asked for. Try again in # second.} other {Too many codes asked for. Try again in # seconds.}}",
+    "errorNetwork": "ANU could not be reached. Check your connection and try again.",
+    "errorGeneric": "Something went wrong. Try again.",
+    "exampleTitle": "What a run looks like",
+    "exampleGoal": "Book a table for two on Friday",
+    "examplePlanTitle": "Plan",
+    "examplePlanPick": "Pick a restaurant",
+    "examplePlanAsk": "Ask before booking",
+    "exampleFound": "Found 3 restaurants with Friday availability",
+    "exampleAsk": "Book Example Bistro for 7pm Friday?",
+    "exampleApprove": "Approve",
+    "exampleDecline": "Decline",
+    "exampleCaption": "Nothing is booked, sent or bought until you approve it."
+  },
+  "anuShell": {
+    "tasks": "Tasks",
+    "signOut": "Sign out",
+    "back": "All tasks",
+    "navigation": "ANU",
+    "newGoal": "New goal",
+    "settings": "Settings"
+  },
+  "anuTaskList": {
+    "title": "Tasks",
+    "summaryNeedsYou": "{count, plural, one {# waits for you} other {# wait for you}}",
+    "summaryWorking": "{count, plural, one {# running} other {# running}}",
+    "summaryQuiet": "Nothing is running.",
+    "groupNeedsYou": "Waiting for you",
+    "groupWorking": "Working",
+    "groupFinished": "Finished",
+    "emptyTitle": "No goals yet",
+    "emptyBody": "Start one with New goal. ANU shows you its plan and every step, and asks before it acts.",
+    "loadError": "Your tasks could not be loaded.",
+    "retry": "Try again"
+  },
+  "anuGoalComposer": {
+    "label": "New goal",
+    "placeholder": "What should ANU do?",
+    "submit": "Start",
+    "hint": "You will see the plan and every step. ANU asks before it books, sends or buys anything.",
+    "length": "{count, number} of {max, number}",
+    "error": "The goal could not be started. Try again.",
+    "examplesTitle": "Try one",
+    "example1": "Compare three budget laptops for a student",
+    "example2": "Draft a packing list for a three-day hiking trip",
+    "example3": "Summarize this week's team notes in five bullets"
+  },
+  "anuTaskStatus": {
+    "queued": "Queued",
+    "running": "Running",
+    "awaiting_approval": "Waiting for you",
+    "succeeded": "Done",
+    "failed": "Failed",
+    "stopped": "Stopped"
+  },
+  "anuTaskRow": {
+    "confidence": "{percent} confident",
+    "openTask": "Open task: {goal}"
+  },
+  "anuApprovalCard": {
+    "heading": "ANU asks before it acts",
+    "approve": "Approve",
+    "decline": "Decline",
+    "approved": "You approved this.",
+    "rejected": "You declined this.",
+    "expired": "This request expired before an answer.",
+    "error": "Your answer did not reach ANU. Try again.",
+    "detailFile": "File",
+    "detailOther": "Detail"
+  },
+  "anuTaskDetail": {
+    "stop": "Stop",
+    "stopError": "The task could not be stopped. Try again.",
+    "findingRunning": "Running for {duration}",
+    "findingQueued": "Queued {time}",
+    "findingWaiting": "Paused {time} until you answer",
+    "findingDone": "Finished in {duration}",
+    "findingFailed": "Failed after {duration}",
+    "findingStopped": "Stopped after {duration}",
+    "findingFinishedAt": "Finished {time}",
+    "liveReconnecting": "Reconnecting to the live run",
+    "liveLost": "Live updates stopped. Reload to catch up.",
+    "reload": "Reload",
+    "working": "Working on the next step",
+    "waitingToStart": "Waiting for a sandbox to start",
+    "noSteps": "No steps yet.",
+    "loadError": "This task could not be loaded.",
+    "notFound": "This task does not exist, or it belongs to another account.",
+    "retry": "Try again",
+    "chooseTask": "Choose a task to see its steps.",
+    "tabsLabel": "Views of this run",
+    "tabSteps": "Steps",
+    "tabFiles": "Files",
+    "tabBrowser": "Browser"
+  },
+  "anuStepRow": {
+    "kindPlan": "Plan",
+    "kindTool": "Tool",
+    "kindObservation": "Found",
+    "kindMessage": "Note",
+    "kindApproval": "Asked you",
+    "kindResult": "Result",
+    "running": "Running",
+    "failed": "Failed",
+    "query": "Searched for {query}",
+    "envCount": "{count, plural, one {# variable} other {# variables}}",
+    "awaitingAnswer": "Waiting for your answer.",
+    "kindBrowser": "Browser"
+  },
+  "anuResultCard": {
+    "heading": "Result",
+    "failedHeading": "What went wrong",
+    "confidence": "Confidence",
+    "noConfidence": "Confidence was not reported.",
+    "sources": "What it used",
+    "sourceStep": "Step {seq, number}",
+    "noSources": "This run used no tools, so the answer rests on the model alone.",
+    "sourceCommand": "Command",
+    "sourceQuery": "Search",
+    "sourceFile": "File",
+    "sourceLink": "Link"
+  },
+  "anuNewGoalPage": {
+    "title": "New goal",
+    "lede": "Say it the way you would to a person. ANU works out the steps."
+  },
+  "anuSettingsPage": {
+    "title": "Settings",
+    "account": "Signed in as",
+    "language": "Language"
+  },
+  "anuFiles": {
+    "workspace": "Workspace",
+    "empty": "This task has not written any files yet.",
+    "loadError": "The files could not be loaded.",
+    "previewError": "This file could not be opened.",
+    "noPreview": "This kind of file cannot be shown here.",
+    "download": "Download",
+    "csvTruncated": "Showing {shown, number} of {total, number} rows.",
+    "jsonItems": "{count, plural, one {# item} other {# items}}",
+    "jsonKeys": "{count, plural, one {# key} other {# keys}}"
+  },
+  "anuBrowser": {
+    "none": "ANU has not opened a browser in this task.",
+    "loadError": "The latest frame could not be loaded.",
+    "noUrl": "No address yet",
+    "readOnly": "View only",
+    "frameAlt": "What the agent's browser shows at {url}",
+    "lastAction": "Last action: {action}",
+    "live": "Live"
+  }
+}

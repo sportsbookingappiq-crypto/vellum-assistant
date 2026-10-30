@@ -23,7 +23,7 @@ export const DEFAULT_LOCALE = "en";
  * `catalogs.ts` types its registry as `Record<SupportedLocale, …>`, so a
  * missing loader is a type error rather than a runtime 404.
  */
-export const SUPPORTED_LOCALES = ["en", "es", "ru", "zh", "zh-TW"] as const;
+export const SUPPORTED_LOCALES = ["en", "es", "ru", "zh", "zh-TW", "ar"] as const;
 
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 
@@ -38,6 +38,7 @@ export const LOCALE_LABELS: Record<SupportedLocale, string> = {
   ru: "Русский",
   zh: "简体中文",
   "zh-TW": "繁體中文（台灣）",
+  ar: "العربية",
 };
 
 export function isSupportedLocale(value: unknown): value is SupportedLocale {

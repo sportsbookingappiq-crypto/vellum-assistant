@@ -1,0 +1,180 @@
+{
+  "anuMark": {
+    "label": "ANU"
+  },
+  "anuLayout": {
+    "unlockReason": "افتح ANU",
+    "restoring": "جارٍ فتح ANU"
+  },
+  "anuLoginPage": {
+    "title": "تسجيل الدخول إلى ANU",
+    "lede": "أعطِ ANU هدفًا. يخطط الخطوات وينفّذ كل خطوة أمام عينيك، ويستأذنك قبل أن يتصرف نيابةً عنك.",
+    "phoneLabel": "رقم الهاتف",
+    "phoneHint": "أدخل رمز الدولة، مثل ‎+1 202 555 0100.",
+    "sendCode": "أرسل لي رمزًا",
+    "codeLabel": "الرمز المكوّن من 6 أرقام",
+    "codeSentTo": "أرسلنا رمزًا إلى {phone}.",
+    "changeNumber": "استخدم رقمًا آخر",
+    "verify": "تسجيل الدخول",
+    "resend": "أرسل رمزًا جديدًا",
+    "expiresIn": "تنتهي صلاحيته خلال {time}",
+    "expired": "انتهت صلاحية هذا الرمز. اطلب رمزًا جديدًا.",
+    "devCode": "رمز التطوير {code}",
+    "useDevCode": "املأه",
+    "errorInvalidPhone": "يبدو الرقم ناقصًا. أدخل رمز الدولة.",
+    "errorInvalidCode": "{count, plural, zero {الرمز غير صحيح. لم تتبقَّ محاولات.} one {الرمز غير صحيح. تبقّت محاولة واحدة.} two {الرمز غير صحيح. تبقّت محاولتان.} few {الرمز غير صحيح. تبقّت # محاولات.} many {الرمز غير صحيح. تبقّت # محاولة.} other {الرمز غير صحيح. تبقّت # محاولة.}}",
+    "errorCodeFormat": "أدخل الأرقام الستة من الرسالة النصية.",
+    "errorCodeLocked": "أخطاء كثيرة في الرمز. اطلب رمزًا جديدًا.",
+    "errorCodeExpired": "انتهت صلاحية هذا الرمز. اطلب رمزًا جديدًا.",
+    "errorRateLimited": "{seconds, plural, zero {طلبات رموز كثيرة. حاول مرة أخرى الآن.} one {طلبات رموز كثيرة. حاول بعد ثانية.} two {طلبات رموز كثيرة. حاول بعد ثانيتين.} few {طلبات رموز كثيرة. حاول بعد # ثوانٍ.} many {طلبات رموز كثيرة. حاول بعد # ثانية.} other {طلبات رموز كثيرة. حاول بعد # ثانية.}}",
+    "errorNetwork": "تعذّر الوصول إلى ANU. تحقّق من اتصالك وحاول مرة أخرى.",
+    "errorGeneric": "حدث خطأ ما. حاول مرة أخرى.",
+    "exampleTitle": "هكذا يبدو التنفيذ",
+    "exampleGoal": "احجز طاولة لشخصين يوم الجمعة",
+    "examplePlanTitle": "الخطة",
+    "examplePlanPick": "اختيار مطعم",
+    "examplePlanAsk": "الاستئذان قبل الحجز",
+    "exampleFound": "وجدت 3 مطاعم متاحة يوم الجمعة",
+    "exampleAsk": "هل أحجز في Example Bistro الساعة 7 مساء الجمعة؟",
+    "exampleApprove": "موافقة",
+    "exampleDecline": "رفض",
+    "exampleCaption": "لا يُحجز شيء ولا يُرسل ولا يُشترى حتى توافق."
+  },
+  "anuShell": {
+    "tasks": "المهام",
+    "signOut": "تسجيل الخروج",
+    "back": "كل المهام",
+    "navigation": "ANU",
+    "newGoal": "هدف جديد",
+    "settings": "الإعدادات"
+  },
+  "anuTaskList": {
+    "title": "المهام",
+    "summaryNeedsYou": "{count, plural, zero {لا شيء بانتظارك} one {مهمة واحدة بانتظارك} two {مهمتان بانتظارك} few {# مهام بانتظارك} many {# مهمة بانتظارك} other {# مهمة بانتظارك}}",
+    "summaryWorking": "{count, plural, zero {لا شيء قيد التنفيذ} one {مهمة قيد التنفيذ} two {مهمتان قيد التنفيذ} few {# مهام قيد التنفيذ} many {# مهمة قيد التنفيذ} other {# مهمة قيد التنفيذ}}",
+    "summaryQuiet": "لا شيء قيد التنفيذ.",
+    "groupNeedsYou": "بانتظارك",
+    "groupWorking": "قيد العمل",
+    "groupFinished": "منتهية",
+    "emptyTitle": "لا أهداف بعد",
+    "emptyBody": "ابدأ من «هدف جديد». يعرض ANU خطته وكل خطوة، ويستأذنك قبل أن يتصرف.",
+    "loadError": "تعذّر تحميل مهامك.",
+    "retry": "حاول مرة أخرى"
+  },
+  "anuGoalComposer": {
+    "label": "هدف جديد",
+    "placeholder": "ماذا تريد أن يفعل ANU؟",
+    "submit": "ابدأ",
+    "hint": "سترى الخطة وكل خطوة. يستأذنك ANU قبل أن يحجز أو يرسل أو يشتري أي شيء.",
+    "length": "{count, number} من {max, number}",
+    "error": "تعذّر بدء الهدف. حاول مرة أخرى.",
+    "examplesTitle": "جرّب واحدًا",
+    "example1": "قارن بين ثلاثة حواسيب محمولة اقتصادية لطالب",
+    "example2": "اكتب قائمة أغراض لرحلة مشي لثلاثة أيام",
+    "example3": "لخّص ملاحظات الفريق لهذا الأسبوع في خمس نقاط"
+  },
+  "anuTaskStatus": {
+    "queued": "في الانتظار",
+    "running": "قيد التنفيذ",
+    "awaiting_approval": "بانتظارك",
+    "succeeded": "تمّت",
+    "failed": "فشلت",
+    "stopped": "أُوقفت"
+  },
+  "anuTaskRow": {
+    "confidence": "ثقة {percent}",
+    "openTask": "افتح المهمة: {goal}"
+  },
+  "anuApprovalCard": {
+    "heading": "يستأذنك ANU قبل أن يتصرف",
+    "approve": "موافقة",
+    "decline": "رفض",
+    "approved": "وافقتَ على هذا.",
+    "rejected": "رفضتَ هذا.",
+    "expired": "انتهت صلاحية هذا الطلب قبل الرد.",
+    "error": "لم يصل ردّك إلى ANU. حاول مرة أخرى.",
+    "detailFile": "الملف",
+    "detailOther": "تفاصيل"
+  },
+  "anuTaskDetail": {
+    "stop": "إيقاف",
+    "stopError": "تعذّر إيقاف المهمة. حاول مرة أخرى.",
+    "findingRunning": "قيد التنفيذ منذ {duration}",
+    "findingQueued": "في الانتظار {time}",
+    "findingWaiting": "متوقفة {time} حتى تردّ",
+    "findingDone": "انتهت خلال {duration}",
+    "findingFailed": "فشلت بعد {duration}",
+    "findingStopped": "أُوقفت بعد {duration}",
+    "findingFinishedAt": "انتهت {time}",
+    "liveReconnecting": "جارٍ إعادة الاتصال بالتنفيذ المباشر",
+    "liveLost": "توقفت التحديثات المباشرة. أعد التحميل لتلحق.",
+    "reload": "إعادة التحميل",
+    "working": "يعمل على الخطوة التالية",
+    "waitingToStart": "بانتظار تشغيل بيئة معزولة",
+    "noSteps": "لا خطوات بعد.",
+    "loadError": "تعذّر تحميل هذه المهمة.",
+    "notFound": "هذه المهمة غير موجودة، أو تخص حسابًا آخر.",
+    "retry": "حاول مرة أخرى",
+    "chooseTask": "اختر مهمة لترى خطواتها.",
+    "tabsLabel": "طرق عرض هذا التنفيذ",
+    "tabSteps": "الخطوات",
+    "tabFiles": "الملفات",
+    "tabBrowser": "المتصفح"
+  },
+  "anuStepRow": {
+    "kindPlan": "خطة",
+    "kindTool": "أداة",
+    "kindObservation": "وجد",
+    "kindMessage": "ملاحظة",
+    "kindApproval": "سألك",
+    "kindResult": "النتيجة",
+    "running": "قيد التنفيذ",
+    "failed": "فشلت",
+    "query": "بحث عن {query}",
+    "envCount": "{count, plural, zero {لا متغيرات} one {متغير واحد} two {متغيران} few {# متغيرات} many {# متغيرًا} other {# متغير}}",
+    "awaitingAnswer": "بانتظار ردّك.",
+    "kindBrowser": "المتصفح"
+  },
+  "anuResultCard": {
+    "heading": "النتيجة",
+    "failedHeading": "ما الذي حدث",
+    "confidence": "الثقة",
+    "noConfidence": "لم تُذكر درجة الثقة.",
+    "sources": "ما استخدمه",
+    "sourceStep": "الخطوة {seq, number}",
+    "noSources": "لم يستخدم هذا التنفيذ أي أداة، فالإجابة تستند إلى النموذج وحده.",
+    "sourceCommand": "أمر",
+    "sourceQuery": "بحث",
+    "sourceFile": "ملف",
+    "sourceLink": "رابط"
+  },
+  "anuNewGoalPage": {
+    "title": "هدف جديد",
+    "lede": "قُلها كما تقولها لشخص. ANU يحدد الخطوات."
+  },
+  "anuSettingsPage": {
+    "title": "الإعدادات",
+    "account": "مسجّل الدخول باسم",
+    "language": "اللغة"
+  },
+  "anuFiles": {
+    "workspace": "مساحة العمل",
+    "empty": "لم تكتب هذه المهمة أي ملفات بعد.",
+    "loadError": "تعذّر تحميل الملفات.",
+    "previewError": "تعذّر فتح هذا الملف.",
+    "noPreview": "لا يمكن عرض هذا النوع من الملفات هنا.",
+    "download": "تنزيل",
+    "csvTruncated": "يُعرض {shown, number} من {total, number} صف.",
+    "jsonItems": "{count, plural, zero {لا عناصر} one {عنصر واحد} two {عنصران} few {# عناصر} many {# عنصرًا} other {# عنصر}}",
+    "jsonKeys": "{count, plural, zero {لا مفاتيح} one {مفتاح واحد} two {مفتاحان} few {# مفاتيح} many {# مفتاحًا} other {# مفتاح}}"
+  },
+  "anuBrowser": {
+    "none": "لم يفتح ANU متصفحًا في هذه المهمة.",
+    "loadError": "تعذّر تحميل أحدث لقطة.",
+    "noUrl": "لا عنوان بعد",
+    "readOnly": "للعرض فقط",
+    "frameAlt": "ما يعرضه متصفح الوكيل عند {url}",
+    "lastAction": "آخر إجراء: {action}",
+    "live": "مباشر"
+  }
+}
