@@ -1,4 +1,4 @@
-import { type Driver, type DriverContext, type DriverOutcome } from "./types.js";
+import { type Driver, type DriverContext, type DriverOutcome, type SessionContext } from "./types.js";
 
 /**
  * Stand-in agent loop until the harness runner is complete: two calls to the
@@ -96,5 +96,24 @@ export const kiloDriver: Driver = {
     const confidence =
       typeof work?.confidence === "number" && work.confidence >= 0 && work.confidence <= 1 ? work.confidence : null;
     return { status: "succeeded", result, confidence };
+  },
+
+  /** Chat mode: the whole history goes to the gateway on every turn. No tools. */
+  async session(ctx: SessionContext): Promise<void> {
+    const messages: ChatMessage[] = [
+      { role: "system", content: "You are ANU, a helpful assistant. You have no tools or internet access in this chat. Answer plainly." },
+      ...ctx.history.map((m) => ({ role: m.role, content: m.text })),
+    ];
+    for await (const turn of ctx.turns) {
+      messages.push({ role: "user", content: turn.text });
+      try {
+        const reply = await chat(ctx, [messages[0]!, ...messages.slice(1).slice(-40)]);
+        messages.push({ role: "assistant", content: reply.content });
+        ctx.endTurn(turn.turnId, "succeeded", reply.content);
+      } catch (error) {
+        messages.pop();
+        ctx.endTurn(turn.turnId, "failed", error instanceof Error ? error.message : String(error));
+      }
+    }
   },
 };

@@ -4,12 +4,16 @@ import { AuthService, type SessionUser } from "../auth/service.js";
 import { corsOriginMatcher } from "../config.js";
 import { bearer, errorResponse, HttpError, json, readJson, safeEqual } from "../lib/http.js";
 import type { Logger } from "../lib/log.js";
-import { isTerminal, STEP_KINDS, STEP_STATUSES, stepView, taskView, approvalView } from "./model.js";
+import { isTerminal, ITEM_KINDS, STEP_KINDS, STEP_STATUSES, stepView, taskView, approvalView, itemView, sessionView } from "./model.js";
+import { AGENT_STATUSES, type AgentService } from "./agents.js";
+import type { SessionService } from "./sessions.js";
 import type { TaskService } from "./tasks.js";
 
 export interface AppDeps {
   auth: AuthService;
   tasks: TaskService;
+  sessions: SessionService;
+  agents: AgentService;
   internalToken: string;
   corsOrigins: string;
   log: Logger;
@@ -53,6 +57,15 @@ const FinishBody = z.object({
   confidence: z.number().min(0).max(1).nullable().optional(),
 });
 const ApprovalBody = z.object({ prompt: z.string().min(1).max(2000), detail: z.unknown().optional() });
+const ItemBody = z.object({
+  turnId: z.uuid(),
+  kind: z.enum(ITEM_KINDS).exclude(["user_message", "assistant_message", "turn_complete", "approval_request"]),
+  title: z.string().min(1).max(500),
+  detail: z.unknown().optional(),
+  status: z.enum(STEP_STATUSES).optional(),
+});
+const SessionApprovalBody = ApprovalBody.extend({ turnId: z.uuid() });
+const TurnDoneBody = z.object({ status: z.enum(["succeeded", "failed", "stopped"]), reply: z.string().max(100_000).default("") });
 
 function validate<T extends z.ZodType>(schema: T, value: unknown): z.infer<T> {
   const parsed = schema.safeParse(value);
@@ -66,7 +79,7 @@ const field = (body: unknown, key: string): unknown =>
   body && typeof body === "object" ? (body as Record<string, unknown>)[key] : undefined;
 
 export function createApp(deps: AppDeps): Handler {
-  const { auth, tasks, log } = deps;
+  const { auth, tasks, sessions, agents, log } = deps;
   const originAllowed = corsOriginMatcher(deps.corsOrigins);
   const pollMs = deps.ssePollMs ?? 1000;
   const heartbeatMs = deps.sseHeartbeatMs ?? 15_000;
@@ -84,16 +97,21 @@ export function createApp(deps: AppDeps): Handler {
     }
   }
 
-  function events(req: Request, user: SessionUser, taskId: string, url: URL): Response {
+  /** One polling SSE loop. `tick` sends what is new and returns false when the stream should end. */
+  function sseStream(
+    req: Request,
+    id: string,
+    url: URL,
+    tick: (send: (event: string, data: unknown, id?: number) => void, lastSeq: number) => Promise<{ lastSeq: number; end: boolean }>,
+  ): Response {
     const afterParam = url.searchParams.get("after") ?? req.headers.get("last-event-id") ?? "0";
     let lastSeq = /^\d+$/.test(afterParam) ? Number(afterParam) : 0;
     const encoder = new TextEncoder();
     let closed = false;
-
     const stream = new ReadableStream<Uint8Array>({
       async start(controller) {
         let wake: (() => void) | null = null;
-        const unsubscribe = tasks.events.subscribe(taskId, () => wake?.());
+        const unsubscribe = tasks.events.subscribe(id, () => wake?.());
         const close = () => {
           if (closed) return;
           closed = true;
@@ -104,35 +122,18 @@ export function createApp(deps: AppDeps): Handler {
           } catch {}
         };
         req.signal.addEventListener("abort", close);
-        const send = (event: string, data: unknown, id?: number) => {
+        const send = (event: string, data: unknown, seq?: number) => {
           if (closed) return;
-          const idLine = id === undefined ? "" : `id: ${id}\n`;
+          const idLine = seq === undefined ? "" : `id: ${seq}\n`;
           controller.enqueue(encoder.encode(`event: ${event}\n${idLine}data: ${JSON.stringify(data)}\n\n`));
         };
-        let lastFingerprint = "";
         let lastBeat = Date.now();
         controller.enqueue(encoder.encode(`retry: 2000\n\n`));
         try {
           while (!closed) {
-            const snap = await tasks.snapshot(user.userId, taskId, lastSeq);
-            if (!snap) {
-              send("end", { reason: "deleted" });
-              break;
-            }
-            for (const step of snap.steps) {
-              send("step", stepView(step), step.seq);
-              lastSeq = step.seq;
-            }
-            const approvals = snap.approvals.map(approvalView);
-            const fingerprint = `${snap.task.status}|${snap.task.updated_at.getTime()}|${approvals.map((a) => a.status).join(",")}`;
-            if (fingerprint !== lastFingerprint) {
-              lastFingerprint = fingerprint;
-              send("task", { ...taskView(snap.task), approvals });
-            }
-            if (isTerminal(snap.task.status)) {
-              send("end", { status: snap.task.status });
-              break;
-            }
+            const result = await tick(send, lastSeq);
+            lastSeq = result.lastSeq;
+            if (result.end) break;
             if (Date.now() - lastBeat >= heartbeatMs) {
               controller.enqueue(encoder.encode(`: ping\n\n`));
               lastBeat = Date.now();
@@ -147,7 +148,7 @@ export function createApp(deps: AppDeps): Handler {
             wake = null;
           }
         } catch (error) {
-          log.error("sse.failed", { taskId, error });
+          log.error("sse.failed", { id, error });
           send("error", { message: "stream failed" });
         }
         close();
@@ -163,6 +164,54 @@ export function createApp(deps: AppDeps): Handler {
         connection: "keep-alive",
         "x-accel-buffering": "no",
       },
+    });
+  }
+
+  function sessionEvents(req: Request, user: SessionUser, sessionId: string, url: URL): Response {
+    let lastFingerprint = "";
+    return sseStream(req, sessionId, url, async (send, lastSeq) => {
+      const snap = await sessions.snapshot(user.userId, sessionId, lastSeq);
+      if (!snap) {
+        send("end", { reason: "deleted" });
+        return { lastSeq, end: true };
+      }
+      for (const item of snap.items) {
+        send("item", itemView(item), item.seq);
+        lastSeq = item.seq;
+      }
+      const approvals = snap.approvals.map(approvalView);
+      const fingerprint = `${snap.session.status}|${snap.session.updated_at.getTime()}|${approvals.map((a) => a.status).join(",")}`;
+      if (fingerprint !== lastFingerprint) {
+        lastFingerprint = fingerprint;
+        send("session", { ...sessionView(snap.session), approvals });
+      }
+      return { lastSeq, end: false };
+    });
+  }
+
+  function events(req: Request, user: SessionUser, taskId: string, url: URL): Response {
+    let lastFingerprint = "";
+    return sseStream(req, taskId, url, async (send, lastSeq) => {
+      const snap = await tasks.snapshot(user.userId, taskId, lastSeq);
+      if (!snap) {
+        send("end", { reason: "deleted" });
+        return { lastSeq, end: true };
+      }
+      for (const step of snap.steps) {
+        send("step", stepView(step), step.seq);
+        lastSeq = step.seq;
+      }
+      const approvals = snap.approvals.map(approvalView);
+      const fingerprint = `${snap.task.status}|${snap.task.updated_at.getTime()}|${approvals.map((a) => a.status).join(",")}`;
+      if (fingerprint !== lastFingerprint) {
+        lastFingerprint = fingerprint;
+        send("task", { ...taskView(snap.task), approvals });
+      }
+      if (isTerminal(snap.task.status)) {
+        send("end", { status: snap.task.status });
+        return { lastSeq, end: true };
+      }
+      return { lastSeq, end: false };
     });
   }
 
@@ -251,7 +300,92 @@ export function createApp(deps: AppDeps): Handler {
       return tasks.workspaceRead(user.userId, params.id!, "browser/frame", { frameId: url.searchParams.get("frameId") ?? "" });
     }),
 
+    route("GET", "/v1/agents", async ({ req, url }) => {
+      const user = await requireUser(req);
+      const status = url.searchParams.get("status");
+      if (status && !(AGENT_STATUSES as readonly string[]).includes(status)) {
+        throw new HttpError(400, "invalid_status", `status must be one of ${AGENT_STATUSES.join(", ")}`);
+      }
+      return json({ agents: await agents.list(user.userId, status) });
+    }),
+
+    route("POST", "/v1/sessions", async ({ req }) => {
+      const user = await requireUser(req);
+      const body = req.headers.get("content-length") === "0" ? {} : await readJson(req).catch(() => ({}));
+      return json(await sessions.create(user.userId, field(body, "title")), 201);
+    }),
+    route("GET", "/v1/sessions", async ({ req, url }) => {
+      const user = await requireUser(req);
+      const limit = Math.min(Math.max(Number(url.searchParams.get("limit") ?? "50") || 50, 1), 200);
+      return json({ sessions: await sessions.list(user.userId, limit) });
+    }),
+    route("GET", "/v1/sessions/:id", async ({ req, params }) => {
+      const user = await requireUser(req);
+      return json(await sessions.get(user.userId, params.id!));
+    }),
+    route("DELETE", "/v1/sessions/:id", async ({ req, params }) => {
+      const user = await requireUser(req);
+      await sessions.delete(user.userId, params.id!);
+      return new Response(null, { status: 204 });
+    }),
+    route("GET", "/v1/sessions/:id/messages", async ({ req, params, url }) => {
+      const user = await requireUser(req);
+      const after = Number(url.searchParams.get("after") ?? "0") || 0;
+      return json({ items: await sessions.items(user.userId, params.id!, after) });
+    }),
+    route("POST", "/v1/sessions/:id/messages", async ({ req, params }) => {
+      const user = await requireUser(req);
+      const body = await readJson(req);
+      return json(await sessions.send(user.userId, params.id!, field(body, "text")), 202);
+    }),
+    route("GET", "/v1/sessions/:id/events", async ({ req, params, url }) => {
+      const user = await requireUser(req);
+      await sessions.get(user.userId, params.id!);
+      return sessionEvents(req, user, params.id!, url);
+    }),
+    route("POST", "/v1/sessions/:id/stop", async ({ req, params }) => {
+      const user = await requireUser(req);
+      return json(await sessions.stop(user.userId, params.id!));
+    }),
+    route("POST", "/v1/sessions/:id/approvals/:approvalId", async ({ req, params }) => {
+      const user = await requireUser(req);
+      const body = await readJson(req);
+      return json(await sessions.decide(user.userId, params.id!, params.approvalId!, field(body, "decision")));
+    }),
+    route("GET", "/v1/sessions/:id/files", async ({ req, params, url }) => {
+      const user = await requireUser(req);
+      return sessions.workspaceRead(user.userId, params.id!, "files", { path: url.searchParams.get("path") ?? "" });
+    }),
+    route("GET", "/v1/sessions/:id/files/content", async ({ req, params, url }) => {
+      const user = await requireUser(req);
+      return sessions.workspaceRead(user.userId, params.id!, "files/content", { path: url.searchParams.get("path") ?? "" });
+    }),
+    route("GET", "/v1/sessions/:id/browser", async ({ req, params }) => {
+      const user = await requireUser(req);
+      return sessions.workspaceRead(user.userId, params.id!, "browser", {});
+    }),
+    route("GET", "/v1/sessions/:id/browser/frame", async ({ req, params, url }) => {
+      const user = await requireUser(req);
+      return sessions.workspaceRead(user.userId, params.id!, "browser/frame", { frameId: url.searchParams.get("frameId") ?? "" });
+    }),
+
     // Internal endpoints, for the sandbox server only.
+    route("POST", "/internal/v1/sessions/:id/items", async ({ req, params }) => {
+      requireInternal(req);
+      const { turnId, ...item } = validate(ItemBody, await readJson(req));
+      return json(await sessions.systemAddItem(params.id!, turnId, item), 201);
+    }),
+    route("POST", "/internal/v1/sessions/:id/approvals", async ({ req, params }) => {
+      requireInternal(req);
+      const body = validate(SessionApprovalBody, await readJson(req));
+      return json(await sessions.systemRequestApproval(params.id!, body.turnId, body.prompt, body.detail ?? {}), 201);
+    }),
+    route("POST", "/internal/v1/sessions/:id/turns/:turnId/done", async ({ req, params }) => {
+      requireInternal(req);
+      const body = validate(TurnDoneBody, await readJson(req));
+      await sessions.systemTurnDone(params.id!, params.turnId!, body.status, body.reply);
+      return json({ ok: true });
+    }),
     route("POST", "/internal/v1/tasks/:id/steps", async ({ req, params }) => {
       requireInternal(req);
       const body = validate(StepBody, await readJson(req));

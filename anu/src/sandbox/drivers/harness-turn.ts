@@ -38,6 +38,8 @@ export interface TurnOptions {
   timeoutMs: number;
   /** The assistant's workspace directory. Paths inside it are shown relative to it. */
   workspace?: string;
+  /** Chat mode: send the text as the user wrote it, not wrapped as a task. */
+  chat?: boolean;
 }
 
 /** Reported when every tool call in the run failed. */
@@ -251,8 +253,8 @@ export async function runTurn(ctx: DriverContext, client: RuntimeClient, options
     throw new Error(`assistant rejected the message for every known source channel: ${String(lastError)}`);
   };
 
-  await send(taskMessage(ctx.goal));
-  ctx.step({ kind: "message", title: "Sent the goal to the assistant", detail: { conversationKey } });
+  await send(options.chat ? ctx.goal : taskMessage(ctx.goal));
+  if (!options.chat) ctx.step({ kind: "message", title: "Sent the goal to the assistant", detail: { conversationKey } });
 
   const started = new Map<string, number>();
   let narration = "";

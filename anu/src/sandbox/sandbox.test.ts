@@ -11,7 +11,8 @@ import { harnessDriver } from "./drivers/harness.js";
 import { extractJson } from "./drivers/kilo.js";
 import { isForbiddenEnvName, sanitizeEnv } from "./env.js";
 import type { DriverSettings } from "./protocol.js";
-import { RunManager, TaskGoneError, type Reporter } from "./runs.js";
+import { RunManager, TaskGoneError, type Reporter, type SessionReporter } from "./runs.js";
+import { SessionManager } from "./sessions.js";
 import { buildSandbox } from "./server.js";
 
 const root = mkdtempSync(path.join(os.tmpdir(), "anu-sandbox-test-"));
@@ -242,5 +243,84 @@ describe("kilo driver helpers", () => {
     expect(extractJson('```json\n{"steps":["a"]}\n```')).toEqual({ steps: ["a"] });
     expect(extractJson('Sure! {"result":"x","confidence":0.5} hope that helps')).toEqual({ result: "x", confidence: 0.5 });
     expect(extractJson("no json here")).toBeNull();
+  });
+});
+
+describe("chat session workers", () => {
+  class SessionRecorder implements SessionReporter {
+    items: { sessionId: string; turnId: string; kind: string; title: string; detail?: unknown }[] = [];
+    approvals: { sessionId: string; approvalId: string }[] = [];
+    done = new Map<string, { status: string; reply: string }>();
+    private counter = 0;
+    async sessionItem(sessionId: string, turnId: string, item: { kind: string; title: string; detail?: unknown }) {
+      this.items.push({ sessionId, turnId, ...item });
+    }
+    async sessionApproval(sessionId: string) {
+      const approvalId = `00000000-0000-4000-c000-${String(++this.counter).padStart(12, "0")}`;
+      this.approvals.push({ sessionId, approvalId });
+      return { approvalId };
+    }
+    async sessionTurnDone(_sessionId: string, turnId: string, status: string, reply: string) {
+      this.done.set(turnId, { status, reply });
+    }
+  }
+  const sessionManager = (reporter: SessionReporter, idleMs = 30_000) =>
+    new SessionManager({
+      root,
+      driver: "scripted",
+      settings,
+      turnTimeoutMs: 30_000,
+      idleMs,
+      reporter,
+      log: silentLogger,
+      parentEnv: { ...process.env, ...SECRET_ENV },
+    });
+
+  test("one worker keeps context across turns; idle shutdown resumes from history", async () => {
+    const reporter = new SessionRecorder();
+    const sessions = sessionManager(reporter, 300);
+    const id = randomUUID();
+    const [t1, t2, t3] = [randomUUID(), randomUUID(), randomUUID()];
+    await sessions.turn(id, t1, "hello", []);
+    await until(() => reporter.done.has(t1));
+    expect(reporter.done.get(t1)).toEqual({ status: "succeeded", reply: 'Reply 1 to "hello" (I remember 0 earlier messages)' });
+    await sessions.turn(id, t2, "and again #browser", []);
+    await until(() => reporter.done.has(t2));
+    expect(reporter.done.get(t2)!.reply).toBe('Reply 2 to "and again #browser" (I remember 2 earlier messages)');
+    const browser = reporter.items.find((i) => i.turnId === t2 && i.kind === "browser")!;
+    expect(browser.detail).toMatchObject({ action: "navigate", frameId: expect.stringMatching(/^f\d+$/) });
+
+    // Idle timeout stops the worker; the next turn starts a new one with history.
+    await until(() => !sessions.isRunning(id), 5000);
+    const resumed = await sessions.turn(id, t3, "still there?", [
+      { role: "user", text: "hello" },
+      { role: "assistant", text: "Reply 1" },
+    ]);
+    expect(resumed.resumed).toBe(true);
+    await until(() => reporter.done.has(t3));
+    expect(reporter.done.get(t3)!.reply).toBe('Reply 2 to "still there?" (I remember 2 earlier messages)');
+    await sessions.shutdown();
+  });
+
+  test("approvals and stop", async () => {
+    const reporter = new SessionRecorder();
+    const sessions = sessionManager(reporter);
+    const id = randomUUID();
+    const t1 = randomUUID();
+    await sessions.turn(id, t1, "write it #approval", []);
+    await until(() => reporter.approvals.length === 1);
+    expect(sessions.decide(id, reporter.approvals[0]!.approvalId, "approved")).toBe(true);
+    await until(() => reporter.done.has(t1));
+    expect(existsSync(path.join(root, id, "notes.md"))).toBe(true);
+
+    const t2 = randomUUID();
+    await sessions.turn(id, t2, "wait #slow", []);
+    await until(() => reporter.items.some((i) => i.turnId === t2 && i.kind === "message"));
+    expect(await sessions.stop(id)).toBe(true);
+    expect(sessions.isRunning(id)).toBe(false);
+    await Bun.sleep(100);
+    expect(reporter.done.has(t2)).toBe(false); // the API records stops itself
+    await sessions.remove(id);
+    expect(existsSync(path.join(root, id))).toBe(false);
   });
 });

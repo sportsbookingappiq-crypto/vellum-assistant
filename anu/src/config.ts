@@ -65,6 +65,8 @@ const sandboxShape = {
   ANU_SANDBOX_ROOT: z.string().min(1).default(path.join(ANU_DIR, ".data", "sandboxes")),
   ANU_SANDBOX_DRIVER: z.enum(DRIVERS).default("scripted"),
   ANU_TASK_TIMEOUT_SECONDS: positiveInt(600),
+  /** A chat session's worker shuts down after this long without a turn. */
+  ANU_SESSION_IDLE_SECONDS: positiveInt(600),
   ANU_SCRIPTED_STEP_DELAY_MS: z.coerce.number().int().min(0).default(300),
   KILO_MODEL: z.string().min(1).default(DEFAULT_KILO_MODEL),
   ANU_ASSISTANT_DIR: z.string().min(1).default(path.resolve(ANU_DIR, "..", "assistant")),

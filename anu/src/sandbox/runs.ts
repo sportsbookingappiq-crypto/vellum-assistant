@@ -24,6 +24,10 @@ export class HttpReporter implements Reporter {
     private readonly internalToken: string,
   ) {}
 
+  request(method: string, route: string, body?: unknown) {
+    return this.call(method, route, body);
+  }
+
   private async call(method: string, route: string, body?: unknown): Promise<Record<string, unknown>> {
     const res = await fetch(new URL(route, this.apiUrl), {
       method,
@@ -49,6 +53,30 @@ export class HttpReporter implements Reporter {
   }
   async finish(taskId: string, status: "succeeded" | "failed", result: string, confidence: number | null) {
     await this.call("POST", `/internal/v1/tasks/${taskId}/finish`, { status, result, confidence });
+  }
+}
+
+/** Where a chat session worker reports. */
+export interface SessionReporter {
+  sessionItem(sessionId: string, turnId: string, item: { kind: StepKind; title: string; detail?: unknown; status?: StepStatus }): Promise<void>;
+  sessionApproval(sessionId: string, turnId: string, prompt: string, detail: unknown): Promise<{ approvalId: string }>;
+  sessionTurnDone(sessionId: string, turnId: string, status: "succeeded" | "failed" | "stopped", reply: string): Promise<void>;
+}
+
+export class HttpSessionReporter implements SessionReporter {
+  private readonly http: HttpReporter;
+  constructor(apiUrl: string, internalToken: string) {
+    this.http = new HttpReporter(apiUrl, internalToken);
+  }
+  async sessionItem(sessionId: string, turnId: string, item: Parameters<SessionReporter["sessionItem"]>[2]) {
+    await this.http.request("POST", `/internal/v1/sessions/${sessionId}/items`, { ...item, turnId });
+  }
+  async sessionApproval(sessionId: string, turnId: string, prompt: string, detail: unknown) {
+    const body = await this.http.request("POST", `/internal/v1/sessions/${sessionId}/approvals`, { prompt, detail, turnId });
+    return { approvalId: String(body.id) };
+  }
+  async sessionTurnDone(sessionId: string, turnId: string, status: "succeeded" | "failed" | "stopped", reply: string) {
+    await this.http.request("POST", `/internal/v1/sessions/${sessionId}/turns/${turnId}/done`, { status, reply });
   }
 }
 
@@ -275,7 +303,7 @@ export class RunManager {
   }
 }
 
-async function* lines(stream: ReadableStream<Uint8Array>): AsyncGenerator<string> {
+export async function* lines(stream: ReadableStream<Uint8Array>): AsyncGenerator<string> {
   const decoder = new TextDecoder();
   let buffer = "";
   for await (const chunk of stream) {

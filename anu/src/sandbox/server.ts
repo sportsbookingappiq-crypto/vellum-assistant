@@ -7,9 +7,15 @@ import { createLogger, type Logger } from "../lib/log.js";
 import type { DriverSettings } from "./protocol.js";
 import { listFrames, readFrame } from "./browser-frames.js";
 import { listDirectory, readWorkspaceFile } from "./workspace-files.js";
-import { HttpReporter, RunManager, type Reporter } from "./runs.js";
+import { HttpReporter, HttpSessionReporter, RunManager, type Reporter, type SessionReporter } from "./runs.js";
+import { SessionManager } from "./sessions.js";
 
 const RunBody = z.object({ taskId: z.uuid(), goal: z.string().min(1).max(4000) });
+const TurnBody = z.object({
+  turnId: z.uuid(),
+  text: z.string().min(1).max(20_000),
+  history: z.array(z.object({ role: z.enum(["user", "assistant"]), text: z.string().max(100_000) })).max(500).default([]),
+});
 const DecisionBody = z.object({ decision: z.enum(["approved", "rejected"]) });
 
 /** Serves a read-only view of a task workspace: directory listings, file content, browser frames. */
@@ -39,7 +45,10 @@ export function driverSettings(config: SandboxConfig): DriverSettings {
   };
 }
 
-export function buildSandbox(config: SandboxConfig, options: { reporter?: Reporter; log?: Logger } = {}) {
+export function buildSandbox(
+  config: SandboxConfig,
+  options: { reporter?: Reporter; sessionReporter?: SessionReporter; log?: Logger } = {},
+) {
   const log = options.log ?? createLogger("sandbox");
   const runs = new RunManager({
     root: config.ANU_SANDBOX_ROOT,
@@ -49,11 +58,20 @@ export function buildSandbox(config: SandboxConfig, options: { reporter?: Report
     reporter: options.reporter ?? new HttpReporter(config.ANU_API_URL, config.ANU_INTERNAL_TOKEN),
     log,
   });
+  const sessions = new SessionManager({
+    root: config.ANU_SANDBOX_ROOT,
+    driver: config.ANU_SANDBOX_DRIVER,
+    settings: driverSettings(config),
+    turnTimeoutMs: config.ANU_TASK_TIMEOUT_SECONDS * 1000,
+    idleMs: config.ANU_SESSION_IDLE_SECONDS * 1000,
+    reporter: options.sessionReporter ?? new HttpSessionReporter(config.ANU_API_URL, config.ANU_INTERNAL_TOKEN),
+    log,
+  });
 
   async function handle(req: Request): Promise<Response> {
     const url = new URL(req.url);
     if (url.pathname === "/healthz" && req.method === "GET") {
-      return json({ status: "ok", driver: config.ANU_SANDBOX_DRIVER, activeRuns: runs.active });
+      return json({ status: "ok", driver: config.ANU_SANDBOX_DRIVER, activeRuns: runs.active, activeSessions: sessions.active });
     }
     const token = bearer(req);
     if (!token || !safeEqual(token, config.ANU_INTERNAL_TOKEN)) {
@@ -63,6 +81,20 @@ export function buildSandbox(config: SandboxConfig, options: { reporter?: Report
       const parsed = RunBody.safeParse(await readJson(req));
       if (!parsed.success) throw new HttpError(400, "invalid_body", "taskId (uuid) and goal are required");
       return json(await runs.start(parsed.data.taskId, parsed.data.goal), 202);
+    }
+    const session = /^\/v1\/sessions\/([0-9a-f-]{36})(\/turns|\/stop)?$/i.exec(url.pathname);
+    if (session) {
+      const sessionId = session[1]!;
+      if (session[2] === "/turns" && req.method === "POST") {
+        const parsed = TurnBody.safeParse(await readJson(req));
+        if (!parsed.success) throw new HttpError(400, "invalid_body", "turnId (uuid) and text are required");
+        return json(await sessions.turn(sessionId, parsed.data.turnId, parsed.data.text, parsed.data.history), 202);
+      }
+      if (session[2] === "/stop" && req.method === "POST") return json({ stopped: await sessions.stop(sessionId) });
+      if (!session[2] && req.method === "DELETE") {
+        await sessions.remove(sessionId);
+        return new Response(null, { status: 204 });
+      }
     }
     const read = /^\/v1\/runs\/([0-9a-f-]{36})\/(files|files\/content|browser|browser\/frame)$/i.exec(url.pathname);
     if (read && req.method === "GET") {
@@ -77,7 +109,8 @@ export function buildSandbox(config: SandboxConfig, options: { reporter?: Report
       if (match[3] && req.method === "POST") {
         const parsed = DecisionBody.safeParse(await readJson(req));
         if (!parsed.success) throw new HttpError(400, "invalid_body", "decision must be approved or rejected");
-        const delivered = runs.decide(taskId, match[3], parsed.data.decision);
+        const delivered =
+          runs.decide(taskId, match[3], parsed.data.decision) || sessions.decide(taskId, match[3], parsed.data.decision);
         return json({ delivered }, delivered ? 200 : 404);
       }
       if (!match[2] && req.method === "DELETE") {
@@ -97,7 +130,7 @@ export function buildSandbox(config: SandboxConfig, options: { reporter?: Report
       return errorResponse(new HttpError(500, "internal", "Internal error"));
     }
   };
-  return { runs, handler, log };
+  return { runs, sessions, handler, log };
 }
 
 if (import.meta.main) {
@@ -115,7 +148,7 @@ if (import.meta.main) {
   });
   const shutdown = async () => {
     server.stop(true);
-    await sandbox.runs.shutdown();
+    await Promise.all([sandbox.runs.shutdown(), sandbox.sessions.shutdown()]);
     process.exit(0);
   };
   process.on("SIGINT", shutdown);

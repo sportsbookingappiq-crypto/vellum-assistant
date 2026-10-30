@@ -1,13 +1,15 @@
 /**
- * Per-task worker process. The sandbox server starts one per run with a
- * sanitized environment, in its own process group, with the task workspace as
- * the working directory. It reads a start message on stdin, runs the driver,
- * and writes protocol lines on stdout. It never sees platform secrets.
+ * Per-task (or per-chat-session) worker process. The sandbox server starts one
+ * per run with a sanitized environment, in its own process group, with the
+ * workspace as the working directory. It reads a start message on stdin, runs
+ * the driver, and writes protocol lines on stdout. It never sees platform
+ * secrets. In session mode it stays up and handles `turn` messages until the
+ * sandbox stops it.
  */
 import { createInterface } from "node:readline";
 
 import { DRIVERS } from "./drivers/index.js";
-import { DriverUnavailableError, type DriverContext } from "./drivers/types.js";
+import { DriverUnavailableError, type DriverContext, type SessionTurn } from "./drivers/types.js";
 import { LINE_PREFIX, type ParentMessage, type WorkerMessage } from "./protocol.js";
 
 function emit(message: WorkerMessage): void {
@@ -20,6 +22,23 @@ let counter = 0;
 const abort = new AbortController();
 process.on("SIGTERM", () => abort.abort());
 
+// Turns queue for session mode.
+const turnQueue: SessionTurn[] = [];
+let turnWaiter: (() => void) | null = null;
+let currentTurn: string | null = null;
+async function* turns(): AsyncGenerator<SessionTurn> {
+  while (!abort.signal.aborted) {
+    const next = turnQueue.shift();
+    if (next) {
+      currentTurn = next.turnId;
+      yield next;
+      continue;
+    }
+    await new Promise<void>((resolve) => (turnWaiter = resolve));
+    turnWaiter = null;
+  }
+}
+
 const lines = createInterface({ input: process.stdin });
 lines.on("line", (line) => {
   let message: ParentMessage;
@@ -31,22 +50,24 @@ lines.on("line", (line) => {
   if (message.t === "decision") {
     pending.get(message.ref)?.(message.decision);
     pending.delete(message.ref);
-  } else if (message.t === "start" && !started) {
+  } else if (message.t === "turn") {
+    turnQueue.push({ turnId: message.turnId, text: message.text });
+    turnWaiter?.();
+  } else if ((message.t === "start" || message.t === "session") && !started) {
     started = true;
     void run(message);
   }
 });
 
-async function run(start: Extract<ParentMessage, { t: "start" }>) {
-  const driver = DRIVERS[start.driver];
+function baseContext(id: string, goal: string, workspaceDir: string, settings: DriverContext["settings"]): DriverContext {
   const env: Record<string, string> = {};
   for (const [key, value] of Object.entries(process.env)) if (value !== undefined) env[key] = value;
-  const ctx: DriverContext = {
-    taskId: start.taskId,
-    goal: start.goal,
-    workspaceDir: start.workspaceDir,
+  return {
+    taskId: id,
+    goal,
+    workspaceDir,
     env,
-    settings: start.settings,
+    settings,
     signal: abort.signal,
     step: (step) => emit({ t: "step", ...step }),
     requestApproval: (prompt, detail) =>
@@ -57,13 +78,41 @@ async function run(start: Extract<ParentMessage, { t: "start" }>) {
       }),
     log: (message) => process.stderr.write(`[worker] ${message}\n`),
   };
-  try {
-    if (!driver) throw new DriverUnavailableError(`unknown driver ${start.driver}`);
-    const outcome = await driver.run(ctx);
-    emit({ t: "done", status: outcome.status, result: outcome.result, confidence: outcome.confidence ?? null });
-  } catch (error) {
-    const prefix = error instanceof DriverUnavailableError ? "Driver unavailable: " : "";
-    emit({ t: "done", status: "failed", result: prefix + (error instanceof Error ? error.message : String(error)) });
+}
+
+const errorText = (error: unknown) =>
+  (error instanceof DriverUnavailableError ? "Driver unavailable: " : "") + (error instanceof Error ? error.message : String(error));
+
+async function run(start: Extract<ParentMessage, { t: "start" | "session" }>) {
+  const driver = DRIVERS[start.driver];
+  if (start.t === "start") {
+    const ctx = baseContext(start.taskId, start.goal, start.workspaceDir, start.settings);
+    try {
+      if (!driver) throw new DriverUnavailableError(`unknown driver ${start.driver}`);
+      const outcome = await driver.run(ctx);
+      emit({ t: "done", status: outcome.status, result: outcome.result, confidence: outcome.confidence ?? null });
+    } catch (error) {
+      emit({ t: "done", status: "failed", result: errorText(error) });
+    }
+  } else {
+    const ctx = {
+      ...baseContext(start.sessionId, "", start.workspaceDir, start.settings),
+      history: start.history,
+      turns: turns(),
+      endTurn(turnId: string, status: "succeeded" | "failed", reply: string) {
+        if (currentTurn === turnId) currentTurn = null;
+        emit({ t: "turn_done", turnId, status, reply });
+      },
+    };
+    try {
+      if (!driver) throw new DriverUnavailableError(`unknown driver ${start.driver}`);
+      await driver.session(ctx);
+    } catch (error) {
+      // The session cannot continue: fail the open turn and any queued ones.
+      for (const turnId of [currentTurn, ...turnQueue.map((t) => t.turnId)]) {
+        if (turnId) emit({ t: "turn_done", turnId, status: "failed", reply: errorText(error) });
+      }
+    }
   }
   // Let stdout drain before exiting so the final line is not lost.
   process.stdout.write("", () => process.exit(0));

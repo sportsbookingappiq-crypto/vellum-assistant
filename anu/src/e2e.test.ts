@@ -280,4 +280,58 @@ describe("end to end over HTTP", () => {
     expect(apiLog).toContain("auth.login");
     for (const user of SEED_USERS) expect(apiLog).not.toContain(user.phone);
   });
+
+  test("a chat session keeps context across turns, with steps, a browser frame, and an agent", async () => {
+    const token = await login(ALICE.phone);
+    const seeded = (await (await fetch(`${api}/v1/sessions`, authed(token))).json()) as { sessions: { status: string }[] };
+    expect(new Set(seeded.sessions.map((s) => s.status))).toEqual(new Set(["idle", "working", "waiting_for_you", "failed"]));
+
+    const created = await fetch(`${api}/v1/sessions`, authed(token, "POST", { title: "E2E chat" }));
+    expect(created.status).toBe(201);
+    const session = (await created.json()) as { id: string; agent: { name: string } };
+
+    const stream = await fetch(`${api}/v1/sessions/${session.id}/events`, { ...authed(token), signal: AbortSignal.timeout(20_000) });
+    const items: { kind: string; text: string | null; detail: any; turnId: string }[] = [];
+    const events = sse(stream);
+    const nextTurn = async () => {
+      for (;;) {
+        const { value, done } = await events.next();
+        if (done) throw new Error("stream ended");
+        if (value.event === "item") {
+          items.push(value.data);
+          if (value.data.kind === "turn_complete") return;
+        }
+      }
+    };
+
+    const first = await fetch(`${api}/v1/sessions/${session.id}/messages`, authed(token, "POST", { text: "Hello there" }));
+    expect(first.status).toBe(202);
+    await nextTurn();
+    const second = await fetch(`${api}/v1/sessions/${session.id}/messages`, authed(token, "POST", { text: "Show me a page #browser" }));
+    expect(second.status).toBe(202);
+    await nextTurn();
+
+    expect(items.map((i) => i.kind)).toEqual([
+      "user_message", "tool", "assistant_message", "turn_complete",
+      "user_message", "tool", "browser", "assistant_message", "turn_complete",
+    ]);
+    expect(items[2]!.text).toBe('Reply 1 to "Hello there" (I remember 0 earlier messages)');
+    expect(items[7]!.text).toBe('Reply 2 to "Show me a page #browser" (I remember 2 earlier messages)');
+
+    const browser = (await (await fetch(`${api}/v1/sessions/${session.id}/browser`, authed(token))).json()) as { latest: { frameId: string } };
+    expect(browser.latest.frameId).toBe(items[6]!.detail.frameId);
+    const frame = await fetch(`${api}/v1/sessions/${session.id}/browser/frame?frameId=${browser.latest.frameId}`, authed(token));
+    expect(frame.headers.get("content-type")).toBe("image/png");
+
+    const agents = (await (await fetch(`${api}/v1/agents`, authed(token))).json()) as { agents: any[] };
+    expect(agents.agents.find((a) => a.sessionId === session.id)).toMatchObject({ status: "idle", name: session.agent.name, kind: "session" });
+    expect(new Set(agents.agents.map((a) => a.status))).toEqual(new Set(["working", "waiting_for_you", "idle", "finished", "failed"]));
+
+    const bob = await login(BOB.phone);
+    expect((await fetch(`${api}/v1/sessions/${session.id}/messages`, authed(bob))).status).toBe(404);
+    expect((await fetch(`${api}/v1/sessions/${session.id}/messages`, authed(bob, "POST", { text: "hi" }))).status).toBe(404);
+
+    expect((await fetch(`${api}/v1/sessions/${session.id}`, authed(token, "DELETE"))).status).toBe(204);
+    await events.return(undefined);
+  });
 });

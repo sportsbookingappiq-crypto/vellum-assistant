@@ -21,6 +21,8 @@ tags:
   - name: me
   - name: tasks
   - name: workspace
+  - name: agents
+  - name: sessions
 
 paths:
   /healthz:
@@ -448,6 +450,269 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "404": { $ref: "#/components/responses/NotFound" }
 
+  /v1/agents:
+    get:
+      tags: [agents]
+      summary: The user's agents (one per task and per chat session)
+      parameters:
+        - name: status
+          in: query
+          schema: { $ref: "#/components/schemas/AgentStatus" }
+      responses:
+        "200":
+          description: Agents, most recently active first
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  agents: { type: array, items: { $ref: "#/components/schemas/Agent" } }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/sessions:
+    post:
+      tags: [sessions]
+      summary: Create a chat session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: { type: string, maxLength: 200 }
+      responses:
+        "201":
+          description: The session
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ChatSession" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    get:
+      tags: [sessions]
+      summary: The user's chat sessions, most recently active first
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 200, default: 50 }
+      responses:
+        "200":
+          description: Sessions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessions: { type: array, items: { $ref: "#/components/schemas/ChatSession" } }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/sessions/{sessionId}:
+    parameters:
+      - $ref: "#/components/parameters/SessionId"
+    get:
+      tags: [sessions]
+      summary: One chat session with its agent and approvals
+      responses:
+        "200":
+          description: The session
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ChatSession" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    delete:
+      tags: [sessions]
+      summary: Delete the session, its agent, and its workspace
+      responses:
+        "204": { description: Deleted }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/sessions/{sessionId}/messages:
+    parameters:
+      - $ref: "#/components/parameters/SessionId"
+    get:
+      tags: [sessions]
+      summary: Session items in order
+      parameters:
+        - name: after
+          in: query
+          schema: { type: integer, minimum: 0, default: 0 }
+      responses:
+        "200":
+          description: Items (at most 1000 per call)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items: { type: array, items: { $ref: "#/components/schemas/SessionItem" } }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    post:
+      tags: [sessions]
+      summary: Send a message and start a turn
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [text]
+              properties:
+                text: { type: string, minLength: 1, maxLength: 20000 }
+      responses:
+        "202":
+          description: Accepted. The reply arrives as items.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  turnId: { type: string, format: uuid }
+                  item: { $ref: "#/components/schemas/SessionItem" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Error" }
+
+  /v1/sessions/{sessionId}/events:
+    parameters:
+      - $ref: "#/components/parameters/SessionId"
+    get:
+      tags: [sessions]
+      summary: Server-sent events for a session
+      description: |
+        Events: `session` (ChatSession with approvals, first and on every change),
+        `item` (one SessionItem; SSE `id` is its `seq`), `end` (`{"reason": "deleted"}`),
+        `error`. The stream stays open between turns. Resume with `after` or `Last-Event-ID`.
+      parameters:
+        - name: after
+          in: query
+          schema: { type: integer, minimum: 0 }
+      responses:
+        "200":
+          description: Event stream
+          content:
+            text/event-stream:
+              schema: { type: string }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/sessions/{sessionId}/stop:
+    parameters:
+      - $ref: "#/components/parameters/SessionId"
+    post:
+      tags: [sessions]
+      summary: Stop the current turn
+      responses:
+        "200":
+          description: The session
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ChatSession" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/sessions/{sessionId}/approvals/{approvalId}:
+    parameters:
+      - $ref: "#/components/parameters/SessionId"
+      - name: approvalId
+        in: path
+        required: true
+        schema: { type: string, format: uuid }
+    post:
+      tags: [sessions]
+      summary: Approve or reject a pending session approval
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [decision]
+              properties:
+                decision: { type: string, enum: [approve, reject] }
+      responses:
+        "200":
+          description: The decided approval
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Approval" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Error" }
+
+  /v1/sessions/{sessionId}/files:
+    parameters:
+      - $ref: "#/components/parameters/SessionId"
+    get:
+      tags: [sessions]
+      summary: Same as /v1/tasks/{taskId}/files, for the session workspace
+      parameters:
+        - { name: path, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Directory listing
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DirectoryListing" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/sessions/{sessionId}/files/content:
+    parameters:
+      - $ref: "#/components/parameters/SessionId"
+    get:
+      tags: [sessions]
+      summary: Same as /v1/tasks/{taskId}/files/content
+      parameters:
+        - { name: path, in: query, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: File content
+          content:
+            "*/*": { schema: { type: string, format: binary } }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/sessions/{sessionId}/browser:
+    parameters:
+      - $ref: "#/components/parameters/SessionId"
+    get:
+      tags: [sessions]
+      summary: Same as /v1/tasks/{taskId}/browser
+      responses:
+        "200":
+          description: Frame metadata
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  latest: { nullable: true, allOf: [{ $ref: "#/components/schemas/BrowserFrame" }] }
+                  frames: { type: array, items: { $ref: "#/components/schemas/BrowserFrame" } }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/sessions/{sessionId}/browser/frame:
+    parameters:
+      - $ref: "#/components/parameters/SessionId"
+    get:
+      tags: [sessions]
+      summary: Same as /v1/tasks/{taskId}/browser/frame
+      parameters:
+        - { name: frameId, in: query, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: The image
+          content:
+            image/png: { schema: { type: string, format: binary } }
+            image/jpeg: { schema: { type: string, format: binary } }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
 components:
   securitySchemes:
     session:
@@ -457,6 +722,11 @@ components:
   parameters:
     TaskId:
       name: taskId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    SessionId:
+      name: sessionId
       in: path
       required: true
       schema: { type: string, format: uuid }
@@ -557,12 +827,74 @@ components:
         contentType: { type: string, enum: [image/png, image/jpeg] }
         bytes: { type: integer }
         capturedAt: { type: string, format: date-time }
+    AgentStatus:
+      type: string
+      enum: [working, waiting_for_you, idle, finished, failed]
+    Avatar:
+      type: object
+      required: [bodyShape, eyeStyle, color]
+      description: Ids from packages/avatar-catalog.
+      properties:
+        bodyShape: { type: string, example: stellar }
+        eyeStyle: { type: string, example: curious }
+        color: { type: string, example: teal }
+    AgentSummary:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        avatar: { $ref: "#/components/schemas/Avatar" }
+    Agent:
+      type: object
+      required: [id, name, avatar, kind, status, title, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        avatar: { $ref: "#/components/schemas/Avatar" }
+        kind: { type: string, enum: [task, session] }
+        taskId: { type: [string, "null"], format: uuid }
+        sessionId: { type: [string, "null"], format: uuid }
+        status: { $ref: "#/components/schemas/AgentStatus" }
+        sourceStatus: { type: string, description: The task or session status it was derived from }
+        title: { type: string, description: Task goal or session title }
+        doing: { type: [string, "null"], description: Title of the latest step or message }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    ChatSession:
+      type: object
+      required: [id, title, status, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        title: { type: string }
+        status: { type: string, enum: [idle, working, waiting_for_you, failed] }
+        agent: { $ref: "#/components/schemas/AgentSummary" }
+        lastItem: { oneOf: [{ $ref: "#/components/schemas/SessionItem" }, { type: "null" }] }
+        approvals: { type: array, items: { $ref: "#/components/schemas/Approval" } }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    SessionItem:
+      type: object
+      required: [id, sessionId, seq, kind, title, detail, status, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        sessionId: { type: string, format: uuid }
+        seq: { type: integer }
+        kind:
+          type: string
+          enum: [user_message, assistant_message, plan, tool, observation, message, browser, approval_request, turn_complete]
+        title: { type: string }
+        text: { type: [string, "null"], description: Full text for user_message and assistant_message }
+        detail: {}
+        status: { type: string, enum: [pending, running, done, failed] }
+        turnId: { type: [string, "null"], format: uuid }
+        createdAt: { type: string, format: date-time }
     Approval:
       type: object
       required: [id, taskId, prompt, status, createdAt]
       properties:
         id: { type: string, format: uuid }
-        taskId: { type: string, format: uuid }
+        taskId: { type: [string, "null"], format: uuid }
+        sessionId: { type: [string, "null"], format: uuid, description: Set for chat session approvals }
         stepId: { type: [string, "null"], format: uuid }
         prompt: { type: string }
         detail: {}

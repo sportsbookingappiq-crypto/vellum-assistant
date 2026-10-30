@@ -5,6 +5,8 @@ import { connect, Db } from "../db/client.js";
 import { createLogger, type Logger } from "../lib/log.js";
 import { createApp } from "./app.js";
 import { HttpSandboxClient, type SandboxClient } from "./sandbox-client.js";
+import { AgentService } from "./agents.js";
+import { SessionService } from "./sessions.js";
 import { TaskEvents, TaskService } from "./tasks.js";
 
 export interface ApiServerOptions {
@@ -34,15 +36,20 @@ export function buildApi(options: ApiServerOptions) {
     log,
   );
   const sandbox = options.sandbox ?? new HttpSandboxClient(config.ANU_SANDBOX_URL, config.ANU_INTERNAL_TOKEN);
-  const tasks = new TaskService(db, sandbox, new TaskEvents(), now, log);
+  const events = new TaskEvents();
+  const tasks = new TaskService(db, sandbox, events, now, log);
+  const sessions = new SessionService(db, sandbox, events, now, log);
+  const agents = new AgentService(db);
   const handler = createApp({
     auth,
     tasks,
+    sessions,
+    agents,
     internalToken: config.ANU_INTERNAL_TOKEN,
     corsOrigins: config.ANU_CORS_ORIGINS,
     log,
   });
-  return { db, auth, tasks, handler, log };
+  return { db, auth, tasks, sessions, agents, handler, log };
 }
 
 export function clientAddressOf(req: Request, socketAddress: string | undefined, trustProxy: boolean): string {

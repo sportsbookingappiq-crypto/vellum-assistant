@@ -1,3 +1,4 @@
+import { insertAgent } from "../api/agents.js";
 import type { Db } from "./client.js";
 
 /** Fake people. Numbers are from the reserved 555-0100 to 555-0199 range. */
@@ -97,15 +98,87 @@ export const SEED_TASKS: SeedTask[] = [
   },
 ];
 
+type Item = { kind: string; title: string; text?: string; detail?: unknown; status?: string };
+interface SeedSession {
+  id: string;
+  userId: string;
+  title: string;
+  status: string;
+  items: Item[];
+  approval?: { id: string; prompt: string };
+}
+const sid = (n: number) => `00000000-0000-4000-b000-${String(n).padStart(12, "0")}`;
+const say = (text: string): Item => ({ kind: "user_message", title: text.slice(0, 200), text });
+const reply = (text: string): Item => ({ kind: "assistant_message", title: text.slice(0, 200), text });
+const turnDone: Item = { kind: "turn_complete", title: "Turn complete", detail: { status: "succeeded" } };
+
+export const SEED_SESSIONS: SeedSession[] = [
+  {
+    id: sid(1),
+    userId: primary.id,
+    title: "Weekend trip ideas",
+    status: "idle",
+    items: [
+      say("Where could I go for a weekend near the coast?"),
+      { kind: "tool", title: "Read the conversation" },
+      reply("Three options: a beach town two hours north, a harbor city with ferries, or a quiet cove with hiking trails."),
+      turnDone,
+      say("Which one is best for hiking?"),
+      reply("The cove: it has coastal trails from 3 to 12 km and a campsite."),
+      turnDone,
+    ],
+  },
+  {
+    id: sid(2),
+    userId: primary.id,
+    title: "Laptop research",
+    status: "working",
+    items: [
+      say("Find a light laptop under 800 dollars"),
+      { kind: "browser", title: "Browser navigate: https://example.com/laptops", detail: { url: "https://example.com/laptops", action: "navigate", frameId: null } },
+    ],
+  },
+  {
+    id: sid(3),
+    userId: primary.id,
+    title: "Tidy my downloads",
+    status: "waiting_for_you",
+    items: [
+      say("Delete old installers from my downloads"),
+      { kind: "approval_request", title: "Delete 12 installer files?", status: "pending" },
+    ],
+    approval: { id: "00000000-0000-4000-a000-000000000013", prompt: "Delete 12 installer files?" },
+  },
+  {
+    id: sid(4),
+    userId: primary.id,
+    title: "Translate a letter",
+    status: "failed",
+    items: [
+      say("Translate the attached letter to French"),
+      { kind: "message", title: "The model gateway was unreachable", status: "failed" },
+      { kind: "turn_complete", title: "Turn failed", detail: { status: "failed" }, status: "failed" },
+    ],
+  },
+  {
+    id: sid(5),
+    userId: second.id,
+    title: "Second user's private chat",
+    status: "idle",
+    items: [say("Hello"), reply("Hi, how can I help?"), turnDone],
+  },
+];
+
 /**
  * Inserts the fake data. Safe to run repeatedly: existing rows are left as
  * they are. With reset, the seeded tasks are deleted first and recreated in
  * their original states (other tasks of the seeded users are kept).
  */
-export async function seed(db: Db, options: { reset?: boolean } = {}): Promise<{ users: number; tasks: number }> {
+export async function seed(db: Db, options: { reset?: boolean } = {}): Promise<{ users: number; tasks: number; sessions: number }> {
   return db.asSystem(async (tx) => {
     if (options.reset) {
       await tx`delete from tasks where id in ${tx(SEED_TASKS.map((task) => task.id))}`;
+      await tx`delete from chat_sessions where id in ${tx(SEED_SESSIONS.map((session) => session.id))}`;
     }
     for (const user of SEED_USERS) {
       await tx`insert into users (id, phone) values (${user.id}, ${user.phone}) on conflict do nothing`;
@@ -137,6 +210,37 @@ export async function seed(db: Db, options: { reset?: boolean } = {}): Promise<{
           on conflict do nothing`;
       }
     }
-    return { users: SEED_USERS.length, tasks: created };
+    for (const task of SEED_TASKS) await insertAgent(tx, task.userId, { taskId: task.id }, new Date());
+
+    let sessionsCreated = 0;
+    for (const session of SEED_SESSIONS) {
+      const inserted = await tx`
+        insert into chat_sessions (id, user_id, title, status, driver)
+        values (${session.id}, ${session.userId}, ${session.title}, ${session.status}, 'seed')
+        on conflict (id) do nothing returning id`;
+      if (inserted.length === 0) continue;
+      sessionsCreated++;
+      await insertAgent(tx, session.userId, { sessionId: session.id }, new Date());
+      let seq = 0;
+      let turnId: string | null = null;
+      for (const item of session.items) {
+        const currentTurn: string | null = turnId;
+        const rows: { id: string }[] = await tx<{ id: string }[]>`
+          insert into session_items (session_id, user_id, seq, kind, title, text, detail, status, turn_id)
+          values (${session.id}, ${session.userId}, ${++seq}, ${item.kind}, ${item.title}, ${item.text ?? null},
+            ${tx.json((item.detail ?? {}) as never)}, ${item.status ?? "done"}, ${currentTurn})
+          returning id`;
+        if (item.kind === "user_message") {
+          turnId = rows[0]!.id;
+          await tx`update session_items set turn_id = ${turnId} where id = ${turnId}`;
+        }
+      }
+      if (session.approval) {
+        await tx`insert into approvals (id, session_id, user_id, prompt)
+          values (${session.approval.id}, ${session.id}, ${session.userId}, ${session.approval.prompt})
+          on conflict do nothing`;
+      }
+    }
+    return { users: SEED_USERS.length, tasks: created, sessions: sessionsCreated };
   });
 }

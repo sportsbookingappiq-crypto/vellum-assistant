@@ -64,6 +64,18 @@ export class FakeSandbox implements SandboxClient {
   async deleteRun(taskId: string) {
     this.calls.push({ op: "delete", taskId });
   }
+  turns: { sessionId: string; turnId: string; text: string; history: unknown[] }[] = [];
+  async sendTurn(sessionId: string, turnId: string, text: string, history: unknown[]) {
+    if (this.failStart) throw new Error("sandbox down");
+    this.turns.push({ sessionId, turnId, text, history });
+    return { driver: "fake" };
+  }
+  async stopSession(sessionId: string) {
+    this.calls.push({ op: "stopSession", taskId: sessionId });
+  }
+  async deleteSession(sessionId: string) {
+    this.calls.push({ op: "deleteSession", taskId: sessionId });
+  }
   /** Workspaces for `read`, one directory per task under this root. */
   workspaceRoot = mkdtempSync(path.join(os.tmpdir(), "anu-fake-sandbox-"));
   async read(taskId: string, resource: WorkspaceResource, query: Record<string, string>) {

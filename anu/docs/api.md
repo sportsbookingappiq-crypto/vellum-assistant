@@ -82,6 +82,54 @@ When the agent uses its browser, the task gets `browser` steps and the sandbox k
 
 When a task is `awaiting_approval`, its `approvals` list has an entry with `status: "pending"`, a `prompt` to show, and an `id`. Show the prompt with Approve and Reject buttons, then call `POST /v1/tasks/:id/approvals/:approvalId`. A second answer returns `409`. Approvals still pending when a task stops or ends become `expired`.
 
+## Agents
+
+Every task and every chat session is run by an agent with a name and an avatar. Traits are ids from `packages/avatar-catalog` (`bodyShape` such as `stellar` or `dendrite`, `eyeStyle`, `color`), assigned once from the task or session id, so they never change.
+
+`GET /v1/agents?status=` lists the user's agents, most recently active first (at most 200):
+
+```json
+{"agents": [{"id": "...", "name": "Nova", "avatar": {"bodyShape": "stellar", "eyeStyle": "curious", "color": "teal"},
+  "kind": "session", "taskId": null, "sessionId": "...", "status": "working", "sourceStatus": "working",
+  "title": "Laptop research", "doing": "Browser navigate: https://example.com/laptops",
+  "createdAt": "...", "updatedAt": "..."}]}
+```
+
+`status` is `working`, `waiting_for_you`, `idle` (chat sessions between turns), `finished` (task succeeded or was stopped), or `failed` (task failed, or the session's last turn failed). `doing` is the title of the latest step or message. The optional `status` query filters the list. Session and task responses (`GET /v1/sessions/:id`) also carry `agent: {id, name, avatar}`.
+
+## Chat sessions
+
+A session is a conversation with an agent, separate from tasks. It keeps its context across turns.
+
+| Call | What it does |
+| --- | --- |
+| `POST /v1/sessions` `{"title": "..."}` | Creates a session (`201`). Title is optional; without one it becomes the first message's first line |
+| `GET /v1/sessions?limit=50` | The user's sessions, most recently active first |
+| `GET /v1/sessions/:id` | One session with `agent`, `lastItem`, `approvals` |
+| `GET /v1/sessions/:id/messages?after=0` | Items in order (`{"items": [...]}`) |
+| `POST /v1/sessions/:id/messages` `{"text": "..."}` | Sends a message and starts a turn (`202`, `{turnId, item}`). `409` while a turn is running or waiting for approval |
+| `GET /v1/sessions/:id/events` | Live stream (below) |
+| `POST /v1/sessions/:id/stop` | Stops the current turn. The session goes back to `idle` |
+| `POST /v1/sessions/:id/approvals/:approvalId` `{"decision": "approve"}` | Answers an approval, same as tasks |
+| `DELETE /v1/sessions/:id` | Deletes the session, its agent, and its workspace (`204`) |
+| `GET /v1/sessions/:id/files`, `/files/content`, `/browser`, `/browser/frame` | Same as the task endpoints |
+
+Session `status`: `idle`, `working`, `waiting_for_you`, `failed` (last turn failed; you can still send). Another user's session returns `404`.
+
+Items share one sequence (`seq`) and each has `kind`, `title`, `text` (full message text for `user_message` and `assistant_message`, otherwise null), `detail`, `status`, and `turnId` (the id of the user message that started the turn).
+
+| kind | Meaning |
+| --- | --- |
+| `user_message` | What the user sent |
+| `assistant_message` | The agent's reply (final text; no token deltas yet) |
+| `plan`, `tool`, `observation`, `message`, `browser` | Steps, same as task steps |
+| `approval_request` | Waiting for the user; the approval is in the session's `approvals` |
+| `turn_complete` | The turn ended. `detail.status` is `succeeded`, `failed`, or `stopped` |
+
+`GET /v1/sessions/:id/events` works like the task stream, with `event: item` (one item, `id` is its `seq`) and `event: session` (the session with `approvals`, first and on every change). It does not end on its own; it sends `end` with `{"reason": "deleted"}` if the session is deleted. Resume with `?after=<seq>`.
+
+In the sandbox each session has its own long-lived worker in its own workspace. After 10 idle minutes (`ANU_SESSION_IDLE_SECONDS`) the worker stops; the next message starts a new one with the last 100 messages as history. The harness driver keeps one assistant runtime per worker and the same conversation key, with the runtime's data in the session workspace, so the conversation survives a restart. The kilo driver sends the history with every turn. The scripted driver replies `Reply N to "<text>" (I remember M earlier messages)` and understands `#browser`, `#approval`, `#slow`, and `#fail` in a message.
+
 ## Live updates (SSE)
 
 `GET /v1/tasks/:id/events` returns `text/event-stream`:

@@ -18,6 +18,10 @@ export interface SandboxClient {
   stopRun(taskId: string): Promise<void>;
   sendDecision(taskId: string, approvalId: string, decision: "approved" | "rejected"): Promise<void>;
   deleteRun(taskId: string): Promise<void>;
+  /** Sends one chat turn; the sandbox starts the session's worker if needed. */
+  sendTurn(sessionId: string, turnId: string, text: string, history: { role: "user" | "assistant"; text: string }[]): Promise<{ driver: string }>;
+  stopSession(sessionId: string): Promise<void>;
+  deleteSession(sessionId: string): Promise<void>;
   /** Proxies a read of the task workspace. The response is safe to return to the task owner. */
   read(taskId: string, resource: WorkspaceResource, query: Record<string, string>): Promise<Response>;
 }
@@ -61,6 +65,19 @@ export class HttpSandboxClient implements SandboxClient {
 
   async deleteRun(taskId: string) {
     await this.call("DELETE", `/v1/runs/${taskId}`);
+  }
+
+  async sendTurn(sessionId: string, turnId: string, text: string, history: { role: "user" | "assistant"; text: string }[]) {
+    const body = (await this.call("POST", `/v1/sessions/${sessionId}/turns`, { turnId, text, history })) as { driver?: string } | null;
+    return { driver: body?.driver ?? "unknown" };
+  }
+
+  async stopSession(sessionId: string) {
+    await this.call("POST", `/v1/sessions/${sessionId}/stop`);
+  }
+
+  async deleteSession(sessionId: string) {
+    await this.call("DELETE", `/v1/sessions/${sessionId}`);
   }
 
   async read(taskId: string, resource: WorkspaceResource, query: Record<string, string>): Promise<Response> {

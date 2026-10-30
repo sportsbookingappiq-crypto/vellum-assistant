@@ -42,7 +42,8 @@ export interface StepRow {
 
 export interface ApprovalRow {
   id: string;
-  task_id: string;
+  task_id: string | null;
+  session_id: string | null;
   step_id: string | null;
   prompt: string;
   detail: unknown;
@@ -86,6 +87,7 @@ export function approvalView(row: ApprovalRow) {
   return {
     id: row.id,
     taskId: row.task_id,
+    sessionId: row.session_id ?? null,
     stepId: row.step_id,
     prompt: row.prompt,
     detail: row.detail,
@@ -95,3 +97,80 @@ export function approvalView(row: ApprovalRow) {
   };
 }
 export type ApprovalView = ReturnType<typeof approvalView>;
+
+export const SESSION_STATUSES = ["idle", "working", "waiting_for_you", "failed"] as const;
+export type SessionStatus = (typeof SESSION_STATUSES)[number];
+export const ITEM_KINDS = [
+  "user_message",
+  "assistant_message",
+  "plan",
+  "tool",
+  "observation",
+  "message",
+  "browser",
+  "approval_request",
+  "turn_complete",
+] as const;
+export type ItemKind = (typeof ITEM_KINDS)[number];
+
+export interface ChatSessionRow {
+  id: string;
+  user_id: string;
+  title: string;
+  status: SessionStatus;
+  driver: string | null;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface SessionItemRow {
+  id: string;
+  session_id: string;
+  user_id: string;
+  seq: number;
+  kind: ItemKind;
+  title: string;
+  text: string | null;
+  detail: unknown;
+  status: StepStatus;
+  turn_id: string | null;
+  created_at: Date;
+}
+
+export interface AgentRow {
+  id: string;
+  name: string;
+  body_shape: string;
+  eye_style: string;
+  color: string;
+}
+
+export function agentView(row: AgentRow | undefined) {
+  if (!row) return null;
+  return { id: row.id, name: row.name, avatar: { bodyShape: row.body_shape, eyeStyle: row.eye_style, color: row.color } };
+}
+
+export function sessionView(row: ChatSessionRow) {
+  return {
+    id: row.id,
+    title: row.title,
+    status: row.status,
+    createdAt: iso(row.created_at),
+    updatedAt: iso(row.updated_at),
+  };
+}
+
+export function itemView(row: SessionItemRow) {
+  return {
+    id: row.id,
+    sessionId: row.session_id,
+    seq: row.seq,
+    kind: row.kind,
+    title: row.title,
+    text: row.text,
+    detail: row.detail,
+    status: row.status,
+    turnId: row.turn_id,
+    createdAt: iso(row.created_at),
+  };
+}

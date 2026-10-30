@@ -1,5 +1,5 @@
 import type { StepKind, StepStatus } from "../../api/model.js";
-import type { DriverSettings } from "../protocol.js";
+import type { ChatTurn, DriverSettings } from "../protocol.js";
 
 export interface StepInput {
   kind: StepKind;
@@ -37,6 +37,24 @@ export interface DriverOutcome {
 export interface Driver {
   readonly name: string;
   run(ctx: DriverContext): Promise<DriverOutcome>;
+  /**
+   * Chat mode: one long-lived call per session worker. Reads turns from
+   * `ctx.turns` and answers each with `ctx.endTurn`. The context's `taskId` is
+   * the session id and `goal` is empty.
+   */
+  session(ctx: SessionContext): Promise<void>;
+}
+
+export interface SessionTurn {
+  turnId: string;
+  text: string;
+}
+
+export interface SessionContext extends DriverContext {
+  /** Earlier messages, oldest first (from the API when the worker starts). */
+  history: ChatTurn[];
+  turns: AsyncIterable<SessionTurn>;
+  endTurn(turnId: string, status: "succeeded" | "failed", reply: string): void;
 }
 
 /** Thrown when a driver cannot run in this environment. The message says why. */

@@ -1,4 +1,5 @@
 import type { Db, Tx } from "../db/client.js";
+import { insertAgent } from "./agents.js";
 import { HttpError, isUuid, notFound } from "../lib/http.js";
 import type { Logger } from "../lib/log.js";
 import {
@@ -6,7 +7,13 @@ import {
   isTerminal,
   stepView,
   taskView,
+  agentView,
+  itemView,
+  sessionView,
+  type AgentRow,
   type ApprovalRow,
+  type ChatSessionRow,
+  type SessionItemRow,
   type StepKind,
   type StepRow,
   type StepStatus,
@@ -73,6 +80,7 @@ export class TaskService {
       const [row] = await tx<TaskRow[]>`
         insert into tasks (user_id, goal, created_at, updated_at)
         values (${userId}, ${goal.trim()}, ${now}, ${now}) returning *`;
+      await insertAgent(tx, userId, { taskId: row!.id }, now);
       await tx`insert into audit_log (user_id, action, target, created_at)
         values (${userId}, 'task.created', ${row!.id}, ${now})`;
       return row!;
@@ -186,9 +194,9 @@ export class TaskService {
         values (${userId}, 'approval.decided', ${task.id}, ${tx.json({ approvalId: row.id, decision })}, ${now})`;
       return updated!;
     });
-    this.events.notify(approval.task_id);
+    this.events.notify(approval.task_id!);
     this.sandbox
-      .sendDecision(approval.task_id, approval.id, decision)
+      .sendDecision(approval.task_id!, approval.id, decision)
       .catch((error) => this.log.warn("task.decision_push_failed", { taskId: approval.task_id, error }));
     return approvalView(approval);
   }
@@ -214,6 +222,10 @@ export class TaskService {
       const approvals = await tx<ApprovalRow[]>`select * from approvals where user_id = ${userId} order by created_at`;
       const sessions = await tx<{ created_at: Date; expires_at: Date; revoked_at: Date | null }[]>`
         select created_at, expires_at, revoked_at from sessions where user_id = ${userId} order by created_at`;
+      const chats = await tx<ChatSessionRow[]>`select * from chat_sessions where user_id = ${userId} order by created_at`;
+      const items = await tx<SessionItemRow[]>`select * from session_items where user_id = ${userId} order by session_id, seq`;
+      const agents = await tx<(AgentRow & { task_id: string | null; session_id: string | null })[]>`
+        select * from agents where user_id = ${userId} order by created_at`;
       const audit = await tx<{ action: string; target: string | null; detail: unknown; created_at: Date }[]>`
         select action, target, detail, created_at from audit_log where user_id = ${userId} order by id`;
       await tx`insert into audit_log (user_id, action, created_at) values (${userId}, 'me.exported', ${now})`;
@@ -225,6 +237,12 @@ export class TaskService {
           steps: steps.filter((step) => step.task_id === task.id).map(stepView),
           approvals: approvals.filter((approval) => approval.task_id === task.id).map(approvalView),
         })),
+        chatSessions: chats.map((chat) => ({
+          ...sessionView(chat),
+          items: items.filter((item) => item.session_id === chat.id).map(itemView),
+          approvals: approvals.filter((approval) => approval.session_id === chat.id).map(approvalView),
+        })),
+        agents: agents.map((agent) => ({ ...agentView(agent)!, taskId: agent.task_id, sessionId: agent.session_id })),
         sessions: sessions.map((session) => ({
           createdAt: session.created_at.toISOString(),
           expiresAt: session.expires_at.toISOString(),
@@ -242,7 +260,8 @@ export class TaskService {
 
   async deleteUser(userId: string): Promise<void> {
     const taskIds = await this.db.asUser(userId, async (tx) => {
-      const rows = await tx<{ id: string }[]>`select id from tasks where user_id = ${userId}`;
+      const rows = await tx<{ id: string }[]>`
+        select id from tasks where user_id = ${userId} union all select id from chat_sessions where user_id = ${userId}`;
       await tx`delete from users where id = ${userId}`;
       return rows.map((row) => row.id);
     });
@@ -251,6 +270,8 @@ export class TaskService {
     );
     for (const taskId of taskIds) {
       this.events.notify(taskId);
+      // Tasks and chat sessions share the workspace root and id space.
+      this.sandbox.deleteSession(taskId).catch(() => {});
       this.sandbox.deleteRun(taskId).catch((error) => this.log.warn("task.workspace_delete_failed", { taskId, error }));
     }
     this.log.info("user.deleted", { userId, tasks: taskIds.length });

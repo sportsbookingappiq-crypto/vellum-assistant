@@ -2,7 +2,7 @@ import { writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { encodePng, saveFrame } from "../browser-frames.js";
-import { sleep, type Driver, type DriverContext, type DriverOutcome } from "./types.js";
+import { sleep, type Driver, type DriverContext, type DriverOutcome, type SessionContext } from "./types.js";
 
 /**
  * Deterministic fake harness for tests and demos. Goal markers change its path:
@@ -86,5 +86,48 @@ export const scriptedDriver: Driver = {
         : `Scripted run finished without writing a file for: ${ctx.goal}`,
       confidence: wrote ? 0.9 : 0.6,
     };
+  },
+
+  /**
+   * Chat mode. Replies are deterministic and show that context carries over:
+   * `Reply N to "text" (I remember M earlier messages)`. Markers in a message:
+   * `#browser` adds a browser step with a PNG frame, `#approval` asks first,
+   * `#slow` waits (for stop tests), `#fail` fails the turn.
+   */
+  async session(ctx: SessionContext): Promise<void> {
+    const delay = ctx.settings.scriptedStepDelayMs;
+    const history = [...ctx.history];
+    for await (const turn of ctx.turns) {
+      const userTurns = history.filter((m) => m.role === "user").length;
+      ctx.step({ kind: "tool", title: "Read the conversation", detail: { earlierMessages: history.length }, status: "done" });
+      await sleep(delay, ctx.signal);
+      if (turn.text.includes("#browser")) {
+        const png = encodePng(320, 200, (x, y) => (y < 24 ? [230, 230, 230] : x < 160 ? [120, 80, 200] : [250, 250, 250]));
+        const url = `https://example.com/chat/${userTurns + 1}`;
+        const frame = await saveFrame(ctx.workspaceDir, { data: png, url, action: "navigate" });
+        ctx.step({ kind: "browser", title: `Browser navigate: ${url}`, detail: { url, action: "navigate", frameId: frame?.frameId ?? null } });
+      }
+      if (turn.text.includes("#slow")) {
+        ctx.step({ kind: "message", title: "Working on a long step" });
+        await sleep(10 * 60 * 1000, ctx.signal);
+      }
+      let reply = `Reply ${userTurns + 1} to "${turn.text}" (I remember ${history.length} earlier messages)`;
+      if (turn.text.includes("#approval")) {
+        const decision = await ctx.requestApproval("Write notes.md to the session workspace?", { file: "notes.md" });
+        if (decision === "approved") {
+          await writeFile(path.join(ctx.workspaceDir, "notes.md"), `# Notes\n\n${turn.text}\n`);
+          ctx.step({ kind: "tool", title: "Wrote notes.md", detail: { file: "notes.md" } });
+        } else {
+          reply += " (skipped writing notes.md)";
+        }
+      }
+      history.push({ role: "user", text: turn.text });
+      if (turn.text.includes("#fail")) {
+        ctx.endTurn(turn.turnId, "failed", "The scripted driver was asked to fail.");
+        continue;
+      }
+      history.push({ role: "assistant", text: reply });
+      ctx.endTurn(turn.turnId, "succeeded", reply);
+    }
   },
 };
